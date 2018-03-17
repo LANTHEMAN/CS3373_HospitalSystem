@@ -26,6 +26,7 @@ hs_err_pid*
 .gradle/*
 classes/*
 build/*
+out/*
 
 derby.log
 *.lock
