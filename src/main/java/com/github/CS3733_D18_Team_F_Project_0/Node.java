@@ -12,7 +12,7 @@ public class Node {
     private Double gScore;
     private Double hScore;
 
-    private Double fScoreWeight = 1;
+    private Double fScoreWeight = 1.0;
 
     Node(Point3D position) {
         this.position = position;
