@@ -5,7 +5,7 @@ import javafx.geometry.Point3D;
 
 public class Node {
     private Point3D position;
-    private Hashset<Node> neighbors;
+    private HashSet<Node> neighbors;
 
     // infrastructure of heuristic map for A*
     private Double fScore;
@@ -21,12 +21,12 @@ public class Node {
         return(this.position.distance(node.position));
     }
 
-    public void setgScore(Double fScore){
-        this.fScore = fScore;
+    public void setgScore(Double gScore){
+        this.gScore = gScore;
     }
 
-    public void sethScore(Double gScore){
-        this.gScore = gScore;
+    public void sethScore(Double hScore){
+        this.hScore = hScore;
     }
 
     public void calcfScore(){
@@ -42,6 +42,6 @@ public class Node {
     }
 
     public Double getgScore(){
-        return gScore();
+        return gScore;
     }
 }
