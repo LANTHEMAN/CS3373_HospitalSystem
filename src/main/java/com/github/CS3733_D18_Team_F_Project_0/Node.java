@@ -7,8 +7,41 @@ public class Node {
     private Point3D position;
     private Hashset<Node> neighbors;
 
-    Node(Point3D position, Hashset<Node> neighbors) {
+    // infrastructure of heuristic map for A*
+    private Double fScore;
+    private Double gScore;
+    private Double hScore;
+
+    Node(Point3D position) {
         this.position = position;
-        this.neighbors = neighbors;
+        this.neighbors = new HashSet<>();
+    }
+
+    public Double getDisplacement(Node node){
+        return(this.position.distance(node.position));
+    }
+
+    public void setgScore(Double fScore){
+        this.fScore = fScore;
+    }
+
+    public void sethScore(Double gScore){
+        this.gScore = gScore;
+    }
+
+    public void calcfScore(){
+        this.fScore = this.gScore + this.hScore;
+    }
+
+    public Double getfScore(){
+        return fScore;
+    }
+
+    public Double gethScore(){
+        return hScore;
+    }
+
+    public Double getgScore(){
+        return gScore();
     }
 }
