@@ -1,15 +1,22 @@
 package com.github.CS3733_D18_Team_F_Project_0;
 
-public class Main {
-	public static void main(String[] args) {
-		System.out.println("Jake Scheide");
-		System.out.println("Eric Chiem");
-		System.out.println("Tyler Dubuke");
-		System.out.println("Justin Amevor");
-		System.out.println("Adam Sargent");
-		System.out.println("Alex Tavares");
-		System.out.println("Matthew Kaminski");
-		System.out.println("Lanhao Mao");
-		System.out.println("Peter Maida");
-	}
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class Main extends Application {
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        primaryStage.setTitle("Hello World");
+        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.show();
+    }
 }
+
