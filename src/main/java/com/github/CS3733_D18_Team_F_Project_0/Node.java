@@ -12,6 +12,8 @@ public class Node {
     private Double gScore;
     private Double hScore;
 
+    private Double fScoreWeight = 1;
+
     Node(Point3D position) {
         this.position = position;
         this.neighbors = new HashSet<>();
@@ -30,7 +32,7 @@ public class Node {
     }
 
     public void calcfScore(){
-        this.fScore = this.gScore + this.hScore;
+        this.fScore = this.gScore + (fScoreWeight * this.hScore);
     }
 
     public Double getfScore(){
