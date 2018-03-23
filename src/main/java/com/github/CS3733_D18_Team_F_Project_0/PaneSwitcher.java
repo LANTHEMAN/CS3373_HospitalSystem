@@ -11,30 +11,29 @@ public class PaneSwitcher {
     private HashMap<String, Pane> panes;
     private Scene scene;
 
-    public PaneSwitcher(Scene scene){
+    public PaneSwitcher(Scene scene) {
         this.scene = scene;
         panes = new HashMap<>();
     }
 
-    public void addPane(String name, String fxmlFile, Class<? extends SwitchableController> ControllerClass) {
+    public void addPane(Screens.Screen screen) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(screen.fxmlFile));
             Pane pane = loader.load();
 
-            panes.put(name, pane);
+            panes.put(screen.fxmlFile, pane);
 
             Object controller = loader.getController();
-            if(!ControllerClass.isInstance(controller)){
-                throw new AssertionError("ControllerClass must extend SwitchableController");
-            }
+
             SwitchableController switchableController = (SwitchableController) controller;
             switchableController.initialize(this);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void switchTo(String name) {
-        scene.setRoot(panes.get(name));
+    public void switchTo(Screens.Screen screen) {
+        scene.setRoot(panes.get(screen.fxmlFile));
     }
 }

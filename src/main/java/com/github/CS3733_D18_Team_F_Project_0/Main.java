@@ -17,11 +17,11 @@ public class Main extends Application {
         PaneSwitcher paneSwitcher = new PaneSwitcher(scene);
 
         // add panes
-        paneSwitcher.addPane(Screens.homeName, "home.fxml", HomeController.class);
-        paneSwitcher.addPane(Screens.exampleName, "example.fxml", ExampleController.class);
+        paneSwitcher.addPane(Screens.Home);
+        paneSwitcher.addPane(Screens.Example);
 
         // inital pane
-        paneSwitcher.switchTo("home");
+        paneSwitcher.switchTo(Screens.Home);
 
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(scene);

@@ -13,6 +13,6 @@ public class HomeController implements SwitchableController {
 
     @FXML
     void onNavigationSwitch() {
-        switcher.switchTo(Screens.exampleName);
+        switcher.switchTo(Screens.Example);
     }
 }

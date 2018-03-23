@@ -12,6 +12,6 @@ public class ExampleController implements SwitchableController {
 
     @FXML
     void onBackSwitch() {
-        switcher.switchTo(Screens.homeName);
+        switcher.switchTo(Screens.Home);
     }
 }
