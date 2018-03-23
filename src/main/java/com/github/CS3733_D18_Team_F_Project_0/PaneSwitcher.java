@@ -16,7 +16,8 @@ public class PaneSwitcher {
         panes = new HashMap<>();
     }
 
-    public void addPane(Screens.Screen screen) {
+    // loads the screen into memory from the file
+    public void load(Screens.Screen screen) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(screen.fxmlFile));
             Pane pane = loader.load();
@@ -33,7 +34,20 @@ public class PaneSwitcher {
         }
     }
 
+    // removes a screen entry from memory
+    public void remove(Screens.Screen screen) {
+        panes.remove(screen.fxmlFile);
+    }
+
+    // assumes the screen is already loaded
+    public void setActive(Screens.Screen screen) {
+        scene.setRoot(panes.get(screen.fxmlFile));
+    }
+
+    // clears all screens and load the given screen
     public void switchTo(Screens.Screen screen) {
+        panes.clear();
+        load(screen);
         scene.setRoot(panes.get(screen.fxmlFile));
     }
 }

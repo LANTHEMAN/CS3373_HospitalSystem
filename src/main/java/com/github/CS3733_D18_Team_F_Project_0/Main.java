@@ -16,11 +16,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, 1280, 720);
         PaneSwitcher paneSwitcher = new PaneSwitcher(scene);
 
-        // add panes
-        paneSwitcher.addPane(Screens.Home);
-        paneSwitcher.addPane(Screens.Example);
-
-        // inital pane
+        // initial pane
         paneSwitcher.switchTo(Screens.Home);
 
         primaryStage.setTitle("Hello World");

@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 
 public class HomeController implements SwitchableController {
 
-    PaneSwitcher switcher;
+    private PaneSwitcher switcher;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -15,4 +15,5 @@ public class HomeController implements SwitchableController {
     void onNavigationSwitch() {
         switcher.switchTo(Screens.Example);
     }
+
 }
