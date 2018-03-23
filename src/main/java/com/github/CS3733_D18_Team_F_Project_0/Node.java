@@ -65,7 +65,9 @@ public class Node {
                     if (knownNodes.get().containsKey(neighbor)) {
                         neighbors.add(knownNodes.get().get(neighbor));
                     } else {
-                        neighbors.add(new AStarNode(neighbor, destination, Double.MAX_VALUE, knownNodes));
+                        AStarNode newNode = new AStarNode(neighbor, destination, Double.MAX_VALUE, knownNodes);
+                        knownNodes.get().put(neighbor, newNode);
+                        neighbors.add(newNode);
                     }
                 }
                 return neighbors;
@@ -166,7 +168,6 @@ public class Node {
 
         // AStarNode's hold a weak reference, but this speeds up garbage collection
         knownNodes.clear();
-
         // no path was found
         ArrayList<Node> path = new ArrayList<>();
         return path;
