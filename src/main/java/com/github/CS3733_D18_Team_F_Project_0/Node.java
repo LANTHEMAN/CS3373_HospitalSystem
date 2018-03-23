@@ -18,11 +18,12 @@ public class Node {
         return (this.position.distance(node.position));
     }
 
-    public void addNeighbor(Node node) {
+    public Node addNeighbor(Node node) {
         if (node == this) {
             throw new AssertionError();
         }
         neighbors.add(node);
+        return this;
     }
 
     // A* implementation
@@ -70,12 +71,20 @@ public class Node {
                 return neighbors;
             }
 
+            public void setDistanceTraveled(double distanceTraveled) {
+                this.distanceTraveled = distanceTraveled;
+            }
+
+            public Node getNode(){
+                return node;
+            }
+
             // used for priority queue comparisons
             @Override
             public int compareTo(AStarNode other) {
                 double thisEstimate = (distanceTraveled + this.node.displacementTo(this.destination));
                 double otherEstimate = (other.distanceTraveled + other.node.displacementTo(this.destination));
-                return thisEstimate > otherEstimate ? -1 : 1;
+                return thisEstimate < otherEstimate ? -1 : 1;
             }
         }
 
@@ -111,8 +120,14 @@ public class Node {
                 // AStarNode's hold a weak reference, but this speeds up garbage collection
                 knownNodes.clear();
 
-                // TODO reconstruct path
                 ArrayList<Node> path = new ArrayList<>();
+                path.add(currentNode.getNode());
+                AStarNode itNode = currentNode;
+                while(cameFrom.containsKey(itNode)){
+                    itNode = cameFrom.get(itNode);
+                    path.add(itNode.getNode());
+                }
+                Collections.reverse(path);
                 return path;
             }
 
@@ -132,7 +147,7 @@ public class Node {
                 double tentative_gScore = gScore_current + currentNode.displacementTo(neighbor);
 
                 // this is a worse path to the same point
-                if(tentative_gScore > gScore_neighbor){
+                if (tentative_gScore > gScore_neighbor) {
                     continue;
                 }
 
@@ -140,6 +155,11 @@ public class Node {
                 cameFrom.put(neighbor, currentNode);
                 gScore.put(neighbor, tentative_gScore);
                 fScore.put(neighbor, tentative_gScore + neighbor.displacementTo(dstNode));
+
+                // update nodes and priority queue
+                neighbor.setDistanceTraveled(tentative_gScore);
+                openSet.remove(neighbor);
+                openSet.add(neighbor);
             }
 
         }
