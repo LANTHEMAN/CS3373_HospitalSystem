@@ -115,7 +115,7 @@ public class Node {
         fScore.put(thisNode, thisNode.displacementTo(dstNode));
 
         while (!openSet.isEmpty()) {
-            AStarNode currentNode = openSet.remove();
+            AStarNode currentNode = openSet.poll();
             if (currentNode == dstNode) {
                 // AStarNode's hold a weak reference, but this speeds up garbage collection
                 knownNodes.clear();
