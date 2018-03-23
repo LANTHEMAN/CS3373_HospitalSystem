@@ -12,10 +12,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.HomeController">
    <left>
-      <Button mnemonicParsing="false" prefHeight="108.0" prefWidth="111.0" text="Navigation" translateX="100.0" BorderPane.alignment="CENTER" />
+      <Button fx:id="navigationSwitch" mnemonicParsing="false" onAction="#onNavigationSwitch" prefHeight="108.0" prefWidth="111.0" text="Navigation" translateX="100.0" BorderPane.alignment="CENTER" />
    </left>
    <right>
       <Button mnemonicParsing="false" prefHeight="108.0" prefWidth="123.0" text="Service Request" translateX="-100.0" BorderPane.alignment="CENTER" />
