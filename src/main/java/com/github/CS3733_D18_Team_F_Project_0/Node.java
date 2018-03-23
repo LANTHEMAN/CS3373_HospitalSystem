@@ -2,7 +2,6 @@ package com.github.CS3733_D18_Team_F_Project_0;
 
 import javafx.geometry.Point3D;
 
-import java.lang.ref.WeakReference;
 import java.util.*;
 
 public class Node {
@@ -42,11 +41,11 @@ public class Node {
             private Node node;
             private Node destination;
             private double distanceTraveled;
-            private WeakReference<HashMap<Node, AStarNode>> knownNodes;
+            private HashMap<Node, AStarNode> knownNodes;
 
             // only call this from a node that exists in reachedNodes
             public AStarNode(Node node, Node destination, double distanceTraveled
-                    , WeakReference<HashMap<Node, AStarNode>> knownNodes) {
+                    , HashMap<Node, AStarNode> knownNodes) {
                 this.node = node;
                 this.destination = destination;
                 this.distanceTraveled = distanceTraveled;
@@ -62,11 +61,11 @@ public class Node {
             public LinkedList<AStarNode> getNeighbors() {
                 LinkedList<AStarNode> neighbors = new LinkedList<>();
                 for (Node neighbor : node.neighbors) {
-                    if (knownNodes.get().containsKey(neighbor)) {
-                        neighbors.add(knownNodes.get().get(neighbor));
+                    if (knownNodes.containsKey(neighbor)) {
+                        neighbors.add(knownNodes.get(neighbor));
                     } else {
                         AStarNode newNode = new AStarNode(neighbor, destination, Double.MAX_VALUE, knownNodes);
-                        knownNodes.get().put(neighbor, newNode);
+                        knownNodes.put(neighbor, newNode);
                         neighbors.add(newNode);
                     }
                 }
@@ -77,7 +76,7 @@ public class Node {
                 this.distanceTraveled = distanceTraveled;
             }
 
-            public Node getNode(){
+            public Node getNode() {
                 return node;
             }
 
@@ -92,8 +91,8 @@ public class Node {
 
         // ensures that every Node only has 1 corresponding AStarNode
         HashMap<Node, AStarNode> knownNodes = new HashMap<>();
-        knownNodes.put(this, new AStarNode(this, dst, 0, new WeakReference<>(knownNodes)));
-        knownNodes.put(dst, new AStarNode(dst, dst, Double.MAX_VALUE, new WeakReference<>(knownNodes)));
+        knownNodes.put(this, new AStarNode(this, dst, 0, knownNodes));
+        knownNodes.put(dst, new AStarNode(dst, dst, Double.MAX_VALUE, knownNodes));
 
         // nodes that have already been evaluated
         HashSet<AStarNode> closedSet = new HashSet<>();
@@ -119,13 +118,10 @@ public class Node {
         while (!openSet.isEmpty()) {
             AStarNode currentNode = openSet.poll();
             if (currentNode == dstNode) {
-                // AStarNode's hold a weak reference, but this speeds up garbage collection
-                knownNodes.clear();
-
                 ArrayList<Node> path = new ArrayList<>();
                 path.add(currentNode.getNode());
                 AStarNode itNode = currentNode;
-                while(cameFrom.containsKey(itNode)){
+                while (cameFrom.containsKey(itNode)) {
                     itNode = cameFrom.get(itNode);
                     path.add(itNode.getNode());
                 }
@@ -163,11 +159,8 @@ public class Node {
                 openSet.remove(neighbor);
                 openSet.add(neighbor);
             }
-
         }
 
-        // AStarNode's hold a weak reference, but this speeds up garbage collection
-        knownNodes.clear();
         // no path was found
         ArrayList<Node> path = new ArrayList<>();
         return path;
