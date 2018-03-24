@@ -64,7 +64,7 @@ public class TestNode {
     }
 
     @Test
-    public void testAStar3() {
+    public void testAStar3WithBlock() {
         Node nodeS = new Node(new Point3D(0,0,0));
 
         Node nodeA = new Node(new Point3D(0,-1,0));
@@ -99,6 +99,18 @@ public class TestNode {
         path.add(nodeF);
 
         assertEquals(path, nodeS.findPath(nodeF));
+
+        // now 'block' a specific path by adding additional weight
+
+        ArrayList<Node> path2 = new ArrayList<>();
+        path2.add(nodeS);
+        path2.add(nodeQ);
+        path2.add(nodeR);
+        path2.add(nodeF);
+
+        nodeB.setAdditionalWeight(1);
+
+        assertEquals(path2, nodeS.findPath(nodeF));
     }
 
 }

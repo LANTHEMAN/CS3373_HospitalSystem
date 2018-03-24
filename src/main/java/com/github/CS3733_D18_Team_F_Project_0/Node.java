@@ -7,13 +7,15 @@ import java.util.*;
 public class Node {
     private Point3D position;
     private HashSet<Node> neighbors;
+    // used to 'block' certain nodes
+    private double additionalWeight = 0;
 
     Node(Point3D position) {
         this.position = position;
         this.neighbors = new HashSet<>();
     }
 
-    public Double displacementTo(Node node) {
+    private double displacementTo(Node node) {
         return (this.position.distance(node.position));
     }
 
@@ -23,6 +25,10 @@ public class Node {
         }
         neighbors.add(node);
         return this;
+    }
+
+    public void setAdditionalWeight(double additionalWeight) {
+        this.additionalWeight = additionalWeight;
     }
 
     // A* implementation
@@ -43,7 +49,7 @@ public class Node {
             private double distanceTraveled;
             private HashMap<Node, AStarNode> knownNodes;
 
-            // only call this from a node that exists in reachedNodes
+            // only call this with a node that exists in reachedNodes
             private AStarNode(Node node, Node destination, double distanceTraveled
                     , HashMap<Node, AStarNode> knownNodes) {
                 this.node = node;
@@ -72,20 +78,28 @@ public class Node {
                 return neighbors;
             }
 
+            private Node getNode() {
+                return node;
+            }
+
             private void setDistanceTraveled(double distanceTraveled) {
                 this.distanceTraveled = distanceTraveled;
             }
 
-            private Node getNode() {
-                return node;
+            // get the cost to this point from the start
+            private double getGScore() {
+                return distanceTraveled + additionalWeight;
+            }
+
+            // cost to get to this node + heuristic
+            private double getFScore() {
+                return distanceTraveled + this.node.displacementTo(this.destination) + additionalWeight;
             }
 
             // used for priority queue comparisons
             @Override
             public int compareTo(AStarNode other) {
-                double thisEstimate = (distanceTraveled + this.node.displacementTo(this.destination));
-                double otherEstimate = (other.distanceTraveled + other.node.displacementTo(this.destination));
-                return thisEstimate < otherEstimate ? -1 : 1;
+                return getFScore() < other.getFScore() ? -1 : 1;
             }
         }
 
@@ -101,15 +115,11 @@ public class Node {
 
         // for each node, it saves where it can most efficiently be reached from
         HashMap<AStarNode, AStarNode> cameFrom = new HashMap<>();
-        // for each node, it saves the cost of getting from the start node to that node
-        // if a node does not exist, assume the value of infinity
-        HashMap<AStarNode, Double> gScore = new HashMap<>();
 
         // set up initial conditions with source node
         AStarNode thisNode = knownNodes.get(this);
         AStarNode dstNode = knownNodes.get(dst);
         openSet.add(thisNode);
-        gScore.put(thisNode, (double) 0);
 
         while (!openSet.isEmpty()) {
             AStarNode currentNode = openSet.poll();
@@ -136,21 +146,20 @@ public class Node {
                     openSet.add(neighbor);
                 }
 
-                double gScore_current = gScore.getOrDefault(currentNode, Double.MAX_VALUE);
-                double gScore_neighbor = gScore.getOrDefault(neighbor, Double.MAX_VALUE);
-                double tentative_gScore = gScore_current + currentNode.displacementTo(neighbor);
+                double costCurrentToNeighbor = currentNode.getGScore()
+                        + currentNode.displacementTo(neighbor)
+                        + neighbor.node.additionalWeight;
 
                 // this is a worse path to the same point
-                if (tentative_gScore > gScore_neighbor) {
+                if (costCurrentToNeighbor > neighbor.getGScore()) {
                     continue;
                 }
 
                 // this path is the best to this point
                 cameFrom.put(neighbor, currentNode);
-                gScore.put(neighbor, tentative_gScore);
 
                 // update nodes and priority queue
-                neighbor.setDistanceTraveled(tentative_gScore);
+                neighbor.setDistanceTraveled(costCurrentToNeighbor);
                 openSet.remove(neighbor);
                 openSet.add(neighbor);
             }
