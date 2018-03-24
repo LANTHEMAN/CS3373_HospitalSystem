@@ -44,7 +44,7 @@ public class Node {
             private HashMap<Node, AStarNode> knownNodes;
 
             // only call this from a node that exists in reachedNodes
-            public AStarNode(Node node, Node destination, double distanceTraveled
+            private AStarNode(Node node, Node destination, double distanceTraveled
                     , HashMap<Node, AStarNode> knownNodes) {
                 this.node = node;
                 this.destination = destination;
@@ -53,12 +53,12 @@ public class Node {
             }
 
             // 3d displacement between 2 nodes
-            public double displacementTo(AStarNode node) {
+            private double displacementTo(AStarNode node) {
                 return this.node.displacementTo(node.node);
             }
 
             // returns all neighboring nodes
-            public LinkedList<AStarNode> getNeighbors() {
+            private LinkedList<AStarNode> getNeighbors() {
                 LinkedList<AStarNode> neighbors = new LinkedList<>();
                 for (Node neighbor : node.neighbors) {
                     if (knownNodes.containsKey(neighbor)) {
@@ -72,11 +72,11 @@ public class Node {
                 return neighbors;
             }
 
-            public void setDistanceTraveled(double distanceTraveled) {
+            private void setDistanceTraveled(double distanceTraveled) {
                 this.distanceTraveled = distanceTraveled;
             }
 
-            public Node getNode() {
+            private Node getNode() {
                 return node;
             }
 
@@ -104,16 +104,12 @@ public class Node {
         // for each node, it saves the cost of getting from the start node to that node
         // if a node does not exist, assume the value of infinity
         HashMap<AStarNode, Double> gScore = new HashMap<>();
-        // for each node, it estimates the distance left, sum of source to here plus heuristic
-        // if a node does not exist, assume the value of infinity
-        HashMap<AStarNode, Double> fScore = new HashMap<>();
 
         // set up initial conditions with source node
         AStarNode thisNode = knownNodes.get(this);
         AStarNode dstNode = knownNodes.get(dst);
         openSet.add(thisNode);
-        gScore.put(thisNode, new Double(0));
-        fScore.put(thisNode, thisNode.displacementTo(dstNode));
+        gScore.put(thisNode, (double) 0);
 
         while (!openSet.isEmpty()) {
             AStarNode currentNode = openSet.poll();
@@ -140,8 +136,8 @@ public class Node {
                     openSet.add(neighbor);
                 }
 
-                double gScore_current = gScore.containsKey(currentNode) ? gScore.get(currentNode) : Double.MAX_VALUE;
-                double gScore_neighbor = gScore.containsKey(neighbor) ? gScore.get(neighbor) : Double.MAX_VALUE;
+                double gScore_current = gScore.getOrDefault(currentNode, Double.MAX_VALUE);
+                double gScore_neighbor = gScore.getOrDefault(neighbor, Double.MAX_VALUE);
                 double tentative_gScore = gScore_current + currentNode.displacementTo(neighbor);
 
                 // this is a worse path to the same point
@@ -152,7 +148,6 @@ public class Node {
                 // this path is the best to this point
                 cameFrom.put(neighbor, currentNode);
                 gScore.put(neighbor, tentative_gScore);
-                fScore.put(neighbor, tentative_gScore + neighbor.displacementTo(dstNode));
 
                 // update nodes and priority queue
                 neighbor.setDistanceTraveled(tentative_gScore);
@@ -162,8 +157,7 @@ public class Node {
         }
 
         // no path was found
-        ArrayList<Node> path = new ArrayList<>();
-        return path;
+        return new ArrayList<>();
     }
 
 
