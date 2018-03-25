@@ -4,6 +4,8 @@ public class Screens {
 
     public static final Screen Home = new Screen("home.fxml", HomeController.class);
     public static final Screen Example = new Screen("example.fxml", ExampleController.class);
+    public static final Screen Login = new Screen("login.fxml", ExampleController.class);
+
 
     public static class Screen {
         public final String fxmlFile;

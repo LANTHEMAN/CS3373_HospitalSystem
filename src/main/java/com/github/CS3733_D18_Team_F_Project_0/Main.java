@@ -19,7 +19,7 @@ public class Main extends Application {
         // initial pane
         paneSwitcher.switchTo(Screens.Home);
 
-        primaryStage.setTitle("Hello World"); //new
+        primaryStage.setTitle("Brigham and Woman's Hospital");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

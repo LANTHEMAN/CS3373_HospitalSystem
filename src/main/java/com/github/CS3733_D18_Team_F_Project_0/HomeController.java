@@ -12,6 +12,11 @@ public class HomeController implements SwitchableController {
     }
 
     @FXML
+    void onLoginSwitch() {
+        switcher.switchTo(Screens.Login);
+    }
+
+    @FXML
     void onNavigationSwitch() {
         switcher.switchTo(Screens.Example);
     }
