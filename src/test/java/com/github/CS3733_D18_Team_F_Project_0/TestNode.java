@@ -15,21 +15,19 @@ import static org.junit.Assert.assertEquals;
 
 public class TestNode {
 
-    public HashMap<String, Node> CSVParser() throws FileNotFoundException{
-        Scanner nodeScanner = new Scanner(new File(System.getProperty("user.dir") +
-                "\\src\\test\\resources\\MapFNodes.csv"));
-        Scanner edgeScanner = new Scanner(new File(System.getProperty("user.dir") +
-                "\\src\\test\\resources\\MapFEdges.csv"));
+    public HashMap<String, Node> CSVParser() throws FileNotFoundException {
+        Scanner nodeScanner = new Scanner(new File(getClass().getResource("MapFNodes.csv").getFile()));
+        Scanner edgeScanner = new Scanner(new File(getClass().getResource("MapFEdges.csv").getFile()));
 
         // graph to hold all the nodes and their identifiers
         HashMap<String, Node> graph = new HashMap<>();
 
         // put all the nodes into the graph
-        while(nodeScanner.hasNextLine()){
+        while (nodeScanner.hasNextLine()) {
             String line = nodeScanner.nextLine();
             String[] fields = line.split(",");
 
-            if(fields.length == 9 && fields[8].equals("Team F")){
+            if (fields.length == 9 && fields[8].equals("Team F")) {
                 Node newNode = new Node(new Point3D(Integer.parseInt(fields[1]), Integer.parseInt(fields[2]),
                         Integer.parseInt(fields[3])));
                 graph.put(fields[0], newNode);
@@ -37,16 +35,15 @@ public class TestNode {
         }
 
         // create all the neighbors for the nodes in the graph
-        while(edgeScanner.hasNextLine()){
+        while (edgeScanner.hasNextLine()) {
             String line = edgeScanner.nextLine();
             String[] fields = line.split(",");
 
-            if(fields.length == 3 && graph.containsKey(fields[1]) && graph.containsKey(fields[2])){
+            if (fields.length == 3 && graph.containsKey(fields[1]) && graph.containsKey(fields[2])) {
                 Node firstNode = graph.get(fields[1]);
                 Node secondNode = graph.get(fields[2]);
 
                 firstNode.addNeighbor(secondNode);
-                secondNode.addNeighbor(firstNode);
             }
         }
 
@@ -54,7 +51,7 @@ public class TestNode {
     }
 
     @Test
-    public void BrighamTestSmall() throws FileNotFoundException{
+    public void BrighamTestSmall() throws FileNotFoundException {
         HashMap<String, Node> graph = CSVParser();
 
         ArrayList<Node> path = graph.get("FHALL00701").findPath(graph.get("FHALL03201"));
@@ -69,10 +66,10 @@ public class TestNode {
 
     @Test
     public void testAStar1() {
-        Node nodeA = new Node(new Point3D(0,0,0));
-        Node nodeB = new Node(new Point3D(1,1,1));
-        Node nodeC = new Node(new Point3D(4,4,4));
-        Node nodeD = new Node(new Point3D(2,2,2));
+        Node nodeA = new Node(new Point3D(0, 0, 0));
+        Node nodeB = new Node(new Point3D(1, 1, 1));
+        Node nodeC = new Node(new Point3D(4, 4, 4));
+        Node nodeD = new Node(new Point3D(2, 2, 2));
 
         nodeA.addNeighbor(nodeB).addNeighbor(nodeC);
         nodeB.addNeighbor(nodeC).addNeighbor(nodeD);
@@ -88,18 +85,18 @@ public class TestNode {
 
     @Test
     public void testAStar2() {
-        Node nodeS = new Node(new Point3D(0,0,0));
+        Node nodeS = new Node(new Point3D(0, 0, 0));
 
-        Node nodeA = new Node(new Point3D(0,-1,0));
-        Node nodeB = new Node(new Point3D(1,-1,0));
-        Node nodeC = new Node(new Point3D(1,0,0));
-        Node nodeD = new Node(new Point3D(2,0,0));
-        Node nodeE = new Node(new Point3D(2,-1,0));
+        Node nodeA = new Node(new Point3D(0, -1, 0));
+        Node nodeB = new Node(new Point3D(1, -1, 0));
+        Node nodeC = new Node(new Point3D(1, 0, 0));
+        Node nodeD = new Node(new Point3D(2, 0, 0));
+        Node nodeE = new Node(new Point3D(2, -1, 0));
 
-        Node nodeQ = new Node(new Point3D(-0.5,0,0));
-        Node nodeR = new Node(new Point3D(-1,0,0));
+        Node nodeQ = new Node(new Point3D(-0.5, 0, 0));
+        Node nodeR = new Node(new Point3D(-1, 0, 0));
 
-        Node nodeF = new Node(new Point3D(2,-2,0));
+        Node nodeF = new Node(new Point3D(2, -2, 0));
 
         nodeS.addNeighbor(nodeA).addNeighbor(nodeQ);
 
@@ -123,18 +120,18 @@ public class TestNode {
 
     @Test
     public void testAStar3WithBlock() {
-        Node nodeS = new Node(new Point3D(0,0,0));
+        Node nodeS = new Node(new Point3D(0, 0, 0));
 
-        Node nodeA = new Node(new Point3D(0,-1,0));
-        Node nodeB = new Node(new Point3D(1,-1,0));
-        Node nodeC = new Node(new Point3D(1,0,0));
-        Node nodeD = new Node(new Point3D(2,0,0));
-        Node nodeE = new Node(new Point3D(2,-1,0));
+        Node nodeA = new Node(new Point3D(0, -1, 0));
+        Node nodeB = new Node(new Point3D(1, -1, 0));
+        Node nodeC = new Node(new Point3D(1, 0, 0));
+        Node nodeD = new Node(new Point3D(2, 0, 0));
+        Node nodeE = new Node(new Point3D(2, -1, 0));
 
-        Node nodeQ = new Node(new Point3D(-1,0,0));
-        Node nodeR = new Node(new Point3D(-1,0,1.3));
+        Node nodeQ = new Node(new Point3D(-1, 0, 0));
+        Node nodeR = new Node(new Point3D(-1, 0, 1.3));
 
-        Node nodeF = new Node(new Point3D(2,-2,0));
+        Node nodeF = new Node(new Point3D(2, -2, 0));
 
         nodeS.addNeighbor(nodeA).addNeighbor(nodeQ);
 

@@ -20,10 +20,8 @@ public class Node {
     }
 
     public Node addNeighbor(Node node) {
-        if (node == this) {
-            throw new AssertionError();
-        }
-        neighbors.add(node);
+        this.neighbors.add(node);
+        node.neighbors.add(this);
         return this;
     }
 
