@@ -7,6 +7,8 @@ import static org.junit.Assert.assertEquals;
 public class DerbyTest {
     @Test
     public void dummyTest() {
-        assertEquals(1, 1);
+        DatabaseHandler dbHandler = new DatabaseHandler();
+
+
     }
 }
