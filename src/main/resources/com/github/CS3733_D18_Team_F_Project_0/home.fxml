@@ -41,11 +41,6 @@
                <font>
                   <Font size="15.0" />
                </font></Text>
-            <ImageView fitHeight="481.0" fitWidth="704.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-               <image>
-                  <Image url="@BW2D%20Maps/02_thesecondfloor.png" />
-               </image>
-            </ImageView>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Brigihams Womans Hospital: Second Floor" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="22.0" />
@@ -55,9 +50,29 @@
                   <Font size="14.0" />
                </font>
             </Button>
+            <ImageView fx:id="ivMap" fitHeight="481.0" fitWidth="704.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@BW2D%20Maps/02_thesecondfloor.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="ivZoomIn" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#onZoomIn" pickOnBounds="true" preserveRatio="true" translateX="-50.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <image>
+                  <Image url="@zoomIn.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="ivZoomOut" fitHeight="50.0" fitWidth="50.0" layoutX="775.0" layoutY="136.0" onMouseClicked="#onZoomOut" pickOnBounds="true" preserveRatio="true" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <image>
+                  <Image url="@zoomOut.png" />
+               </image>
+            </ImageView>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.rowIndex="3">
                <children>
-                  <Button fx:id="DirectionsSwitch" mnemonicParsing="false" onAction="#onDirectionsSwitch" text="Directions">
+                  <Button fx:id="DirectionsSwitch1" layoutX="202.0" layoutY="35.0" mnemonicParsing="false" onAction="#onDirectionsSwitch" text="Find a Location">
+                     <font>
+                        <Font name="Helvetica Light" size="17.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="DirectionsSwitch" mnemonicParsing="false" onAction="#onDirectionsSwitch" text="Get Directions">
                      <font>
                         <Font name="Helvetica Light" size="17.0" />
                      </font>
@@ -67,7 +82,7 @@
                         <Font name="Helvetica Light" size="17.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" text="Service Request">
+                  <Button mnemonicParsing="false" text="Request A Service">
                      <font>
                         <Font name="Helvetica Light" size="17.0" />
                      </font>
