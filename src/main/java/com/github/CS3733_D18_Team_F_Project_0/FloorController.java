@@ -2,7 +2,7 @@ package com.github.CS3733_D18_Team_F_Project_0;
 
 import javafx.fxml.FXML;
 
-public class LoginController implements SwitchableController {
+public class FloorController implements SwitchableController {
 
     private PaneSwitcher switcher;
 
@@ -12,11 +12,6 @@ public class LoginController implements SwitchableController {
         this.switcher = switcher;
     }
 
-    @FXML
-    void onLoginSwitch() {
-        switcher.switchTo(Screens.Home);
-
-    }
 
     @FXML
     void onCancelSwitch() {
