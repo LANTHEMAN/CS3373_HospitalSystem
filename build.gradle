@@ -30,7 +30,7 @@ dependencies {
 }
 
 jar {
-	basename = 'LanguageBundle'
+	baseName = 'LanguageBundle'
 	from('src/main/resources'){
 		include 'LanguageBundle'
 	}
