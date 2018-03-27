@@ -29,44 +29,44 @@
                   <Image url="@BW2D%20Maps/00_thegroundfloor.png" />
                </image>
             </ImageView>
-            <Button mnemonicParsing="false" text="Ground Floor" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
+            <Button mnemonicParsing="false" text="%GroundFloor" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
             <ImageView fitHeight="198.0" fitWidth="329.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <image>
                   <Image url="@BW2D%20Maps/00_thelowerlevel1.png" />
                </image>
             </ImageView>
-            <Button mnemonicParsing="false" text="Lower Level 1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
+            <Button mnemonicParsing="false" text="%LowerLevel1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
             <ImageView fitHeight="198.0" fitWidth="329.0" layoutX="505.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <image>
                   <Image url="@BW2D%20Maps/00_thelowerlevel2.png" />
                </image>
             </ImageView>
-            <Button layoutX="600.0" layoutY="233.0" mnemonicParsing="false" text="Lower Level 2" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
+            <Button layoutX="600.0" layoutY="233.0" mnemonicParsing="false" text="%LowerLevel2" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
             <ImageView fitHeight="198.0" fitWidth="329.0" layoutX="10.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <image>
                   <Image url="@BW2D%20Maps/01_thefirstfloor.png" />
                </image>
             </ImageView>
-            <Button layoutX="10.0" layoutY="122.0" mnemonicParsing="false" text="First Floor" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <Button layoutX="10.0" layoutY="122.0" mnemonicParsing="false" text="%FirstFloor" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
             <ImageView fitHeight="198.0" fitWidth="329.0" layoutX="78.0" layoutY="286.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <image>
                   <Image url="@BW2D%20Maps/02_thesecondfloor.png" />
                </image>
             </ImageView>
-            <Button layoutX="10.0" layoutY="372.0" mnemonicParsing="false" text="Second Floor" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <Button layoutX="10.0" layoutY="372.0" mnemonicParsing="false" text="%SecondFloor" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
             <ImageView fitHeight="198.0" fitWidth="329.0" layoutX="10.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <image>
                   <Image url="@BW2D%20Maps/03_thethirdfloor.png" />
                </image>
             </ImageView>
-            <Button layoutX="10.0" layoutY="122.0" mnemonicParsing="false" text="Third Floor" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <Button layoutX="10.0" layoutY="122.0" mnemonicParsing="false" text="%ThirdFloor" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>
-      <Text layoutX="586.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Floor">
+      <Text layoutX="586.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%SelectFloor">
          <font>
             <Font size="24.0" />
          </font>
       </Text>
-      <Button fx:id="CancelSwitch" layoutX="589.0" layoutY="628.0" mnemonicParsing="false" onAction="#onCancelSwitch" prefHeight="43.0" prefWidth="137.0" text="Cancel" />
+      <Button fx:id="CancelSwitch" layoutX="589.0" layoutY="628.0" mnemonicParsing="false" onAction="#onCancelSwitch" prefHeight="43.0" prefWidth="137.0" text="%Cancel" />
    </children>
 </AnchorPane>
