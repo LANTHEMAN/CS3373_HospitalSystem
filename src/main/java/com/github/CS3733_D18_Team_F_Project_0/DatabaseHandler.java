@@ -61,7 +61,7 @@ public class DatabaseHandler {
                 String nodeType = record.get(5);
                 String longName = record.get(6);
                 String shortName = record.get(7);
-                addNode(x, y, floor, building, nodeType, longName, shortName);
+                addNode(name, x, y, floor, building, nodeType, longName, shortName);
             }
 
         } catch (IOException e) {
@@ -92,16 +92,19 @@ public class DatabaseHandler {
         }
     }
 
-    public void addNode(double x, double y, String floor, String building, String nodeType, String longName, String shortName) {
-        String query = "INSERT INTO NODES VALUES ("
-                + "'" + x + "',"
-                + "'" + y + "',"
+    public void addNode(String id, double x, double y, String floor, String building, String nodeType, String longName, String shortName) {
+        String query = "INSERT INTO NODE VALUES ("
+                + "'" + id + "',"
+                + x + ","
+                + y + ","
                 + "'" + floor + "',"
                 + "'" + building + "',"
                 + "'" + nodeType + "',"
                 + "'" + longName + "',"
-                + "'" + shortName + "',"
+                + "'" + shortName + "'"
                 + ")";
+        System.out.println(query);
+        runAction(query);
     }
 
 }
