@@ -28,6 +28,7 @@ public class DerbyTest {
         dbHandler.trackAndInitItem(graph);
 
 
+
         dbHandler.disconnectFromDatabase();
     }
 }

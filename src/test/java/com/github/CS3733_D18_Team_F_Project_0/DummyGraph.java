@@ -26,7 +26,7 @@ public class DummyGraph implements DatabaseItem {
                 dbHandler.runSQLScript("init_node_db.sql");
 
                 // TODO make into a function
-                File csvFile = new File(getClass().getResource("MapFNodes.csv").getFile());
+                File csvFile = new File(getClass().getResource("TestNodes.csv").getFile());
                 CSVParser parser = CSVParser.parse(csvFile, StandardCharsets.UTF_8, CSVFormat.RFC4180);
 
                 for (CSVRecord record : parser) {
@@ -98,7 +98,6 @@ public class DummyGraph implements DatabaseItem {
             e.printStackTrace();
         }
 
-        // now sy
     }
 
     @Override
