@@ -24,12 +24,14 @@ public class DummyGraph implements DatabaseItem {
     public HashMap<String, Pair<DummyNode, LinkedList<DummyNode>>> nodes = new HashMap<>();
     public String nodesFile_in = "src/test/resources/com/github/CS3733_D18_Team_F_Project_0/TestNodes.csv";
     public String nodesFile_out = nodesFile_in;
+    public String edgeFile_in  = "src/test/resources/com/github/CS3733_D18_Team_F_Project_0/TestEdges.csv";
+    public String edgeFile_out = edgeFile_in;
 
     @Override
     public void initDatabase(DatabaseHandler dbHandler) {
         try {
             //if the table does not yet exist in the db, initialize it
-            if (!dbHandler.tableExists("NODES")) {
+            if (!dbHandler.tableExists("NODE")) {
                 dbHandler.runSQLScript("init_node_db.sql");
 
                 // TODO make into a function

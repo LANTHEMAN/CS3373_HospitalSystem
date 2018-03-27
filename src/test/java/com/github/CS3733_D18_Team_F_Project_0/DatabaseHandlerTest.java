@@ -103,7 +103,7 @@ public class DatabaseHandlerTest {
 
         DatabaseHandler dbHandler = new DatabaseHandler("temp/RealTest");
         DummyGraph graph = new DummyGraph();
-        graph.nodesFile_in = "src/main/resources/com/github/CS3733_D18_Team_F_Project_0/MapBNodes.csv";
+        graph.nodesFile_in  = "src/main/resources/com/github/CS3733_D18_Team_F_Project_0/MapBNodes.csv";
         graph.nodesFile_out = "src/test/resources/com/github/CS3733_D18_Team_F_Project_0/NEWMapBNodes.csv";
         dbHandler.trackAndInitItem(graph);
 
@@ -117,8 +117,8 @@ public class DatabaseHandlerTest {
 
         DummyNode dummyNode = new DummyNode();
         dummyNode.id = "FHALL00202";
-        dummyNode.x = 1010;
-        dummyNode.y = 7777;
+        dummyNode.x = 7878;
+        dummyNode.y = 9999;
         dummyNode.floor = "1";
         dummyNode.building = "Tower";
         dummyNode.nodeType = "HALL";
