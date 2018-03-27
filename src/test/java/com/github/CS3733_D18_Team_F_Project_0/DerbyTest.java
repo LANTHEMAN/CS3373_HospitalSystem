@@ -8,7 +8,6 @@ public class DerbyTest {
     @Test
     public void dummyTest() {
         DatabaseHandler dbHandler = new DatabaseHandler();
-
-
+        dbHandler.runSQLScript("init_node_db.sql");
     }
 }
