@@ -2,29 +2,48 @@ package com.github.CS3733_D18_Team_F_Project_0;
 
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
-import java.util.HashMap;
+import java.util.HashSet;
 
 public class DatabaseHandler {
-    static private final String DatabaseURL = "jdbc:derby:database;create=true";
+    private String databaseURL = "jdbc:derby:database;create=true";
     private Connection connection = null;
-    private HashMap<String, DatabaseItem> trackedItems = new HashMap<>();
+    private HashSet<DatabaseItem> trackedItems = new HashSet<>();
 
     public DatabaseHandler() {
         connectToDatabase();
     }
 
-    public void trackItem(String name, DatabaseItem dbItem) {
-        trackedItems.put(name, dbItem);
+    public DatabaseHandler(String directoryName) {
+        databaseURL = "jdbc:derby:" + directoryName + ";create=true";
+        connectToDatabase();
+    }
+
+    public void disconnectFromDatabase() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void trackAndInitItem(DatabaseItem dbItem) {
+        trackedItems.add(dbItem);
         dbItem.initDatabase(this);
-        syncLocal(name);
+        syncLocalFromDB(dbItem);
     }
 
-    public void syncLocal(String item) {
-        trackedItems.get(item).syncLocalFromDB(runQuery("SELECT * FROM " + trackedItems.get(item).getTableName()));
+    public void syncLocalFromDB(DatabaseItem dbItem) {
+        for (String table : dbItem.getTableNames()) {
+            dbItem.syncLocalFromDB(table, runQuery("SELECT * FROM " + table));
+        }
     }
 
-    public void syncDB(String item) {
-        trackedItems.get(item).syncDBFromLocal(this);
+    public void syncDBFromLocal(DatabaseItem dbItem) {
+        dbItem.syncDBFromLocal(this);
+    }
+
+    public void syncCSVFromDB(DatabaseItem dbItem) {
+        dbItem.syncCSVFromDB(this);
     }
 
     public boolean tableExists(String tableName) throws SQLException {
@@ -72,7 +91,7 @@ public class DatabaseHandler {
     private void connectToDatabase() {
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
-            connection = DriverManager.getConnection(DatabaseURL);
+            connection = DriverManager.getConnection(databaseURL);
         } catch (Exception e) {
             e.printStackTrace();
         }

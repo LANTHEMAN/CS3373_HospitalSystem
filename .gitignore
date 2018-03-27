@@ -32,6 +32,9 @@ derby.log
 *.lock
 *.iml
 
+# used for testing
+temp/*
+
 # keep necessary gradle files
 gradle-app.setting
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)

@@ -1,5 +1,6 @@
 package com.github.CS3733_D18_Team_F_Project_0;
 
+import javafx.util.Pair;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -9,68 +10,95 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class DummyGraph implements DatabaseItem {
 
-    HashMap<String, DummyNode> nodes;
+    private HashMap<String, Pair<DummyNode, LinkedList<DummyNode>>> nodes = new HashMap<>();
 
     @Override
     public void initDatabase(DatabaseHandler dbHandler) {
         try {
-            //if the table does not yet exist, initialize the table and read in the csv files
-            if(!dbHandler.tableExists("NODE")){
-                try {
-                    dbHandler.runSQLScript("init_node_db.sql");
+            //if the table does not yet exist in the db, initialize it
+            if (!dbHandler.tableExists("NODES")) {
+                dbHandler.runSQLScript("init_node_db.sql");
 
-                    // TODO make into function
-                    File csvFile = new File(getClass().getResource("MapFNodes.csv").getFile());
-                    CSVParser parser = CSVParser.parse(csvFile, StandardCharsets.UTF_8, CSVFormat.RFC4180);
+                // TODO make into a function
+                File csvFile = new File(getClass().getResource("MapFNodes.csv").getFile());
+                CSVParser parser = CSVParser.parse(csvFile, StandardCharsets.UTF_8, CSVFormat.RFC4180);
 
-                    for (CSVRecord record : parser) {
-                        if (record.get(0).equals("nodeID")) {
-                            continue;
-                        }
-                        String name = record.get(0);
-                        double x = Double.parseDouble(record.get(1));
-                        double y = Double.parseDouble(record.get(2));
-                        String floor = record.get(3);
-                        String building = record.get(4);
-                        String nodeType = record.get(5);
-                        String longName = record.get(6);
-                        String shortName = record.get(7);
-
-                        String query = "INSERT INTO NODE VALUES ("
-                                + "'" + name + "',"
-                                + x + ","
-                                + y + ","
-                                + "'" + floor + "',"
-                                + "'" + building + "',"
-                                + "'" + nodeType + "',"
-                                + "'" + longName + "',"
-                                + "'" + shortName + "'"
-                                + ")";
-                        dbHandler.runAction(query);
+                for (CSVRecord record : parser) {
+                    if (record.get(0).equals("nodeID")) {
+                        continue;
                     }
+                    String name = record.get(0);
+                    double x = Double.parseDouble(record.get(1));
+                    double y = Double.parseDouble(record.get(2));
+                    String floor = record.get(3);
+                    String building = record.get(4);
+                    String nodeType = record.get(5);
+                    String longName = record.get(6);
+                    String shortName = record.get(7);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    String query = "INSERT INTO NODE VALUES ("
+                            + "'" + name + "',"
+                            + x + ","
+                            + y + ","
+                            + "'" + floor + "',"
+                            + "'" + building + "',"
+                            + "'" + nodeType + "',"
+                            + "'" + longName + "',"
+                            + "'" + shortName + "'"
+                            + ")";
+                    dbHandler.runAction(query);
                 }
             }
-        } catch (SQLException e) {
+
+            // load edges into DB
+            if (!dbHandler.tableExists("EDGE")) {
+                dbHandler.runSQLScript("init_edge_db.sql");
+            }
+
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
+
+        // initialize local copy from database
+        dbHandler.syncLocalFromDB(this);
     }
 
     @Override
-    public String getTableName() {
-        return "NODE";
+    public LinkedList<String> getTableNames() {
+        return new LinkedList<>(Arrays.asList("NODE", "EDGE"));
     }
 
     @Override
-    public void syncLocalFromDB(ResultSet resultSet) {
+    public void syncLocalFromDB(String tableName, ResultSet resultSet) {
+        try {
+            // first sync nodes
+            while (resultSet.next()) {
+                String id = resultSet.getString(1);
+                DummyNode node = nodes.containsKey(id) ? nodes.get(id).getKey() : new DummyNode();
 
+                node.id = resultSet.getString(1);
+                node.x = Double.parseDouble(resultSet.getString(2));
+                node.y = Double.parseDouble(resultSet.getString(3));
+                node.floor = resultSet.getString(4);
+                node.building = resultSet.getString(5);
+                node.nodeType = resultSet.getString(6);
+                node.longName = resultSet.getString(7);
+                node.shortName = resultSet.getString(8);
+
+                nodes.put(id, new Pair<>(node, new LinkedList<>()));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // now sy
     }
 
     @Override

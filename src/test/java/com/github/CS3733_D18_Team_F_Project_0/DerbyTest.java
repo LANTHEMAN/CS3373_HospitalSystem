@@ -2,29 +2,32 @@ package com.github.CS3733_D18_Team_F_Project_0;
 
 import org.junit.Test;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Comparator;
 
 public class DerbyTest {
     @Test
-    public void dummyTest() throws SQLException {
-        DatabaseHandler dbHandler = new DatabaseHandler();
+    public void dummyTest() {
+        // make sure to 'reset' the test database
+        try {
+            Files.walk(Paths.get("temp/TestDB"))
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        DatabaseHandler dbHandler = new DatabaseHandler("temp/TestDB");
         DummyGraph graph = new DummyGraph();
 
-        dbHandler.trackItem("graph", graph);
+        dbHandler.trackAndInitItem(graph);
 
-        /*
-        ResultSetMetaData rsmd = nodeSet.getMetaData();
-        int columnsNumber = rsmd.getColumnCount();
-        while (nodeSet.next()) {
-            for (int i = 1; i <= columnsNumber; i++) {
-                if (i > 1) System.out.print(",  ");
-                String columnValue = nodeSet.getString(i);
-                System.out.print(columnValue + " " + rsmd.getColumnName(i));
-            }
-            System.out.println("");
-        }
-        */
+
+        dbHandler.disconnectFromDatabase();
     }
 }
