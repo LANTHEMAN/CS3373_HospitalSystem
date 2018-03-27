@@ -17,7 +17,7 @@ import java.util.LinkedList;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
-public class DerbyTest {
+public class DatabaseHandlerTest {
     private int rowCount(DatabaseHandler dbHandler, String tableName) {
         ResultSet rs = dbHandler.runQuery("SELECT * FROM " + tableName);
         int rowCount = 0;
@@ -39,7 +39,7 @@ public class DerbyTest {
             String csvFileContents = "nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned\n" +
                     "FHALL00101,2055,910,1,Tower,HALL,Lower Pike Hallway Exit Lobby,Hallway F00101,Team F\n";
 
-            File csvFile = new File("src/test/resources/TestNodes.csv");
+            File csvFile = new File("src/test/resources/com/github/CS3733_D18_Team_F_Project_0/TestNodes.csv");
             FileWriter fw = new FileWriter(csvFile, false);
             fw.write(csvFileContents);
             fw.flush();
@@ -83,6 +83,54 @@ public class DerbyTest {
         dbHandler.syncDBFromLocal(graph);
 
         assertEquals(2, rowCount(dbHandler, "NODE"));
+
+        dbHandler.syncCSVFromDB(graph);
+
+        dbHandler.disconnectFromDatabase();
+    }
+
+    @Test
+    public void dummyTest2() {
+        // delete old test database folder
+        try {
+            Files.walk(Paths.get("temp/RealTest"))
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        DatabaseHandler dbHandler = new DatabaseHandler("temp/RealTest");
+        DummyGraph graph = new DummyGraph();
+        graph.nodesFile_in = "src/main/resources/com/github/CS3733_D18_Team_F_Project_0/MapBNodes.csv";
+        graph.nodesFile_out = "src/test/resources/com/github/CS3733_D18_Team_F_Project_0/NEWMapBNodes.csv";
+        dbHandler.trackAndInitItem(graph);
+
+        assertEquals(70, rowCount(dbHandler, "NODE"));
+
+        assertTrue(graph.nodes.containsKey("BDEPT00702"));
+        DummyNode firstNode = graph.nodes.get("BDEPT00702").getKey();
+        firstNode.x = 1;
+        firstNode.y = 7777777;
+        assertEquals(graph.nodes.size(), 70);
+
+        DummyNode dummyNode = new DummyNode();
+        dummyNode.id = "FHALL00202";
+        dummyNode.x = 1010;
+        dummyNode.y = 7777;
+        dummyNode.floor = "1";
+        dummyNode.building = "Tower";
+        dummyNode.nodeType = "HALL";
+        dummyNode.shortName = "Hallway F00201";
+        dummyNode.longName = "This project is soo much fun! /s/s/s/s";
+
+
+        graph.nodes.put(dummyNode.id, new Pair<>(dummyNode, new LinkedList<>()));
+
+        dbHandler.syncDBFromLocal(graph);
+
+        assertEquals(71, rowCount(dbHandler, "NODE"));
 
         dbHandler.syncCSVFromDB(graph);
 

@@ -13,7 +13,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,6 +22,8 @@ import java.util.Map;
 public class DummyGraph implements DatabaseItem {
 
     public HashMap<String, Pair<DummyNode, LinkedList<DummyNode>>> nodes = new HashMap<>();
+    public String nodesFile_in = "src/test/resources/com/github/CS3733_D18_Team_F_Project_0/TestNodes.csv";
+    public String nodesFile_out = nodesFile_in;
 
     @Override
     public void initDatabase(DatabaseHandler dbHandler) {
@@ -32,7 +33,7 @@ public class DummyGraph implements DatabaseItem {
                 dbHandler.runSQLScript("init_node_db.sql");
 
                 // TODO make into a function
-                File csvFile = new File("src/test/resources/TestNodes.csv");
+                File csvFile = new File(nodesFile_in);
                 CSVParser parser = CSVParser.parse(csvFile, StandardCharsets.UTF_8, CSVFormat.RFC4180);
 
                 for (CSVRecord record : parser) {
@@ -134,7 +135,7 @@ public class DummyGraph implements DatabaseItem {
     @Override
     public void syncCSVFromDB(DatabaseHandler dbHandler) {
         try {
-            BufferedWriter writer = Files.newBufferedWriter(Paths.get("src/test/resources/TestNodes.csv"));
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(nodesFile_out));
 
             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
                     .withHeader("nodeID", "xcoord", "ycoord", "floor", "building", "nodeType", "longName", "shortName", "teamAssigned"));
