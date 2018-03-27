@@ -50,10 +50,12 @@ public class DatabaseHandlerTest {
 
         // delete old test database folder
         try {
-            Files.walk(Paths.get("temp/TestDB"))
-                    .sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
+            if(Files.exists(Paths.get("temp/TestDB"))){
+                Files.walk(Paths.get("temp/TestDB"))
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(File::delete);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -93,10 +95,12 @@ public class DatabaseHandlerTest {
     public void dummyTest2() {
         // delete old test database folder
         try {
-            Files.walk(Paths.get("temp/RealTest"))
-                    .sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
+            if(Files.exists(Paths.get("temp/RealTest"))) {
+                Files.walk(Paths.get("temp/RealTest"))
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(File::delete);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
