@@ -9,5 +9,6 @@ public class DerbyTest {
     public void dummyTest() {
         DatabaseHandler dbHandler = new DatabaseHandler();
         dbHandler.runSQLScript("init_node_db.sql");
+        dbHandler.readCSVIn("MapFNodes.csv");
     }
 }
