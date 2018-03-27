@@ -4,17 +4,17 @@ import java.sql.ResultSet;
 
 public interface DatabaseItem {
     // given access to the database, initialize the Table and load it from the csv
-    public void initRepository(DatabaseHandler dbHandler);
+    public void initDatabase(DatabaseHandler dbHandler);
 
     // returns the name of the table
     public String getTableName();
 
     // given the entire table from the DB, sync locally
-    public void syncLocal(ResultSet resultSet);
+    public void syncLocalFromDB(ResultSet resultSet);
 
     // given access to the database, sync on the database
-    public void syncDB(DatabaseHandler dbHandler);
+    public void syncDBFromLocal(DatabaseHandler dbHandler);
 
     // given access to the database, sync the local csv file
-    public void syncCSV(DatabaseHandler dbHandler);
+    public void syncCSVFromDB(DatabaseHandler dbHandler);
 }

@@ -10,11 +10,11 @@ public class DerbyTest {
     @Test
     public void dummyTest() throws SQLException {
         DatabaseHandler dbHandler = new DatabaseHandler();
-        dbHandler.runSQLScript("init_node_db.sql");
-        dbHandler.readCSVIn("MapFNodes.csv");
-        
-        ResultSet nodeSet = dbHandler.runQuery("SELECT * FROM NODE");
+        DummyGraph graph = new DummyGraph();
 
+        dbHandler.trackItem("graph", graph);
+
+        /*
         ResultSetMetaData rsmd = nodeSet.getMetaData();
         int columnsNumber = rsmd.getColumnCount();
         while (nodeSet.next()) {
@@ -25,5 +25,6 @@ public class DerbyTest {
             }
             System.out.println("");
         }
+        */
     }
 }
