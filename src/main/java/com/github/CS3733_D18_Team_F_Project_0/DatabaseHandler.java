@@ -67,7 +67,6 @@ public class DatabaseHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
 
