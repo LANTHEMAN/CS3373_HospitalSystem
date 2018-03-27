@@ -15,6 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TestNode {
 
+    /*
     public HashMap<String, Node> CSVParser() throws FileNotFoundException {
         Scanner nodeScanner = new Scanner(new File(getClass().getResource("MapFNodes.csv").getFile()));
         Scanner edgeScanner = new Scanner(new File(getClass().getResource("MapFEdges.csv").getFile()));
@@ -64,6 +65,8 @@ public class TestNode {
         assertEquals(path, actualPath);
     }
 
+    */
+
     @Test
     public void testAStar1() {
         Node nodeA = new Node(new Point3D(0, 0, 0));
@@ -71,17 +74,21 @@ public class TestNode {
         Node nodeC = new Node(new Point3D(4, 4, 4));
         Node nodeD = new Node(new Point3D(2, 2, 2));
 
-        nodeA.addNeighbor(nodeB).addNeighbor(nodeC);
-        nodeB.addNeighbor(nodeC).addNeighbor(nodeD);
-        nodeC.addNeighbor(nodeD);
+        Graph graph = new Graph();
+        graph.addNode(nodeA).addNode(nodeB).addNode(nodeC).addNode(nodeD);
+
+        graph.addEdge(nodeA, nodeB).addEdge(nodeA, nodeC);
+        graph.addEdge(nodeB, nodeC).addEdge(nodeB, nodeD);
+        graph.addEdge(nodeC, nodeD);
 
         ArrayList<Node> path = new ArrayList<>();
         path.add(nodeA);
         path.add(nodeB);
         path.add(nodeD);
 
-        assertEquals(path, nodeA.findPath(nodeD));
+        assertEquals(path, AStar.getPath(graph, nodeA, nodeD));
     }
+
 
     @Test
     public void testAStar2() {
@@ -98,16 +105,18 @@ public class TestNode {
 
         Node nodeF = new Node(new Point3D(2, -2, 0));
 
-        nodeS.addNeighbor(nodeA).addNeighbor(nodeQ);
+        Graph graph = new Graph();
+        graph.addNode(nodeS).addNode(nodeA).addNode(nodeB).addNode(nodeC).addNode(nodeD).addNode(nodeE)
+                .addNode(nodeQ).addNode(nodeR).addNode(nodeF);
 
-        nodeA.addNeighbor(nodeB);
-        nodeB.addNeighbor(nodeC);
-        nodeC.addNeighbor(nodeD);
-        nodeD.addNeighbor(nodeE);
-        nodeE.addNeighbor(nodeF);
-
-        nodeQ.addNeighbor(nodeR);
-        nodeR.addNeighbor(nodeF);
+        graph.addEdge(nodeS, nodeA).addEdge(nodeS, nodeQ)
+                .addEdge(nodeA, nodeB)
+                .addEdge(nodeB, nodeC)
+                .addEdge(nodeC, nodeD)
+                .addEdge(nodeD, nodeE)
+                .addEdge(nodeE, nodeF)
+                .addEdge(nodeQ, nodeR)
+                .addEdge(nodeR, nodeF);
 
         ArrayList<Node> path = new ArrayList<>();
         path.add(nodeS);
@@ -115,7 +124,7 @@ public class TestNode {
         path.add(nodeR);
         path.add(nodeF);
 
-        assertEquals(path, nodeS.findPath(nodeF));
+        assertEquals(path, AStar.getPath(graph, nodeS, nodeF));
     }
 
     @Test
@@ -133,16 +142,18 @@ public class TestNode {
 
         Node nodeF = new Node(new Point3D(2, -2, 0));
 
-        nodeS.addNeighbor(nodeA).addNeighbor(nodeQ);
+        Graph graph = new Graph();
+        graph.addNode(nodeS).addNode(nodeA).addNode(nodeB).addNode(nodeC).addNode(nodeD).addNode(nodeE)
+                .addNode(nodeQ).addNode(nodeR).addNode(nodeF);
 
-        nodeA.addNeighbor(nodeB);
-        nodeB.addNeighbor(nodeC);
-        nodeC.addNeighbor(nodeD);
-        nodeD.addNeighbor(nodeE);
-        nodeE.addNeighbor(nodeF);
-
-        nodeQ.addNeighbor(nodeR);
-        nodeR.addNeighbor(nodeF);
+        graph.addEdge(nodeS, nodeA).addEdge(nodeS, nodeQ)
+                .addEdge(nodeA, nodeB)
+                .addEdge(nodeB, nodeC)
+                .addEdge(nodeC, nodeD)
+                .addEdge(nodeD, nodeE)
+                .addEdge(nodeE, nodeF)
+                .addEdge(nodeQ, nodeR)
+                .addEdge(nodeR, nodeF);
 
         ArrayList<Node> path = new ArrayList<>();
         path.add(nodeS);
@@ -153,7 +164,7 @@ public class TestNode {
         path.add(nodeE);
         path.add(nodeF);
 
-        assertEquals(path, nodeS.findPath(nodeF));
+        assertEquals(path, AStar.getPath(graph, nodeS, nodeF));
 
         // now 'block' a specific path by adding additional weight
 
@@ -165,7 +176,7 @@ public class TestNode {
 
         nodeB.setAdditionalWeight(1);
 
-        assertEquals(path2, nodeS.findPath(nodeF));
+        assertEquals(path2, AStar.getPath(graph, nodeS, nodeF));
     }
 
 }
