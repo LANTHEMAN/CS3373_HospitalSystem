@@ -1,0 +1,3 @@
+nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned
+FHALL00201,2026.0,910.0,1,Tower,HALL,Lobby Shattuck Street,Hallway F00201
+FHALL00101,2055.0,910.0,1,Tower,HALL,Lower Pike Hallway Exit Lobby,Hallway F00101

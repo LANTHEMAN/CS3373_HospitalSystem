@@ -3,20 +3,26 @@ package com.github.CS3733_D18_Team_F_Project_0;
 import javafx.util.Pair;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class DummyGraph implements DatabaseItem {
 
-    private HashMap<String, Pair<DummyNode, LinkedList<DummyNode>>> nodes = new HashMap<>();
+    public HashMap<String, Pair<DummyNode, LinkedList<DummyNode>>> nodes = new HashMap<>();
 
     @Override
     public void initDatabase(DatabaseHandler dbHandler) {
@@ -26,7 +32,7 @@ public class DummyGraph implements DatabaseItem {
                 dbHandler.runSQLScript("init_node_db.sql");
 
                 // TODO make into a function
-                File csvFile = new File(getClass().getResource("TestNodes.csv").getFile());
+                File csvFile = new File("src/test/resources/TestNodes.csv");
                 CSVParser parser = CSVParser.parse(csvFile, StandardCharsets.UTF_8, CSVFormat.RFC4180);
 
                 for (CSVRecord record : parser) {
@@ -102,11 +108,55 @@ public class DummyGraph implements DatabaseItem {
 
     @Override
     public void syncDBFromLocal(DatabaseHandler dbHandler) {
+        // clear old table
+        dbHandler.runAction("TRUNCATE TABLE NODE");
+        dbHandler.runAction("TRUNCATE TABLE EDGE");
 
+        // update node table
+        for (Map.Entry<String, Pair<DummyNode, LinkedList<DummyNode>>> nodeData : nodes.entrySet()) {
+            DummyNode node = nodeData.getValue().getKey();
+            // update node
+            String cmd = "INSERT INTO NODE VALUES ("
+                    + "'" + node.id + "',"
+                    + node.x + ","
+                    + node.y + ","
+                    + "'" + node.floor + "',"
+                    + "'" + node.building + "',"
+                    + "'" + node.nodeType + "',"
+                    + "'" + node.longName + "',"
+                    + "'" + node.shortName + "'"
+                    + ")";
+            dbHandler.runAction(cmd);
+        }
+        //TODO update edge table
     }
 
     @Override
     public void syncCSVFromDB(DatabaseHandler dbHandler) {
+        try {
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get("src/test/resources/TestNodes.csv"));
 
+            CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
+                    .withHeader("nodeID", "xcoord", "ycoord", "floor", "building", "nodeType", "longName", "shortName", "teamAssigned"));
+
+            ResultSet nodeSet = dbHandler.runQuery("SELECT * FROM NODE");
+            while (nodeSet.next()) {
+                csvPrinter.printRecord(
+                        nodeSet.getString(1)
+                        , nodeSet.getString(2)
+                        , nodeSet.getString(3)
+                        , nodeSet.getString(4)
+                        , nodeSet.getString(5)
+                        , nodeSet.getString(6)
+                        , nodeSet.getString(7)
+                        , nodeSet.getString(8)
+                        // TODO save teamAssigned
+                        //, nodeSet.getString(9)
+                );
+            }
+            csvPrinter.flush();
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
     }
 }

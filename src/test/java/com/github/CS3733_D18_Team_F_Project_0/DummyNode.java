@@ -9,4 +9,5 @@ public class DummyNode {
     public String nodeType = "";
     public String longName = "";
     public String shortName = "";
+
 }
