@@ -14,6 +14,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.geometry.Rectangle2D;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import java.io.IOException;
 
 public class HomeController implements SwitchableController {
@@ -61,6 +64,18 @@ public class HomeController implements SwitchableController {
     @FXML
     void onDirectionsSwitch() {
         
+    }
+
+    @FXML
+    void onEnglish(){
+        switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("en", "US")),
+                Screens.Home);
+    }
+
+    @FXML
+    void onFrench(){
+        switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("fr", "FR")),
+                Screens.Home);
     }
 
     @FXML

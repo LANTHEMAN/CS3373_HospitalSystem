@@ -12,15 +12,27 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.io.IOException;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+
 public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
 
-
-
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         Group root = new Group();
         Scene scene = new Scene(root, 1280, 720);
         PaneSwitcher paneSwitcher = new PaneSwitcher(scene);
@@ -28,7 +40,7 @@ public class Main extends Application {
         // initial pane
         paneSwitcher.switchTo(Screens.Home);
 
-        primaryStage.setTitle("Brigham and Woman's Hospital");
+        primaryStage.setTitle("Brigham and Womens Hospital");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
