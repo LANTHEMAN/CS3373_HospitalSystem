@@ -98,7 +98,7 @@ public class HomeController implements SwitchableController {
 
     @FXML
     void onChinese(){
-        switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("zh", "CN")),
+        switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("zh", "CN"), new UTF8Control()),
                 Screens.Home);
     }
 

@@ -4,11 +4,29 @@ import javafx.beans.binding.StringBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 public class ObservableResourceFactory {
 
-    private ObjectProperty<ResourceBundle> resources = new SimpleObjectProperty<>();
+    private ObjectProperty<ResourceBundle> resources = new SimpleObjectProperty<>(new ResourceBundle() {
+        @Override
+        protected Object handleGetObject(String key) {
+            return null;
+        }
+
+        @Override
+        public Enumeration<String> getKeys() {
+            return null;
+        }
+    });
 
     public ObjectProperty<ResourceBundle> resourcesProperty() {
         return resources ;
