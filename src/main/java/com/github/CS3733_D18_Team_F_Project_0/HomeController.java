@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -14,6 +15,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.geometry.Rectangle2D;
 
+import java.awt.event.ActionEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -27,17 +29,27 @@ public class HomeController implements SwitchableController {
     private ImageView ivMap;
 
     @FXML
-    private ImageView ivZoomIn;
-
-    @FXML
-    private ImageView ivZoomOut;
-
-    @FXML
     public Button DirectionsSwitch;
+
+    @FXML
+    public ComboBox locations;
+
+    @FXML
+    private VBox vbxMenu;
+    @FXML
+    private VBox vbxLocation;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
+
+        locations.getItems().clear();
+        locations.getItems().addAll(
+                "All",
+                "Option 1",
+                "Option 2",
+                "Option 3");
+        locations.getSelectionModel().selectFirst();
     }
 
     @FXML
@@ -94,6 +106,29 @@ public class HomeController implements SwitchableController {
     void onZoomOut() {
         ivMap.setFitHeight(ivMap.getFitHeight() * 0.5);
         ivMap.setFitWidth(ivMap.getFitWidth() * 0.5);
+    }
+
+    /*@FXML
+    void onLocationSelection(ActionEvent e) {
+        if (e.getSource().equals(locations)){
+            String output = (String) locations.getValue();
+            System.out.println(output);
+
+            String output2 = (String) locations.getPromptText();
+            System.out.println(output2);
+        }
+    }*/
+
+    @FXML
+    void onFindLocation() {
+        vbxMenu.setVisible(false);
+        vbxLocation.setVisible(true);
+    }
+
+    @FXML
+    void onLocationCancel() {
+        vbxLocation.setVisible(false);
+        vbxMenu.setVisible(true);
     }
 
 }

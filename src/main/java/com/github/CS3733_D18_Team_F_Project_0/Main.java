@@ -45,7 +45,7 @@ public class Main extends Application {
         // initial pane
         paneSwitcher.switchTo(Screens.Home);
 
-        primaryStage.setTitle("Brigham and Womens Hospital");
+        primaryStage.setTitle("Brigham and Women's Hospital");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

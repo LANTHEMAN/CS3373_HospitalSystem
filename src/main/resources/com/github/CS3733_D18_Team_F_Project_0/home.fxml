@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.HomeController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.HomeController">
   <columnConstraints>
-    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="815.3156127929688" />
-    <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="400.0" minWidth="400.0" prefWidth="400.0" />
+    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="931.4708251953125" />
+    <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="400.0" minWidth="258.2379150390625" prefWidth="279.5291748046875" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
@@ -30,149 +31,167 @@
           <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="260.0" minHeight="0.0" prefHeight="37.33645248413086" vgrow="NEVER" />
-          <RowConstraints maxHeight="260.0" minHeight="0.0" prefHeight="65.89486694335938" vgrow="NEVER" />
-          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="498.0" vgrow="ALWAYS" />
-          <RowConstraints maxHeight="85.0" minHeight="0.0" prefHeight="85.0" valignment="BOTTOM" vgrow="NEVER" />
+            <RowConstraints maxHeight="260.0" minHeight="10.0" prefHeight="49.203369140625" vgrow="NEVER" />
+          <RowConstraints maxHeight="260.0" minHeight="0.0" prefHeight="48.662925720214844" vgrow="NEVER" />
+          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="632.3370742797852" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
-            <ImageView fitHeight="29.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" translateX="5.0" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
-               <image>
-                  <Image url="@default-user.png" />
-               </image>
-            </ImageView>
-            <Text fx:id="txtUser" strokeType="OUTSIDE" strokeWidth="0.0" text="Guest" translateX="35.0" x="35.0" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="15.0" />
-               </font></Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Brighams Womans Hospital: Second Floor" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Text fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="Brigham and Women's Hospital: Second Floor" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <font>
                   <Font size="22.0" />
                </font></Text>
-            <Button fx:id="loginSwitch" mnemonicParsing="false" onAction="#onLoginSwitch" text="%AdminLogin" textAlignment="CENTER" translateX="-20.0" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-            <ImageView fx:id="ivMap" fitHeight="481.0" fitWidth="704.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <image>
                   <Image url="@BW2D%20Maps/02_thesecondfloor.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="ivZoomIn" fitHeight="43.0" fitWidth="33.0" onMouseClicked="#onZoomIn" pickOnBounds="true" preserveRatio="true" translateX="30.0" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+            <ImageView fx:id="ivZoomIn" fitHeight="43.0" fitWidth="33.0" onMouseClicked="#onZoomIn" pickOnBounds="true" preserveRatio="true" translateX="-110.0" translateY="-30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                <image>
                   <Image url="@zoomIn.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="ivZoomOut" fitHeight="32.0" fitWidth="32.0" layoutX="775.0" layoutY="136.0" onMouseClicked="#onZoomOut" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+            <ImageView fx:id="ivZoomOut" fitHeight="32.0" fitWidth="32.0" layoutX="775.0" layoutY="136.0" onMouseClicked="#onZoomOut" pickOnBounds="true" preserveRatio="true" translateX="-80.0" translateY="-30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                <image>
                   <Image url="@zoomOut.png" />
                </image>
             </ImageView>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.rowIndex="3">
+            <MenuButton mnemonicParsing="false" text="Select Language" translateX="-180.0" GridPane.halignment="RIGHT">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#onEnglish" text="English" />
+                <MenuItem mnemonicParsing="false" onAction="#onFrench" text="French" />
+              </items>
+            </MenuButton>
+            <ImageView fitHeight="29.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@default-user.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="txtUser" fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="Guest" translateX="35.0" x="35.0" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></Text>
+            <Button fx:id="loginSwitch" mnemonicParsing="false" onAction="#onLoginSwitch" text="%AdminLogin" textAlignment="CENTER" translateX="-50.0" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </GridPane>
+      <GridPane style="-fx-background-color: E7F3F8;" GridPane.columnIndex="1">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="355.3438720703125" minHeight="10.0" prefHeight="82.86067199707031" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="688.0584297180176" minHeight="10.0" prefHeight="647.1393280029297" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="Menu" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <VBox fx:id="vbxMenu" alignment="CENTER" prefHeight="665.0" prefWidth="230.0" spacing="40.0" visible="false" GridPane.rowIndex="1">
                <children>
-                  <Button fx:id="DirectionsSwitch1" layoutX="202.0" layoutY="35.0" mnemonicParsing="false" onAction="#onDirectionsSwitch" text="%FindLocation">
+                  <Button fx:id="btnFindLocation" mnemonicParsing="false" onAction="#onFindLocation" prefHeight="90.0" prefWidth="140.0" text="%FindLocation" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="Helvetica Light" size="17.0" />
                      </font>
                   </Button>
-                  <Button fx:id="DirectionsSwitch" mnemonicParsing="false" onAction="#onDirectionsSwitch" text="%GetDirections">
+                  <Button fx:id="DirectionsSwitch" mnemonicParsing="false" onAction="#onDirectionsSwitch" prefHeight="90.0" prefWidth="140.0" text="%GetDirections" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="Helvetica Light" size="17.0" />
                      </font>
                   </Button>
-                  <Button fx:id="FloorSwitch" mnemonicParsing="false" onAction="#onFloorSwitch" prefHeight="32.0" prefWidth="141.0" text="%SwitchFloor">
-                      <font>
-                          <Font name="Helvetica Light" size="17.0" />
-                      </font>
+                  <Button fx:id="FloorSwitch" mnemonicParsing="false" onAction="#onFloorSwitch" prefHeight="90.0" prefWidth="140.0" text="%SwitchFloor" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="Helvetica Light" size="17.0" />
+                     </font>
                   </Button>
-                   <Button mnemonicParsing="false" text="%RequestService">
+                  <Button mnemonicParsing="false" prefHeight="90.0" prefWidth="140.0" text="%RequestService" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="Helvetica Light" size="17.0" />
                      </font>
                   </Button>
                </children>
-            </HBox>
-            <MenuButton mnemonicParsing="false" text="Select Language" GridPane.rowIndex="1">
-              <items>
-                <MenuItem mnemonicParsing="false" onAction = "#onEnglish" text="English" />
-                <MenuItem mnemonicParsing="false" onAction = "#onFrench" text="French" />
-              </items>
-            </MenuButton>
-         </children>
-      </GridPane>
-      <GridPane GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.valignment="TOP">
-        <columnConstraints>
-          <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="400.0" minWidth="400.0" prefWidth="400.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="385.9459228515625" minHeight="0.0" prefHeight="64.39920806884766" vgrow="NEVER" />
-          <RowConstraints maxHeight="682.0760955810547" minHeight="10.0" prefHeight="655.6007919311523" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Locations" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="20.0" />
-               </font></Text>
-            <Accordion GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-              <panes>
-                <TitledPane animated="false" text="%PatientRooms">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TitledPane>
-                <TitledPane animated="false" text="%ATM">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TitledPane>
-                  <TitledPane animated="false" text="%Bathroom">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TitledPane>
-                  <TitledPane animated="false" text="%EmergencyServices">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TitledPane>
-                  <TitledPane animated="false" text="%Pharmicuticals">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TitledPane>
-                  <TitledPane animated="false" text="%Security">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TitledPane>
-                  <TitledPane animated="false" text="%EarCare">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TitledPane>
-                  <TitledPane animated="false" text="%EyeCare">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TitledPane>
-                  <TitledPane animated="false" text="%Food">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TitledPane>
-                  <TitledPane animated="false" text="%ParkingLots">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TitledPane>
-                  <TitledPane animated="false" text="%MainEntrance">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TitledPane>
-              </panes>
-            </Accordion>
+            </VBox>
+            <VBox fx:id="vbxLocation" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Destination Type" />
+                  <ComboBox fx:id="locations" editable="true" prefWidth="150.0" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Availible Locations" />
+                  <ComboBox prefWidth="150.0" />
+                  <Accordion>
+                    <panes>
+                      <TitledPane animated="false" text="%PatientRooms">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TitledPane>
+                      <TitledPane animated="false" text="%ATM">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TitledPane>
+                        <TitledPane animated="false" text="%Bathroom">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TitledPane>
+                        <TitledPane animated="false" text="%EmergencyServices">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TitledPane>
+                        <TitledPane animated="false" text="%Pharmicuticals">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TitledPane>
+                        <TitledPane animated="false" text="%Security">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TitledPane>
+                        <TitledPane animated="false" text="%EarCare">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TitledPane>
+                        <TitledPane animated="false" text="%EyeCare">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TitledPane>
+                        <TitledPane animated="false" text="%Food">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TitledPane>
+                        <TitledPane animated="false" text="%ParkingLots">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TitledPane>
+                        <TitledPane animated="false" text="%MainEntrance">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TitledPane>
+                    </panes>
+                  </Accordion>
+                  <Button fx:id="btnLocationCancel" mnemonicParsing="false" onAction="#onLocationCancel" text="Cancel" />
+               </children></VBox>
+            <VBox layoutX="10.0" layoutY="92.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" visible="false">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <ComboBox prefWidth="150.0" />
+                  <TextField />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <ComboBox prefWidth="150.0" />
+                  <TextField />
+               </children>
+            </VBox>
          </children>
       </GridPane>
    </children>
