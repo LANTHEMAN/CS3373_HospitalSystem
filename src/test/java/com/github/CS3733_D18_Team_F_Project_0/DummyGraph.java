@@ -139,8 +139,10 @@ public class DummyGraph implements DatabaseItem {
     @Override
     public void syncCSVFromDB(DatabaseHandler dbHandler) {
         try {
-            FileWriter writer = new FileWriter(getClass().getResource(nodesFile_out).toURI().getPath());
-            CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
+            File csvFile = new File(getClass().getResource(nodesFile_out).toURI().getPath());
+            FileWriter fw = new FileWriter(csvFile, false);
+
+            CSVPrinter csvPrinter = new CSVPrinter(fw, CSVFormat.DEFAULT
                     .withHeader("nodeID", "xcoord", "ycoord", "floor", "building", "nodeType", "longName", "shortName", "teamAssigned"));
 
             ResultSet nodeSet = dbHandler.runQuery("SELECT * FROM NODE");
