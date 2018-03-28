@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -11,13 +12,14 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.HomeController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.HomeController">
   <columnConstraints>
     <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="931.4708251953125" />
     <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="400.0" minWidth="258.2379150390625" prefWidth="279.5291748046875" />
@@ -36,7 +38,7 @@
           <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="632.3370742797852" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
-            <Text fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="Brigham and Women's Hospital: Second Floor" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <Text fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="%BrighamTitleSecondFloor" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <font>
                   <Font size="22.0" />
                </font></Text>
@@ -55,14 +57,6 @@
                   <Image url="@zoomOut.png" />
                </image>
             </ImageView>
-            <MenuButton mnemonicParsing="false" text="%SelectLanguage" translateX="-180.0" GridPane.halignment="RIGHT">
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#onEnglish" text="English" />
-                <MenuItem mnemonicParsing="false" onAction="#onFrench" text="Français" />
-                  <MenuItem mnemonicParsing="false" onAction="#onSpanish" text="Espanol" />
-                  <MenuItem mnemonicParsing="false" onAction="#onChinese" text="中文" />
-              </items>
-            </MenuButton>
             <ImageView fitHeight="29.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                <image>
                   <Image url="@default-user.png" />
@@ -72,11 +66,29 @@
                <font>
                   <Font name="System Bold" size="15.0" />
                </font></Text>
-            <Button fx:id="loginSwitch" mnemonicParsing="false" onAction="#onLoginSwitch" text="%AdminLogin" textAlignment="CENTER" translateX="-50.0" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
+            <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="49.0" prefWidth="925.0" snapToPixel="false" spacing="30.0">
+               <children>
+                  <MenuButton mnemonicParsing="false" text="%SelectLanguage">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#onEnglish" text="English" />
+                      <MenuItem mnemonicParsing="false" onAction="#onFrench" text="Français" />
+                        <MenuItem mnemonicParsing="false" onAction="#onSpanish" text="Espanol" />
+                        <MenuItem mnemonicParsing="false" onAction="#onChinese" text="中文" />
+                    </items>
+                     <HBox.margin>
+                        <Insets top="12.5" />
+                     </HBox.margin>
+                  </MenuButton>
+                  <Button fx:id="loginSwitch" mnemonicParsing="false" onAction="#onLoginSwitch" prefWidth="102.0" text="%AdminLogin" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </GridPane>
       <GridPane style="-fx-background-color: E7F3F8;" GridPane.columnIndex="1">
