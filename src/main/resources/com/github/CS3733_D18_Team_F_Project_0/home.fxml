@@ -55,10 +55,12 @@
                   <Image url="@zoomOut.png" />
                </image>
             </ImageView>
-            <MenuButton mnemonicParsing="false" text="Select Language" translateX="-180.0" GridPane.halignment="RIGHT">
+            <MenuButton mnemonicParsing="false" text="%SelectLanguage" translateX="-180.0" GridPane.halignment="RIGHT">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#onEnglish" text="English" />
-                <MenuItem mnemonicParsing="false" onAction="#onFrench" text="French" />
+                <MenuItem mnemonicParsing="false" onAction="#onFrench" text="Français" />
+                  <MenuItem mnemonicParsing="false" onAction="#onSpanish" text="Espanol" />
+                  <MenuItem mnemonicParsing="false" onAction="#onChinese" text="中文" />
               </items>
             </MenuButton>
             <ImageView fitHeight="29.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
@@ -66,7 +68,7 @@
                   <Image url="@default-user.png" />
                </image>
             </ImageView>
-            <Text fx:id="txtUser" fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="Guest" translateX="35.0" x="35.0" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+            <Text fx:id="txtUser" fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="%Guest" translateX="35.0" x="35.0" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font></Text>
@@ -86,7 +88,7 @@
           <RowConstraints maxHeight="688.0584297180176" minHeight="10.0" prefHeight="647.1393280029297" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Text fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="Menu" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Text fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="%Menu" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>
@@ -117,9 +119,9 @@
             </VBox>
             <VBox fx:id="vbxLocation" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Destination Type" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%DestinationType" />
                   <ComboBox fx:id="locations" editable="true" prefWidth="150.0" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Availible Locations" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%AvailableLocations" />
                   <ComboBox prefWidth="150.0" />
                   <Accordion>
                     <panes>
@@ -180,7 +182,7 @@
                         </TitledPane>
                     </panes>
                   </Accordion>
-                  <Button fx:id="btnLocationCancel" mnemonicParsing="false" onAction="#onLocationCancel" text="Cancel" />
+                  <Button fx:id="btnLocationCancel" mnemonicParsing="false" onAction="#onLocationCancel" text="%Cancel" />
                </children></VBox>
             <VBox layoutX="10.0" layoutY="92.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" visible="false">
                <children>

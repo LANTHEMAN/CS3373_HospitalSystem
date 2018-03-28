@@ -91,6 +91,18 @@ public class HomeController implements SwitchableController {
     }
 
     @FXML
+    void onSpanish(){
+        switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("es", "ES")),
+                Screens.Home);
+    }
+
+    @FXML
+    void onChinese(){
+        switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("zh", "CN")),
+                Screens.Home);
+    }
+
+    @FXML
     void onFloorSwitch() {
         switcher.switchTo(Screens.Floor);
     }
