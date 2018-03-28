@@ -6,14 +6,11 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -24,8 +21,7 @@ import java.util.Map;
 public class DummyGraph implements DatabaseItem {
 
     public HashMap<String, Pair<DummyNode, LinkedList<DummyNode>>> nodes = new HashMap<>();
-    public String nodesFile_in  = "TestNodes.csv";
-    public String nodesFile_out = "TestNodes.csv";
+    public String nodesFile = "TestNodes.csv";
     public String edgeFile_in   = "TestEdges.csv";
     public String edgeFile_out   = "TestEdges.csv";
 
@@ -37,7 +33,7 @@ public class DummyGraph implements DatabaseItem {
                 dbHandler.runSQLScript("init_node_db.sql");
 
                 // TODO make into a function
-                File csvFile = new File(getClass().getResource(nodesFile_in).toURI().getPath());
+                File csvFile = new File(getClass().getResource(nodesFile).toURI().getPath());
                 CSVParser parser = CSVParser.parse(csvFile, StandardCharsets.UTF_8, CSVFormat.RFC4180);
 
                 for (CSVRecord record : parser) {
@@ -139,8 +135,8 @@ public class DummyGraph implements DatabaseItem {
     @Override
     public void syncCSVFromDB(DatabaseHandler dbHandler) {
         try {
-            File csvFile = new File(getClass().getResource(nodesFile_out).toURI().getPath());
-            FileWriter fw = new FileWriter(csvFile, false);
+            new File("temp/test-output").mkdirs();
+            FileWriter fw = new FileWriter("temp/test-output/" + nodesFile, false);
 
             CSVPrinter csvPrinter = new CSVPrinter(fw, CSVFormat.DEFAULT
                     .withHeader("nodeID", "xcoord", "ycoord", "floor", "building", "nodeType", "longName", "shortName", "teamAssigned"));
@@ -161,7 +157,7 @@ public class DummyGraph implements DatabaseItem {
                 );
             }
             csvPrinter.flush();
-        } catch (SQLException | IOException | URISyntaxException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }

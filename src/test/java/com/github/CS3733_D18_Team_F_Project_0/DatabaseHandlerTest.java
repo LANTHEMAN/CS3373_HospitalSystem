@@ -4,10 +4,7 @@ import javafx.util.Pair;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,21 +33,6 @@ public class DatabaseHandlerTest {
 
     @Test
     public void dummyTest() {
-        // reset csv test file
-        try {
-            String csvFileContents = "nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned\n" +
-                    "FHALL00101,2055,910,1,Tower,HALL,Lower Pike Hallway Exit Lobby,Hallway F00101,Team F\n";
-
-            File csvFile = new File(getClass().getResource("TestNodes.csv").toURI().getPath());
-            FileWriter fw = new FileWriter(csvFile, false);
-            fw.write(csvFileContents);
-            fw.flush();
-            fw.close();
-
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-
         // delete old test database folder
         try {
             if(Files.exists(Paths.get("temp/TestDB"))){
@@ -110,8 +92,7 @@ public class DatabaseHandlerTest {
 
         DatabaseHandler dbHandler = new DatabaseHandler("temp/RealTest");
         DummyGraph graph = new DummyGraph();
-        graph.nodesFile_in  = "MapBnodes.csv";
-        graph.nodesFile_out =  "NEWMapBnodes.csv";
+        graph.nodesFile = "MapBnodes.csv";
         dbHandler.trackAndInitItem(graph);
 
         assertEquals(70, rowCount(dbHandler, "NODE"));
