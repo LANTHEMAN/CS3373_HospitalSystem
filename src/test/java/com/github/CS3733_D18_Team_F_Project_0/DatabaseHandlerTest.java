@@ -4,6 +4,7 @@ import javafx.util.Pair;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -40,10 +41,11 @@ public class DatabaseHandlerTest {
             String csvFileContents = "nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned\n" +
                     "FHALL00101,2055,910,1,Tower,HALL,Lower Pike Hallway Exit Lobby,Hallway F00101,Team F\n";
 
-            File csvFile = Paths.get(getClass().getResource("TestNodes.csv").toURI()).toFile();
+            File csvFile = new File(getClass().getResource("TestNodes.csv").toURI().getPath());
             FileWriter fw = new FileWriter(csvFile, false);
             fw.write(csvFileContents);
             fw.flush();
+            fw.close();
 
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();

@@ -8,6 +8,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -23,10 +24,10 @@ import java.util.Map;
 public class DummyGraph implements DatabaseItem {
 
     public HashMap<String, Pair<DummyNode, LinkedList<DummyNode>>> nodes = new HashMap<>();
-    public String nodesFile_in = "TestNodes.csv";
-    public String nodesFile_out = nodesFile_in;
-    public String edgeFile_in  =  "TestEdges.csv";
-    public String edgeFile_out = edgeFile_in;
+    public String nodesFile_in  = "TestNodes.csv";
+    public String nodesFile_out = "TestNodes.csv";
+    public String edgeFile_in   = "TestEdges.csv";
+    public String edgeFile_out   = "TestEdges.csv";
 
     @Override
     public void initDatabase(DatabaseHandler dbHandler) {
@@ -36,8 +37,7 @@ public class DummyGraph implements DatabaseItem {
                 dbHandler.runSQLScript("init_node_db.sql");
 
                 // TODO make into a function
-                String filePath =  getClass().getResource(nodesFile_in).getFile();
-                File csvFile = new File(filePath);
+                File csvFile = new File(getClass().getResource(nodesFile_in).toURI().getPath());
                 CSVParser parser = CSVParser.parse(csvFile, StandardCharsets.UTF_8, CSVFormat.RFC4180);
 
                 for (CSVRecord record : parser) {
@@ -72,7 +72,7 @@ public class DummyGraph implements DatabaseItem {
                 dbHandler.runSQLScript("init_edge_db.sql");
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
 
@@ -139,9 +139,7 @@ public class DummyGraph implements DatabaseItem {
     @Override
     public void syncCSVFromDB(DatabaseHandler dbHandler) {
         try {
-            String absLoc = Paths.get(getClass().getResource(nodesFile_out).toURI()).toFile().getAbsolutePath();
-            BufferedWriter writer = Files.newBufferedWriter(Paths.get(absLoc));
-
+            FileWriter writer = new FileWriter(getClass().getResource(nodesFile_out).toURI().getPath());
             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
                     .withHeader("nodeID", "xcoord", "ycoord", "floor", "building", "nodeType", "longName", "shortName", "teamAssigned"));
 
