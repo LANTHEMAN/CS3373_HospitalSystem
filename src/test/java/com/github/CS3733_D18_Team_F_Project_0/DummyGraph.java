@@ -36,7 +36,8 @@ public class DummyGraph implements DatabaseItem {
                 dbHandler.runSQLScript("init_node_db.sql");
 
                 // TODO make into a function
-                File csvFile = Paths.get(getClass().getResource(nodesFile_in).toURI()).toFile();
+                String filePath =  getClass().getResource(nodesFile_in).getFile();
+                File csvFile = new File(filePath);
                 CSVParser parser = CSVParser.parse(csvFile, StandardCharsets.UTF_8, CSVFormat.RFC4180);
 
                 for (CSVRecord record : parser) {
@@ -71,7 +72,7 @@ public class DummyGraph implements DatabaseItem {
                 dbHandler.runSQLScript("init_edge_db.sql");
             }
 
-        } catch (SQLException | IOException | URISyntaxException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
 
