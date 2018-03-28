@@ -3,9 +3,5 @@ language: java
 before_install:
 - chmod +x gradlew
 
-script:
-  - pwd
-  - gradlew check
-
 jdk:
   - oraclejdk8 

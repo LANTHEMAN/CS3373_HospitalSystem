@@ -108,8 +108,8 @@ public class DatabaseHandlerTest {
 
         DatabaseHandler dbHandler = new DatabaseHandler("temp/RealTest");
         DummyGraph graph = new DummyGraph();
-        graph.nodesFile_in  = "MapBNodes.csv";
-        graph.nodesFile_out =  "NEWMapBNodes.csv";
+        graph.nodesFile_in  = "MapBnodes.csv";
+        graph.nodesFile_out =  "NEWMapBnodes.csv";
         dbHandler.trackAndInitItem(graph);
 
         assertEquals(70, rowCount(dbHandler, "NODE"));
