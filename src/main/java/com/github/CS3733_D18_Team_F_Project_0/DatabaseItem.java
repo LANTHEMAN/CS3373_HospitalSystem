@@ -5,17 +5,17 @@ import java.util.LinkedList;
 
 public interface DatabaseItem {
     // given access to the database, initialize the Table and load it from the csv
-    public void initDatabase(DatabaseHandler dbHandler);
+    void initDatabase(DatabaseHandler dbHandler);
 
     // returns the name of the table
-    public LinkedList<String> getTableNames();
+    LinkedList<String> getTableNames();
 
     // given the entire table from the DB, sync locally
-    public void syncLocalFromDB(String tableName, ResultSet resultSet);
+    void syncLocalFromDB(String tableName, ResultSet resultSet);
 
     // given access to the database, sync on the database
-    public void syncDBFromLocal(DatabaseHandler dbHandler);
+    void syncDBFromLocal(DatabaseHandler dbHandler);
 
     // given access to the database, sync the local csv file
-    public void syncCSVFromDB(DatabaseHandler dbHandler);
+    void syncCSVFromDB(DatabaseHandler dbHandler);
 }

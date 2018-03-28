@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,12 +40,12 @@ public class DatabaseHandlerTest {
             String csvFileContents = "nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned\n" +
                     "FHALL00101,2055,910,1,Tower,HALL,Lower Pike Hallway Exit Lobby,Hallway F00101,Team F\n";
 
-            File csvFile = new File("src/test/resources/com/github/CS3733_D18_Team_F_Project_0/TestNodes.csv");
+            File csvFile = Paths.get(getClass().getResource("TestNodes.csv").toURI()).toFile();
             FileWriter fw = new FileWriter(csvFile, false);
             fw.write(csvFileContents);
             fw.flush();
 
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
 
@@ -107,8 +108,8 @@ public class DatabaseHandlerTest {
 
         DatabaseHandler dbHandler = new DatabaseHandler("temp/RealTest");
         DummyGraph graph = new DummyGraph();
-        graph.nodesFile_in  = "src/main/resources/com/github/CS3733_D18_Team_F_Project_0/MapBNodes.csv";
-        graph.nodesFile_out = "src/test/resources/com/github/CS3733_D18_Team_F_Project_0/NEWMapBNodes.csv";
+        graph.nodesFile_in  = "MapBNodes.csv";
+        graph.nodesFile_out =  "NEWMapBNodes.csv";
         dbHandler.trackAndInitItem(graph);
 
         assertEquals(70, rowCount(dbHandler, "NODE"));
