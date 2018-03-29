@@ -1,4 +1,4 @@
-package com.github.CS3733_D18_Team_F_Project_0.Graph;
+package com.github.CS3733_D18_Team_F_Project_0.graph;
 
 import java.util.*;
 

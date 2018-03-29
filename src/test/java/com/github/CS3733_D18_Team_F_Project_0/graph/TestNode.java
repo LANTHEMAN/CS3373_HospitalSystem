@@ -1,8 +1,8 @@
 package com.github.CS3733_D18_Team_F_Project_0;
 
-import com.github.CS3733_D18_Team_F_Project_0.Graph.AStar;
-import com.github.CS3733_D18_Team_F_Project_0.Graph.Graph;
-import com.github.CS3733_D18_Team_F_Project_0.Graph.Node;
+import com.github.CS3733_D18_Team_F_Project_0.graph.AStar;
+import com.github.CS3733_D18_Team_F_Project_0.graph.Graph;
+import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
 import javafx.geometry.Point3D;
 import org.junit.Test;
 
