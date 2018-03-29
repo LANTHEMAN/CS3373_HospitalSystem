@@ -1,8 +1,6 @@
-package com.github.CS3733_D18_Team_F_Project_0;
+package com.github.CS3733_D18_Team_F_Project_0.Graph;
 
 import javafx.geometry.Point3D;
-
-import java.util.*;
 
 public class Node {
     // actual position

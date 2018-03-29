@@ -1,13 +1,10 @@
 package com.github.CS3733_D18_Team_F_Project_0;
 
+import com.github.CS3733_D18_Team_F_Project_0.Graph.AStar;
+import com.github.CS3733_D18_Team_F_Project_0.Graph.Graph;
+import com.github.CS3733_D18_Team_F_Project_0.Graph.Node;
 import javafx.geometry.Point3D;
 import org.junit.Test;
-
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-import java.util.HashMap;
-import java.io.File;
-import java.nio.file.Path;
 
 import java.util.ArrayList;
 
