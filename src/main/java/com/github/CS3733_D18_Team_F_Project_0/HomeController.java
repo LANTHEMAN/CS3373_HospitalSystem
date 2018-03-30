@@ -47,6 +47,7 @@ public class HomeController implements SwitchableController {
         switcher.popup(Screens.Login);
     }
 
+
     @FXML
     void onNavigationSwitch() {
         switcher.switchTo(Screens.Example);
@@ -54,7 +55,7 @@ public class HomeController implements SwitchableController {
 
     @FXML
     void onDirectionsSwitch() {
-        
+
     }
 
     @FXML
@@ -120,6 +121,11 @@ public class HomeController implements SwitchableController {
     void onLocationCancel() {
         vbxLocation.setVisible(false);
         vbxMenu.setVisible(true);
+    }
+
+    @FXML
+    void onServiceRequest(){
+        switcher.switchTo(Screens.ServiceRequest);
     }
 
 }
