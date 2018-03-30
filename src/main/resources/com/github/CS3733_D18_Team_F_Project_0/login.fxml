@@ -7,7 +7,6 @@
 <?import javafx.scene.text.Text?>
 <?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="365.0" prefWidth="467.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.LoginController">
    <children>
       <Text layoutX="108.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brigham and Womens Hospital">
@@ -22,9 +21,9 @@
       </Text>
       <Text layoutX="108.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%Username" />
       <Text layoutX="108.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%Password" />
-      <Button fx:id="loginSwitch" layoutX="129.0" layoutY="287.0" mnemonicParsing="false" onAction="#onLoginSwitch" prefHeight="37.0" prefWidth="76.0" text="%Login" />
+      <Button fx:id="loginClose" layoutX="129.0" layoutY="287.0" mnemonicParsing="false" onAction="#onLoginClose" prefHeight="37.0" prefWidth="76.0" text="%Login" />
       <TextField layoutX="206.0" layoutY="152.0" />
       <TextField layoutX="205.0" layoutY="202.0" />
-      <Button fx:id="cancelSwitch" layoutX="261.0" layoutY="287.0" mnemonicParsing="false" onAction="#onCancelSwitch" prefHeight="37.0" prefWidth="76.0" text="%Cancel" />
+      <Button fx:id="cancelClose" layoutX="261.0" layoutY="287.0" mnemonicParsing="false" onAction="#onCancelClose" prefHeight="37.0" prefWidth="76.0" text="%Cancel" />
    </children>
 </AnchorPane>
