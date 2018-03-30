@@ -9,58 +9,6 @@ import static org.junit.Assert.assertEquals;
 
 public class TestNode {
 
-    /*
-    public HashMap<String, Node> CSVParser() throws FileNotFoundException {
-        Scanner nodeScanner = new Scanner(new File(getClass().getResource("MapFNodes.csv").getFile()));
-        Scanner edgeScanner = new Scanner(new File(getClass().getResource("MapFEdges.csv").getFile()));
-
-        // graph to hold all the nodes and their identifiers
-        HashMap<String, Node> graph = new HashMap<>();
-
-        // put all the nodes into the graph
-        while (nodeScanner.hasNextLine()) {
-            String line = nodeScanner.nextLine();
-            String[] fields = line.split(",");
-
-            if (fields.length == 9 && fields[8].equals("Team F")) {
-                Node newNode = new Node(new Point3D(Integer.parseInt(fields[1]), Integer.parseInt(fields[2]),
-                        Integer.parseInt(fields[3])));
-                graph.put(fields[0], newNode);
-            }
-        }
-
-        // create all the neighbors for the nodes in the graph
-        while (edgeScanner.hasNextLine()) {
-            String line = edgeScanner.nextLine();
-            String[] fields = line.split(",");
-
-            if (fields.length == 3 && graph.containsKey(fields[1]) && graph.containsKey(fields[2])) {
-                Node firstNode = graph.get(fields[1]);
-                Node secondNode = graph.get(fields[2]);
-
-                firstNode.addNeighbor(secondNode);
-            }
-        }
-
-        return graph;
-    }
-
-    @Test
-    public void BrighamTestSmall() throws FileNotFoundException {
-        HashMap<String, Node> graph = CSVParser();
-
-        ArrayList<Node> path = graph.get("FHALL00701").findPath(graph.get("FHALL03201"));
-
-        ArrayList<Node> actualPath = new ArrayList<>();
-        actualPath.add(graph.get("FHALL00701"));
-        actualPath.add(graph.get("FHALL01801"));
-        actualPath.add(graph.get("FHALL03201"));
-
-        assertEquals(path, actualPath);
-    }
-
-    */
-
     @Test
     public void testAStar1() {
         Node nodeA = new Node(new Point3D(0, 0, 0));

@@ -4,8 +4,15 @@ import java.util.*;
 
 public class AStar {
 
-    // computes the shortest path between 2 nodes using A*
-    static ArrayList<Node> getPath(Graph graph, Node source, Node destination) {
+    /**
+     * Static function to determine the best route from one node to another
+     * given a graph
+     * @param graph The graph to find path on
+     * @param source The source node in the graph
+     * @param destination The destination node in the graph
+     * @return An array of Nodes that represent a path through the graph
+     */
+    public static ArrayList<Node> getPath(Graph graph, Node source, Node destination) {
         // see if the destination exists or if src equals dst
         if (destination == null || source == null) {
             throw new AssertionError();
@@ -82,13 +89,19 @@ public class AStar {
     }
 
     // wrapper class for Node that allows priority queue comparisons
-    static private class AStarNode implements Comparable<AStarNode> {
+    private static class AStarNode implements Comparable<AStarNode> {
         private Node node;
         private Node destination;
         private double distanceTraveled;
         private HashMap<Node, AStarNode> knownNodes;
 
-        // only call this with a node that exists in reachedNodes
+        /**
+         * A specific version of a node that stores values specific to this path
+         * @param node The current node to base the AStarNode off of
+         * @param destination The destination node in the graph
+         * @param distanceTraveled The distance traveled up until this node
+         * @param knownNodes The known nodes along this path so far
+         */
         private AStarNode(Node node, Node destination, double distanceTraveled
                 , HashMap<Node, AStarNode> knownNodes) {
             this.node = node;
@@ -97,12 +110,20 @@ public class AStar {
             this.knownNodes = knownNodes;
         }
 
-        // 3d displacement between 2 nodes
+        /**
+         * Find cartesian distance between two nodes
+         * @param node The node to find the distance to
+         * @return The distance from this node to the destination node
+         */
         private double displacementTo(AStarNode node) {
             return this.node.displacementTo(node.node);
         }
 
-        // returns all neighboring nodes
+        /**
+         * Get all the neighbors of this node
+         * @param graph The graph that contains this node
+         * @return A LinkedList of all the neighbor nodes
+         */
         private LinkedList<AStarNode> getNeighbors(Graph graph) {
             LinkedList<AStarNode> neighbors = new LinkedList<>();
             for (Node neighbor : graph.getNeighbors(this.node)) {
@@ -117,25 +138,43 @@ public class AStar {
             return neighbors;
         }
 
+        /**
+         * Get this node
+         * @return This node
+         */
         private Node getNode() {
             return node;
         }
 
+        /**
+         * Set the distance the distance traveled for this node so far
+         * @param distanceTraveled The new distance traveled
+         */
         private void setDistanceTraveled(double distanceTraveled) {
             this.distanceTraveled = distanceTraveled;
         }
 
-        // get the cost to this point from the start
+        /**
+         * Get the G score for AStar algorithm
+         * @return The G score
+         */
         private double getGScore() {
             return distanceTraveled + node.getAdditionalWeight();
         }
 
-        // cost to get to this node + heuristic
+        /**
+         * Get the F score for AStar algorithm
+         * @return The F Score
+         */
         private double getFScore() {
             return distanceTraveled + this.node.displacementTo(this.destination) + node.getAdditionalWeight();
         }
 
-        // used for priority queue comparisons
+        /**
+         * Compare two nodes for priority queue purposes
+         * @param other The other node to compare
+         * @return Negative if this node is "less", positive otherwise
+         */
         @Override
         public int compareTo(AStarNode other) {
             return getFScore() < other.getFScore() ? -1 : 1;

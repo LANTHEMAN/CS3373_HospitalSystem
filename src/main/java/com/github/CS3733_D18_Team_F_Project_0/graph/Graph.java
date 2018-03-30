@@ -8,22 +8,35 @@ import java.util.HashSet;
 
 // TODO this class needs exceptions for all guards
 public class Graph {
-
     private HashMap<Node, HashSet<Node>> adjacencyList;
-    private HashSet<Edge> edges = new HashSet<>();
+    private HashSet<Edge> edges;
 
+    /**
+     * Create a new graph of the hospital
+     */
     public Graph() {
         this.adjacencyList = new HashMap<>();
+        this.edges = new HashSet<>();
     }
 
+    /**
+     * Add a node to this graph
+     * @param node The node to add
+     * @return The graph with the new node
+     */
     public Graph addNode(Node node) {
         adjacencyList.put(node, new HashSet<>());
         return this;
     }
 
-    public void removeNode(Node node) {
+    /**
+     * Remove a node from the graph it it exists
+     * @param node The node to remove
+     * @return The graph if successful, null if not
+     */
+    public Graph removeNode(Node node) {
         if (!adjacencyList.containsKey(node)) {
-            return;
+            return null;
         }
         // remove all edges containing node
         HashSet<Node> adjacentNodes = adjacencyList.get(node);
@@ -32,8 +45,17 @@ public class Graph {
         }
         // remove the node
         adjacencyList.remove(node);
+
+        return this;
     }
 
+    /**
+     * Add an edge between two nodes
+     * @param node1 The first node
+     * @param node2 The second node
+     * @param edgeID The string ID of this new edge
+     * @return The graph with the new edge
+     */
     public Graph addEdge(Node node1, Node node2, String edgeID) {
         // make sure both nodes exist
         if (!adjacencyList.containsKey(node1) || !adjacencyList.containsKey(node2)) {
@@ -53,10 +75,16 @@ public class Graph {
         return this;
     }
 
-    public void removeEdge(Node node1, Node node2) {
+    /**
+     * Remove an edge from this graph
+     * @param node1 The first node that this edge is connected to
+     * @param node2 The second node that this edge is connected to
+     * @return The graph that has been modified, null if not removed
+     */
+    public Graph removeEdge(Node node1, Node node2) {
         // make sure both nodes exist
         if (!adjacencyList.containsKey(node1) || !adjacencyList.containsKey(node2)) {
-            return;
+            return null;
         }
         adjacencyList.get(node1).remove(node2);
         adjacencyList.get(node2).remove(node1);
@@ -68,8 +96,14 @@ public class Graph {
                 break;
             }
         }
+        return this;
     }
 
+    /**
+     * Return the neighbors to a specific node in this graph
+     * @param node The node to find the neighbors of
+     * @return A set of nodes
+     */
     public HashSet<Node> getNeighbors(Node node) {
         if (!adjacencyList.containsKey(node)) {
             throw new AssertionError();
@@ -77,8 +111,12 @@ public class Graph {
         return adjacencyList.get(node);
     }
 
-    public LinkedList<Node> getNodes() {
-        LinkedList<Node> nodes = new LinkedList<>();
+    /**
+     * Get a set off all the nodes in the graph
+     * @return The set of all nodes
+     */
+    public HashSet<Node> getNodes() {
+        HashSet<Node> nodes = new HashSet<>();
         adjacencyList.forEach((key, value) -> {
             nodes.add(key);
         });
