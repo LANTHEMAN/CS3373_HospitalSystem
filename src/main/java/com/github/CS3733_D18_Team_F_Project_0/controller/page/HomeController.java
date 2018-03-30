@@ -103,7 +103,6 @@ public class HomeController implements SwitchableController {
         if (e.getSource().equals(locations)){
             String output = (String) locations.getValue();
             System.out.println(output);
-
             String output2 = (String) locations.getPromptText();
             System.out.println(output2);
         }
@@ -124,6 +123,15 @@ public class HomeController implements SwitchableController {
     @FXML
     void onServiceRequest() {
         switcher.switchTo(Screens.ServiceRequest);
+    }
+
+    @FXML
+    void onAddLocationConfirm(){
+
+    }
+    @FXML
+    void onAddLocationCancel(){
+
     }
 
 }
