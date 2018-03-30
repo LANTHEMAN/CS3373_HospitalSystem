@@ -2,7 +2,7 @@ package com.github.CS3733_D18_Team_F_Project_0;
 
 import javafx.fxml.FXML;
 
-public class ReligousServicesController implements SwitchableController {
+public class ReligiousServicesController implements SwitchableController {
     private PaneSwitcher switcher;
 
 

@@ -7,7 +7,7 @@ public class Screens {
     public static final Screen Login = new Screen("login.fxml", LoginController.class);
     public static final Screen Floor = new Screen("selectFloor.fxml", FloorController.class);
     public static final Screen ServiceRequest = new Screen("serviceRequest.fxml", ServiceRequestController.class);
-    public static final Screen ReligiousServices = new Screen("religiousServices.fxml", ReligousServicesController.class);
+    public static final Screen ReligiousServices = new Screen("religiousServices.fxml", ReligiousServicesController.class);
     public static final Screen LanguageInterpretor = new Screen("languageInterpretor.fxml", LanguageInterpreterController.class);
 
 

@@ -15,10 +15,7 @@ public class LanguageInterpreterController implements SwitchableController{
         switcher.switchTo(Screens.Login);
     }
 
-    @FXML
-    void onReligousButtonSwitch(){
-        switcher.switchTo(Screens.ReligousSercices);
-    }
+
 }
 
 
