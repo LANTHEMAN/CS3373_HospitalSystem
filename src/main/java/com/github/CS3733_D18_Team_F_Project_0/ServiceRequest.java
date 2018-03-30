@@ -8,6 +8,8 @@ public abstract class ServiceRequest {
     private Node destination;
     private String description;
     private String status;
+    private int priority;
+
 
     public ServiceRequest(String type, Node destination, String description) {
         this.type = type;
@@ -36,6 +38,10 @@ public abstract class ServiceRequest {
     public String getStatus() {
         return status;
     }
+
+    public int getPriority() { return priority; }
+
+    public void setPriority(int priority) { this.priority = priority;}
 
     public void setStatus(String status) {
         this.status = status;

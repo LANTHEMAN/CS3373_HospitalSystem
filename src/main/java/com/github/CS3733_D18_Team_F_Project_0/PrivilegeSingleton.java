@@ -1,5 +1,7 @@
 package com.github.CS3733_D18_Team_F_Project_0;
 
+import javax.xml.crypto.Data;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class PrivilegeSingleton {
@@ -24,23 +26,36 @@ public class PrivilegeSingleton {
         return uniqueID;
     }
 
-    private void update(ServiceRequest s){
+    private void updateStatus(ServiceRequest s){
+        String sql = "UPDATE ServiceRequest SET status = " + s.getStatus() + " WHERE id = " + s.getId() + ";";
+        DatabaseHandler dbHandler = new DatabaseHandler();
+        dbHandler.runQuery(sql);
+
+    }
+
+    public void sendServiceRequest(ServiceRequest s){
+        String sql = "INSERT ALL into ServiceRequest VALUES (" + getID() + ", " + s.getType() + ", " + s.getDestination().getNodeID() + ", " + s.getDescription() + ", " + s.getPriority() + ");";
+        DatabaseHandler dbHandler = new DatabaseHandler();
+        dbHandler.runQuery(sql);
 
     }
 
     public ServiceRequest setComplete(ServiceRequest s){
         s.setStatus("Request Complete");
-        this.update(s);
+        this.updateStatus(s);
         return s;
     }
 
     public ServiceRequest setInProgress(ServiceRequest s){
         s.setStatus("In Progress");
-        this.update(s);
+        this.updateStatus(s);
         return s;
     }
 
-    public void getRequests(){
+    public ResultSet getRequests(){
+        String sql = "SELECT * FROM ServiceRequest;";
+        DatabaseHandler dbHandler = new DatabaseHandler();
+        return dbHandler.runQuery(sql);
     }
 
 
