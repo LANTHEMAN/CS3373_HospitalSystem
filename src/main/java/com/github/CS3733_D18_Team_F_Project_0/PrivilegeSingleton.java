@@ -25,7 +25,7 @@ public class PrivilegeSingleton {
     }
 
     private void update(ServiceRequest s){
-        return;
+
     }
 
     public ServiceRequest setComplete(ServiceRequest s){
@@ -38,6 +38,9 @@ public class PrivilegeSingleton {
         s.setStatus("In Progress");
         this.update(s);
         return s;
+    }
+
+    public void getRequests(){
     }
 
 

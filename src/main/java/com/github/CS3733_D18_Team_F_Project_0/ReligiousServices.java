@@ -6,8 +6,7 @@ public class ReligiousServices extends ServiceRequest{
     private String religion;
 
     public ReligiousServices(String type, Node destination, String description, String religion) {
-        super(destination, description);
-        this.setType("Religious Services");
+        super(type, destination, description);
         this.religion = religion;
     }
 

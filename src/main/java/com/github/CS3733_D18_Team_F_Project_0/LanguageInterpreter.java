@@ -6,8 +6,7 @@ public class LanguageInterpreter extends ServiceRequest {
     private String language;
 
     public LanguageInterpreter(String type, Node destination, String description, String status, String language) {
-        super(destination, description);
-        this.setType("Language Interpreter");
+        super(type, destination, description);
         this.language = language;
     }
 

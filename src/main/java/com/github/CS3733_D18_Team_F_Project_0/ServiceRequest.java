@@ -3,13 +3,14 @@ package com.github.CS3733_D18_Team_F_Project_0;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
 
 public abstract class ServiceRequest {
-    protected String type;
-    protected Integer id;
-    protected Node destination;
-    protected String description;
-    protected String status;
+    private String type;
+    private Integer id;
+    private Node destination;
+    private String description;
+    private String status;
 
-    public ServiceRequest(Node destination, String description) {
+    public ServiceRequest(String type, Node destination, String description) {
+        this.type = type;
         this.id = PrivilegeSingleton.getOurInstance().getID();
         this.destination = destination;
         this.description = description;

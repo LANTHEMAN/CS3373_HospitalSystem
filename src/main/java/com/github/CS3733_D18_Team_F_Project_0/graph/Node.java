@@ -7,6 +7,7 @@ public class Node {
     private Point3D position;
     // used to 'block' certain nodes
     private double additionalWeight = 0;
+    private String longName;
 
     /**
      * Create a new Node
@@ -39,5 +40,9 @@ public class Node {
      */
     public double getAdditionalWeight() {
         return additionalWeight;
+    }
+
+    public String getLongName() {
+        return longName;
     }
 }
