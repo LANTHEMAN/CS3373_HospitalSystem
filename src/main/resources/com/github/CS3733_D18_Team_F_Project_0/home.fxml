@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Text?>
 <?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.HomeController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.HomeController">
   <columnConstraints>
     <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="931.4708251953125" />
     <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="400.0" minWidth="258.2379150390625" prefWidth="279.5291748046875" />
@@ -28,7 +28,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
   </rowConstraints>
    <children>
-      <GridPane prefHeight="687.0" prefWidth="811.0">
+      <GridPane fx:id="leftGPane" prefHeight="687.0" prefWidth="811.0">
         <columnConstraints>
           <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -70,7 +70,7 @@
                <children>
                   <MenuButton fx:id="LanguageSelect" mnemonicParsing="false" text="%SelectLanguage">
                     <items>
-                      <MenuItem mnemonicParsing="false" onAction="#onEnglish" text="English" >
+                      <MenuItem mnemonicParsing="false" onAction="#onEnglish" text="English">
                           <graphic>
                               <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="false">
                                   <Image url="@Flags/American_Flag.png" />
@@ -116,6 +116,58 @@
                   </Button>
                </children>
             </HBox>
+            <VBox fx:id="locationPopup" alignment="CENTER" maxHeight="190.0" maxWidth="150.0" prefHeight="190.0" prefWidth="150.0" spacing="10.0" style="-fx-background-color: rgba(217, 217, 217, 0.9); -fx-border-style: solid; -fx-border-color: grey;" visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add Location" />
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <TextField fx:id="txtXPos" GridPane.columnIndex="1" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="X Position:" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </GridPane>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <TextField fx:id="txtYPos" GridPane.columnIndex="1" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Y Position:" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </GridPane>
+                  <Button fx:id="btnLocationConfirm" mnemonicParsing="false" onAction="#onAddLocationConfirm" text="Confirm">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnLocationCancel" mnemonicParsing="false" onAction="#onAddLocationCancel" text="Cancel">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
          </children>
       </GridPane>
       <GridPane style="-fx-background-color: E7F3F8;" GridPane.columnIndex="1">
@@ -132,7 +184,7 @@
                   <Font size="20.0" />
                </font>
             </Text>
-            <VBox fx:id="vbxMenu" alignment="CENTER" prefHeight="665.0" prefWidth="230.0" spacing="40.0" visible="false" GridPane.rowIndex="1">
+            <VBox fx:id="vbxMenu" alignment="CENTER" prefHeight="665.0" prefWidth="230.0" spacing="40.0" GridPane.rowIndex="1">
                <children>
                   <Button fx:id="btnFindLocation" mnemonicParsing="false" onAction="#onFindLocation" prefHeight="90.0" prefWidth="140.0" text="%FindLocation" textAlignment="CENTER" wrapText="true">
                      <font>
@@ -156,7 +208,7 @@
                   </Button>
                </children>
             </VBox>
-            <VBox fx:id="vbxLocation" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <VBox fx:id="vbxLocation" prefHeight="200.0" prefWidth="100.0" spacing="10.0" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%DestinationType" />
                   <ComboBox fx:id="locations" editable="true" prefWidth="150.0" />
@@ -221,7 +273,7 @@
                         </TitledPane>
                     </panes>
                   </Accordion>
-                  <Button fx:id="btnLocationCancel" mnemonicParsing="false" onAction="#onLocationCancel" text="%Cancel" />
+                  <Button mnemonicParsing="false" onAction="#onLocationCancel" text="%Cancel" />
                </children></VBox>
             <VBox layoutX="10.0" layoutY="92.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" visible="false">
                <children>
