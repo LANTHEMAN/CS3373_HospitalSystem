@@ -123,4 +123,9 @@ public class HomeController implements SwitchableController {
         vbxMenu.setVisible(true);
     }
 
+    @FXML
+    void onServiceRequest(){
+        switcher.switchTo(Screens.ServiceRequest);
+    }
+
 }
