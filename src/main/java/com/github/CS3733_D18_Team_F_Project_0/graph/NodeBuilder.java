@@ -123,11 +123,7 @@ public class NodeBuilder {
 
             nodeID = "X" + nodeType + numNodeTypeStr + floor;
         }
-
-        Point3D position, Point2D wireframePosition,double additionalWeight, String nodeID, String floor, String
-        building
-                , String nodeType, String longName, String shortName, String teamAssigned
-
+        
         return new Node(position, wireframePosition, additionalWeight, nodeID, floor, building, nodeType, longName, shortName, teamAssigned);
     }
 }
