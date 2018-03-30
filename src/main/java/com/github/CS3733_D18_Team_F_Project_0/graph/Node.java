@@ -24,8 +24,6 @@ public class Node {
     private String longName;
     // an abbreviation of the name of this node
     private String shortName;
-
-
     Node(Point3D position, Point2D wireframePosition, double additionalWeight, String nodeID, String floor, String building
             , String nodeType, String longName, String shortName, String teamAssigned) {
         this.position = position;
@@ -38,6 +36,10 @@ public class Node {
         this.longName = longName;
         this.shortName = shortName;
         this.teamAssigned = teamAssigned;
+    }
+
+    public String getNodeID() {
+        return nodeID;
     }
 
     /**

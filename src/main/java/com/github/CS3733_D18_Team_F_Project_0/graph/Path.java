@@ -8,4 +8,13 @@ public class Path {
     public Path(ArrayList<Node> path) {
         this.path = path;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Path)){
+            return false;
+        }
+        Path path = (Path) obj;
+        return this.path.equals(path.path);
+    }
 }

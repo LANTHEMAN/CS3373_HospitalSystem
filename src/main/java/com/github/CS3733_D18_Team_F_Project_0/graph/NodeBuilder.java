@@ -88,14 +88,14 @@ public class NodeBuilder {
         return this;
     }
 
-    public void setFloor(String floor) {
-        if (floor.equals("0")) {
+    public NodeBuilder setFloor(String floor) {
+        if (floor.equals("0") || floor.equals("0G")) {
             this.floor = "0G";
-        } else if (floor.equals("1")) {
+        } else if (floor.equals("1") || floor.equals("01")) {
             this.floor = "01";
-        } else if (floor.equals("2")) {
+        } else if (floor.equals("2") || floor.equals("02")) {
             this.floor = "02";
-        } else if (floor.equals("3")) {
+        } else if (floor.equals("3") || floor.equals("03")) {
             this.floor = "03";
         } else {
             if (!(floor.equals("L1") || floor.equals("L2"))) {
@@ -103,6 +103,7 @@ public class NodeBuilder {
             }
             this.floor = floor;
         }
+        return this;
     }
 
     public Node build() {
@@ -111,7 +112,7 @@ public class NodeBuilder {
         }
 
         if (nodeID == null) {
-            if (numNodeType != -1) {
+            if (numNodeType == -1) {
                 throw new AssertionError("When creating a new node, you must set the number of " +
                         "nodes of that type.");
             }
