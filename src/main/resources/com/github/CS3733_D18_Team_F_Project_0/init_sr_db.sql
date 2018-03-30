@@ -1,4 +1,3 @@
-
 Create Table ServiceRequest(
 id int Primary Key,
 type varchar(50),

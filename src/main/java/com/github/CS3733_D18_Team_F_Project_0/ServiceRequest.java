@@ -12,15 +12,24 @@ public abstract class ServiceRequest {
 
 
     public ServiceRequest(String type, Node destination, String description) {
+        this(type, destination, description, PrivilegeSingleton.getInstance().generateNewID(), "Incomplete", 0);
+    }
+
+    public ServiceRequest(String type, Node destination, String description, int id, String status, int priority) {
         this.type = type;
-        this.id = PrivilegeSingleton.getInstance().generateNewID();
+        this.id = id;
         this.destination = destination;
         this.description = description;
-        this.status = "Incomplete";
+        this.status = status;
+        this.priority = priority;
     }
 
     public String getType() {
         return type;
+    }
+
+    protected void setType(String type) {
+        this.type = type;
     }
 
     public Integer getId() {
@@ -35,23 +44,25 @@ public abstract class ServiceRequest {
         return description;
     }
 
+    public void setDescription(String s) {
+        this.description = description;
+    }
+
     public String getStatus() {
         return status;
     }
-
-    public int getPriority() { return priority; }
-
-    public void setPriority(int priority) { this.priority = priority;}
 
     public void setStatus(String status) {
         this.status = status;
     }
 
-    protected void setType(String type){
-        this.type = type;
+    public int getPriority() {
+        return priority;
     }
 
-    public void setDescription(String s) {this.description = description;}
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
 
     public abstract void parseIntoDescription(String s);
 }

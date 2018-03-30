@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 public class PrivilegeSingleton implements DatabaseItem {
     private static PrivilegeSingleton ourInstance = new PrivilegeSingleton();
-    DatabaseHandler dbHandler;
+    private DatabaseHandler dbHandler;
     ArrayList<ServiceRequest> listOfRequests;
     private int id = 0;
 
@@ -16,6 +16,8 @@ public class PrivilegeSingleton implements DatabaseItem {
         // initialize this class with the database
         dbHandler = DatabaseSingleton.getInstance().getDbHandler();
         dbHandler.trackAndInitItem(this);
+
+        // TODO get largest ID from database
     }
 
     public static PrivilegeSingleton getInstance() {
@@ -83,13 +85,13 @@ public class PrivilegeSingleton implements DatabaseItem {
 
     @Override
     public LinkedList<String> getTableNames() {
-        return new LinkedList<>(Arrays.asList("SERVICEREQUEST"));
+        return new LinkedList<>(Arrays.asList("ServiceRequest"));
     }
 
     @Override
     public void syncLocalFromDB(String tableName, ResultSet resultSet) {
         try{
-            if(tableName.equals("SERVICEREQUEST")){
+            if(tableName.equals("ServiceRequest")){
                 while (resultSet.next()) {
                     int id = resultSet.getInt(1);
                     String type = resultSet.getString(2);

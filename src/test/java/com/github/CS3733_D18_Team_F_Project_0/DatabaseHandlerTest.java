@@ -148,12 +148,13 @@ public class DatabaseHandlerTest {
         initDatabase(dbHandler);
         Node nodeA = new Node(new Point3D(0, 0, 0));
 
-        LanguageInterpreter s = new LanguageInterpreter("Language Interpreter", nodeA, "Test 1", "Incomplete", "German");
+        LanguageInterpreter s = new LanguageInterpreter("Language Interpreter", nodeA, "Test 1", "Incomplete", "German", 0);
         s.parseIntoDescription();
 
-        PrivilegeSingleton ps = PrivilegeSingleton.getInstance();
 
-        ps.sendServiceRequest(s);
+        //PrivilegeSingleton ps = PrivilegeSingleton.getInstance();
+
+        //ps.sendServiceRequest(s);
 
 
     }

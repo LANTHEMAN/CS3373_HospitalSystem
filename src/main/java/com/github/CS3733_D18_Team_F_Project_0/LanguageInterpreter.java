@@ -10,6 +10,11 @@ public class LanguageInterpreter extends ServiceRequest {
         this.language = language;
     }
 
+    public LanguageInterpreter(String type, Node destination, String description, String status, String language, int id) {
+        super(type, destination, description, id, "Incomplete", 0);
+        this.language = language;
+    }
+
     public String getLanguage() {
         return language;
     }
