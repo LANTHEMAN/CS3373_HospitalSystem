@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Text?>
 <?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.HomeController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.HomeController">
   <columnConstraints>
     <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="931.4708251953125" />
     <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="400.0" minWidth="258.2379150390625" prefWidth="279.5291748046875" />
@@ -70,7 +70,7 @@
                <children>
                   <MenuButton fx:id="LanguageSelect" mnemonicParsing="false" text="%SelectLanguage">
                     <items>
-                      <MenuItem mnemonicParsing="false" onAction="#onEnglish" text="English" >
+                      <MenuItem mnemonicParsing="false" onAction="#onEnglish" text="English">
                           <graphic>
                               <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="false">
                                   <Image url="@Flags/American_Flag.png" />

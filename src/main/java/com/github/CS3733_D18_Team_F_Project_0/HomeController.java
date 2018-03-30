@@ -1,11 +1,14 @@
 package com.github.CS3733_D18_Team_F_Project_0;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -40,6 +43,12 @@ public class HomeController implements SwitchableController {
                 "Option 2",
                 "Option 3");
         locations.getSelectionModel().selectFirst();
+        ivMap.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+                System.out.println(mouseEvent.getX() + " "+ mouseEvent.getY());
+
+            }
+        });
     }
 
     @FXML
