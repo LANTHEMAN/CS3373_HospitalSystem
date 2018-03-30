@@ -71,9 +71,9 @@ public class TestNode {
         Graph graph = new Graph();
         graph.addNode(nodeA).addNode(nodeB).addNode(nodeC).addNode(nodeD);
 
-        graph.addEdge(nodeA, nodeB).addEdge(nodeA, nodeC);
-        graph.addEdge(nodeB, nodeC).addEdge(nodeB, nodeD);
-        graph.addEdge(nodeC, nodeD);
+        graph.addEdge(nodeA, nodeB, "Test1").addEdge(nodeA, nodeC, "Test2");
+        graph.addEdge(nodeB, nodeC, "Test3").addEdge(nodeB, nodeD, "Test4");
+        graph.addEdge(nodeC, nodeD, "Test5");
 
         ArrayList<Node> path = new ArrayList<>();
         path.add(nodeA);
@@ -103,14 +103,14 @@ public class TestNode {
         graph.addNode(nodeS).addNode(nodeA).addNode(nodeB).addNode(nodeC).addNode(nodeD).addNode(nodeE)
                 .addNode(nodeQ).addNode(nodeR).addNode(nodeF);
 
-        graph.addEdge(nodeS, nodeA).addEdge(nodeS, nodeQ)
-                .addEdge(nodeA, nodeB)
-                .addEdge(nodeB, nodeC)
-                .addEdge(nodeC, nodeD)
-                .addEdge(nodeD, nodeE)
-                .addEdge(nodeE, nodeF)
-                .addEdge(nodeQ, nodeR)
-                .addEdge(nodeR, nodeF);
+        graph.addEdge(nodeS, nodeA, "Test1").addEdge(nodeS, nodeQ, "Test2")
+                .addEdge(nodeA, nodeB, "Test3")
+                .addEdge(nodeB, nodeC, "Test3")
+                .addEdge(nodeC, nodeD, "Test3")
+                .addEdge(nodeD, nodeE, "Test3")
+                .addEdge(nodeE, nodeF, "Test3")
+                .addEdge(nodeQ, nodeR, "Test3")
+                .addEdge(nodeR, nodeF, "Test3");
 
         ArrayList<Node> path = new ArrayList<>();
         path.add(nodeS);
@@ -140,14 +140,14 @@ public class TestNode {
         graph.addNode(nodeS).addNode(nodeA).addNode(nodeB).addNode(nodeC).addNode(nodeD).addNode(nodeE)
                 .addNode(nodeQ).addNode(nodeR).addNode(nodeF);
 
-        graph.addEdge(nodeS, nodeA).addEdge(nodeS, nodeQ)
-                .addEdge(nodeA, nodeB)
-                .addEdge(nodeB, nodeC)
-                .addEdge(nodeC, nodeD)
-                .addEdge(nodeD, nodeE)
-                .addEdge(nodeE, nodeF)
-                .addEdge(nodeQ, nodeR)
-                .addEdge(nodeR, nodeF);
+        graph.addEdge(nodeS, nodeA, "Test1").addEdge(nodeS, nodeQ, "Test2")
+                .addEdge(nodeA, nodeB, "ExName")
+                .addEdge(nodeB, nodeC, "ExName")
+                .addEdge(nodeC, nodeD, "ExName")
+                .addEdge(nodeD, nodeE, "ExName")
+                .addEdge(nodeE, nodeF, "ExName")
+                .addEdge(nodeQ, nodeR, "ExName")
+                .addEdge(nodeR, nodeF, "ExName");
 
         ArrayList<Node> path = new ArrayList<>();
         path.add(nodeS);
