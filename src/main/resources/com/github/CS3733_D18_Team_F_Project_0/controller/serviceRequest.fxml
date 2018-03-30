@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="628.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.ServiceRequestController">
+   <children>
+      <Button fx:id="ReligiousServices" layoutX="103.0" layoutY="160.0" mnemonicParsing="false" onAction="#onReligiousButtonSwitch" prefHeight="87.0" prefWidth="206.0" text="Religous Services" />
+      <Button fx:id="LanguageInterpreter" layoutX="319.0" layoutY="160.0" mnemonicParsing="false" onAction="#onLanguageInterpreterButtonSwitch" prefHeight="87.0" prefWidth="206.0" text="Language Interpreter" />
+      <Button fx:id="Cancel" layoutX="211.0" layoutY="291.0" mnemonicParsing="false" onAction="#onCancelSwitch" prefHeight="87.0" prefWidth="206.0" text="Cancel" />
+      <TextField alignment="CENTER" layoutX="185.0" layoutY="47.0" text="Service Requests">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <TextField alignment="CENTER" layoutX="235.0" layoutY="91.0" opacity="0.62" text="Choose One" />
+   </children>
+</AnchorPane>
