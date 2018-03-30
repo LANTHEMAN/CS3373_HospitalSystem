@@ -13,14 +13,13 @@ public class LoginController implements SwitchableController {
     }
 
     @FXML
-    void onLoginSwitch() {
-        switcher.switchTo(Screens.Home);
-
+    void onLoginClose() {
+        switcher.closePopup(Screens.Home);
     }
 
     @FXML
-    void onCancelSwitch() {
-        switcher.switchTo(Screens.Home);
+    void onCancelClose() {
+        switcher.closePopup(Screens.Home);
     }
 
 }

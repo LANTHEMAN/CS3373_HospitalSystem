@@ -1,25 +1,15 @@
 package com.github.CS3733_D18_Team_F_Project_0;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.geometry.Rectangle2D;
 
-import java.awt.event.ActionEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import java.io.IOException;
 
 public class HomeController implements SwitchableController {
 
@@ -53,19 +43,8 @@ public class HomeController implements SwitchableController {
     }
 
     @FXML
-    void onLoginSwitch() {
-        switcher.switchTo(Screens.Login);
-        /*
-        // popup pane attempt
-        final Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        //dialog.initOwner(primaryStage);
-        VBox dialogVbox = new VBox(20);
-        dialogVbox.getChildren().add(new Text("This is a Dialog"));
-        Scene dialogScene = new Scene(Screens.Login.fxmlFile);
-        dialog.setScene(dialogScene);
-        dialog.show();
-        */
+    void onLoginPopup() {
+        switcher.popup(Screens.Login);
     }
 
     @FXML

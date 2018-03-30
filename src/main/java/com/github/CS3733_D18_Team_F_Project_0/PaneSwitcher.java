@@ -1,8 +1,11 @@
 package com.github.CS3733_D18_Team_F_Project_0;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,12 +15,15 @@ import java.util.ResourceBundle;
 public class PaneSwitcher {
     private HashMap<String, Pane> panes;
     private Scene scene;
+    private Stage popup = new Stage();
     public ObservableResourceFactory resFac = new ObservableResourceFactory();
 
     public PaneSwitcher(Scene scene) {
         this.scene = scene;
         panes = new HashMap<>();
         resFac.setResources(ResourceBundle.getBundle("LanguageBundle", new Locale("en", "US")));
+
+        popup.initModality(Modality.APPLICATION_MODAL);
     }
 
     // loads the screen into memory from the file
@@ -55,11 +61,26 @@ public class PaneSwitcher {
         scene.setRoot(panes.get(screen.fxmlFile));
     }
 
-    public void switchResource(ResourceBundle resource, Screens.Screen screen){
+    public void switchResource(ResourceBundle resource, Screens.Screen screen) {
         // reset the resource package
         resFac.setResources(resource);
         // reload the given screen
         panes.clear();
+        load(screen);
+        scene.setRoot(panes.get(screen.fxmlFile));
+    }
+
+    public void popup(Screens.Screen screen) {
+        load(screen);
+        Scene popScene = new Scene(panes.get(screen.fxmlFile));
+        popup.setScene(popScene);
+        popup.show();
+
+    }
+
+    public void closePopup(Screens.Screen screen) {
+        // will reset control back to the given screen (that should be displayed currently)
+        popup.close();
         load(screen);
         scene.setRoot(panes.get(screen.fxmlFile));
     }
