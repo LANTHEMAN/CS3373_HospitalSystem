@@ -13,9 +13,6 @@ public interface DatabaseItem {
     // given the entire table from the DB, sync locally
     void syncLocalFromDB(String tableName, ResultSet resultSet);
 
-    // given access to the database, sync on the database
-    void syncDBFromLocal(DatabaseHandler dbHandler);
-
     // given access to the database, sync the local csv file
     void syncCSVFromDB(DatabaseHandler dbHandler);
 }

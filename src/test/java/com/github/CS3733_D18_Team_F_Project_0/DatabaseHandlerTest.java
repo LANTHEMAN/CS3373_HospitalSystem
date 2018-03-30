@@ -70,7 +70,7 @@ public class DatabaseHandlerTest {
 
         graph.nodes.put(dummyNode.id, new Pair<>(dummyNode, new LinkedList<>()));
 
-        dbHandler.syncDBFromLocal(graph);
+        graph.syncDBFromLocal(dbHandler);
 
         assertEquals(2, rowCount(dbHandler, "NODE"));
 
@@ -119,7 +119,7 @@ public class DatabaseHandlerTest {
 
         graph.nodes.put(dummyNode.id, new Pair<>(dummyNode, new LinkedList<>()));
 
-        dbHandler.syncDBFromLocal(graph);
+        graph.syncDBFromLocal(dbHandler);
 
         assertEquals(71, rowCount(dbHandler, "NODE"));
 

@@ -17,4 +17,9 @@ public class ReligiousServices extends ServiceRequest{
     public void setReligion(String religion) {
         this.religion = religion;
     }
+
+    @Override
+    public void parseIntoDescription(String s) {
+
+    }
 }

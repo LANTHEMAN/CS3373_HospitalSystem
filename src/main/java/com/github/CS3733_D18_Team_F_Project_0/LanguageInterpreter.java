@@ -21,4 +21,9 @@ public class LanguageInterpreter extends ServiceRequest {
     public void parseIntoDescription(){
         super.setDescription(getLanguage() + "\n" + getDescription());
     }
+
+    @Override
+    public void parseIntoDescription(String s) {
+
+    }
 }

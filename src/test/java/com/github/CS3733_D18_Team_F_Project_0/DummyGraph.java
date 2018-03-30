@@ -107,7 +107,6 @@ public class DummyGraph implements DatabaseItem {
 
     }
 
-    @Override
     public void syncDBFromLocal(DatabaseHandler dbHandler) {
         // clear old table
         dbHandler.runAction("TRUNCATE TABLE NODE");

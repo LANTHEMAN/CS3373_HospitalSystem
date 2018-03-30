@@ -4,9 +4,6 @@ import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.HashSet;
 
-/**
- * 
- */
 public class DatabaseHandler {
     private String databaseURL = "jdbc:derby:database;create=true";
     private Connection connection = null;
@@ -39,10 +36,6 @@ public class DatabaseHandler {
         for (String table : dbItem.getTableNames()) {
             dbItem.syncLocalFromDB(table, runQuery("SELECT * FROM " + table));
         }
-    }
-
-    public void syncDBFromLocal(DatabaseItem dbItem) {
-        dbItem.syncDBFromLocal(this);
     }
 
     public void syncCSVFromDB(DatabaseItem dbItem) {
