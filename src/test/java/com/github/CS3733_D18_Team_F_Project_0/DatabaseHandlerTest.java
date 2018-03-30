@@ -84,8 +84,8 @@ public class DatabaseHandlerTest {
     public void dummyTest2() {
         // delete old test database folder
         try {
-            if(Files.exists(Paths.get("temp/RealTest"))) {
-                Files.walk(Paths.get("temp/RealTest"))
+            if(Files.exists(Paths.get("temp/RealTest2"))) {
+                Files.walk(Paths.get("temp/RealTest2"))
                         .sorted(Comparator.reverseOrder())
                         .map(Path::toFile)
                         .forEach(File::delete);
@@ -94,7 +94,7 @@ public class DatabaseHandlerTest {
             e.printStackTrace();
         }
 
-        DatabaseHandler dbHandler = new DatabaseHandler("temp/RealTest");
+        DatabaseHandler dbHandler = new DatabaseHandler("temp/RealTest2");
         DummyGraph graph = new DummyGraph();
         graph.nodesFile = "MapBnodes.csv";
         dbHandler.trackAndInitItem(graph);
@@ -130,31 +130,18 @@ public class DatabaseHandlerTest {
     }
 
 
-    public void initDatabase(DatabaseHandler dbHandler) {
-        try {
-            //if the table does not yet exist in the db, initialize it
-            if (!dbHandler.tableExists("ServiceRequest")) {
-                dbHandler.runSQLScript("init_SR_db.sql");
-            }
-        } catch (SQLException s){
-            s.printStackTrace();
-        }
-    }
 
     @Test
     public void dummyTest3(){
 
         DatabaseHandler dbHandler = new DatabaseHandler("temp/RealTest");
-        initDatabase(dbHandler);
         Node nodeA = new Node(new Point3D(0, 0, 0));
 
         LanguageInterpreter s = new LanguageInterpreter("Language Interpreter", nodeA, "Test 1", "Incomplete", "German", 0);
         s.parseIntoDescription();
 
-
-        //PrivilegeSingleton ps = PrivilegeSingleton.getInstance();
-
-        //ps.sendServiceRequest(s);
+        PrivilegeSingleton ps = PrivilegeSingleton.getInstance(dbHandler);
+        ps.sendServiceRequest(s);
 
 
     }

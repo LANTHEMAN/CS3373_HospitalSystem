@@ -109,8 +109,8 @@ public class DummyGraph implements DatabaseItem {
 
     public void syncDBFromLocal(DatabaseHandler dbHandler) {
         // clear old table
-        dbHandler.runAction("TRUNCATE TABLE NODE");
         dbHandler.runAction("TRUNCATE TABLE EDGE");
+        dbHandler.runAction("TRUNCATE TABLE NODE");
 
         // update node table
         for (Map.Entry<String, Pair<DummyNode, LinkedList<DummyNode>>> nodeData : nodes.entrySet()) {

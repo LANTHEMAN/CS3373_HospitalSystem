@@ -1,16 +1,19 @@
 package com.github.CS3733_D18_Team_F_Project_0;
 
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.*;
 
 public class PrivilegeSingleton implements DatabaseItem {
     private static PrivilegeSingleton ourInstance = new PrivilegeSingleton();
+
     private DatabaseHandler dbHandler;
     ArrayList<ServiceRequest> listOfRequests;
     private int id = 0;
+
+    // just for testing
+    private static HashMap<DatabaseHandler, PrivilegeSingleton> testDatabases = new HashMap<>();
 
     private PrivilegeSingleton() {
         // initialize this class with the database
@@ -20,14 +23,24 @@ public class PrivilegeSingleton implements DatabaseItem {
         // TODO get largest ID from database
     }
 
+    private PrivilegeSingleton(DatabaseHandler dbHandler){
+        this.dbHandler = dbHandler;
+        dbHandler.trackAndInitItem(this);
+    }
+
     public static PrivilegeSingleton getInstance() {
         return ourInstance;
     }
+    public static PrivilegeSingleton getInstance(DatabaseHandler dbHandler){
+        if(testDatabases.containsKey(dbHandler)){
+            return testDatabases.get(dbHandler);
+        }
+        testDatabases.put(dbHandler, new PrivilegeSingleton(dbHandler));
+        return testDatabases.get(dbHandler);
+    }
 
     public int generateNewID() {
-        int uniqueID = id;
-        id++;
-        return uniqueID;
+        return id++;
     }
 
     private void updateStatus(ServiceRequest s) {
@@ -80,7 +93,8 @@ public class PrivilegeSingleton implements DatabaseItem {
 
     @Override
     public void initDatabase(DatabaseHandler dbHandler) {
-        dbHandler.runSQLScript("init_SR_db.sql");
+        dbHandler.runSQLScript("init_node_db.sql");
+        dbHandler.runSQLScript("init_sr_db.sql");
     }
 
     @Override
