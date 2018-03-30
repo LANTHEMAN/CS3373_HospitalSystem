@@ -8,7 +8,7 @@ public class Node {
     // used to 'block' certain nodes
     private double additionalWeight = 0;
     private String longName;
-
+    private int nodeID;
     /**
      * Create a new Node
      * @param position The 3D position of the node
@@ -26,6 +26,7 @@ public class Node {
         return (this.position.distance(node.position));
     }
 
+    public int getNodeID(){ return nodeID;}
     /**
      * Set an additional weight for this node to make AStar avoid it
      * @param additionalWeight The additional weight to add

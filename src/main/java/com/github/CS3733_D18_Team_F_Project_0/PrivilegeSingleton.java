@@ -58,5 +58,26 @@ public class PrivilegeSingleton {
         return dbHandler.runQuery(sql);
     }
 
+    public ResultSet getRequestsOfType(String type){
+        String sql = "SELECT * FROM ServiceRequest WHERE type = '" + type + "';";
+        DatabaseHandler dbHandler = new DatabaseHandler();
+        return dbHandler.runQuery(sql);
+    }
+
+    public ResultSet getRequestsOfStatus(String status){
+        String sql = "SELECT * FROM ServiceRequest WHERE status = '" + status + "';";
+        DatabaseHandler dbHandler = new DatabaseHandler();
+        return dbHandler.runQuery(sql);
+    }
+
+    public ResultSet getRequestsOfPriority(int p){
+        String sql = "SELECT * FROM ServiceRequest WHERE priority = " + p + ";";
+        DatabaseHandler dbHandler = new DatabaseHandler();
+        return dbHandler.runQuery(sql);
+    }
+
+
+
+
 
 }

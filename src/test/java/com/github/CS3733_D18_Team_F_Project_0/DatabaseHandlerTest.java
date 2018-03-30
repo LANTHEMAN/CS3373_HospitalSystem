@@ -3,6 +3,7 @@ package com.github.CS3733_D18_Team_F_Project_0;
 import javafx.util.Pair;
 import org.junit.Test;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -123,5 +124,11 @@ public class DatabaseHandlerTest {
         dbHandler.syncCSVFromDB(graph);
 
         dbHandler.disconnectFromDatabase();
+    }
+
+    public void dummyTest3(){
+
+        DatabaseHandler dbHandler = new DatabaseHandler("temp/RealTest");
+
     }
 }
