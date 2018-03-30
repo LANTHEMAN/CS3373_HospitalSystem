@@ -13,7 +13,7 @@ public class Node {
      * Create a new Node
      * @param position The 3D position of the node
      */
-    Node(Point3D position) {
+    public Node(Point3D position) {
         this.position = position;
     }
 

@@ -1,5 +1,7 @@
 package com.github.CS3733_D18_Team_F_Project_0;
 
+import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
+import javafx.geometry.Point3D;
 import javafx.util.Pair;
 import org.junit.Test;
 
@@ -126,9 +128,31 @@ public class DatabaseHandlerTest {
         dbHandler.disconnectFromDatabase();
     }
 
+
+    public void initDatabase(DatabaseHandler dbHandler) {
+        try {
+            //if the table does not yet exist in the db, initialize it
+            if (!dbHandler.tableExists("ServiceRequest")) {
+                dbHandler.runSQLScript("init_SR_db.sql");
+            }
+        } catch (SQLException s){
+            s.printStackTrace();
+        }
+    }
+
     public void dummyTest3(){
 
         DatabaseHandler dbHandler = new DatabaseHandler("temp/RealTest");
+        initDatabase(dbHandler);
+        Node nodeA = new Node(new Point3D(0, 0, 0));
+
+        LanguageInterpreter s = new LanguageInterpreter("Language Interpreter", nodeA, "Test 1", "Incomplete", "German");
+        s.parseIntoDescription();
+
+        PrivilegeSingleton ps = PrivilegeSingleton.getInstance();
+
+        ps.sendServiceRequest(s);
+
 
     }
 }

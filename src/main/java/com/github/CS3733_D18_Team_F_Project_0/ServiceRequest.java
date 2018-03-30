@@ -50,4 +50,8 @@ public abstract class ServiceRequest {
     protected void setType(String type){
         this.type = type;
     }
+
+    public void setDescription(String s) {this.description = description;}
+
+    public abstract void parseIntoDescription(String s);
 }

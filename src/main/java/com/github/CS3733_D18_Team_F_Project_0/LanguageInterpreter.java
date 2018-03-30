@@ -17,4 +17,8 @@ public class LanguageInterpreter extends ServiceRequest {
     public void setLanguage(String language) {
         this.language = language;
     }
+
+    public void parseIntoDescription(){
+        super.setDescription(getLanguage() + "\n" + getDescription());
+    }
 }
