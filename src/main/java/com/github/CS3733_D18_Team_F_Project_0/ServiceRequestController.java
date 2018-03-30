@@ -2,8 +2,19 @@ package com.github.CS3733_D18_Team_F_Project_0;
 
 import javafx.fxml.FXML;
 
+import java.awt.*;
+
 public class ServiceRequestController implements SwitchableController {
     private PaneSwitcher switcher;
+
+    @FXML
+    public Button religiousServices;
+
+    @FXML
+    public Button languageInterpreter;
+
+    @FXML
+    public Button cancel;
 
 
     public void initialize(PaneSwitcher switcher) {
@@ -11,17 +22,17 @@ public class ServiceRequestController implements SwitchableController {
     }
 
     @FXML
-    void onBackSwitch() {
-        switcher.switchTo(Screens.Login);
+    void onCancelSwitch() {
+        switcher.switchTo(Screens.Home);
     }
 
     @FXML
-    void onReligousButtonSwitch(){
-        switcher.switchTo(Screens.ReligousSercices);
+    void onReligiousButtonSwitch(){
+        switcher.switchTo(Screens.ReligiousServices);
     }
     @FXML
     void onLanguageInterpreterButtonSwitch(){
-        switcher.switchTo(Screens.);
+        switcher.switchTo(Screens.LanguageInterpretor);
     }
 }
 
