@@ -18,7 +18,7 @@ public class Edge {
         this.node2 = node2;
     }
 
-    public String getEdgeID() {
+    String getEdgeID() {
         return edgeID;
     }
 

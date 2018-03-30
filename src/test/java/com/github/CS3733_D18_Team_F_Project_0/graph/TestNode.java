@@ -12,28 +12,28 @@ public class TestNode {
     @Test
     public void testAStar1() {
         Node nodeA = new NodeBuilder()
-                .setPosition(new Point3D(0,0,0))
+                .setPosition(new Point3D(0, 0, 0))
                 .setNodeType("HALL")
                 .setNumNodeType(1)
                 .setBuilding("Place")
                 .setFloor("0G")
                 .build();
         Node nodeB = new NodeBuilder()
-                .setPosition(new Point3D(1,1,1))
+                .setPosition(new Point3D(1, 1, 1))
                 .setNodeType("HALL")
                 .setNumNodeType(2)
                 .setBuilding("Place")
                 .setFloor("0G")
                 .build();
         Node nodeC = new NodeBuilder()
-                .setPosition(new Point3D(4,4,4))
+                .setPosition(new Point3D(4, 4, 4))
                 .setNodeType("HALL")
                 .setNumNodeType(3)
                 .setBuilding("Place")
                 .setFloor("0G")
                 .build();
         Node nodeD = new NodeBuilder()
-                .setPosition(new Point3D(2,2,2))
+                .setPosition(new Point3D(2, 2, 2))
                 .setNodeType("HALL")
                 .setNumNodeType(4)
                 .setBuilding("Place")
@@ -70,6 +70,11 @@ public class TestNode {
         graph.removeNode(nodeB);
         assertEquals(path2, AStar.getPath(graph, nodeA, nodeD));
 
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testInvalidNode() {
+        Node node = new NodeBuilder().build();
     }
 
     /*

@@ -107,11 +107,22 @@ public class NodeBuilder {
     }
 
     public Node build() {
-        if (nodeType.length() != 4) {
-            throw new AssertionError("Node type must be 4 characters long");
+        if(nodeID != null){
+            // parse fields fron the nodeID if it exists
+            if(nodeID.length() != 10){
+                throw new AssertionError("Invalid Node ID format. Not 10 characters 1ong.");
+            }
         }
 
         if (nodeID == null) {
+            if (nodeType == null) {
+                throw new AssertionError("A node type must be specified.");
+            }
+
+            if (nodeType.length() != 4) {
+                throw new AssertionError("Node type must be 4 characters long.");
+            }
+
             if (numNodeType == -1) {
                 throw new AssertionError("When creating a new node, you must set the number of " +
                         "nodes of that type.");
