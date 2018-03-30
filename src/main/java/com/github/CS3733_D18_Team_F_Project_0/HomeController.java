@@ -47,6 +47,7 @@ public class HomeController implements SwitchableController {
         switcher.popup(Screens.Login);
     }
 
+
     @FXML
     void onNavigationSwitch() {
         switcher.switchTo(Screens.Example);
