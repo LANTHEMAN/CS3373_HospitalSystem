@@ -54,7 +54,7 @@ public class HomeController implements SwitchableController {
 
     @FXML
     void onDirectionsSwitch() {
-        
+
     }
 
     @FXML
