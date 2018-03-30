@@ -4,6 +4,9 @@ import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.HashSet;
 
+/**
+ * 
+ */
 public class DatabaseHandler {
     private String databaseURL = "jdbc:derby:database;create=true";
     private Connection connection = null;
