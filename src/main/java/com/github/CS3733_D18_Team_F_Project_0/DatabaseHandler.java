@@ -34,7 +34,13 @@ public class DatabaseHandler {
 
     public void syncLocalFromDB(DatabaseItem dbItem) {
         for (String table : dbItem.getTableNames()) {
-            dbItem.syncLocalFromDB(table, runQuery("SELECT * FROM " + table));
+            ResultSet rs = runQuery("SELECT * FROM " + table);
+            dbItem.syncLocalFromDB(table, rs);
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -47,9 +53,11 @@ public class DatabaseHandler {
         ResultSet rs = md.getTables(null, null, "%", null);
         while (rs.next()) {
             if (rs.getString(3).equals(tableName)) {
+                rs.close();
                 return true;
             }
         }
+        rs.close();
         return false;
     }
 

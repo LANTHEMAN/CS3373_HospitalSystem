@@ -13,7 +13,7 @@ public abstract class ServiceRequest {
 
     public ServiceRequest(String type, Node destination, String description) {
         this.type = type;
-        this.id = PrivilegeSingleton.getOurInstance().getID();
+        this.id = PrivilegeSingleton.getInstance().generateNewID();
         this.destination = destination;
         this.description = description;
         this.status = "Incomplete";

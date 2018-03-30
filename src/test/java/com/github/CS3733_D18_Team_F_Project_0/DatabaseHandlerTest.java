@@ -28,6 +28,7 @@ public class DatabaseHandlerTest {
             while (rs.next()) {
                 rowCount++;
             }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -140,6 +141,7 @@ public class DatabaseHandlerTest {
         }
     }
 
+    @Test
     public void dummyTest3(){
 
         DatabaseHandler dbHandler = new DatabaseHandler("temp/RealTest");

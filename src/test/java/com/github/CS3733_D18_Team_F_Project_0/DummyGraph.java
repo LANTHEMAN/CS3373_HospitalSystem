@@ -156,6 +156,7 @@ public class DummyGraph implements DatabaseItem {
                 );
             }
             csvPrinter.flush();
+            nodeSet.close();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
