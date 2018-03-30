@@ -12,14 +12,14 @@ public class AStar {
      * @param destination The destination node in the graph
      * @return An array of Nodes that represent a path through the graph
      */
-    public static ArrayList<Node> getPath(Graph graph, Node source, Node destination) {
+    public static Path getPath(Graph graph, Node source, Node destination) {
         // see if the destination exists or if src equals dst
         if (destination == null || source == null) {
             throw new AssertionError();
         } else if (source == destination) {
             ArrayList<Node> path = new ArrayList<>();
             path.add(source);
-            return path;
+            return new Path(path);
         }
 
         // ensures that every Node only has 1 corresponding AStarNode
@@ -51,7 +51,7 @@ public class AStar {
                     path.add(itNode.getNode());
                 }
                 Collections.reverse(path);
-                return path;
+                return new Path(path);
             }
 
             closedSet.add(currentNode);
@@ -85,7 +85,7 @@ public class AStar {
         }
 
         // no path was found
-        return new ArrayList<>();
+        return new Path(new ArrayList<>());
     }
 
     // wrapper class for Node that allows priority queue comparisons

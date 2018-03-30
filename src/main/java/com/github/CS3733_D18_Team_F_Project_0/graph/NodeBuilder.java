@@ -2,6 +2,7 @@ package com.github.CS3733_D18_Team_F_Project_0.graph;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
+import org.junit.Assert;
 
 public class NodeBuilder {
     // the database ID of this node
@@ -56,6 +57,9 @@ public class NodeBuilder {
     }
 
     public NodeBuilder setNodeType(String nodeType) {
+        if(nodeType.length() != 4){
+            throw new AssertionError("A node type must be 4 characters long.");
+        }
         this.nodeType = nodeType;
         return this;
     }
@@ -71,6 +75,10 @@ public class NodeBuilder {
     }
 
     public NodeBuilder setElevatorChar(char elevatorChar) {
+        if(!(Character.isLetter(elevatorChar) | Character.isDigit(elevatorChar))){
+            throw new AssertionError("You must assign a valid elevator character!");
+        }
+
         this.elevatorChar = elevatorChar;
         return this;
     }
@@ -123,7 +131,31 @@ public class NodeBuilder {
 
             nodeID = "X" + nodeType + numNodeTypeStr + floor;
         }
-        
+
+        if(position == null){
+            throw new AssertionError("You must set a position.");
+        }
+        if (wireframePosition == null) {
+            wireframePosition = new Point2D(position.getX(), position.getY());
+        }
+
+        if(building == null){
+            throw new AssertionError("You must set a building.");
+        }
+
+        if (shortName == null) {
+            if(longName != null){
+                shortName = longName;
+            }
+            else{
+                shortName = nodeID + "[Unset shortName]";
+            }
+        }
+
+        if (longName == null) {
+            longName = nodeID + " [Unset longName]";
+        }
+
         return new Node(position, wireframePosition, additionalWeight, nodeID, floor, building, nodeType, longName, shortName, teamAssigned);
     }
 }
