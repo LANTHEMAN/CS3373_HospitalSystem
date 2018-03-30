@@ -6,9 +6,13 @@ import javafx.fxml.FXML;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.TextAlignment;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -32,6 +36,13 @@ public class HomeController implements SwitchableController {
     @FXML
     private VBox vbxLocation;
 
+    @FXML
+    private VBox locationPopup;
+    @FXML
+    private TextField txtXPos;
+    @FXML
+    private TextField txtYPos;
+
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
@@ -43,10 +54,17 @@ public class HomeController implements SwitchableController {
                 "Option 2",
                 "Option 3");
         locations.getSelectionModel().selectFirst();
+
         ivMap.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent mouseEvent) {
-                System.out.println(mouseEvent.getX() + " "+ mouseEvent.getY());
-
+                // only adds one location at a time
+                if (locationPopup.isVisible() == false) {
+                    locationPopup.setTranslateX(mouseEvent.getX() + 10);
+                    locationPopup.setTranslateY(mouseEvent.getY() - 180);
+                    txtXPos.setText("" + (int) mouseEvent.getX());
+                    txtYPos.setText("" + (int) mouseEvent.getY());
+                    locationPopup.setVisible(true);
+                }
             }
         });
     }
@@ -129,6 +147,21 @@ public class HomeController implements SwitchableController {
     void onLocationCancel() {
         vbxLocation.setVisible(false);
         vbxMenu.setVisible(true);
+    }
+
+    @FXML
+    void onAddLocationConfirm() {
+        // TODO Send txtXPos.getText() and txtYPos.getText() to database
+        locationPopup.setVisible(false);
+        txtXPos.setText("");
+        txtYPos.setText("");
+    }
+
+    @FXML
+    void onAddLocationCancel() {
+        locationPopup.setVisible(false);
+        txtXPos.setText("");
+        txtYPos.setText("");
     }
 
 }
