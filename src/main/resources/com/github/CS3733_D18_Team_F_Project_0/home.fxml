@@ -85,7 +85,7 @@
                                  </image>
                               </ImageView>
                            </graphic></MenuItem>
-                        <MenuItem mnemonicParsing="false" onAction="#onSpanish" text="Espanol">
+                        <MenuItem mnemonicParsing="false" onAction="#onSpanish" text="Español">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="false">
                                  <image>
