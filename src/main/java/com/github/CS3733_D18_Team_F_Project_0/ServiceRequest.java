@@ -12,7 +12,7 @@ public abstract class ServiceRequest {
 
 
     public ServiceRequest(String type, Node destination, String description) {
-        this(type, destination, description, PrivilegeSingleton.getInstance().generateNewID(), "Incomplete", 0);
+        this(type, destination, description, ServiceRequestSingleton.getInstance().generateNewID(), "Incomplete", 0);
     }
 
     public ServiceRequest(String type, Node destination, String description, int id, String status, int priority) {

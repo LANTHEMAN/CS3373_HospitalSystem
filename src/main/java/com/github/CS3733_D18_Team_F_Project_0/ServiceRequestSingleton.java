@@ -1,21 +1,20 @@
 package com.github.CS3733_D18_Team_F_Project_0;
 
-import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class PrivilegeSingleton implements DatabaseItem {
-    private static PrivilegeSingleton ourInstance = new PrivilegeSingleton();
+public class ServiceRequestSingleton implements DatabaseItem {
+    private static ServiceRequestSingleton ourInstance = new ServiceRequestSingleton();
 
     private DatabaseHandler dbHandler;
     ArrayList<ServiceRequest> listOfRequests;
     private int id = 0;
 
     // just for testing
-    private static HashMap<DatabaseHandler, PrivilegeSingleton> testDatabases = new HashMap<>();
+    private static HashMap<DatabaseHandler, ServiceRequestSingleton> testDatabases = new HashMap<>();
 
-    private PrivilegeSingleton() {
+    private ServiceRequestSingleton() {
         // initialize this class with the database
         dbHandler = DatabaseSingleton.getInstance().getDbHandler();
         dbHandler.trackAndInitItem(this);
@@ -23,19 +22,19 @@ public class PrivilegeSingleton implements DatabaseItem {
         // TODO get largest ID from database
     }
 
-    private PrivilegeSingleton(DatabaseHandler dbHandler){
+    private ServiceRequestSingleton(DatabaseHandler dbHandler){
         this.dbHandler = dbHandler;
         dbHandler.trackAndInitItem(this);
     }
 
-    public static PrivilegeSingleton getInstance() {
+    public static ServiceRequestSingleton getInstance() {
         return ourInstance;
     }
-    public static PrivilegeSingleton getInstance(DatabaseHandler dbHandler){
+    public static ServiceRequestSingleton getInstance(DatabaseHandler dbHandler){
         if(testDatabases.containsKey(dbHandler)){
             return testDatabases.get(dbHandler);
         }
-        testDatabases.put(dbHandler, new PrivilegeSingleton(dbHandler));
+        testDatabases.put(dbHandler, new ServiceRequestSingleton(dbHandler));
         return testDatabases.get(dbHandler);
     }
 

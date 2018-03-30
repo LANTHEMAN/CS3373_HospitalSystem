@@ -5,7 +5,6 @@ import javafx.geometry.Point3D;
 import javafx.util.Pair;
 import org.junit.Test;
 
-import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -140,7 +139,7 @@ public class DatabaseHandlerTest {
         LanguageInterpreter s = new LanguageInterpreter("Language Interpreter", nodeA, "Test 1", "Incomplete", "German", 0);
         s.parseIntoDescription();
 
-        PrivilegeSingleton ps = PrivilegeSingleton.getInstance(dbHandler);
+        ServiceRequestSingleton ps = ServiceRequestSingleton.getInstance(dbHandler);
         ps.sendServiceRequest(s);
 
 
