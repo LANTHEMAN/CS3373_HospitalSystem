@@ -1,8 +1,10 @@
 package com.github.CS3733_D18_Team_F_Project_0.db;
 
+import com.github.CS3733_D18_Team_F_Project_0.graph.ExistingNodeBuilder;
 import com.github.CS3733_D18_Team_F_Project_0.sr.LanguageInterpreter;
 import com.github.CS3733_D18_Team_F_Project_0.sr.ServiceRequestSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
+import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.util.Pair;
 import org.junit.Test;
@@ -147,7 +149,13 @@ public class DatabaseHandlerTest {
         }
 
         DatabaseHandler dbHandler = new DatabaseHandler("temp/RealTest");
-        Node nodeA = new Node(new Point3D(0, 0, 0));
+        Node nodeA = new ExistingNodeBuilder()
+                .setNodeID("FHALL001L2")
+                .setBuilding("Place")
+                .setPosition(new Point3D(0, 0, 0))
+                .setShortName("Place in place")
+                .setWireframePosition(new Point2D(0, 0))
+                .build();
 
         LanguageInterpreter s = new LanguageInterpreter("Language Interpreter", nodeA, "Test 1", "Incomplete", "German", 0);
         s.parseIntoDescription();

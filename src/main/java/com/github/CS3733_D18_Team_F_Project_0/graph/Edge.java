@@ -19,7 +19,6 @@ public class Edge {
     }
 
     /**
-     *
      * @return the edgeID of this edge
      */
     public String getEdgeID() {
@@ -43,10 +42,16 @@ public class Edge {
         else return false;
     }
 
+    /**
+     * @return one of the nodes
+     */
     public Node getNode1() {
         return node1;
     }
 
+    /**
+     * @return one of the nodes
+     */
     public Node getNode2() {
         return node2;
     }

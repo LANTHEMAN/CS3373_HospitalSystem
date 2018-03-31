@@ -50,7 +50,6 @@ public class Node {
         return (this.position.distance(node.position));
     }
 
-    public int getNodeID(){ return nodeID;}
     /**
      * Get the additional weight of this node
      *
