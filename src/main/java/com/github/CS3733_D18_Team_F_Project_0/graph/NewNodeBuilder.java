@@ -7,8 +7,12 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
     private int numNodeType = -1;
     // elevator character
     private char elevatorChar;
+    // the type of location this node is at
+    private String nodeType = null;
+    // the name of the floor where this node is located
+    private String floor = null;
 
-    protected NewNodeBuilder() {
+    public NewNodeBuilder() {
         super(NewNodeBuilder.class);
     }
 
@@ -43,6 +47,7 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
             throw new AssertionError("You must set a position.");
         }
         if (wireframePosition == null) {
+            // TODO: apply matrix transformation
             wireframePosition = new Point2D(position.getX(), position.getY());
         }
 
@@ -68,6 +73,32 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
         }
 
         this.elevatorChar = elevatorChar;
+        return this;
+    }
+
+    public NewNodeBuilder setNodeType(String nodeType) {
+        if (nodeType.length() != 4) {
+            throw new AssertionError("A node type must be 4 characters long.");
+        }
+        this.nodeType = nodeType;
+        return this;
+    }
+
+    public NewNodeBuilder setFloor(String floor) {
+        if (floor.equals("0") || floor.equals("0G")) {
+            this.floor = "0G";
+        } else if (floor.equals("1") || floor.equals("01")) {
+            this.floor = "01";
+        } else if (floor.equals("2") || floor.equals("02")) {
+            this.floor = "02";
+        } else if (floor.equals("3") || floor.equals("03")) {
+            this.floor = "03";
+        } else {
+            if (!(floor.equals("L1") || floor.equals("L2"))) {
+                throw new AssertionError("Unknown Floor Number. Must be any of: 0G, 01, 02, 03, L1, L2");
+            }
+            this.floor = floor;
+        }
         return this;
     }
 }

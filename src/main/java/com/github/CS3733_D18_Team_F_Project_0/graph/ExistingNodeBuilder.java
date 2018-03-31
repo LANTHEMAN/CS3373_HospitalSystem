@@ -2,32 +2,36 @@ package com.github.CS3733_D18_Team_F_Project_0.graph;
 
 public class ExistingNodeBuilder extends NodeBuilder<ExistingNodeBuilder> {
 
-    protected ExistingNodeBuilder() {
+    public ExistingNodeBuilder() {
         super(ExistingNodeBuilder.class);
     }
 
     public Node build() {
-        if (nodeID != null) {
-            // parse fields fron the nodeID if it exists
-            if (nodeID.length() != 10) {
-                throw new AssertionError("Invalid Node ID format. Not 10 characters 1ong.");
-            }
-        }
-        // TODO: fix error messages
-        if (position != null) {
-            throw new AssertionError("Put in a position you wierdo");
-        }
-        if (wireframePosition != null) {
-            throw new AssertionError("Put in a wireframePosition you wierdo");
-        }
-        if (shortName != null) {
-            throw new AssertionError("Put in a shortName you wierdo");
-        }
-        if (building != null) {
-            throw new AssertionError("Put in a building you wierdo");
+        // there must be a nodeID
+        if (nodeID == null) {
+            throw new AssertionError("Existing nodes must have a nodeID.");
         }
 
-        // TODO: from nodeID extract: nodeType, numNodeType, floorNumber, elevatorChar
+        // parse fields fron the nodeID if it exists
+        if (nodeID.length() != 10) {
+            throw new AssertionError("Invalid Node ID format. Not 10 characters 1ong.");
+        }
+
+        if (position == null) {
+            throw new AssertionError("Node must contain a position");
+        }
+        if (wireframePosition == null) {
+            throw new AssertionError("Node must contain a wireframePosition");
+        }
+        if (shortName == null) {
+            throw new AssertionError("Node must contain a shortName");
+        }
+        if (building == null) {
+            throw new AssertionError("Node must contain a building");
+        }
+
+        String nodeType = nodeID.substring(1, 5);
+        String floor = nodeID.substring(nodeID.length() - 2);
 
         return new Node(position, wireframePosition, 0, nodeID, floor, building, nodeType, shortName);
     }
