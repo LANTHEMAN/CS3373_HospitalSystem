@@ -47,7 +47,7 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
             throw new AssertionError("You must assign a floor to a node.");
         }
 
-        nodeID = "F" + nodeType + numNodeTypeStr + floor;
+        String nodeID = "F" + nodeType + numNodeTypeStr + floor;
 
         if (position == null) {
             throw new AssertionError("You must set a position.");

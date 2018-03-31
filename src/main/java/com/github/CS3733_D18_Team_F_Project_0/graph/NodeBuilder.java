@@ -6,8 +6,6 @@ import javafx.geometry.Point3D;
 public abstract class NodeBuilder<T> {
     protected final Class<T> subClass;
 
-    // the database ID of this node
-    protected String nodeID = null;
     // actual 3d position of node
     protected Point3D position = null;
     // position of the node on the wireframe map

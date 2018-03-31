@@ -21,7 +21,6 @@ public class Node {
     // an abbreviation of the name of this node
     private String shortName;
 
-
     Node(Point3D position, Point2D wireframePosition, double additionalWeight, String nodeID, String floor, String building
             , String nodeType, String shortName) {
         this.position = position;
@@ -34,6 +33,9 @@ public class Node {
         this.shortName = shortName;
     }
 
+    /**
+     * @return the id string of the node
+     */
     public String getNodeID() {
         return nodeID;
     }

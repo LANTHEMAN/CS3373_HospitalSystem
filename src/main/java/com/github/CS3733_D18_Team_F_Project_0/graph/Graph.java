@@ -125,6 +125,11 @@ public class Graph {
         if (!adjacencyList.containsKey(node1) || !adjacencyList.containsKey(node2)) {
             throw new AssertionError("Attempted to remove an edge from non-existent node(s)");
         }
+        // make sure the edge exists
+        if (!edgeExists(node1, node2)) {
+            return this;
+        }
+
         adjacencyList.get(node1).remove(node2);
         adjacencyList.get(node2).remove(node1);
 
@@ -187,6 +192,10 @@ public class Graph {
                 .filter(edge -> edge.hasNode(node1) && edge.hasNode(node2))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public boolean edgeExists(Node node1, Node node2) {
+        return edges.stream().anyMatch(edge -> edge.edgeOfNodes(node1, node2));
     }
 
 }

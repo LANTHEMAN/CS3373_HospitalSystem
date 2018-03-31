@@ -87,11 +87,6 @@ public class TestAStar {
         assertEquals(connectedToNodeD, filteredEdges);
     }
 
-    @Test(expected = AssertionError.class)
-    public void testInvalidNode() {
-        new NewNodeBuilder().build();
-    }
-
     @Test
     public void testAStar2() {
         Node nodeS = new NewNodeBuilder()

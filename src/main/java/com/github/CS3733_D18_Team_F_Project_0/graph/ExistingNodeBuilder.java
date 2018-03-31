@@ -1,6 +1,12 @@
 package com.github.CS3733_D18_Team_F_Project_0.graph;
 
 public class ExistingNodeBuilder extends NodeBuilder<ExistingNodeBuilder> {
+    // the floor of the Node
+    String floor = null;
+    // the nodeType of this Node
+    String nodeType = null;
+    // the database ID of this node
+    private String nodeID = null;
 
     /**
      * A builder class to make nodes from existing entries in the database
@@ -17,12 +23,6 @@ public class ExistingNodeBuilder extends NodeBuilder<ExistingNodeBuilder> {
         if (nodeID == null) {
             throw new AssertionError("Existing nodes must have a nodeID.");
         }
-
-        // parse fields from the nodeID if it exists
-        if (nodeID.length() != 10) {
-            throw new AssertionError("Invalid Node ID format. Not 10 characters 1ong.");
-        }
-
         if (position == null) {
             throw new AssertionError("Node must contain a position");
         }
@@ -36,9 +36,40 @@ public class ExistingNodeBuilder extends NodeBuilder<ExistingNodeBuilder> {
             throw new AssertionError("Node must contain a building");
         }
 
-        String nodeType = nodeID.substring(1, 5);
-        String floor = nodeID.substring(nodeID.length() - 2);
-
         return new Node(position, wireframePosition, 0, nodeID, floor, building, nodeType, shortName);
     }
+
+    public ExistingNodeBuilder setNodeID(String nodeID) {
+        // parse fields from the nodeID if it exists
+        if (nodeID.length() != 10) {
+            throw new AssertionError("Invalid Node ID format. Not 10 characters 1ong.");
+        }
+        nodeType = nodeID.substring(1, 5);
+        if (!(nodeType.equals("HALL")
+                || nodeType.equals("ELEV")
+                || nodeType.equals("REST")
+                || nodeType.equals("STAI")
+                || nodeType.equals("DEPT")
+                || nodeType.equals("LABS")
+                || nodeType.equals("INFO")
+                || nodeType.equals("CONF")
+                || nodeType.equals("EXIT")
+                || nodeType.equals("RETL")
+                || nodeType.equals("SERV"))) {
+            throw new AssertionError("The nodeType of the nodeID was invalid.");
+        }
+        floor = nodeID.substring(nodeID.length() - 2);
+        if (!(floor.equals("L1")
+                || floor.equals("L2")
+                || floor.equals("0G")
+                || floor.equals("01")
+                || floor.equals("02")
+                || floor.equals("03"))) {
+            throw new AssertionError("Unknown Floor Number. Must be any of: 0G, 01, 02, 03, L1, L2");
+        }
+        // set the nodeID last to ensure that it was valid
+        this.nodeID = nodeID;
+        return this;
+    }
 }
+
