@@ -2,6 +2,10 @@ package com.github.CS3733_D18_Team_F_Project_0.graph;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 // TODO this class needs exceptions for all guards
 public class Graph {
@@ -37,10 +41,14 @@ public class Graph {
         if (!adjacencyList.containsKey(node)) {
             return null;
         }
-        // remove all edges containing node
-        HashSet<Node> adjacentNodes = adjacencyList.get(node);
+
+        // remove all edges containing node from adjacency list
+        // must be a copy because of concurrent modification and iteration
+        // would only hold 1-4 node connections anyways
+        HashSet<Node> adjacentNodes = new HashSet<>(adjacencyList.get(node));
         for (Node adjacentNode : adjacentNodes) {
-            adjacencyList.get(adjacentNode).remove(node);
+            // remove edge from edges set
+            removeEdge(node, adjacentNode);
         }
         // remove the node
         adjacencyList.remove(node);
@@ -55,8 +63,9 @@ public class Graph {
             return this;
         }
         // if the node already exists
-        if (edges.stream().anyMatch(edge -> (edge.getNode1() == node1 && edge.getNode2() == node2)
-                || (edge.getNode1() == node2 && edge.getNode2() == node1))) {
+        if (edges.stream()
+                .anyMatch(edge -> (edge.getNode1() == node1 && edge.getNode2() == node2)
+                        || (edge.getNode1() == node2 && edge.getNode2() == node1))) {
             return this;
         }
         return addEdge(node1, node2, node1.getNodeID() + "_" + node2.getNodeID());
@@ -116,13 +125,9 @@ public class Graph {
         adjacencyList.get(node1).remove(node2);
         adjacencyList.get(node2).remove(node1);
 
-        // update edge list
-        for (Edge edge : edges) {
-            if (edge.edgeOfNodes(node1, node2)) {
-                edges.remove(edge);
-                break;
-            }
-        }
+        // remove edge from edges
+        edges.removeIf(edge -> edge.edgeOfNodes(node1, node2));
+
         return this;
     }
 
@@ -145,10 +150,29 @@ public class Graph {
      * @return The set of all nodes
      */
     public HashSet<Node> getNodes() {
+        // defensive copy of nodes
         HashSet<Node> nodes = new HashSet<>();
         adjacencyList.forEach((key, value) -> {
             nodes.add(key);
         });
         return nodes;
     }
+
+    public HashSet<Node> getNodes(Predicate<Node> filterFunction) {
+        return getNodes().stream().filter(filterFunction).collect(Collectors.toCollection(HashSet::new));
+    }
+
+    public HashSet<Edge> getEdges(Predicate<Edge> filterFunction) {
+        return edges.stream()
+                .filter(filterFunction)
+                .collect(Collectors.toCollection(HashSet::new));
+    }
+
+    public Edge getEdge(Node node1, Node node2) {
+        return edges.stream()
+                .filter(edge -> edge.hasNode(node1) && edge.hasNode(node2))
+                .findFirst()
+                .get();
+    }
+
 }

@@ -4,6 +4,7 @@ import javafx.geometry.Point3D;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
 
@@ -47,19 +48,19 @@ public class TestNode {
         graph.addEdge(nodeB, nodeC, "Test3").addEdge(nodeB, nodeD, "Test4");
         graph.addEdge(nodeC, nodeD, "Test5");
 
+        // create all paths for possible routes for testing
         ArrayList<Node> path1Arr = new ArrayList<>();
         path1Arr.add(nodeA);
         path1Arr.add(nodeB);
         path1Arr.add(nodeD);
-        Path path1 = new Path(path1Arr);
-
-        assertEquals(path1, AStar.getPath(graph, nodeA, nodeD));
-
+        Path path1 = new Path(path1Arr, graph);
         ArrayList<Node> path2Arr = new ArrayList<>();
         path2Arr.add(nodeA);
         path2Arr.add(nodeC);
         path2Arr.add(nodeD);
-        Path path2 = new Path(path2Arr);
+        Path path2 = new Path(path2Arr, graph);
+
+        assertEquals(path1, AStar.getPath(graph, nodeA, nodeD));
 
         graph.removeEdge(nodeA, nodeB);
         assertEquals(path2, AStar.getPath(graph, nodeA, nodeD));
@@ -70,6 +71,20 @@ public class TestNode {
         graph.removeNode(nodeB);
         assertEquals(path2, AStar.getPath(graph, nodeA, nodeD));
 
+        // check that filter methods work for nodes
+        graph.addNode(nodeB);
+        HashSet<Node> filteredNodes = graph.getNodes(
+                node -> node.getPosition().distance(0.d, 0.d, 0.d) < 2);
+        HashSet<Node> closeToOrigin = new HashSet<>();
+        closeToOrigin.add(nodeA);
+        closeToOrigin.add(nodeB);
+        assertEquals(closeToOrigin, filteredNodes);
+
+        // check that filter methods work for edges
+        HashSet<Edge> filteredEdges = graph.getEdges(edge -> edge.hasNode(nodeD));
+        HashSet<Edge> connectedToNodeD = new HashSet<>();
+        connectedToNodeD.add(graph.getEdge(nodeC, nodeD));
+        assertEquals(connectedToNodeD, filteredEdges);
     }
 
     @Test(expected = AssertionError.class)

@@ -3,10 +3,11 @@ package com.github.CS3733_D18_Team_F_Project_0.graph;
 import java.util.ArrayList;
 
 public class Path {
-    ArrayList<Node> path;
+    ArrayList<Node> nodes;
 
-    public Path(ArrayList<Node> path) {
-        this.path = path;
+    public Path(ArrayList<Node> path, Graph graph) {
+        this.nodes = path;
+
     }
 
     @Override
@@ -15,6 +16,6 @@ public class Path {
             return false;
         }
         Path path = (Path) obj;
-        return this.path.equals(path.path);
+        return this.nodes.equals(path.nodes);
     }
 }

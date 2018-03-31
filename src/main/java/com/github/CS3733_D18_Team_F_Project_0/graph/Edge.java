@@ -22,6 +22,10 @@ public class Edge {
         return edgeID;
     }
 
+    public boolean hasNode(Node node) {
+        return (node == node1 || node == node2);
+    }
+
     /**
      * Determine if this edge is the edge between two nodes
      *
@@ -29,7 +33,7 @@ public class Edge {
      * @param node2 The second node
      * @return True if this edge is between these two nodes, false otherwise
      */
-    public Boolean edgeOfNodes(Node node1, Node node2) {
+    public boolean edgeOfNodes(Node node1, Node node2) {
         if ((this.node1 == node1 && this.node2 == node2) ||
                 this.node2 == node1 && this.node1 == node2) return true;
         else return false;

@@ -20,7 +20,7 @@ public class AStar {
         } else if (source == destination) {
             ArrayList<Node> path = new ArrayList<>();
             path.add(source);
-            return new Path(path);
+            return new Path(path, graph);
         }
 
         // ensures that every Node only has 1 corresponding AStarNode
@@ -52,7 +52,7 @@ public class AStar {
                     path.add(itNode.getNode());
                 }
                 Collections.reverse(path);
-                return new Path(path);
+                return new Path(path, graph);
             }
 
             closedSet.add(currentNode);
@@ -86,7 +86,7 @@ public class AStar {
         }
 
         // no path was found
-        return new Path(new ArrayList<>());
+        return new Path(new ArrayList<>(), graph);
     }
 
     // wrapper class for Node that allows priority queue comparisons

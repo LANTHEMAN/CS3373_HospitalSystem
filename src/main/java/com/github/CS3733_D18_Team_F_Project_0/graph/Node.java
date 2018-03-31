@@ -21,6 +21,7 @@ public class Node {
     // an abbreviation of the name of this node
     private String shortName;
 
+
     Node(Point3D position, Point2D wireframePosition, double additionalWeight, String nodeID, String floor, String building
             , String nodeType, String shortName) {
         this.position = position;
@@ -63,5 +64,49 @@ public class Node {
      */
     public void setAdditionalWeight(double additionalWeight) {
         this.additionalWeight = additionalWeight;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public Point3D getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point3D position) {
+        this.position = position;
+    }
+
+    public Point2D getWireframePosition() {
+        return wireframePosition;
+    }
+
+    public void setWireframePosition(Point2D wireframePosition) {
+        this.wireframePosition = wireframePosition;
+    }
+
+    public String getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(String building) {
+        this.building = building;
+    }
+
+    public String getNodeType() {
+        return nodeType;
+    }
+
+    public void setNodeType(String nodeType) {
+        this.nodeType = nodeType;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 }
