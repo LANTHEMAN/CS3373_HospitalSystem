@@ -194,6 +194,12 @@ public class Graph {
                 .orElse(null);
     }
 
+    /**
+     *
+     * @param node1 a node inside of the edge
+     * @param node2 a node inside of the edge
+     * @return if an edge exists with these nodes
+     */
     public boolean edgeExists(Node node1, Node node2) {
         return edges.stream().anyMatch(edge -> edge.edgeOfNodes(node1, node2));
     }
