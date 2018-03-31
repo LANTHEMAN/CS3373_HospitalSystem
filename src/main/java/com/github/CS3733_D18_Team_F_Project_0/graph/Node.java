@@ -126,6 +126,19 @@ public class Node {
      * @param nodeType the new node type of this node
      */
     public void setNodeType(String nodeType) {
+        if (!(nodeType.equals("HALL")
+                || nodeType.equals("ELEV")
+                || nodeType.equals("REST")
+                || nodeType.equals("STAI")
+                || nodeType.equals("DEPT")
+                || nodeType.equals("LABS")
+                || nodeType.equals("INFO")
+                || nodeType.equals("CONF")
+                || nodeType.equals("EXIT")
+                || nodeType.equals("RETL")
+                || nodeType.equals("SERV"))) {
+            throw new AssertionError("The nodeType was invalid.");
+        }
         this.nodeType = nodeType;
     }
 

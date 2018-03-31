@@ -95,8 +95,18 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
      * @return this to allow chained builder calls
      */
     public NewNodeBuilder setNodeType(String nodeType) {
-        if (nodeType.length() != 4) {
-            throw new AssertionError("A node type must be 4 characters long.");
+        if (!(nodeType.equals("HALL")
+                || nodeType.equals("ELEV")
+                || nodeType.equals("REST")
+                || nodeType.equals("STAI")
+                || nodeType.equals("DEPT")
+                || nodeType.equals("LABS")
+                || nodeType.equals("INFO")
+                || nodeType.equals("CONF")
+                || nodeType.equals("EXIT")
+                || nodeType.equals("RETL")
+                || nodeType.equals("SERV"))) {
+            throw new AssertionError("The nodeType was invalid.");
         }
         this.nodeType = nodeType;
         return this;
