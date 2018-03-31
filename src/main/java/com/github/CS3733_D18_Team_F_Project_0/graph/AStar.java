@@ -7,19 +7,20 @@ public class AStar {
     /**
      * Static function to determine the best route from one node to another
      * given a graph
-     * @param graph The graph to find path on
-     * @param source The source node in the graph
+     *
+     * @param graph       The graph to find path on
+     * @param source      The source node in the graph
      * @param destination The destination node in the graph
      * @return An array of Nodes that represent a path through the graph
      */
-    public static ArrayList<Node> getPath(Graph graph, Node source, Node destination) {
+    public static Path getPath(Graph graph, Node source, Node destination) {
         // see if the destination exists or if src equals dst
         if (destination == null || source == null) {
             throw new AssertionError();
         } else if (source == destination) {
             ArrayList<Node> path = new ArrayList<>();
             path.add(source);
-            return path;
+            return new Path(path, graph);
         }
 
         // ensures that every Node only has 1 corresponding AStarNode
@@ -51,7 +52,7 @@ public class AStar {
                     path.add(itNode.getNode());
                 }
                 Collections.reverse(path);
-                return path;
+                return new Path(path, graph);
             }
 
             closedSet.add(currentNode);
@@ -85,7 +86,7 @@ public class AStar {
         }
 
         // no path was found
-        return new ArrayList<>();
+        return new Path(new ArrayList<>(), graph);
     }
 
     // wrapper class for Node that allows priority queue comparisons
@@ -97,10 +98,11 @@ public class AStar {
 
         /**
          * A specific version of a node that stores values specific to this path
-         * @param node The current node to base the AStarNode off of
-         * @param destination The destination node in the graph
+         *
+         * @param node             The current node to base the AStarNode off of
+         * @param destination      The destination node in the graph
          * @param distanceTraveled The distance traveled up until this node
-         * @param knownNodes The known nodes along this path so far
+         * @param knownNodes       The known nodes along this path so far
          */
         private AStarNode(Node node, Node destination, double distanceTraveled
                 , HashMap<Node, AStarNode> knownNodes) {
@@ -112,6 +114,7 @@ public class AStar {
 
         /**
          * Find cartesian distance between two nodes
+         *
          * @param node The node to find the distance to
          * @return The distance from this node to the destination node
          */
@@ -121,6 +124,7 @@ public class AStar {
 
         /**
          * Get all the neighbors of this node
+         *
          * @param graph The graph that contains this node
          * @return A LinkedList of all the neighbor nodes
          */
@@ -140,6 +144,7 @@ public class AStar {
 
         /**
          * Get this node
+         *
          * @return This node
          */
         private Node getNode() {
@@ -148,6 +153,7 @@ public class AStar {
 
         /**
          * Set the distance the distance traveled for this node so far
+         *
          * @param distanceTraveled The new distance traveled
          */
         private void setDistanceTraveled(double distanceTraveled) {
@@ -156,6 +162,7 @@ public class AStar {
 
         /**
          * Get the G score for AStar algorithm
+         *
          * @return The G score
          */
         private double getGScore() {
@@ -164,6 +171,7 @@ public class AStar {
 
         /**
          * Get the F score for AStar algorithm
+         *
          * @return The F Score
          */
         private double getFScore() {
@@ -172,6 +180,7 @@ public class AStar {
 
         /**
          * Compare two nodes for priority queue purposes
+         *
          * @param other The other node to compare
          * @return Negative if this node is "less", positive otherwise
          */
