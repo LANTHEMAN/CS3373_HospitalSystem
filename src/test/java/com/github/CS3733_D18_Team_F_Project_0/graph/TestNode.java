@@ -89,7 +89,7 @@ public class TestNode {
 
     @Test(expected = AssertionError.class)
     public void testInvalidNode() {
-        Node node = new NewNodeBuilder().build();
+        new NewNodeBuilder().build();
     }
 
     /*
