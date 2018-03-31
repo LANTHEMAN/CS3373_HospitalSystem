@@ -2,17 +2,23 @@ package com.github.CS3733_D18_Team_F_Project_0.graph;
 
 public class ExistingNodeBuilder extends NodeBuilder<ExistingNodeBuilder> {
 
+    /**
+     * A builder class to make nodes from existing entries in the database
+     */
     public ExistingNodeBuilder() {
         super(ExistingNodeBuilder.class);
     }
 
+    /**
+     * @return the node built from this builder class
+     */
     public Node build() {
         // there must be a nodeID
         if (nodeID == null) {
             throw new AssertionError("Existing nodes must have a nodeID.");
         }
 
-        // parse fields fron the nodeID if it exists
+        // parse fields from the nodeID if it exists
         if (nodeID.length() != 10) {
             throw new AssertionError("Invalid Node ID format. Not 10 characters 1ong.");
         }

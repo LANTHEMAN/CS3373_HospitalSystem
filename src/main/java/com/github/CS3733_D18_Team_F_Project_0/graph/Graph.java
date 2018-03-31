@@ -2,12 +2,9 @@ package com.github.CS3733_D18_Team_F_Project_0.graph;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-// TODO this class needs exceptions for all guards
 public class Graph {
     private HashMap<Node, HashSet<Node>> adjacencyList;
     private HashSet<Edge> edges;
@@ -56,11 +53,17 @@ public class Graph {
         return this;
     }
 
-
+    /**
+     * used to create an entirely new edge
+     *
+     * @param node1 the first node
+     * @param node2 the second node
+     * @return a reference to this to allow chained calls during testing
+     */
     public Graph addEdge(Node node1, Node node2) {
         // make sure both nodes exist
         if (!adjacencyList.containsKey(node1) || !adjacencyList.containsKey(node2)) {
-            return this;
+            throw new AssertionError("Attempted to add an edge from non-existent node(s)");
         }
         // if the node already exists
         if (edges.stream()
@@ -72,17 +75,17 @@ public class Graph {
     }
 
     /**
-     * Add an edge between two nodes
+     * Add an edge between two nodes with an existing nodeID
      *
      * @param node1  The first node
      * @param node2  The second node
-     * @param edgeID The string ID of this new edge
-     * @return The graph with the new edge
+     * @param edgeID The id of this edge
+     * @return a reference to this to allow chained calls during testing
      */
     public Graph addEdge(Node node1, Node node2, String edgeID) {
         // make sure both nodes exist
         if (!adjacencyList.containsKey(node1) || !adjacencyList.containsKey(node2)) {
-            return this;
+            throw new AssertionError("Attempted to add an edge from non-existent node(s)");
         }
 
         // double ch if the edge exists in the adjacency list
@@ -115,12 +118,12 @@ public class Graph {
      *
      * @param node1 The first node that this edge is connected to
      * @param node2 The second node that this edge is connected to
-     * @return The graph that has been modified, null if not removed
+     * @return a reference to this to allow chained calls during testing
      */
     public Graph removeEdge(Node node1, Node node2) {
         // make sure both nodes exist
         if (!adjacencyList.containsKey(node1) || !adjacencyList.containsKey(node2)) {
-            return null;
+            throw new AssertionError("Attempted to remove an edge from non-existent node(s)");
         }
         adjacencyList.get(node1).remove(node2);
         adjacencyList.get(node2).remove(node1);
@@ -145,8 +148,6 @@ public class Graph {
     }
 
     /**
-     * Get a set off all the nodes in the graph
-     *
      * @return The set of all nodes
      */
     public HashSet<Node> getNodes() {
@@ -158,21 +159,34 @@ public class Graph {
         return nodes;
     }
 
+    /**
+     * @param filterFunction a filter function
+     * @return a filtered set off all the nodes in the graph
+     */
     public HashSet<Node> getNodes(Predicate<Node> filterFunction) {
         return getNodes().stream().filter(filterFunction).collect(Collectors.toCollection(HashSet::new));
     }
 
+    /**
+     * @param filterFunction a filter function
+     * @return a filtered set off all the edges in the graph
+     */
     public HashSet<Edge> getEdges(Predicate<Edge> filterFunction) {
         return edges.stream()
                 .filter(filterFunction)
                 .collect(Collectors.toCollection(HashSet::new));
     }
 
+    /**
+     * @param node1 a node inside of the edge
+     * @param node2 a node inside of the edge
+     * @return the edge or null if it does not exist
+     */
     public Edge getEdge(Node node1, Node node2) {
         return edges.stream()
                 .filter(edge -> edge.hasNode(node1) && edge.hasNode(node2))
                 .findFirst()
-                .get();
+                .orElse(null);
     }
 
 }

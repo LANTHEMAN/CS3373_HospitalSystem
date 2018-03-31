@@ -66,46 +66,79 @@ public class Node {
         this.additionalWeight = additionalWeight;
     }
 
+    /**
+     * @return the floor of this node
+     */
     public String getFloor() {
         return floor;
     }
 
+    /**
+     * @return the position of this node
+     */
     public Point3D getPosition() {
         return position;
     }
 
+    /**
+     * @param position the new position of this node
+     */
     public void setPosition(Point3D position) {
         this.position = position;
     }
 
+    /**
+     * @return the wireframe map position of this node
+     */
     public Point2D getWireframePosition() {
         return wireframePosition;
     }
 
+    /**
+     * @param wireframePosition the new wireframe map position of this node
+     */
     public void setWireframePosition(Point2D wireframePosition) {
         this.wireframePosition = wireframePosition;
     }
 
+    /**
+     * @return the building of this node
+     */
     public String getBuilding() {
         return building;
     }
 
+    /**
+     * @param building the new building of this node
+     */
     public void setBuilding(String building) {
         this.building = building;
     }
 
+    /**
+     * @return the node type of this node
+     */
     public String getNodeType() {
         return nodeType;
     }
 
+    /**
+     * @param nodeType the new node type of this node
+     */
     public void setNodeType(String nodeType) {
         this.nodeType = nodeType;
     }
 
+    /**
+     * @return the short name of this node
+     */
     public String getShortName() {
         return shortName;
     }
 
+    /**
+     * @param shortName the new short name of this node
+     */
     public void setShortName(String shortName) {
         this.shortName = shortName;
     }

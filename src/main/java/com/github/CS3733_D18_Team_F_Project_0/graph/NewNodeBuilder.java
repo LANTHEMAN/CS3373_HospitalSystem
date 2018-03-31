@@ -12,10 +12,16 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
     // the name of the floor where this node is located
     private String floor = null;
 
+    /**
+     * A builder class to make entirely new nodes
+     */
     public NewNodeBuilder() {
         super(NewNodeBuilder.class);
     }
 
+    /**
+     * @return the node built from this builder class
+     */
     public Node build() {
         if (nodeType == null) {
             throw new AssertionError("A node type must be specified.");
@@ -62,11 +68,19 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
         return new Node(position, wireframePosition, 0, nodeID, floor, building, nodeType, shortName);
     }
 
+    /**
+     * @param numNodeType the number of nodes of this node type
+     * @return this to allow chained builder calls
+     */
     public NewNodeBuilder setNumNodeType(int numNodeType) {
         this.numNodeType = numNodeType;
         return this;
     }
 
+    /**
+     * @param elevatorChar the elevator letter, only if this is an elevator
+     * @return this to allow chained builder calls
+     */
     public NewNodeBuilder setElevatorChar(char elevatorChar) {
         if (!(Character.isLetter(elevatorChar))) {
             throw new AssertionError("You must assign a valid elevator character!");
@@ -76,6 +90,10 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
         return this;
     }
 
+    /**
+     * @param nodeType the type of this node
+     * @return this to allow chained builder calls
+     */
     public NewNodeBuilder setNodeType(String nodeType) {
         if (nodeType.length() != 4) {
             throw new AssertionError("A node type must be 4 characters long.");
@@ -84,6 +102,10 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
         return this;
     }
 
+    /**
+     * @param floor the floor of this node
+     * @return this to allow chained builder calls
+     */
     public NewNodeBuilder setFloor(String floor) {
         if (floor.equals("0") || floor.equals("0G")) {
             this.floor = "0G";

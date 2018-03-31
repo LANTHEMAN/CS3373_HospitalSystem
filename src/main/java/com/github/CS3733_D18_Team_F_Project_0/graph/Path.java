@@ -2,12 +2,16 @@ package com.github.CS3733_D18_Team_F_Project_0.graph;
 
 import java.util.ArrayList;
 
-import static junit.framework.TestCase.assertTrue;
-
 public class Path {
     private ArrayList<Node> nodes;
     private ArrayList<Edge> edges;
 
+    /**
+     * A collection of nodes and edges representing a path along a graph
+     *
+     * @param path  the list of nodes
+     * @param graph the graph containing the nodes
+     */
     public Path(ArrayList<Node> path, Graph graph) {
         this.nodes = path;
         this.edges = new ArrayList<>();
@@ -20,13 +24,22 @@ public class Path {
             }
             prevNode = node;
         }
-        assertTrue(nodes.size() > 1 && nodes.size() != edges.size() - 1);
+
+        if (!(nodes.size() > 1 && nodes.size() != edges.size() - 1)) {
+            throw new AssertionError("The nodes must be connected by edges!");
+        }
     }
 
+    /**
+     * @return the nodes of this path
+     */
     public ArrayList<Node> getNodes() {
         return nodes;
     }
 
+    /**
+     * @return the edges in this path
+     */
     public ArrayList<Edge> getEdges() {
         return edges;
     }

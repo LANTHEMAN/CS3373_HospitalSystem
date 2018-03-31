@@ -1,7 +1,7 @@
 package com.github.CS3733_D18_Team_F_Project_0.graph;
 
 public class Edge {
-    String edgeID;
+    private String edgeID;
     private Node node1;
     private Node node2;
 
@@ -18,7 +18,11 @@ public class Edge {
         this.node2 = node2;
     }
 
-    String getEdgeID() {
+    /**
+     *
+     * @return the edgeID of this edge
+     */
+    public String getEdgeID() {
         return edgeID;
     }
 
