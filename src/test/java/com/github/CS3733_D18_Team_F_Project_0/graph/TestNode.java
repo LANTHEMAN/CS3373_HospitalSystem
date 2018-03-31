@@ -11,28 +11,28 @@ public class TestNode {
 
     @Test
     public void testAStar1() {
-        Node nodeA = new NodeBuilder()
+        Node nodeA = new NewNodeBuilder()
                 .setPosition(new Point3D(0, 0, 0))
                 .setNodeType("HALL")
                 .setNumNodeType(1)
                 .setBuilding("Place")
                 .setFloor("0G")
                 .build();
-        Node nodeB = new NodeBuilder()
+        Node nodeB = new NewNodeBuilder()
                 .setPosition(new Point3D(1, 1, 1))
                 .setNodeType("HALL")
                 .setNumNodeType(2)
                 .setBuilding("Place")
                 .setFloor("0G")
                 .build();
-        Node nodeC = new NodeBuilder()
+        Node nodeC = new NewNodeBuilder()
                 .setPosition(new Point3D(4, 4, 4))
                 .setNodeType("HALL")
                 .setNumNodeType(3)
                 .setBuilding("Place")
                 .setFloor("0G")
                 .build();
-        Node nodeD = new NodeBuilder()
+        Node nodeD = new NewNodeBuilder()
                 .setPosition(new Point3D(2, 2, 2))
                 .setNodeType("HALL")
                 .setNumNodeType(4)
@@ -74,7 +74,7 @@ public class TestNode {
 
     @Test(expected = AssertionError.class)
     public void testInvalidNode() {
-        Node node = new NodeBuilder().build();
+        Node node = new NewNodeBuilder().build();
     }
 
     /*

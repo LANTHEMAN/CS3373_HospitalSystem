@@ -2,93 +2,59 @@ package com.github.CS3733_D18_Team_F_Project_0.graph;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
-import org.junit.Assert;
 
-public class NodeBuilder {
+public abstract class NodeBuilder<T> {
+    protected final Class<T> subClass;
+
     // the database ID of this node
-    private String nodeID = null;
+    protected String nodeID = null;
     // the name of the floor where this node is located
-    private String floor = null;
-    // which team was assigned to create this node
-    private String teamAssigned = "Team F";
+    protected String floor = null;
     // actual 3d position of node
-    private Point3D position = null;
+    protected Point3D position = null;
     // position of the node on the wireframe map
-    private Point2D wireframePosition = null;
-    // extra weight to cause A* to more likely avoid this node
-    private double additionalWeight = 0;
+    protected Point2D wireframePosition = null;
     // the name of the building this node is located in
-    private String building = null;
+    protected String building = null;
     // the type of location this node is at
-    private String nodeType = null;
-    // the full name of the location of this node
-    private String longName = null;
+    protected String nodeType = null;
     // an abbreviation of the name of this node
-    private String shortName = null;
-    // elevator number for when nodetype is elevator
-    private char elevatorChar = '\0';
-    // for completely new nodes
-    // keeps track of the number of nodes of this node type
-    private int numNodeType = -1;
+    protected String shortName = null;
 
-    public NodeBuilder setTeamAssigned(String teamAssigned) {
-        this.teamAssigned = teamAssigned;
-        return this;
+    protected NodeBuilder(Class<T> subClass) {
+        this.subClass = subClass;
     }
 
-    public NodeBuilder setPosition(Point3D position) {
+    public T setPosition(Point3D position) {
         this.position = position;
-        return this;
+        return subClass.cast(this);
     }
 
-    public NodeBuilder setWireframePosition(Point2D wireframePosition) {
+    public T setWireframePosition(Point2D wireframePosition) {
         this.wireframePosition = wireframePosition;
-        return this;
+        return subClass.cast(this);
     }
 
-    public NodeBuilder setAdditionalWeight(double additionalWeight) {
-        this.additionalWeight = additionalWeight;
-        return this;
-    }
-
-    public NodeBuilder setBuilding(String building) {
+    public T setBuilding(String building) {
         this.building = building;
-        return this;
+        return subClass.cast(this);
     }
 
-    public NodeBuilder setNodeType(String nodeType) {
-        if(nodeType.length() != 4){
+    public T setNodeType(String nodeType) {
+        if (nodeType.length() != 4) {
             throw new AssertionError("A node type must be 4 characters long.");
         }
         this.nodeType = nodeType;
-        return this;
+        return subClass.cast(this);
     }
 
-    public NodeBuilder setLongName(String longName) {
-        this.longName = longName;
-        return this;
-    }
-
-    public NodeBuilder setShortName(String shortName) {
+    public T setShortName(String shortName) {
         this.shortName = shortName;
-        return this;
+        return subClass.cast(this);
     }
 
-    public NodeBuilder setElevatorChar(char elevatorChar) {
-        if(!(Character.isLetter(elevatorChar) | Character.isDigit(elevatorChar))){
-            throw new AssertionError("You must assign a valid elevator character!");
-        }
 
-        this.elevatorChar = elevatorChar;
-        return this;
-    }
-
-    public NodeBuilder setNumNodeType(int numNodeType) {
-        this.numNodeType = numNodeType;
-        return this;
-    }
-
-    public NodeBuilder setFloor(String floor) {
+    public T setFloor(String floor) {
         if (floor.equals("0") || floor.equals("0G")) {
             this.floor = "0G";
         } else if (floor.equals("1") || floor.equals("01")) {
@@ -103,71 +69,8 @@ public class NodeBuilder {
             }
             this.floor = floor;
         }
-        return this;
+        return subClass.cast(this);
     }
 
-    public Node build() {
-        if(nodeID != null){
-            // parse fields fron the nodeID if it exists
-            if(nodeID.length() != 10){
-                throw new AssertionError("Invalid Node ID format. Not 10 characters 1ong.");
-            }
-        }
-
-        if (nodeID == null) {
-            if (nodeType == null) {
-                throw new AssertionError("A node type must be specified.");
-            }
-
-            if (nodeType.length() != 4) {
-                throw new AssertionError("Node type must be 4 characters long.");
-            }
-
-            if (numNodeType == -1) {
-                throw new AssertionError("When creating a new node, you must set the number of " +
-                        "nodes of that type.");
-            }
-            String numNodeTypeStr;
-            if (nodeType == "ELEV") {
-                if (elevatorChar == '\0') {
-                    throw new AssertionError("When creating an elevator assign the elevator name.");
-                }
-                numNodeTypeStr = "00" + elevatorChar;
-            } else {
-                numNodeTypeStr = String.format("%03d", numNodeType);
-            }
-
-            if (floor == null) {
-                throw new AssertionError("You must assign a floor to a node.");
-            }
-
-            nodeID = "X" + nodeType + numNodeTypeStr + floor;
-        }
-
-        if(position == null){
-            throw new AssertionError("You must set a position.");
-        }
-        if (wireframePosition == null) {
-            wireframePosition = new Point2D(position.getX(), position.getY());
-        }
-
-        if(building == null){
-            throw new AssertionError("You must set a building.");
-        }
-
-        if (shortName == null) {
-            if(longName != null){
-                shortName = longName;
-            }
-            else{
-                shortName = nodeID + "[Unset shortName]";
-            }
-        }
-
-        if (longName == null) {
-            longName = nodeID + " [Unset longName]";
-        }
-
-        return new Node(position, wireframePosition, additionalWeight, nodeID, floor, building, nodeType, longName, shortName, teamAssigned);
-    }
 }
+

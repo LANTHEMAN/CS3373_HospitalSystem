@@ -8,8 +8,6 @@ public class Node {
     private final String nodeID;
     // the name of the floor where this node is located
     private final String floor;
-    // which team was assigned to create this node
-    private final String teamAssigned;
     // actual 3d position of node
     private Point3D position;
     // position of the node on the wireframe map
@@ -20,13 +18,11 @@ public class Node {
     private String building;
     // the type of location this node is at
     private String nodeType;
-    // the full name of the location of this node
-    private String longName;
     // an abbreviation of the name of this node
     private String shortName;
 
     Node(Point3D position, Point2D wireframePosition, double additionalWeight, String nodeID, String floor, String building
-            , String nodeType, String longName, String shortName, String teamAssigned) {
+            , String nodeType, String shortName) {
         this.position = position;
         this.wireframePosition = wireframePosition;
         this.additionalWeight = additionalWeight;
@@ -34,9 +30,7 @@ public class Node {
         this.floor = floor;
         this.building = building;
         this.nodeType = nodeType;
-        this.longName = longName;
         this.shortName = shortName;
-        this.teamAssigned = teamAssigned;
     }
 
     public String getNodeID() {
