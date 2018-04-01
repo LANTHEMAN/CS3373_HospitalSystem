@@ -8,6 +8,7 @@ building varchar(10),
 nodeType char(4),
 longName varchar(50),
 shortName varchar(30),
+teamName varchar(30),
 xcoord3d REAL not NULL,
 ycoord3d REAL not NULL
 )
