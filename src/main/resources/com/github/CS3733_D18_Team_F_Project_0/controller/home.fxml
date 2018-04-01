@@ -178,7 +178,7 @@
                 </VBox>
             </children>
         </GridPane>
-        <GridPane style="-fx-background-color: E7F3F8;" GridPane.columnIndex="1">
+        <GridPane prefHeight="730.0" prefWidth="0.0" style="-fx-background-color: E7F3F8;" GridPane.columnIndex="1">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
@@ -209,7 +209,7 @@
                                 <Font name="Helvetica Light" size="17.0" />
                             </font>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="90.0" prefWidth="140.0" text="%RequestService" textAlignment="CENTER" wrapText="true">
+                        <Button mnemonicParsing="false" onAction="#onServiceRequest" prefHeight="90.0" prefWidth="140.0" text="%RequestService" textAlignment="CENTER" wrapText="true">
                             <font>
                                 <Font name="Helvetica Light" size="17.0" />
                             </font>

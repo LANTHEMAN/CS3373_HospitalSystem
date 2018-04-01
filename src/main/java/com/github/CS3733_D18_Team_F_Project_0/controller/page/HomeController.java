@@ -148,8 +148,13 @@ public class HomeController implements SwitchableController {
                 Screens.Home);
     }
 
+    @FXML
+    void onServiceRequest() {
+        switcher.switchTo(Screens.ServiceRequest);
+    }
 
-    // Zooming in and out
+
+        // Zooming in and out
 
     @FXML
     void onZoomIn() {
