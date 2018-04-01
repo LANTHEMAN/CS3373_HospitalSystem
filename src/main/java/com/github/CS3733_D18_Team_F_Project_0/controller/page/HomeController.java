@@ -4,23 +4,40 @@ import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
 import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
 import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
 import com.github.CS3733_D18_Team_F_Project_0.controller.UTF8Control;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+
 public class HomeController implements SwitchableController {
 
-    private PaneSwitcher switcher;
-
+    private final ObservableList<String> patientRooms = FXCollections.observableArrayList(
+            "Patient Room 1",
+            "Patient Room 2",
+            "Patient Room 3");
+    private final ObservableList<String> bathrooms = FXCollections.observableArrayList(
+            "Bathroom 1",
+            "Bathroom 2");
+    private final ObservableList<String> all = FXCollections.observableArrayList();
     @FXML
     public Button DirectionsSwitch;
     @FXML
-    public ComboBox locations;
+    public ComboBox cboxDestinationType;
+    @FXML
+    public ComboBox cboxAvailableLocations;
+    private PaneSwitcher switcher;
     @FXML
     private ImageView ivMap;
     @FXML
@@ -28,18 +45,64 @@ public class HomeController implements SwitchableController {
     @FXML
     private VBox vbxLocation;
 
+    @FXML
+    private VBox addLocationPopup;
+    @FXML
+    private TextField txtXPos;
+    @FXML
+    private TextField txtYPos;
+
+    @FXML
+    private VBox findLocationPopup;
+    @FXML
+    private Circle locationCircle;
+    @FXML
+    private Text txtFindLocation;
+    @FXML
+    private Button btnLocationDirections;
+
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
 
-        locations.getItems().clear();
-        locations.getItems().addAll(
+        cboxDestinationType.getItems().clear();
+        cboxDestinationType.getItems().addAll(
                 "All",
-                "Option 1",
-                "Option 2",
-                "Option 3");
-        locations.getSelectionModel().selectFirst();
+                "Patient Room",
+                "Bathroom",
+                "ATM",
+                "Emergrency Services");
+        cboxDestinationType.getSelectionModel().selectFirst(); // or ".select("All");
+
+        /*cboxAvailableLocations.getItems().clear();
+        cboxAvailableLocations.getItems().addAll(
+                "Patient Room 1",
+                "Patient Room 2",
+                "Patient Room 3");
+        cboxAvailableLocations.setItems(patientRooms);*/
+        //cboxAvailableLocations.getItems().addAll(patientRooms, bathrooms);
+
+        all.addAll(patientRooms);
+        all.addAll(bathrooms);
+        cboxAvailableLocations.getItems().addAll(all);
+
+        ivMap.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                // only adds one location at a time
+                if (addLocationPopup.isVisible() == false) {
+                    addLocationPopup.setTranslateX(mouseEvent.getX() + 10);
+                    addLocationPopup.setTranslateY(mouseEvent.getY() - 180);
+                    txtXPos.setText("" + (int) mouseEvent.getX());
+                    txtYPos.setText("" + (int) mouseEvent.getY());
+                    addLocationPopup.setVisible(true);
+                }
+            }
+        });
     }
+
+
+    // Popup upon login
 
     @FXML
     void onLoginPopup() {
@@ -47,14 +110,19 @@ public class HomeController implements SwitchableController {
     }
 
 
-    @FXML
-    void onNavigationSwitch() {
-    }
+    // Menus on right
 
     @FXML
     void onDirectionsSwitch() {
-
     }
+
+    @FXML
+    void onFloorSwitch() {
+        switcher.switchTo(Screens.Floor);
+    }
+
+
+    // Language
 
     @FXML
     void onEnglish() {
@@ -80,10 +148,8 @@ public class HomeController implements SwitchableController {
                 Screens.Home);
     }
 
-    @FXML
-    void onFloorSwitch() {
-        switcher.switchTo(Screens.Floor);
-    }
+
+    // Zooming in and out
 
     @FXML
     void onZoomIn() {
@@ -108,6 +174,8 @@ public class HomeController implements SwitchableController {
         }
     }*/
 
+    // Menus on right
+
     @FXML
     void onFindLocation() {
         vbxMenu.setVisible(false);
@@ -120,18 +188,61 @@ public class HomeController implements SwitchableController {
         vbxMenu.setVisible(true);
     }
 
+
+    // Add Location
+
     @FXML
-    void onServiceRequest() {
-        switcher.switchTo(Screens.ServiceRequest);
+    void onAddLocationConfirm() {
+        // TODO Send txtXPos.getText() and txtYPos.getText() to database
+        addLocationPopup.setVisible(false);
+        txtXPos.setText("");
+        txtYPos.setText("");
     }
 
     @FXML
-    void onAddLocationConfirm(){
-
+    void onAddLocationCancel() {
+        addLocationPopup.setVisible(false);
+        txtXPos.setText("");
+        txtYPos.setText("");
     }
+
+
+    // Find Location
+
     @FXML
-    void onAddLocationCancel(){
+    void onDestinationType() {
+        // create an object with a translation string and a database string name/id?
+        if (cboxDestinationType.getSelectionModel().getSelectedItem().equals("Patient Room")) {
+            cboxAvailableLocations.setItems(patientRooms);
+        } else if (cboxDestinationType.getSelectionModel().getSelectedItem().equals("Bathroom")) {
+            cboxAvailableLocations.setItems(bathrooms);
+        } else {
+            // default to displaying all types?
+            cboxAvailableLocations.setItems(all);
+        }
+    }
+
+    @FXML
+    void onAvailableLocations() {
+        // TODO get the actual x, y, and name
+        // need that database package object as above^
+        // get id from object, get x and y from database
+
+        // TODO need some sort of update() in order to animate/shrink the circle :((
+        // display the location at this location
+        findLocationPopup.setTranslateX(100);
+        findLocationPopup.setTranslateY(100);
+        txtFindLocation.setText("" + cboxAvailableLocations.getSelectionModel().getSelectedItem());
+        findLocationPopup.setVisible(true);
 
     }
 
+    @FXML
+    void onLocationDirections() {
+        // hide location selection
+        findLocationPopup.setVisible(false);
+        // find directions with this location
+        // TODO need to set field of txtfield first!!!!! (like putting in register before pass)
+        onDirectionsSwitch();
+    }
 }
