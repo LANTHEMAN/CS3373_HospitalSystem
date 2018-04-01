@@ -38,7 +38,6 @@ public class Map implements DatabaseItem {
                 System.out.println("DB: Initializing NODE table entry");
                 dbHandler.runSQLScript("init_node_db.sql");
 
-
                 List<String> nodeFilePaths = Files.walk(Paths.get(dbHandler.getClass().getResource("map").toURI()))
                         .filter(Files::isRegularFile)
                         .filter(path -> path.getFileName().toString().contains("nodes.csv"))
@@ -82,8 +81,6 @@ public class Map implements DatabaseItem {
                     }
                 }
             }
-
-
         } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
@@ -94,11 +91,36 @@ public class Map implements DatabaseItem {
                 System.out.println("DB: Initializing EDGE table entry");
                 dbHandler.runSQLScript("init_edge_db.sql");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            List<String> edgeFilePaths = Files.walk(Paths.get(dbHandler.getClass().getResource("map").toURI()))
+                    .filter(Files::isRegularFile)
+                    .filter(path -> path.getFileName().toString().contains("edges.csv"))
+                    .map(path -> path.getFileName().toString())
+                    .collect(Collectors.toList());
+
+            for (String edgeFilePath : edgeFilePaths) {
+                File csvFile = new File(dbHandler.getClass().getResource("map/" + edgeFilePath).toURI().getPath());
+                CSVParser parser = CSVParser.parse(csvFile, StandardCharsets.UTF_8, CSVFormat.RFC4180);
+
+                for (CSVRecord record : parser) {
+                    if (record.get(0).contains("edgeID")) {
+                        continue;
+                    }
+
+                    String edgeID = record.get(0);
+                    String startNode = record.get(1);
+                    String endNode = record.get(2);
+
+                    String cmd = "INSERT INTO EDGE VALUES ("
+                            + "'" + edgeID + "'"
+                            + ",(select ID from NODE where ID = '" + startNode + "')"
+                            + ",(select ID from NODE where ID = '" + endNode + "')"
+                            + ")";
+                    dbHandler.runAction(cmd);
+                }
+            }
+        } catch (IOException | SQLException | URISyntaxException e1) {
+            e1.printStackTrace();
         }
-
-
     }
 
     @Override

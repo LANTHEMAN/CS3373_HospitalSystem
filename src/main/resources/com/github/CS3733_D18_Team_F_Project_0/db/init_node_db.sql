@@ -1,6 +1,6 @@
 
 Create Table Node (
-id varchar(15) Primary Key,
+id char(10) Primary Key,
 x_coord REAL not NULL,
 y_coord REAL not NULL,
 floor char(2),
