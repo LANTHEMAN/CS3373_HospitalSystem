@@ -1,4 +1,4 @@
-﻿nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned,3dxcoord,3dycoord
+﻿nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned,xcoord3d,ycoord3d
 HHALL00102,1875,925,2,Tower,HALL,Hallway Connector 1 Floor 2,Hallway H00102,Team H,1840,1296
 HHALL00202,1955,900,2,Tower,HALL,Hallway Connector 2 Floor 2,Hallway H00202,Team H,1920,1300
 HRETL00102,1935,860,2,Tower,RETL,Garden Cafe,Garden Cafe,Team H,1901,1262

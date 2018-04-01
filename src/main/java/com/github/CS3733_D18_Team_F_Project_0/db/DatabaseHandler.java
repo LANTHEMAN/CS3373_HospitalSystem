@@ -1,5 +1,7 @@
 package com.github.CS3733_D18_Team_F_Project_0.db;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.HashSet;
@@ -64,11 +66,25 @@ public class DatabaseHandler {
     public void runSQLScript(String script) {
         try {
             org.apache.derby.tools.ij.runScript(connection, getClass().getResourceAsStream(script)
-                    , StandardCharsets.UTF_8.name(), System.out, StandardCharsets.UTF_8.name());
+                    , StandardCharsets.UTF_8.name()
+                    , new OutputStream() {
+                        @Override
+                        public void write(int b) throws IOException {
+                        }
+                    }, StandardCharsets.UTF_8.name());
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public void runVerboseSQLScript(String script) {
+        try {
+            org.apache.derby.tools.ij.runScript(connection, getClass().getResourceAsStream(script)
+                    , StandardCharsets.UTF_8.name()
+                    , System.out, StandardCharsets.UTF_8.name());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public ResultSet runQuery(String query) {

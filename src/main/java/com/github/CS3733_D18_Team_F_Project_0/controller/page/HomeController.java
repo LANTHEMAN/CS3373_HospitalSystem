@@ -1,5 +1,7 @@
 package com.github.CS3733_D18_Team_F_Project_0.controller.page;
 
+import com.github.CS3733_D18_Team_F_Project_0.Map;
+import com.github.CS3733_D18_Team_F_Project_0.MapSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
 import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
 import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
@@ -16,6 +18,7 @@ import java.util.ResourceBundle;
 public class HomeController implements SwitchableController {
 
     private PaneSwitcher switcher;
+    private Map map;
 
     @FXML
     public Button DirectionsSwitch;
@@ -39,6 +42,8 @@ public class HomeController implements SwitchableController {
                 "Option 2",
                 "Option 3");
         locations.getSelectionModel().selectFirst();
+
+        map = MapSingleton.getInstance().getMap();
     }
 
     @FXML
