@@ -9,7 +9,7 @@ public class Screens {
     public static final Screen Floor = new Screen("selectFloor.fxml", FloorController.class);
     public static final Screen ServiceRequest = new Screen("serviceRequest.fxml", ServiceRequestController.class);
     public static final Screen ReligiousServices = new Screen("religiousServices.fxml", ReligiousServicesController.class);
-    public static final Screen LanguageInterpretor = new Screen("languageInterpretor.fxml", LanguageInterpreterController.class);
+    public static final Screen LanguageInterpreter = new Screen("languageInterpreter.fxml", LanguageInterpreterController.class);
 
     public static class Screen {
         public final String fxmlFile;
