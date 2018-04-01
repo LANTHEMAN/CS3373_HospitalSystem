@@ -53,8 +53,8 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
             throw new AssertionError("You must set a position.");
         }
         if (wireframePosition == null) {
-            // TODO: apply matrix transformation
-            wireframePosition = new Point2D(position.getX(), position.getY());
+            wireframePosition = new Point2D((960/967)*position.getX() + (-112/4835)*position.getY(),
+                                            (1444/4835)*position.getX() + (19236/24175)*position.getY());
         }
 
         if (building == null) {
