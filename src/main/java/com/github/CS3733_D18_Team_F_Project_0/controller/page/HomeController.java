@@ -6,10 +6,14 @@ import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
 import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
 import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
 import com.github.CS3733_D18_Team_F_Project_0.controller.UTF8Control;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
@@ -83,6 +87,10 @@ public class HomeController implements SwitchableController {
     @FXML
     private Button btnMapDimensions;
 
+    @FXML
+    private Pane mapContainer;
+    private static final int MIN_PIXELS = 200;
+
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
@@ -92,6 +100,82 @@ public class HomeController implements SwitchableController {
         Pane root = switcher.getPane(Screens.Home);
         root.getChildren().add(new Button("Hello World"));
         */
+
+        // mouse start *************************************************************
+
+        double width = ivMap.getImage().getWidth();
+        double height = ivMap.getImage().getHeight();
+        reset(ivMap, width, height);
+
+        ObjectProperty<Point2D> mouseDown = new SimpleObjectProperty<>();
+
+        ivMap.setOnMousePressed(e -> {
+            Point2D mousePress = imageViewToImage(ivMap, new Point2D(e.getX(), e.getY()));
+            mouseDown.set(mousePress);
+        });
+        ivMap.setOnMouseDragged(e -> {
+            Point2D dragPoint = imageViewToImage(ivMap, new Point2D(e.getX(), e.getY()));
+            shift(ivMap, dragPoint.subtract(mouseDown.get()));
+            mouseDown.set(imageViewToImage(ivMap, new Point2D(e.getX(), e.getY())));
+        });
+        ivMap.setOnScroll(e -> {
+            double delta = e.getDeltaY();
+            Rectangle2D viewport = ivMap.getViewport();
+
+            double scale = clamp(Math.pow(1.01, delta),
+
+                    // don't scale so we're zoomed in to fewer than MIN_PIXELS in any direction:
+                    Math.min(MIN_PIXELS / viewport.getWidth(), MIN_PIXELS / viewport.getHeight()),
+
+                    // don't scale so that we're bigger than image dimensions:
+                    Math.max(width / viewport.getWidth(), height / viewport.getHeight())
+
+            );
+
+            Point2D mouse = imageViewToImage(ivMap, new Point2D(e.getX(), e.getY()));
+
+            double newWidth = viewport.getWidth() * scale;
+            double newHeight = viewport.getHeight() * scale;
+
+            // To keep the visual point under the mouse from moving, we need
+            // (x - newViewportMinX) / (x - currentViewportMinX) = scale
+            // where x is the mouse X coordinate in the image
+
+            // solving this for newViewportMinX gives
+
+            // newViewportMinX = x - (x - currentViewportMinX) * scale
+
+            // we then clamp this value so the image never scrolls out
+            // of the imageview:
+
+            double newMinX = clamp(mouse.getX() - (mouse.getX() - viewport.getMinX()) * scale,
+                    0, width - newWidth);
+            double newMinY = clamp(mouse.getY() - (mouse.getY() - viewport.getMinY()) * scale,
+                    0, height - newHeight);
+
+            ivMap.setViewport(new Rectangle2D(newMinX, newMinY, newWidth, newHeight));
+        });
+/*        ivMap.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2) {
+                reset(ivMap, width, height);
+            }
+        });
+*/
+        ivMap.fitWidthProperty().bind(mapContainer.widthProperty());
+        ivMap.fitHeightProperty().bind(mapContainer.heightProperty());
+
+        // mouse end *************************************************************
+
+        // the add location popup
+        ivMap.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2 && addLocationPopup.isVisible() == false) {
+                addLocationPopup.setTranslateX(e.getX() + 10);
+                addLocationPopup.setTranslateY(e.getY() - 180);
+                txtXPos.setText("" + (int) e.getX());
+                txtYPos.setText("" + (int) e.getY());
+                addLocationPopup.setVisible(true);
+            }
+        });
 
         cboxDestinationType.getItems().clear();
         cboxDestinationType.getItems().addAll(
@@ -113,20 +197,6 @@ public class HomeController implements SwitchableController {
         all.addAll(patientRooms);
         all.addAll(bathrooms);
         cboxAvailableLocations.getItems().addAll(all);
-
-        ivMap.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                // only adds one location at a time
-                if (addLocationPopup.isVisible() == false) {
-                    addLocationPopup.setTranslateX(mouseEvent.getX() + 10);
-                    addLocationPopup.setTranslateY(mouseEvent.getY() - 180);
-                    txtXPos.setText("" + (int) mouseEvent.getX());
-                    txtYPos.setText("" + (int) mouseEvent.getY());
-                    addLocationPopup.setVisible(true);
-                }
-            }
-        });
     }
 
 
@@ -217,10 +287,16 @@ public class HomeController implements SwitchableController {
             //Image image = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
             btnMapDimensions.setText("2D Map");
             ivMap.setImage(maps3D[level]);
+            double width = ivMap.getImage().getWidth();
+            double height = ivMap.getImage().getHeight();
+            reset(ivMap, width, height);
         } else {
             //Image image = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png");
             btnMapDimensions.setText("3D Map");
             ivMap.setImage(maps2D[level]);
+            double width = ivMap.getImage().getWidth();
+            double height = ivMap.getImage().getHeight();
+            reset(ivMap, width, height);
         }
 
     }
@@ -237,16 +313,6 @@ public class HomeController implements SwitchableController {
         ivMap.setFitHeight(ivMap.getFitHeight() * 0.5);
         ivMap.setFitWidth(ivMap.getFitWidth() * 0.5);
     }
-
-    /*@FXML
-    void onLocationSelection(ActionEvent e) {
-        if (e.getSource().equals(locations)){
-            String output = (String) locations.getValue();
-            System.out.println(output);
-            String output2 = (String) locations.getPromptText();
-            System.out.println(output2);
-        }
-    }*/
 
 
     // Add location on map
@@ -306,4 +372,50 @@ public class HomeController implements SwitchableController {
         // TODO need to set field of txtfield first!!!!! (like putting in register before pass)
         onGetDirections();
     }
+
+
+    // Image movement helper functions
+
+    // reset to the top left:
+    private void reset(ImageView imageView, double width, double height) {
+        imageView.setViewport(new Rectangle2D(0, 0, width, height));
+    }
+
+    // shift the viewport of the imageView by the specified delta, clamping so
+    // the viewport does not move off the actual image:
+    private void shift(ImageView imageView, Point2D delta) {
+        Rectangle2D viewport = imageView.getViewport();
+
+        double width = imageView.getImage().getWidth() ;
+        double height = imageView.getImage().getHeight() ;
+
+        double maxX = width - viewport.getWidth();
+        double maxY = height - viewport.getHeight();
+
+        double minX = clamp(viewport.getMinX() - delta.getX(), 0, maxX);
+        double minY = clamp(viewport.getMinY() - delta.getY(), 0, maxY);
+
+        imageView.setViewport(new Rectangle2D(minX, minY, viewport.getWidth(), viewport.getHeight()));
+    }
+
+    private double clamp(double value, double min, double max) {
+
+        if (value < min)
+            return min;
+        if (value > max)
+            return max;
+        return value;
+    }
+
+    // convert mouse coordinates in the imageView to coordinates in the actual image:
+    private Point2D imageViewToImage(ImageView imageView, Point2D imageViewCoordinates) {
+        double xProportion = imageViewCoordinates.getX() / imageView.getBoundsInLocal().getWidth();
+        double yProportion = imageViewCoordinates.getY() / imageView.getBoundsInLocal().getHeight();
+
+        Rectangle2D viewport = imageView.getViewport();
+        return new Point2D(
+                viewport.getMinX() + xProportion * viewport.getWidth(),
+                viewport.getMinY() + yProportion * viewport.getHeight());
+    }
+
 }

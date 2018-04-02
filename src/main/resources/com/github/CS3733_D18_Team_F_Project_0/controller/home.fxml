@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
@@ -102,11 +103,15 @@
                     <font>
                         <Font size="22.0" />
                     </font></Text>
-                <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                    <image>
-                        <Image url="@BW2D%20Maps/02_thesecondfloor.png" />
-                    </image>
-                </ImageView>
+            <Pane fx:id="mapContainer" maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <children>
+                      <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                              <Image url="@BW2D%20Maps/02_thesecondfloor.png" />
+                          </image>
+                      </ImageView>
+               </children>
+            </Pane>
                 <ImageView fx:id="ivZoomIn" fitHeight="43.0" fitWidth="33.0" onMouseClicked="#onZoomIn" pickOnBounds="true" preserveRatio="true" translateX="-110.0" translateY="-30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                     <image>
                         <Image url="@zoomIn.png" />
@@ -117,6 +122,7 @@
                         <Image url="@zoomOut.png" />
                     </image>
                 </ImageView>
+            <Button fx:id="btnMapDimensions" mnemonicParsing="false" onAction="#onMapDimensions" text="3D Map" translateX="-80.0" translateY="-65.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                 <VBox fx:id="addLocationPopup" alignment="CENTER" maxHeight="190.0" maxWidth="150.0" prefHeight="190.0" prefWidth="150.0" spacing="10.0" style="-fx-background-color: rgba(217, 217, 217, 0.9); -fx-border-style: solid; -fx-border-color: grey;" visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add Location" />
