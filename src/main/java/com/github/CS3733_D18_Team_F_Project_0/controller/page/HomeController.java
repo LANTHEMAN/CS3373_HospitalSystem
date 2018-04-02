@@ -6,6 +6,7 @@ import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
 import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
 import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
 import com.github.CS3733_D18_Team_F_Project_0.controller.UTF8Control;
+import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -122,6 +123,12 @@ public class HomeController implements SwitchableController {
                 }
             }
         });
+
+        // testing area for db sync
+        /*
+        Node rNode = map.getNodes(node -> node.getNodeID().equals("HSTAI00302")).iterator().next();
+        map.removeNode(rNode);
+        */
     }
 
 

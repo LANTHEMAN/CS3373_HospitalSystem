@@ -89,7 +89,7 @@ public class Map implements DatabaseItem, Observer {
         graph.removeNode(node);
 
         // remove this node from the database
-        String cmd = "DELETE FROM NODE WHERE ID='" + node.getNodeID() + "';";
+        String cmd = "DELETE FROM NODE WHERE ID='" + node.getNodeID() + "'";
         dbHandler.runAction(cmd);
         syncCSVFromDB(dbHandler);
 
@@ -148,7 +148,7 @@ public class Map implements DatabaseItem, Observer {
         graph.removeEdge(edge);
 
         // remove the edge from the database
-        String cmd = "DELETE FROM EDGE WHERE EDGEID='" + edge.getEdgeID() + "';";
+        String cmd = "DELETE FROM EDGE WHERE EDGEID='" + edge.getEdgeID() + "'";
         dbHandler.runAction(cmd);
         syncCSVFromDB(dbHandler);
 
