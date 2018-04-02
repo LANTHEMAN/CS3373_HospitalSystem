@@ -175,8 +175,8 @@ public class HomeController implements SwitchableController {
             }
         });
 */
-        ivMap.fitWidthProperty().bind(mapContainer.widthProperty());
-        ivMap.fitHeightProperty().bind(mapContainer.heightProperty());
+        ivMap.fitWidthProperty().bindBidirectional(mapContainer.maxWidthProperty());
+        ivMap.fitHeightProperty().bindBidirectional(mapContainer.maxHeightProperty());
 
         // mouse end *************************************************************
 
