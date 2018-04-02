@@ -22,9 +22,11 @@ public class Node extends Observable {
     private String building;
     // an abbreviation of the name of this node
     private String shortName;
+    // full name of this node
+    private String longName;
 
     Node(Point3D position, Point2D wireframePosition, double additionalWeight, String nodeID, String floor, String building
-            , String nodeType, String shortName) {
+            , String nodeType, String shortName, String longName) {
         this.position = position;
         this.wireframePosition = wireframePosition;
         this.additionalWeight = additionalWeight;
@@ -33,6 +35,7 @@ public class Node extends Observable {
         this.building = building;
         this.nodeType = nodeType;
         this.shortName = shortName;
+        this.longName = longName;
     }
 
     /**
@@ -194,11 +197,21 @@ public class Node extends Observable {
         signalClassChanged();
     }
 
-    public void signalClassChanged() {
+    public String getLongName() {
+        return longName;
+    }
+
+    public void setLongName(String longName) {
+        this.longName = longName;
+        signalClassChanged();
+    }
+
+    private void signalClassChanged() {
         this.setChanged();
         this.notifyObservers();
     }
-    public void signalClassChanged(Object arg) {
+
+    private void signalClassChanged(Object arg) {
         this.setChanged();
         this.notifyObservers(arg);
     }

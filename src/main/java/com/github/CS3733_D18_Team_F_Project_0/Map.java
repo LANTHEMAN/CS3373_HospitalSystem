@@ -57,7 +57,7 @@ public class Map implements DatabaseItem, Observer {
                     + ",'" + node.getBuilding() + "'"
                     + ",'" + node.getNodeType() + "'"
                     + ",'" + node.getShortName() + "'"
-                    + ",'" + node.getShortName() + "'"
+                    + ",'" + node.getLongName() + "'"
                     + ",'" + "Team F" + "'"
                     + "," + (int) node.getWireframePosition().getX()
                     + "," + (int) node.getWireframePosition().getY()
@@ -199,6 +199,7 @@ public class Map implements DatabaseItem, Observer {
                     + ", Y_COORD = " + node.getPosition().getY()
                     + ", BUILDING = '" + node.getBuilding() + "'"
                     + ", SHORTNAME = '" + node.getShortName() + "'"
+                    + ", LONGNAME = '" + node.getLongName() + "'"
                     + ", XCOORD3D = " + node.getWireframePosition().getX()
                     + ", YCOORD3D = " + node.getWireframePosition().getY()
                     + " WHERE ID='" + node.getNodeID() + "'";
@@ -418,6 +419,7 @@ public class Map implements DatabaseItem, Observer {
 
                         // extract data from database
                         String nodeID = resultSet.getString(1);
+                        String longName = resultSet.getString(7);
                         String shortName = resultSet.getString(8);
                         String building = resultSet.getString(5);
                         Point3D position = new Point3D(Double.parseDouble(resultSet.getString(2))
@@ -430,6 +432,7 @@ public class Map implements DatabaseItem, Observer {
                         Node newNode = new ExistingNodeBuilder()
                                 .setNodeID(nodeID)
                                 .setShortName(shortName)
+                                .setLongName(longName)
                                 .setPosition(position)
                                 .setWireframePosition(wireframePosition)
                                 .setBuilding(building)

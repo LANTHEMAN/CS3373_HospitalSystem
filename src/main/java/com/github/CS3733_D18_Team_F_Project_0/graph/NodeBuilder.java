@@ -14,12 +14,15 @@ public abstract class NodeBuilder<T> {
     protected String building = null;
     // an abbreviation of the name of this node
     protected String shortName = null;
+    //The full name of this node location
+    protected String longName = null;
+
 
     protected NodeBuilder(Class<T> subClass) {
         this.subClass = subClass;
     }
 
-    /**
+    /**n
      * @param position the position of this node
      * @return this to allow chained builder calls
      */
@@ -47,11 +50,20 @@ public abstract class NodeBuilder<T> {
     }
 
     /**
-     * @param shortName the name of this nodes position
+     * @param shortName the short name of this node
      * @return this to allow chained builder calls
      */
     public T setShortName(String shortName) {
         this.shortName = shortName;
+        return subClass.cast(this);
+    }
+
+    /**
+     * @param longName the full name of this node
+     * @return this to allow chained builder calls
+     */
+    public T setLongName(String longName) {
+        this.longName = longName;
         return subClass.cast(this);
     }
 

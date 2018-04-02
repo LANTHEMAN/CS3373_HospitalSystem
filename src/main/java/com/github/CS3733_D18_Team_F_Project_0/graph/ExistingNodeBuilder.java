@@ -32,11 +32,14 @@ public class ExistingNodeBuilder extends NodeBuilder<ExistingNodeBuilder> {
         if (shortName == null) {
             throw new AssertionError("Node must contain a shortName");
         }
+        if(longName == null){
+            throw new AssertionError("Node must contain a longName");
+        }
         if (building == null) {
             throw new AssertionError("Node must contain a building");
         }
 
-        return new Node(position, wireframePosition, 0, nodeID, floor, building, nodeType, shortName);
+        return new Node(position, wireframePosition, 0, nodeID, floor, building, nodeType, shortName, longName);
     }
 
     public ExistingNodeBuilder setNodeID(String nodeID) {

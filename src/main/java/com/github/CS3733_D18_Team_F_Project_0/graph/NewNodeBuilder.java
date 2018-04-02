@@ -64,8 +64,11 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
         if (shortName == null) {
             shortName = nodeID + "[Unset shortName]";
         }
+        if(longName == null){
+            longName = shortName + "[Unset longName]";
+        }
 
-        return new Node(position, wireframePosition, 0, nodeID, floor, building, nodeType, shortName);
+        return new Node(position, wireframePosition, 0, nodeID, floor, building, nodeType, shortName, longName);
     }
 
     /**

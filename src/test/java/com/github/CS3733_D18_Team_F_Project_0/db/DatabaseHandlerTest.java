@@ -152,6 +152,7 @@ public class DatabaseHandlerTest {
         Node nodeA = new ExistingNodeBuilder()
                 .setNodeID("FHALL001L2")
                 .setBuilding("Place")
+                .setLongName("placeeee")
                 .setPosition(new Point3D(0, 0, 0))
                 .setShortName("Place in place")
                 .setWireframePosition(new Point2D(0, 0))
