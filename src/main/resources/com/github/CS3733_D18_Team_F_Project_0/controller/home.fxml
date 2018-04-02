@@ -39,6 +39,11 @@
                 <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="632.3370742797852" vgrow="ALWAYS" />
             </rowConstraints>
             <children>
+                <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                    <image>
+                        <Image url="@BW2D%20Maps/02_thesecondfloor.png" />
+                    </image>
+                </ImageView>
                 <ImageView fitHeight="29.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                     <image>
                         <Image url="@default-user.png" />
@@ -102,11 +107,7 @@
                     <font>
                         <Font size="22.0" />
                     </font></Text>
-                <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                    <image>
-                        <Image url="@BW2D%20Maps/02_thesecondfloor.png" />
-                    </image>
-                </ImageView>
+            <Button fx:id="btnMapDimensions" alignment="CENTER" mnemonicParsing="false" onAction="#onMapDimensions" text="3D Map" translateX="-80.0" translateY="-65.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                 <ImageView fx:id="ivZoomIn" fitHeight="43.0" fitWidth="33.0" onMouseClicked="#onZoomIn" pickOnBounds="true" preserveRatio="true" translateX="-110.0" translateY="-30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                     <image>
                         <Image url="@zoomIn.png" />
