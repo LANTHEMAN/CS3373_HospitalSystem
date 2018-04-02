@@ -3,9 +3,11 @@ package com.github.CS3733_D18_Team_F_Project_0.graph;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 
-public class Node {
+import java.util.Observable;
+
+public class Node extends Observable {
     // the database ID of this node
-    private final String nodeID;
+    private String nodeID;
     // the name of the floor where this node is located
     private final String floor;
     // actual 3d position of node
@@ -40,6 +42,13 @@ public class Node {
         return nodeID;
     }
 
+    private void setNodeID(String newNodeID){
+        String oldID = nodeID;
+        nodeID = newNodeID;
+        // TODO implement updating nodeID in database
+        notifyObservers(oldID);
+    }
+
     /**
      * Find the cartesian distance from this node to another node
      *
@@ -66,6 +75,7 @@ public class Node {
      */
     public void setAdditionalWeight(double additionalWeight) {
         this.additionalWeight = additionalWeight;
+        notifyObservers();
     }
 
     /**
@@ -87,6 +97,7 @@ public class Node {
      */
     public void setPosition(Point3D position) {
         this.position = position;
+        notifyObservers();
     }
 
     /**
@@ -101,6 +112,7 @@ public class Node {
      */
     public void setWireframePosition(Point2D wireframePosition) {
         this.wireframePosition = wireframePosition;
+        notifyObservers();
     }
 
     /**
@@ -115,6 +127,7 @@ public class Node {
      */
     public void setBuilding(String building) {
         this.building = building;
+        notifyObservers();
     }
 
     /**
@@ -127,9 +140,8 @@ public class Node {
     /**
      * @param nodeType the new node type of this node
      */
-    public void setNodeType(String nodeType) {
+    public void setNodeType(String nodeType, int nodeTypeCount) {
         if (!(nodeType.equals("HALL")
-                || nodeType.equals("ELEV")
                 || nodeType.equals("REST")
                 || nodeType.equals("STAI")
                 || nodeType.equals("DEPT")
@@ -141,7 +153,41 @@ public class Node {
                 || nodeType.equals("SERV"))) {
             throw new AssertionError("The nodeType was invalid.");
         }
+        if(nodeTypeCount > 999 || nodeTypeCount < 0){
+            throw new AssertionError("The nodeTypeCount was out of bounds.");
+        }
+
+        // first notify the change in type
         this.nodeType = nodeType;
+        notifyObservers();
+
+        // notify the change in nodeID
+        String newNodeID = nodeID.substring(0, 1)
+                + nodeType
+                + String.format("%03d", nodeTypeCount)
+                +  nodeID.substring(8);
+        setNodeID(newNodeID);
+    }
+
+    public void setNodeType(String nodeType, char elevatorChar) {
+        if (!( nodeType.equals("ELEV"))) {
+            throw new AssertionError("The nodeType was invalid.");
+        }
+        if (!(Character.isLetter(elevatorChar))) {
+            throw new AssertionError("You must assign a valid elevator character!");
+        }
+
+        // first notify the change in type
+        this.nodeType = nodeType;
+        notifyObservers();
+
+        // notify the change in nodeID
+        String newNodeID = nodeID.substring(0, 1)
+                + nodeType
+                + "00" + elevatorChar
+                +  nodeID.substring(8);
+        setNodeID(newNodeID);
+        // TODO when updating an elevator in the database, connect the edges of the elevators!
     }
 
     /**
@@ -156,5 +202,7 @@ public class Node {
      */
     public void setShortName(String shortName) {
         this.shortName = shortName;
+        notifyObservers();
     }
+
 }

@@ -98,17 +98,20 @@ public class ServiceRequestSingleton implements DatabaseItem {
     public void initDatabase(DatabaseHandler dbHandler) {
         dbHandler.runSQLScript("init_node_db.sql");
         dbHandler.runSQLScript("init_sr_db.sql");
+        if(dbHandler != DatabaseSingleton.getInstance().getDbHandler()){
+            initDatabase(DatabaseSingleton.getInstance().getDbHandler());
+        }
     }
 
     @Override
     public LinkedList<String> getTableNames() {
-        return new LinkedList<>(Arrays.asList("ServiceRequest"));
+        return new LinkedList<>(Collections.singletonList("SERVICEREQUEST"));
     }
 
     @Override
     public void syncLocalFromDB(String tableName, ResultSet resultSet) {
         try{
-            if(tableName.equals("ServiceRequest")){
+            if(tableName.equals("SERVICEREQUEST")){
                 while (resultSet.next()) {
                     int id = resultSet.getInt(1);
                     String type = resultSet.getString(2);

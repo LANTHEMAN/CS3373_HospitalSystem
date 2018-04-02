@@ -22,6 +22,9 @@ public class DatabaseHandler {
 
     public void disconnectFromDatabase() {
         try {
+            for(DatabaseItem trackedItem : trackedItems){
+                trackedItem.syncCSVFromDB(this);
+            }
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();

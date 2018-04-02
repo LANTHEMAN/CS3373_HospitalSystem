@@ -2,12 +2,10 @@ package com.github.CS3733_D18_Team_F_Project_0;
 
 import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseHandler;
 import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseItem;
-import com.github.CS3733_D18_Team_F_Project_0.graph.ExistingNodeBuilder;
-import com.github.CS3733_D18_Team_F_Project_0.graph.Graph;
-import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
+import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseSingleton;
+import com.github.CS3733_D18_Team_F_Project_0.graph.*;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
-import javafx.util.Pair;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
@@ -19,20 +17,136 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class Map implements DatabaseItem {
+public class Map implements DatabaseItem, Observer {
 
+    // TODO: draw nodes
+
+    DatabaseHandler dbHandler;
     Graph graph;
 
     public Map() {
         graph = new Graph();
+        dbHandler = DatabaseSingleton.getInstance().getDbHandler();
     }
+
+    // TODO: pass in new node properties
+    public void createNode(Node node) {
+        try {
+            // TODO: implement new node creation
+
+            // test that the node does not already exist
+            if (graph.getNodes(graphNode -> graphNode == node).size() == 1) {
+                return;
+            }
+
+            graph.addNode(node);
+
+            // will only reach here if successful node creation
+            String cmd = "INSERT INTO NODE VALUES ("
+                    + "'" + node.getNodeID() + "'"
+                    + "," + (int) node.getPosition().getX()
+                    + "," + (int) node.getPosition().getY()
+                    + ",'" + node.getFloor() + "'"
+                    + ",'" + node.getBuilding() + "'"
+                    + ",'" + node.getNodeType() + "'"
+                    + ",'" + node.getShortName() + "'"
+                    + ",'" + node.getShortName() + "'"
+                    + ",'" + "Team F" + "'"
+                    + "," + (int) node.getWireframePosition().getX()
+                    + "," + (int) node.getWireframePosition().getY()
+                    + ")";
+            dbHandler.runAction(cmd);
+
+            // TODO reflect the nodes to draw
+
+        } catch (AssertionError e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void removeNode(Node node) {
+        // make sure the node exists in this graph
+        if (graph.getNodes(graphNode -> graphNode == node).size() == 0) {
+            return;
+        }
+
+        // delete all edges with this node as an edge
+        HashSet<Edge> edges = graph.getEdges(edge -> edge.hasNode(node));
+        for (Edge edge : edges) {
+            // TODO call this deleteEdge function
+        }
+
+        // remove the node from this graph
+        graph.removeNode(node);
+
+        // remove this node from the database
+        String cmd = "DELETE FROM NODE WHERE ID='" + node.getNodeID() + "';";
+        dbHandler.runAction(cmd);
+
+        // TODO reflect the nodes to draw
+    }
+
+    // TODO implement
+    public void addEdge(Node node1, Node node2) {
+
+    }
+
+    // TODO implement
+    public void removeEdge(Node node1, Node node2) {
+
+    }
+
+    // TODO implement
+    public HashSet<Node> getNeighbors(Node node) {
+        return null;
+    }
+
+    public HashSet<Node> getNodes() {
+        return graph.getNodes();
+    }
+
+    public HashSet<Node> getNodes(Predicate<Node> filterFunction) {
+        return graph.getNodes(filterFunction);
+    }
+
+    public HashSet<Edge> getEdges(Predicate<Edge> filterFunction) {
+        return graph.getEdges(filterFunction);
+    }
+
+    public Edge getEdge(Node node1, Node node2) {
+        return graph.getEdge(node1, node2);
+    }
+
+    public boolean edgeExists(Node node1, Node node2) {
+        return graph.edgeExists(node1, node2);
+    }
+
+    public com.github.CS3733_D18_Team_F_Project_0.graph.Path getPath(Node node1, Node node2){
+        return AStar.getPath(graph, node1, node2);
+    }
+
+
+    // TODO implement observing of nodes
+    // TODO always update position (unless its a change in ID, aka instanceof arg -> String)
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
+
+
+    ////////////////////////////////////////////////////////////////
+    //                                                            //
+    //               DATABASE SYNCHRONIZATION                     //
+    //                                                            //
+    ////////////////////////////////////////////////////////////////
 
     @Override
     public void initDatabase(DatabaseHandler dbHandler) {
