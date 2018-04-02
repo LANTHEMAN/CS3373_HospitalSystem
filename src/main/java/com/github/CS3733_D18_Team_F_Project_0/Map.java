@@ -167,7 +167,7 @@ public class Map implements DatabaseItem, Observer {
                 } else {
                     nodeFilePaths = Files.walk(Paths.get(dbHandler.getClass().getResource("map").toURI()))
                             .filter(Files::isRegularFile)
-                            .filter(path -> path.getFileName().toString().contains("nodes.csv"))
+                            .filter(path -> path.getFileName().toString().contains("odes.csv"))
                             .map(path -> path.getFileName().toString())
                             .map(path -> "map/" + path)
                             .collect(Collectors.toList());
@@ -179,7 +179,7 @@ public class Map implements DatabaseItem, Observer {
                         System.out.println("Missing database, Loading Nodes from map/nodes.csv");
                         csvFile = new File(nodeFilePath);
                     } else {
-                        System.out.println("Missing database, generating Nodes from db/map/*nodes.csv files.");
+                        System.out.println("Missing database, generating Nodes from db/map/*odes.csv files.");
                         csvFile = new File(dbHandler.getClass().getResource(nodeFilePath).toURI().getPath());
                     }
 
@@ -238,7 +238,7 @@ public class Map implements DatabaseItem, Observer {
                 } else {
                     edgeFilePaths = Files.walk(Paths.get(dbHandler.getClass().getResource("map").toURI()))
                             .filter(Files::isRegularFile)
-                            .filter(path -> path.getFileName().toString().contains("edges.csv"))
+                            .filter(path -> path.getFileName().toString().contains("dges.csv"))
                             .map(path -> path.getFileName().toString())
                             .map(path -> "map/" + path)
                             .collect(Collectors.toList());
@@ -250,7 +250,7 @@ public class Map implements DatabaseItem, Observer {
                         System.out.println("Missing database, Loading Edges from map/edges.csv");
                         csvFile = new File(edgeFilePath);
                     } else {
-                        System.out.println("Missing database, generating Edges from db/map/*edges.csv files.");
+                        System.out.println("Missing database, generating Edges from db/map/*dges.csv files.");
                         csvFile = new File(dbHandler.getClass().getResource(edgeFilePath).toURI().getPath());
                     }
 
