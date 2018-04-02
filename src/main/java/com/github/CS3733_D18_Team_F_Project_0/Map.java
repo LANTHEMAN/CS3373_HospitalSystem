@@ -37,17 +37,16 @@ public class Map implements DatabaseItem, Observer {
         dbHandler = DatabaseSingleton.getInstance().getDbHandler();
     }
 
-    // TODO: pass in new node properties
     public void createNode(Node node) {
         try {
-            // TODO: implement new node creation
-
             // test that the node does not already exist
             if (graph.getNodes(graphNode -> graphNode == node).size() == 1) {
                 return;
             }
 
             graph.addNode(node);
+            // track this node
+            node.addObserver(this);
 
             // will only reach here if successful node creation
             String cmd = "INSERT INTO NODE VALUES ("
@@ -64,6 +63,7 @@ public class Map implements DatabaseItem, Observer {
                     + "," + (int) node.getWireframePosition().getY()
                     + ")";
             dbHandler.runAction(cmd);
+            syncCSVFromDB(dbHandler);
 
             // TODO reflect the nodes to draw
 
@@ -82,32 +82,82 @@ public class Map implements DatabaseItem, Observer {
         // delete all edges with this node as an edge
         HashSet<Edge> edges = graph.getEdges(edge -> edge.hasNode(node));
         for (Edge edge : edges) {
-            // TODO call this deleteEdge function
+            removeEdge(edge);
         }
 
         // remove the node from this graph
         graph.removeNode(node);
 
         // remove this node from the database
-        String cmd = "DELETE FROM NODE WHERE ID='" + node.getNodeID() + "';";
+        String cmd = "DELETE FROM NODE WHERE ID='" + node.getNodeID() + "'";
         dbHandler.runAction(cmd);
+        syncCSVFromDB(dbHandler);
 
         // TODO reflect the nodes to draw
     }
 
     // TODO implement
     public void addEdge(Node node1, Node node2) {
+        // make sure that the nodes exist
+        if (graph.getNodes(graphNode -> graphNode == node1 || graphNode == node2).size() != 2) {
+            return;
+        }
+        // make sure the edge does not already exist
+        if (graph.getEdges(edge -> edge.edgeOfNodes(node1, node2)).size() == 1) {
+            return;
+        }
+        // make the edge
+        graph.addEdge(node1, node2);
 
+        // sync the database
+        Edge edge = graph.getEdge(node1, node2);
+        String cmd = "INSERT INTO EDGE VALUES ("
+                + "'" + edge.getEdgeID() + "'"
+                + ",(select ID from NODE where ID = '" + edge.getNode1().getNodeID() + "')"
+                + ",(select ID from NODE where ID = '" + edge.getNode2().getNodeID() + "')"
+                + ")";
+        dbHandler.runAction(cmd);
+        syncCSVFromDB(dbHandler);
+
+        // TODO reflect the edges to draw
     }
 
-    // TODO implement
     public void removeEdge(Node node1, Node node2) {
+        // make sure that the nodes exist
+        if (graph.getNodes(graphNode -> graphNode == node1 || graphNode == node2).size() != 2) {
+            return;
+        }
+        // make sure the edge already exists
+        if (!graph.edgeExists(node1, node2)) {
+            return;
+        }
 
+        // save the edge
+        HashSet<Edge> edges = graph.getEdges(edge -> edge.edgeOfNodes(node1, node2));
+        Edge edge = edges.iterator().next();
+
+        removeEdge(edge);
     }
 
-    // TODO implement
+    public void removeEdge(Edge edge) {
+        // verify edge exists in graph
+        if (!graph.edgeExists(edge)) {
+            return;
+        }
+        // remove the edge from the graph
+        graph.removeEdge(edge);
+
+        // remove the edge from the database
+        String cmd = "DELETE FROM EDGE WHERE EDGEID='" + edge.getEdgeID() + "'";
+        dbHandler.runAction(cmd);
+        syncCSVFromDB(dbHandler);
+
+        // TODO reflect the edges to draw
+    }
+
+
     public HashSet<Node> getNeighbors(Node node) {
-        return null;
+        return graph.getNeighbors(node);
     }
 
     public HashSet<Node> getNodes() {
@@ -130,16 +180,67 @@ public class Map implements DatabaseItem, Observer {
         return graph.edgeExists(node1, node2);
     }
 
-    public com.github.CS3733_D18_Team_F_Project_0.graph.Path getPath(Node node1, Node node2){
+    public com.github.CS3733_D18_Team_F_Project_0.graph.Path getPath(Node node1, Node node2) {
         return AStar.getPath(graph, node1, node2);
     }
 
-
-    // TODO implement observing of nodes
-    // TODO always update position (unless its a change in ID, aka instanceof arg -> String)
     @Override
     public void update(Observable o, Object arg) {
+        if (!(o instanceof Node)) {
+            return;
+        }
+        Node node = (Node) o;
 
+
+        // if arg is null the nodeID did not change and just update the node properties
+        if (arg == null) {
+            String cmd = "UPDATE NODE "
+                    + "SET X_COORD = " + node.getPosition().getX()
+                    + ", Y_COORD = " + node.getPosition().getY()
+                    + ", BUILDING = '" + node.getBuilding() + "'"
+                    + ", SHORTNAME = '" + node.getShortName() + "'"
+                    + ", XCOORD3D = " + node.getWireframePosition().getX()
+                    + ", YCOORD3D = " + node.getWireframePosition().getY()
+                    + " WHERE ID='" + node.getNodeID() + "'";
+            dbHandler.runAction(cmd);
+            syncCSVFromDB(dbHandler);
+        }
+        // if arg == String, the nodeID and all edgeIDs have to be updated in the database
+        else {
+            String newNodeID = (String) arg;
+            if (newNodeID.equals(node.getNodeID())) {
+                return;
+            }
+
+            // save all neighbors
+            HashSet<Node> neighbors = new HashSet<>(graph.getNeighbors(node));
+            // get the edges that have to be changed
+            HashSet<Edge> edges = neighbors.stream()
+                    .map(neighborNode -> graph.getEdge(node, neighborNode))
+                    .collect(Collectors.toCollection(HashSet::new));
+
+            // remove all edges
+            for (Edge edge : edges) {
+                removeEdge(edge);
+            }
+            // remove the old node
+            removeNode(node);
+
+            // create a new node
+            Node newNode = new ExistingNodeBuilder()
+                    .setPosition(node.getPosition())
+                    .setBuilding(node.getBuilding())
+                    .setNodeID(newNodeID)
+                    .setShortName(node.getShortName())
+                    .setWireframePosition(node.getWireframePosition())
+                    .build();
+            createNode(newNode);
+            newNode.setAdditionalWeight(node.getAdditionalWeight());
+            // reconnect the edges
+            for (Node neighbor : neighbors) {
+                addEdge(newNode, neighbor);
+            }
+        }
     }
 
 
@@ -336,6 +437,8 @@ public class Map implements DatabaseItem, Observer {
 
                         // add to graph
                         graph.addNode(newNode);
+                        // track this new node
+                        newNode.addObserver(this);
                     }
                 }
                 break;
