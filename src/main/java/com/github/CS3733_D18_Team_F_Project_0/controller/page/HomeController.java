@@ -87,11 +87,11 @@ public class HomeController implements SwitchableController {
         */
 
         // testing area for db sync
-
+        /*
         Node rNode = map.getNodes(node -> node.getNodeID().equals("HREST77702")).iterator().next();
         //map.removeNode(rNode);
         rNode.setWireframePosition(new Point2D(777,777));
-
+        */
 
         // preload the 2D and 3D floor map
        // image3D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
