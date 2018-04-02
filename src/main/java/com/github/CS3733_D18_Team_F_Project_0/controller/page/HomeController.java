@@ -37,6 +37,8 @@ public class HomeController implements SwitchableController {
     private final ObservableList<String> all = FXCollections.observableArrayList();
     private PaneSwitcher switcher;
     private Map map;
+    private Image image2D;
+    private Image image3D;
 
     @FXML
     public Button DirectionsSwitch;
@@ -74,6 +76,10 @@ public class HomeController implements SwitchableController {
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
+
+        // preload the 2D and 3D floor map
+        image3D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
+        image2D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png");
 
         cboxDestinationType.getItems().clear();
         cboxDestinationType.getItems().addAll(
@@ -169,13 +175,13 @@ public class HomeController implements SwitchableController {
     @FXML
     void onMapDimensions() {
         if (btnMapDimensions.getText().equals("3D Map")) {
-            Image image = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
+            //Image image = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
             btnMapDimensions.setText("2D Map");
-            ivMap.setImage(image);
+            ivMap.setImage(image2D);
         } else {
-            Image image = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png");
+            //Image image = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png");
             btnMapDimensions.setText("3D Map");
-            ivMap.setImage(image);
+            ivMap.setImage(image3D);
         }
 
     }
