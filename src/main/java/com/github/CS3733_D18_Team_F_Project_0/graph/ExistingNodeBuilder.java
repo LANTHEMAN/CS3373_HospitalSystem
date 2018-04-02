@@ -45,6 +45,11 @@ public class ExistingNodeBuilder extends NodeBuilder<ExistingNodeBuilder> {
             throw new AssertionError("Invalid Node ID format. Not 10 characters 1ong.");
         }
         nodeType = nodeID.substring(1, 5);
+        // inconsistent csv files
+        if(nodeType.equals("BATH")){
+            nodeType = "REST";
+        }
+
         if (!(nodeType.equals("HALL")
                 || nodeType.equals("ELEV")
                 || nodeType.equals("REST")
@@ -56,7 +61,7 @@ public class ExistingNodeBuilder extends NodeBuilder<ExistingNodeBuilder> {
                 || nodeType.equals("EXIT")
                 || nodeType.equals("RETL")
                 || nodeType.equals("SERV"))) {
-            throw new AssertionError("The nodeType of the nodeID was invalid.");
+            throw new AssertionError("The nodeType of the nodeID was invalid: " + nodeType);
         }
         floor = nodeID.substring(nodeID.length() - 2);
         if (!(floor.equals("L1")
