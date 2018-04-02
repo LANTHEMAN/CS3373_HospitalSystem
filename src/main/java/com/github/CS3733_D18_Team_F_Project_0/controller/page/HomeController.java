@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
@@ -85,9 +86,16 @@ public class HomeController implements SwitchableController {
         root.getChildren().add(new Button("Hello World"));
         */
 
+        // testing area for db sync
+
+        Node rNode = map.getNodes(node -> node.getNodeID().equals("HREST77702")).iterator().next();
+        //map.removeNode(rNode);
+        rNode.setWireframePosition(new Point2D(777,777));
+
+
         // preload the 2D and 3D floor map
-        image3D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
-        image2D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png");
+       // image3D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
+        //image2D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png");
 
         cboxDestinationType.getItems().clear();
         cboxDestinationType.getItems().addAll(
@@ -123,12 +131,6 @@ public class HomeController implements SwitchableController {
                 }
             }
         });
-
-        // testing area for db sync
-        /*
-        Node rNode = map.getNodes(node -> node.getNodeID().equals("HSTAI00302")).iterator().next();
-        map.removeNode(rNode);
-        */
     }
 
 

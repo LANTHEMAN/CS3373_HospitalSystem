@@ -7,9 +7,11 @@ import java.util.Observable;
 
 public class Node extends Observable {
     // the database ID of this node
-    private String nodeID;
+    private final String nodeID;
     // the name of the floor where this node is located
     private final String floor;
+    // the type of location this node is at
+    private final String nodeType;
     // actual 3d position of node
     private Point3D position;
     // position of the node on the wireframe map
@@ -18,8 +20,6 @@ public class Node extends Observable {
     private double additionalWeight = 0;
     // the name of the building this node is located in
     private String building;
-    // the type of location this node is at
-    private String nodeType;
     // an abbreviation of the name of this node
     private String shortName;
 
@@ -42,11 +42,10 @@ public class Node extends Observable {
         return nodeID;
     }
 
-    private void setNodeID(String newNodeID){
-        String oldID = nodeID;
-        nodeID = newNodeID;
-        // TODO implement updating nodeID in database
-        notifyObservers(oldID);
+    private void setNodeID(String newNodeID) {
+        // deletes this node and creates a new one
+        signalClassChanged(newNodeID);
+        // this node should be 'deleted' now
     }
 
     /**
@@ -75,7 +74,6 @@ public class Node extends Observable {
      */
     public void setAdditionalWeight(double additionalWeight) {
         this.additionalWeight = additionalWeight;
-        notifyObservers();
     }
 
     /**
@@ -97,7 +95,7 @@ public class Node extends Observable {
      */
     public void setPosition(Point3D position) {
         this.position = position;
-        notifyObservers();
+        signalClassChanged();
     }
 
     /**
@@ -112,7 +110,7 @@ public class Node extends Observable {
      */
     public void setWireframePosition(Point2D wireframePosition) {
         this.wireframePosition = wireframePosition;
-        notifyObservers();
+        signalClassChanged();
     }
 
     /**
@@ -127,7 +125,7 @@ public class Node extends Observable {
      */
     public void setBuilding(String building) {
         this.building = building;
-        notifyObservers();
+        signalClassChanged();
     }
 
     /**
@@ -153,41 +151,32 @@ public class Node extends Observable {
                 || nodeType.equals("SERV"))) {
             throw new AssertionError("The nodeType was invalid.");
         }
-        if(nodeTypeCount > 999 || nodeTypeCount < 0){
+        if (nodeTypeCount > 999 || nodeTypeCount < 0) {
             throw new AssertionError("The nodeTypeCount was out of bounds.");
         }
-
-        // first notify the change in type
-        this.nodeType = nodeType;
-        notifyObservers();
 
         // notify the change in nodeID
         String newNodeID = nodeID.substring(0, 1)
                 + nodeType
                 + String.format("%03d", nodeTypeCount)
-                +  nodeID.substring(8);
+                + nodeID.substring(8);
         setNodeID(newNodeID);
     }
 
     public void setNodeType(String nodeType, char elevatorChar) {
-        if (!( nodeType.equals("ELEV"))) {
+        if (!(nodeType.equals("ELEV"))) {
             throw new AssertionError("The nodeType was invalid.");
         }
         if (!(Character.isLetter(elevatorChar))) {
             throw new AssertionError("You must assign a valid elevator character!");
         }
 
-        // first notify the change in type
-        this.nodeType = nodeType;
-        notifyObservers();
-
         // notify the change in nodeID
         String newNodeID = nodeID.substring(0, 1)
                 + nodeType
                 + "00" + elevatorChar
-                +  nodeID.substring(8);
+                + nodeID.substring(8);
         setNodeID(newNodeID);
-        // TODO when updating an elevator in the database, connect the edges of the elevators!
     }
 
     /**
@@ -202,7 +191,16 @@ public class Node extends Observable {
      */
     public void setShortName(String shortName) {
         this.shortName = shortName;
-        notifyObservers();
+        signalClassChanged();
+    }
+
+    public void signalClassChanged() {
+        this.setChanged();
+        this.notifyObservers();
+    }
+    public void signalClassChanged(Object arg) {
+        this.setChanged();
+        this.notifyObservers(arg);
     }
 
 }
