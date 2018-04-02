@@ -315,18 +315,6 @@ public class HomeController implements SwitchableController {
 
     }
 
-    @FXML
-    void onZoomIn() {
-        // Viewports?
-        ivMap.setFitHeight(ivMap.getFitHeight() * 2);
-        ivMap.setFitWidth(ivMap.getFitWidth() * 2);
-    }
-
-    @FXML
-    void onZoomOut() {
-        ivMap.setFitHeight(ivMap.getFitHeight() * 0.5);
-        ivMap.setFitWidth(ivMap.getFitWidth() * 0.5);
-    }
 
 
     // Add location on map

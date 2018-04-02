@@ -21,7 +21,7 @@
 <?import javafx.scene.text.Text?>
 <?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.HomeController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.HomeController">
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="931.4708251953125" />
         <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="400.0" minWidth="258.2379150390625" prefWidth="279.5291748046875" />
@@ -112,16 +112,6 @@
                       </ImageView>
                </children>
             </Pane>
-                <ImageView fx:id="ivZoomIn" fitHeight="43.0" fitWidth="33.0" onMouseClicked="#onZoomIn" pickOnBounds="true" preserveRatio="true" translateX="-110.0" translateY="-30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-                    <image>
-                        <Image url="@zoomIn.png" />
-                    </image>
-                </ImageView>
-                <ImageView fx:id="ivZoomOut" fitHeight="32.0" fitWidth="32.0" layoutX="775.0" layoutY="136.0" onMouseClicked="#onZoomOut" pickOnBounds="true" preserveRatio="true" translateX="-80.0" translateY="-30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-                    <image>
-                        <Image url="@zoomOut.png" />
-                    </image>
-                </ImageView>
             <Button fx:id="btnMapDimensions" mnemonicParsing="false" onAction="#onMapDimensions" text="3D Map" translateX="-80.0" translateY="-65.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                 <VBox fx:id="addLocationPopup" alignment="CENTER" maxHeight="190.0" maxWidth="150.0" prefHeight="190.0" prefWidth="150.0" spacing="10.0" style="-fx-background-color: rgba(217, 217, 217, 0.9); -fx-border-style: solid; -fx-border-color: grey;" visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
                     <children>
@@ -182,6 +172,11 @@
                         <Button fx:id="btnLocationDirections" alignment="CENTER" mnemonicParsing="false" onAction="#onLocationDirections" text="Get Directions" textFill="RED" />
                     </children>
                 </VBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll to Zoom &amp; Drag to Move" translateX="-70.0" translateY="-40.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Text>
             </children>
         </GridPane>
         <GridPane prefHeight="730.0" prefWidth="0.0" style="-fx-background-color: E7F3F8;" GridPane.columnIndex="1">
