@@ -58,6 +58,8 @@ public class HomeController implements SwitchableController {
     @FXML
     private VBox vbxMenu;
     @FXML
+    private VBox vbxFloor;
+    @FXML
     private VBox vbxLocation;
 
     @FXML
@@ -137,12 +139,31 @@ public class HomeController implements SwitchableController {
     // Menus on right
 
     @FXML
+    void onFindLocation() {
+        vbxMenu.setVisible(false);
+        vbxLocation.setVisible(true);
+    }
+
+    @FXML
+    void onLocationCancel() {
+        vbxLocation.setVisible(false);
+        vbxMenu.setVisible(true);
+    }
+
+    @FXML
     void onDirectionsSwitch() {
     }
 
     @FXML
-    void onFloorSwitch() {
-        switcher.switchTo(Screens.Floor);
+    void onSwitchFloor() {
+        vbxMenu.setVisible(false);
+        vbxFloor.setVisible(true);
+    }
+
+    @FXML
+    void onFloorCancel() {
+        vbxFloor.setVisible(false);
+        vbxMenu.setVisible(true);
     }
 
 
@@ -217,22 +238,8 @@ public class HomeController implements SwitchableController {
         }
     }*/
 
-    // Menus on right
 
-    @FXML
-    void onFindLocation() {
-        vbxMenu.setVisible(false);
-        vbxLocation.setVisible(true);
-    }
-
-    @FXML
-    void onLocationCancel() {
-        vbxLocation.setVisible(false);
-        vbxMenu.setVisible(true);
-    }
-
-
-    // Add Location
+    // Add location on map
 
     @FXML
     void onAddLocationConfirm() {
