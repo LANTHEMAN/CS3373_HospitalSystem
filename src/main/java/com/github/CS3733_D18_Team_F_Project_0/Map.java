@@ -40,14 +40,14 @@ public class Map implements DatabaseItem, Observer {
     // TODO: pass in new node properties
     public void createNode(Node node) {
         try {
-            // TODO: implement new node creation
-
             // test that the node does not already exist
             if (graph.getNodes(graphNode -> graphNode == node).size() == 1) {
                 return;
             }
 
             graph.addNode(node);
+            // track this node
+            node.addObserver(this);
 
             // will only reach here if successful node creation
             String cmd = "INSERT INTO NODE VALUES ("
@@ -64,6 +64,8 @@ public class Map implements DatabaseItem, Observer {
                     + "," + (int) node.getWireframePosition().getY()
                     + ")";
             dbHandler.runAction(cmd);
+
+
 
             // TODO reflect the nodes to draw
 
@@ -82,7 +84,7 @@ public class Map implements DatabaseItem, Observer {
         // delete all edges with this node as an edge
         HashSet<Edge> edges = graph.getEdges(edge -> edge.hasNode(node));
         for (Edge edge : edges) {
-            // TODO call this deleteEdge function
+            removeEdge(edge);
         }
 
         // remove the node from this graph
@@ -97,17 +99,55 @@ public class Map implements DatabaseItem, Observer {
 
     // TODO implement
     public void addEdge(Node node1, Node node2) {
+        // make sure that the nodes exist
+        if (graph.getNodes(graphNode -> graphNode == node1 || graphNode == node2).size() != 2) {
+            return;
+        }
+        // make sure the edge does not already exist
+        if(graph.getEdges(edge -> edge.edgeOfNodes(node1, node2)).size() == 1){
+            return;
+        }
+        // make the edge
+        graph.addEdge(node1, node2);
 
+        // TODO reflect the edges to draw
     }
 
-    // TODO implement
     public void removeEdge(Node node1, Node node2) {
+        // make sure that the nodes exist
+        if (graph.getNodes(graphNode -> graphNode == node1 || graphNode == node2).size() != 2) {
+            return;
+        }
+        // make sure the edge already exists
+        if(!graph.edgeExists(node1, node2)){
+            return;
+        }
 
+        // save the edge
+        HashSet<Edge> edges = graph.getEdges(edge -> edge.edgeOfNodes(node1, node2));
+        Edge edge = edges.iterator().next();
+
+        removeEdge(edge);
     }
 
-    // TODO implement
+    public void removeEdge(Edge edge) {
+        // verify edge exists in graph
+        if(!graph.edgeExists(edge)){
+            return;
+        }
+        // remove the edge from the graph
+        graph.removeEdge(edge);
+
+        // remove the edge from the database
+        String cmd = "DELETE FROM EDGE WHERE EDGEID='" + edge.getEdgeID() + "';";
+        dbHandler.runAction(cmd);
+
+        // TODO reflect the edges to draw
+    }
+
+
     public HashSet<Node> getNeighbors(Node node) {
-        return null;
+        return graph.getNeighbors(node);
     }
 
     public HashSet<Node> getNodes() {
@@ -336,6 +376,8 @@ public class Map implements DatabaseItem, Observer {
 
                         // add to graph
                         graph.addNode(newNode);
+                        // track this new node
+                        newNode.addObserver(this);
                     }
                 }
                 break;

@@ -139,6 +139,24 @@ public class Graph {
         return this;
     }
 
+    public Graph removeEdge(Edge edge) {
+        // make sure the edge exists
+        if (!edges.contains(edge)) {
+            return this;
+        }
+
+        Node node1 = edge.getNode1();
+        Node node2 = edge.getNode2();
+        adjacencyList.get(node1).remove(node2);
+        adjacencyList.get(node2).remove(node1);
+
+        // remove edge from edges
+        edges.removeIf(graphEdge -> edge == graphEdge);
+
+        return this;
+    }
+
+
     /**
      * Return the neighbors to a specific node in this graph
      *
@@ -202,6 +220,10 @@ public class Graph {
      */
     public boolean edgeExists(Node node1, Node node2) {
         return edges.stream().anyMatch(edge -> edge.edgeOfNodes(node1, node2));
+    }
+
+    public boolean edgeExists(Edge edge) {
+        return edges.contains(edge);
     }
 
 }
