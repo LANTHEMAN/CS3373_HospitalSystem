@@ -42,7 +42,6 @@ public class HomeController implements SwitchableController {
     public ComboBox cboxDestinationType;
     @FXML
     public ComboBox cboxAvailableLocations;
-    private PaneSwitcher switcher;
     @FXML
     private ImageView ivMap;
     @FXML
