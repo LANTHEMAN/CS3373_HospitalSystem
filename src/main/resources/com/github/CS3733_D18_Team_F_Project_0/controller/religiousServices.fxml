@@ -8,24 +8,28 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.ReligiousServicesController">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.ReligiousServicesController">
    <children>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <Text layoutX="64.0" layoutY="47.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Religious Services" />
-            <TextField layoutX="79.0" layoutY="75.0" prefHeight="25.0" prefWidth="139.0" />
-            <Label layoutX="31.0" layoutY="79.0" text="Religion" />
+            <Text layoutX="70.0" layoutY="47.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Religious Services" />
+            <TextField fx:id="religion" layoutX="79.0" layoutY="75.0" prefHeight="25.0" prefWidth="139.0" />
+            <Label layoutX="17.0" layoutY="79.0" text="Religion" />
             <Label layoutX="27.0" layoutY="128.0" scaleX="1.2" scaleY="1.2" scaleZ="1.2" text="Patient Information" />
-            <TextField layoutX="79.0" layoutY="159.0" prefHeight="25.0" prefWidth="139.0" />
-            <TextField layoutX="306.0" layoutY="159.0" prefHeight="25.0" prefWidth="139.0" />
+            <TextField fx:id="firstName" layoutX="79.0" layoutY="159.0" prefHeight="25.0" prefWidth="139.0" />
+            <TextField fx:id="lastName" layoutX="381.0" layoutY="159.0" prefHeight="25.0" prefWidth="139.0" />
             <Label layoutX="17.0" layoutY="163.0" text="First Name" />
-            <Label layoutX="244.0" layoutY="163.0" text="Last Name" />
+            <Label layoutX="319.0" layoutY="163.0" text="Last Name" />
             <Button layoutX="526.0" layoutY="347.0" mnemonicParsing="false" onAction="#onSubmit" text="Submit Request" />
-            <TextField layoutX="79.0" layoutY="199.0" prefHeight="25.0" prefWidth="139.0" />
-            <Label layoutX="32.0" layoutY="203.0" text="Room #" />
+            <TextField fx:id="location" layoutX="79.0" layoutY="199.0" prefHeight="25.0" prefWidth="139.0" />
+            <Label layoutX="32.0" layoutY="203.0" text="Location" />
             <Label layoutX="28.0" layoutY="249.0" scaleX="1.2" scaleY="1.2" scaleZ="1.2" text="Special Instructions" />
-            <TextArea layoutX="18.0" layoutY="272.0" prefHeight="61.0" prefWidth="601.0" />
-            <Button layoutX="14.0" layoutY="347.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
+            <TextArea fx:id="instructions" layoutX="18.0" layoutY="272.0" prefHeight="61.0" prefWidth="601.0" />
+            <Button layoutX="17.0" layoutY="347.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
+            <Label fx:id="languageRequired" layoutX="223.0" layoutY="79.0" text="*Required Field" textFill="RED" visible="false" />
+            <Label fx:id="lastNameRequired" layoutX="526.0" layoutY="163.0" text="*Required Field" textFill="RED" visible="false" />
+            <Label fx:id="firstNameRequired" layoutX="223.0" layoutY="163.0" text="*Required Field" textFill="RED" visible="false" />
+            <Label fx:id="locationRequired" layoutX="223.0" layoutY="203.0" text="*Required Field" textFill="RED" visible="false" />
          </children>
       </AnchorPane>
    </children>

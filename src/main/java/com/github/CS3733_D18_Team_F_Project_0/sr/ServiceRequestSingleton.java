@@ -12,7 +12,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
     private static ServiceRequestSingleton ourInstance = new ServiceRequestSingleton();
 
     private DatabaseHandler dbHandler;
-    ArrayList<ServiceRequest> listOfRequests;
+    private ArrayList<ServiceRequest> listOfRequests = new ArrayList<>();
     private int id = 0;
 
     // just for testing
@@ -52,9 +52,11 @@ public class ServiceRequestSingleton implements DatabaseItem {
     }
 
     public void sendServiceRequest(ServiceRequest s) {
-        String sql = "INSERT ALL into ServiceRequest VALUES (" + generateNewID()
+        String sql = "INSERT ALL into ServiceRequest VALUES (" + s.getId()
                 + ", " + s.getType()
-                + ", " + s.getDestination().getNodeID()
+                + ", " + s.getFirstName()
+                + ", " + s.getLastName()
+                + ", " + s.getLocation()
                 + ", " + s.getDescription()
                 + ", " + s.getPriority()
                 + ");";
@@ -132,5 +134,36 @@ public class ServiceRequestSingleton implements DatabaseItem {
     @Override
     public void syncCSVFromDB(DatabaseHandler dbHandler) {
         // intentionally left empty
+    }
+
+    public ArrayList<ServiceRequest> getListOfRequests() {
+        return listOfRequests;
+    }
+
+    private void setListOfRequests(ArrayList<ServiceRequest> listOfRequests) {
+        this.listOfRequests = listOfRequests;
+    }
+
+    public void addServiceRequest(ServiceRequest s){
+        int listSize = this.listOfRequests.size();
+        int flag = 0;
+        ArrayList<ServiceRequest> newList = new ArrayList<>();
+        if (listSize == 0) {
+            newList.add(0, s);
+        } else {
+            for (ServiceRequest i : this.listOfRequests) {
+                if (i.getId() > s.getId() && flag == 0) {
+                    newList.add(s);
+                    flag++;
+                } else {
+                    newList.add(i);
+                }
+            }
+            if (flag == 0) {
+                newList.add(s);
+            }
+        }
+
+        this.setListOfRequests(newList);
     }
 }

@@ -5,13 +5,8 @@ import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
 public class LanguageInterpreter extends ServiceRequest {
     private String language;
 
-    public LanguageInterpreter(String type, Node destination, String description, String status, String language) {
-        super(type, destination, description);
-        this.language = language;
-    }
-
-    public LanguageInterpreter(String type, Node destination, String description, String status, String language, int id) {
-        super(type, destination, description, id, "Incomplete", 0);
+    public LanguageInterpreter(String firstName, String lastName, String location, String description, int priority, String language) {
+        super("Language Interpreter", firstName, lastName, location, description, priority);
         this.language = language;
     }
 

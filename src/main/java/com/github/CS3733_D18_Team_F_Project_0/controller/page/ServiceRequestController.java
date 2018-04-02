@@ -10,15 +10,6 @@ import java.awt.*;
 public class ServiceRequestController implements SwitchableController {
     private PaneSwitcher switcher;
 
-    @FXML
-    public Button religiousServices;
-
-    @FXML
-    public Button languageInterpreter;
-
-    @FXML
-    public Button cancel;
-
 
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;

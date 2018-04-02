@@ -5,8 +5,8 @@ import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
 public class ReligiousServices extends ServiceRequest{
     private String religion;
 
-    public ReligiousServices(String type, Node destination, String description, String religion) {
-        super(type, destination, description);
+    public ReligiousServices(String firstName, String lastName, String location, String description, int priority, String religion) {
+        super("Religious Services", firstName, lastName, location, description, priority);
         this.religion = religion;
     }
 
