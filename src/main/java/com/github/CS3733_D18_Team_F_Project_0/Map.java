@@ -21,10 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Map implements DatabaseItem {
@@ -192,7 +189,19 @@ public class Map implements DatabaseItem {
                 }
                 break;
                 case "EDGE": {
-
+                    while (resultSet.next()) {
+                        String edgeID = resultSet.getString(1);
+                        String node1Name = resultSet.getString(2);
+                        String node2Name = resultSet.getString(3);
+                        try{
+                            Node node1 = graph.getNodes(node -> node.getNodeID().equals(node1Name)).iterator().next();
+                            Node node2 = graph.getNodes(node -> node.getNodeID().equals(node2Name)).iterator().next();
+                            graph.addEdge(node1, node2, edgeID);
+                        }
+                        catch (NoSuchElementException e){
+                            System.out.println("[Warning] Uninitialized edge");
+                        }
+                    }
                 }
             }
         } catch (SQLException e) {
