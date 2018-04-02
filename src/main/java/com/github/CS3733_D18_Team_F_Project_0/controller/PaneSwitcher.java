@@ -1,6 +1,7 @@
 package com.github.CS3733_D18_Team_F_Project_0.controller;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -23,6 +24,10 @@ public class PaneSwitcher {
         resFac.setResources(ResourceBundle.getBundle("LanguageBundle", new Locale("en", "US")));
 
         popup.initModality(Modality.APPLICATION_MODAL);
+    }
+
+    public Pane getPane(Screens.Screen screen) {
+        return panes.get(screen.fxmlFile);
     }
 
     // loads the screen into memory from the file

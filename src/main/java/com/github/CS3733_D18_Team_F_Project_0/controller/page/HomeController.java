@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -17,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -76,6 +78,11 @@ public class HomeController implements SwitchableController {
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
+
+        /*
+        Pane root = switcher.getPane(Screens.Home);
+        root.getChildren().add(new Button("Hello World"));
+        */
 
         // preload the 2D and 3D floor map
         image3D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
