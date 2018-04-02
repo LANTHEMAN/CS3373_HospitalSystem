@@ -1,4 +1,4 @@
-
+package com.github.CS3733_D18_Team_F_Project_0.controller.page;
 
 import com.github.CS3733_D18_Team_F_Project_0.Map;
 import com.github.CS3733_D18_Team_F_Project_0.MapSingleton;
@@ -103,8 +103,8 @@ public class HomeController implements SwitchableController {
         */
 
         // preload the 2D and 3D floor map
-        image3D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
-        image2D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png");
+        //image3D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
+        //image2D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png");
         // testing area for db sync
         /*
         Node rNode = map.getNodes(node -> node.getNodeID().equals("HREST77702")).iterator().next();
