@@ -5,5 +5,6 @@ firstName varchar(50),
 lastName varchar(50),
 location varchar(50),
 instructions varchar(200),
-priority int
+priority int,
+status varchar(50)
 );

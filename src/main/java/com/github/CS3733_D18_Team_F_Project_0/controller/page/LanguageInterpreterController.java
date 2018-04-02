@@ -4,6 +4,7 @@ import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
 import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
 import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
 import com.github.CS3733_D18_Team_F_Project_0.sr.LanguageInterpreter;
+import com.github.CS3733_D18_Team_F_Project_0.sr.ServiceRequest;
 import com.github.CS3733_D18_Team_F_Project_0.sr.ServiceRequestSingleton;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -91,9 +92,9 @@ public class LanguageInterpreterController implements SwitchableController {
         last_name = lastName.getText();
         location = destination.getText();
         String new_description = l + "/////" + description;
-        System.out.print(new_description);
-        LanguageInterpreter request = new LanguageInterpreter(first_name, last_name, location, new_description, 0, l);
-        //ServiceRequestSingleton.getInstance().sendServiceRequest(request);
+        //System.out.print(new_description);
+        ServiceRequest request = new LanguageInterpreter(first_name, last_name, location, new_description, 0, l);
+        ServiceRequestSingleton.getInstance().sendServiceRequest(request);
         ServiceRequestSingleton.getInstance().addServiceRequest(request);
         switcher.switchTo(Screens.ServiceRequest);
 

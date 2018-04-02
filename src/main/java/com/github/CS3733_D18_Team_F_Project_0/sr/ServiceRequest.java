@@ -24,6 +24,17 @@ public abstract class ServiceRequest {
         this.priority = priority;
     }
 
+    public ServiceRequest(String type, int id, String firstName, String lastName, String location, String description, String status, int priority){
+        this.type = type;
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.location = location;
+        this.description = description;
+        this.status = status;
+        this.priority = priority;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -65,7 +76,7 @@ public abstract class ServiceRequest {
     }
 
     public void setDescription(String s) {
-        this.description = description;
+        this.description = s;
     }
 
     public String getStatus() {
@@ -83,6 +94,4 @@ public abstract class ServiceRequest {
     public void setPriority(int priority) {
         this.priority = priority;
     }
-
-    public abstract void parseIntoDescription(String s);
 }

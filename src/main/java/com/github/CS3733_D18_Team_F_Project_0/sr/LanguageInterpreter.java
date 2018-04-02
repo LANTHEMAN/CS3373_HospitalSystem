@@ -10,6 +10,11 @@ public class LanguageInterpreter extends ServiceRequest {
         this.language = language;
     }
 
+    public LanguageInterpreter(int id, String firstName, String lastName, String location, String description, String status, int priority, String language) {
+        super("Language Interpreter", id, firstName, lastName, location, description, status, priority);
+        this.language = language;
+    }
+
     public String getLanguage() {
         return language;
     }
@@ -20,10 +25,5 @@ public class LanguageInterpreter extends ServiceRequest {
 
     public void parseIntoDescription(){
         super.setDescription(getLanguage() + "\n" + getDescription());
-    }
-
-    @Override
-    public void parseIntoDescription(String s) {
-
     }
 }

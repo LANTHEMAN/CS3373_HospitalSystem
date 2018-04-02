@@ -10,6 +10,11 @@ public class ReligiousServices extends ServiceRequest{
         this.religion = religion;
     }
 
+    public ReligiousServices(int id, String firstName, String lastName, String location, String description, String status, int priority, String religion) {
+        super("Religious Services", id, firstName, lastName, location, description, status, priority);
+        this.religion = religion;
+    }
+
     public String getReligion() {
         return religion;
     }
@@ -18,8 +23,4 @@ public class ReligiousServices extends ServiceRequest{
         this.religion = religion;
     }
 
-    @Override
-    public void parseIntoDescription(String s) {
-
-    }
 }
