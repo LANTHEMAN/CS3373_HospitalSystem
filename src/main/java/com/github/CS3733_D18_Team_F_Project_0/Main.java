@@ -7,8 +7,28 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Comparator;
+
 public class Main extends Application {
     public static void main(String[] args) {
+        // get rid of the database folder if its empty
+        File file = new File("database/seg0");
+        if (file.exists() && file.isDirectory() && file.list().length == 0) {
+            // delete the empty database folder
+            try {
+                Files.walk(Paths.get("database"))
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(File::delete);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         launch(args);
     }
 
