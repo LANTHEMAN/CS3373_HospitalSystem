@@ -29,7 +29,7 @@ public class LanguageInterpreterController implements SwitchableController {
     TextField lastName;
 
     @FXML
-    TextField location;
+    TextField destination;
 
     @FXML
     TextArea instructions;
@@ -59,7 +59,7 @@ public class LanguageInterpreterController implements SwitchableController {
         String l;
         String first_name;
         String last_name;
-        String destination;
+        String location;
         String description;
         if (language.getText() == null || language.getText().trim().isEmpty()) {
             languageRequired.setVisible(true);
@@ -73,7 +73,7 @@ public class LanguageInterpreterController implements SwitchableController {
             lastNameRequired.setVisible(true);
             requiredFieldsEmpty++;
         }
-        if (location.getText() == null || location.getText().trim().isEmpty()) {
+        if (destination.getText() == null || destination.getText().trim().isEmpty()) {
             locationRequired.setVisible(true);
             requiredFieldsEmpty++;
         }
@@ -89,12 +89,12 @@ public class LanguageInterpreterController implements SwitchableController {
         l = language.getText();
         first_name = firstName.getText();
         last_name = lastName.getText();
-        destination = location.getText();
+        location = destination.getText();
         String new_description = l + "/////" + description;
         System.out.print(new_description);
-        LanguageInterpreter request = new LanguageInterpreter(first_name, last_name, destination, new_description, 0, l);
-        ServiceRequestSingleton.getInstance().sendServiceRequest(request);
-       // ServiceRequestSingleton.getInstance().addServiceRequest(request);
+        LanguageInterpreter request = new LanguageInterpreter(first_name, last_name, location, new_description, 0, l);
+        //ServiceRequestSingleton.getInstance().sendServiceRequest(request);
+        ServiceRequestSingleton.getInstance().addServiceRequest(request);
         switcher.switchTo(Screens.ServiceRequest);
 
     }

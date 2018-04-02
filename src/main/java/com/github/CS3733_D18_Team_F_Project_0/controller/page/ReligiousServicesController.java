@@ -29,13 +29,13 @@ public class ReligiousServicesController implements SwitchableController {
     TextField lastName;
 
     @FXML
-    TextField location;
+    TextField destination;
 
     @FXML
     TextArea instructions;
 
     @FXML
-    Label languageRequired;
+    Label religionRequired;
 
     @FXML
     Label firstNameRequired;
@@ -59,10 +59,10 @@ public class ReligiousServicesController implements SwitchableController {
         String r;
         String first_name;
         String last_name;
-        String destination;
+        String location;
         String description;
         if (religion.getText() == null || religion.getText().trim().isEmpty()) {
-            languageRequired.setVisible(true);
+            religionRequired.setVisible(true);
             requiredFieldsEmpty++;
         }
         if (firstName.getText() == null || firstName.getText().trim().isEmpty()) {
@@ -73,7 +73,7 @@ public class ReligiousServicesController implements SwitchableController {
             lastNameRequired.setVisible(true);
             requiredFieldsEmpty++;
         }
-        if (location.getText() == null || location.getText().trim().isEmpty()) {
+        if (destination.getText() == null || destination.getText().trim().isEmpty()) {
             locationRequired.setVisible(true);
             requiredFieldsEmpty++;
         }
@@ -89,10 +89,10 @@ public class ReligiousServicesController implements SwitchableController {
         r = religion.getText();
         first_name = firstName.getText();
         last_name = lastName.getText();
-        destination = location.getText();
+        location = destination.getText();
         String new_description = r + "/////" + description + "\n";
         System.out.print(new_description);
-        ReligiousServices request = new ReligiousServices(first_name, last_name, destination, new_description, 0, r);
+        ReligiousServices request = new ReligiousServices(first_name, last_name, location, new_description, 0, r);
         //ServiceRequestSingleton.getInstance().sendServiceRequest(request);
         ServiceRequestSingleton.getInstance().addServiceRequest(request);
         switcher.switchTo(Screens.ServiceRequest);

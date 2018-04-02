@@ -21,7 +21,7 @@
                 <Label layoutX="17.0" layoutY="163.0" text="First Name" />
                 <Label layoutX="319.0" layoutY="163.0" text="Last Name" />
                 <Button layoutX="526.0" layoutY="347.0" mnemonicParsing="false" onAction="#onSubmit" text="Submit Request" />
-                <TextField fx:id="location" layoutX="79.0" layoutY="199.0" prefHeight="25.0" prefWidth="139.0" />
+                <TextField fx:id="destination" layoutX="79.0" layoutY="199.0" prefHeight="25.0" prefWidth="139.0" />
                 <Label layoutX="32.0" layoutY="203.0" text="Location" />
                 <Label layoutX="28.0" layoutY="249.0" scaleX="1.2" scaleY="1.2" scaleZ="1.2" text="Special Instructions" />
                 <TextArea fx:id="instructions" layoutX="18.0" layoutY="272.0" prefHeight="61.0" prefWidth="601.0" />
