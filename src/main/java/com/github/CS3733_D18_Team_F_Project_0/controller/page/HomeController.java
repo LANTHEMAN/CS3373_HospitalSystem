@@ -49,7 +49,7 @@ public class HomeController implements SwitchableController {
             new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png")
     };
     private Image maps3D[] = {
-            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png")
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/2-ICONS.png")
     };
 
     @FXML

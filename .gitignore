@@ -27,6 +27,7 @@ hs_err_pid*
 classes/*
 build/*
 out/*
+database/*
 
 derby.log
 *.lock
