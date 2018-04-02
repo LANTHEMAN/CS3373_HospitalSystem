@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 public class Map implements DatabaseItem, Observer {
 
     // TODO: draw nodes
+    // TODO: add this object to be notified by changes in a node
 
     DatabaseHandler dbHandler;
     Graph graph;
