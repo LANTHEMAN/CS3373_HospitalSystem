@@ -20,6 +20,7 @@ public class TestExistingNodeBuilder {
                 .setBuilding("Place")
                 .setPosition(new Point3D(0, 0, 0))
                 .setShortName("Place in place")
+                .setLongName("cool")
                 .setWireframePosition(new Point2D(0, 0))
                 .build();
         // will only reach here if no exception was thrown
