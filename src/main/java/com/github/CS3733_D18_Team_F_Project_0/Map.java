@@ -37,7 +37,6 @@ public class Map implements DatabaseItem, Observer {
         dbHandler = DatabaseSingleton.getInstance().getDbHandler();
     }
 
-    // TODO: pass in new node properties
     public void createNode(Node node) {
         try {
             // test that the node does not already exist
@@ -64,8 +63,7 @@ public class Map implements DatabaseItem, Observer {
                     + "," + (int) node.getWireframePosition().getY()
                     + ")";
             dbHandler.runAction(cmd);
-
-
+            syncCSVFromDB(dbHandler);
 
             // TODO reflect the nodes to draw
 
@@ -93,6 +91,7 @@ public class Map implements DatabaseItem, Observer {
         // remove this node from the database
         String cmd = "DELETE FROM NODE WHERE ID='" + node.getNodeID() + "';";
         dbHandler.runAction(cmd);
+        syncCSVFromDB(dbHandler);
 
         // TODO reflect the nodes to draw
     }
@@ -109,6 +108,16 @@ public class Map implements DatabaseItem, Observer {
         }
         // make the edge
         graph.addEdge(node1, node2);
+
+        // sync the database
+        Edge edge = graph.getEdge(node1, node2);
+        String cmd = "INSERT INTO EDGE VALUES ("
+                + "'" + edge.getEdgeID() + "'"
+                + ",(select ID from NODE where ID = '" + edge.getNode1().getNodeID() + "')"
+                + ",(select ID from NODE where ID = '" + edge.getNode2().getNodeID() + "')"
+                + ")";
+        dbHandler.runAction(cmd);
+        syncCSVFromDB(dbHandler);
 
         // TODO reflect the edges to draw
     }
@@ -141,6 +150,7 @@ public class Map implements DatabaseItem, Observer {
         // remove the edge from the database
         String cmd = "DELETE FROM EDGE WHERE EDGEID='" + edge.getEdgeID() + "';";
         dbHandler.runAction(cmd);
+        syncCSVFromDB(dbHandler);
 
         // TODO reflect the edges to draw
     }
@@ -176,10 +186,19 @@ public class Map implements DatabaseItem, Observer {
 
 
     // TODO implement observing of nodes
-    // TODO always update position (unless its a change in ID, aka instanceof arg -> String)
+    // TODO always update position when drawing graph (unless its a change in ID, aka instanceof arg -> String)
     @Override
     public void update(Observable o, Object arg) {
+        // if arg is null the nodeID did not change
+        if(arg == null){
 
+        }
+        // if arg == String, the nodeID and all edgeIDs have to be updated in the database
+        else{
+
+        }
+
+        syncCSVFromDB(dbHandler);
     }
 
 
