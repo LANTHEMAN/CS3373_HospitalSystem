@@ -192,14 +192,14 @@
                         <Font size="20.0" />
                     </font>
                 </Text>
-                <VBox fx:id="vbxMenu" alignment="CENTER" prefHeight="665.0" prefWidth="230.0" spacing="40.0" visible="false" GridPane.rowIndex="1">
+                <VBox fx:id="vbxMenu" alignment="CENTER" prefHeight="665.0" prefWidth="230.0" spacing="40.0" GridPane.rowIndex="1">
                     <children>
                         <Button fx:id="btnFindLocation" mnemonicParsing="false" onAction="#onFindLocation" prefHeight="90.0" prefWidth="140.0" text="%FindLocation" textAlignment="CENTER" wrapText="true">
                             <font>
                                 <Font name="Helvetica Light" size="17.0" />
                             </font>
                         </Button>
-                        <Button fx:id="DirectionsSwitch" mnemonicParsing="false" onAction="#onDirectionsSwitch" prefHeight="90.0" prefWidth="140.0" text="%GetDirections" textAlignment="CENTER" wrapText="true">
+                        <Button fx:id="DirectionsSwitch" mnemonicParsing="false" onAction="#onGetDirections" prefHeight="90.0" prefWidth="140.0" text="%GetDirections" textAlignment="CENTER" wrapText="true">
                             <font>
                                 <Font name="Helvetica Light" size="17.0" />
                             </font>
@@ -300,7 +300,17 @@
                         </Accordion>
                         <Button mnemonicParsing="false" onAction="#onLocationCancel" text="%Cancel" />
                     </children></VBox>
-            <VBox fx:id="vbxFloor" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" GridPane.rowIndex="1">
+            <VBox fx:id="vbxDirections" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" visible="false" GridPane.rowIndex="1">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\%StartLocation" />
+                  <ComboBox prefWidth="150.0" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\%End Location" />
+                  <ComboBox prefWidth="150.0" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Details:" />
+                  <Button mnemonicParsing="false" onAction="#onDirectionsCancel" text="\%Cancel" />
+               </children>
+            </VBox>
+            <VBox fx:id="vbxFloor" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" visible="false" GridPane.rowIndex="1">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\%SelectFloor" />
                   <GridPane alignment="CENTER" prefHeight="299.0" prefWidth="280.0">

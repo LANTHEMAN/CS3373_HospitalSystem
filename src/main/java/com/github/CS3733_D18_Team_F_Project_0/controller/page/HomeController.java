@@ -58,9 +58,11 @@ public class HomeController implements SwitchableController {
     @FXML
     private VBox vbxMenu;
     @FXML
-    private VBox vbxFloor;
-    @FXML
     private VBox vbxLocation;
+    @FXML
+    private VBox vbxDirections;
+    @FXML
+    private VBox vbxFloor;
 
     @FXML
     private VBox addLocationPopup;
@@ -151,7 +153,15 @@ public class HomeController implements SwitchableController {
     }
 
     @FXML
-    void onDirectionsSwitch() {
+    void onGetDirections() {
+        vbxMenu.setVisible(false);
+        vbxDirections.setVisible(true);
+    }
+
+    @FXML
+    void onDirectionsCancel() {
+        vbxDirections.setVisible(false);
+        vbxMenu.setVisible(true);
     }
 
     @FXML
@@ -291,8 +301,9 @@ public class HomeController implements SwitchableController {
     void onLocationDirections() {
         // hide location selection
         findLocationPopup.setVisible(false);
+        vbxLocation.setVisible(false);
         // find directions with this location
         // TODO need to set field of txtfield first!!!!! (like putting in register before pass)
-        onDirectionsSwitch();
+        onGetDirections();
     }
 }
