@@ -10,9 +10,11 @@ import javafx.geometry.Point3D;
 import javafx.util.Pair;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -40,14 +42,32 @@ public class Map implements DatabaseItem {
                 System.out.println("DB: Initializing NODE table entry");
                 dbHandler.runSQLScript("init_node_db.sql");
 
-                List<String> nodeFilePaths = Files.walk(Paths.get(dbHandler.getClass().getResource("map").toURI()))
-                        .filter(Files::isRegularFile)
-                        .filter(path -> path.getFileName().toString().contains("nodes.csv"))
-                        .map(path -> path.getFileName().toString())
-                        .collect(Collectors.toList());
+                List<String> nodeFilePaths;
+                boolean existingCompiledNodeFile = false;
+                // see if there is an already compiled nodes csv file
+                if (new File("map/nodes.csv").exists()) {
+                    nodeFilePaths = new LinkedList<>(Collections.singletonList("map/nodes.csv"));
+                    existingCompiledNodeFile = true;
+
+                } else {
+                    nodeFilePaths = Files.walk(Paths.get(dbHandler.getClass().getResource("map").toURI()))
+                            .filter(Files::isRegularFile)
+                            .filter(path -> path.getFileName().toString().contains("nodes.csv"))
+                            .map(path -> path.getFileName().toString())
+                            .map(path -> "map/" + path)
+                            .collect(Collectors.toList());
+                }
 
                 for (String nodeFilePath : nodeFilePaths) {
-                    File csvFile = new File(dbHandler.getClass().getResource("map/" + nodeFilePath).toURI().getPath());
+                    File csvFile;
+                    if (existingCompiledNodeFile) {
+                        System.out.println("Missing database, Loading Nodes from map/nodes.csv");
+                        csvFile = new File(nodeFilePath);
+                    } else {
+                        System.out.println("Missing database, generating Nodes from db/map/*nodes.csv files.");
+                        csvFile = new File(dbHandler.getClass().getResource(nodeFilePath).toURI().getPath());
+                    }
+
                     CSVParser parser = CSVParser.parse(csvFile, StandardCharsets.UTF_8, CSVFormat.RFC4180);
 
                     for (CSVRecord record : parser) {
@@ -93,14 +113,32 @@ public class Map implements DatabaseItem {
                 System.out.println("DB: Initializing EDGE table entry");
                 dbHandler.runSQLScript("init_edge_db.sql");
 
-                List<String> edgeFilePaths = Files.walk(Paths.get(dbHandler.getClass().getResource("map").toURI()))
-                        .filter(Files::isRegularFile)
-                        .filter(path -> path.getFileName().toString().contains("edges.csv"))
-                        .map(path -> path.getFileName().toString())
-                        .collect(Collectors.toList());
+                List<String> edgeFilePaths;
+                boolean existingCompiledEdgeFile = false;
+                // see if there is an already compiled nodes csv file
+                if (new File("map/edges.csv").exists()) {
+                    edgeFilePaths = new LinkedList<>(Collections.singletonList("map/edges.csv"));
+                    existingCompiledEdgeFile = true;
+
+                } else {
+                    edgeFilePaths = Files.walk(Paths.get(dbHandler.getClass().getResource("map").toURI()))
+                            .filter(Files::isRegularFile)
+                            .filter(path -> path.getFileName().toString().contains("edges.csv"))
+                            .map(path -> path.getFileName().toString())
+                            .map(path -> "map/" + path)
+                            .collect(Collectors.toList());
+                }
 
                 for (String edgeFilePath : edgeFilePaths) {
-                    File csvFile = new File(dbHandler.getClass().getResource("map/" + edgeFilePath).toURI().getPath());
+                    File csvFile;
+                    if (existingCompiledEdgeFile) {
+                        System.out.println("Missing database, Loading Edges from map/edges.csv");
+                        csvFile = new File(edgeFilePath);
+                    } else {
+                        System.out.println("Missing database, generating Edges from db/map/*edges.csv files.");
+                        csvFile = new File(dbHandler.getClass().getResource(edgeFilePath).toURI().getPath());
+                    }
+
                     CSVParser parser = CSVParser.parse(csvFile, StandardCharsets.UTF_8, CSVFormat.RFC4180);
 
                     for (CSVRecord record : parser) {
@@ -141,11 +179,9 @@ public class Map implements DatabaseItem {
                         String floor = resultSet.getString(1).substring(8);
                         switch (floor) {
                             case "L2":
-                            case "2":
                                 height = -200;
                                 break;
                             case "L1":
-                            case "1":
                                 height = -100;
                                 break;
                             case "0G":
@@ -193,12 +229,11 @@ public class Map implements DatabaseItem {
                         String edgeID = resultSet.getString(1);
                         String node1Name = resultSet.getString(2);
                         String node2Name = resultSet.getString(3);
-                        try{
+                        try {
                             Node node1 = graph.getNodes(node -> node.getNodeID().equals(node1Name)).iterator().next();
                             Node node2 = graph.getNodes(node -> node.getNodeID().equals(node2Name)).iterator().next();
                             graph.addEdge(node1, node2, edgeID);
-                        }
-                        catch (NoSuchElementException e){
+                        } catch (NoSuchElementException e) {
                             System.out.println("[Warning] Uninitialized edge");
                         }
                     }
@@ -211,6 +246,50 @@ public class Map implements DatabaseItem {
 
     @Override
     public void syncCSVFromDB(DatabaseHandler dbHandler) {
+        try {
+            new File("map").mkdirs();
 
+            // save nodes
+            FileWriter fw = new FileWriter("map/nodes.csv", false);
+            CSVPrinter csvPrinterNodes = new CSVPrinter(fw, CSVFormat.DEFAULT
+                    .withHeader("nodeID", "xcoord", "ycoord", "floor", "building", "nodeType", "longName"
+                            , "shortName", "teamAssigned", "xcoord3d", "ycoord3d"));
+            ResultSet nodeSet = dbHandler.runQuery("SELECT * FROM NODE");
+            while (nodeSet.next()) {
+                csvPrinterNodes.printRecord(
+                        nodeSet.getString(1)
+                        , nodeSet.getString(2)
+                        , nodeSet.getString(3)
+                        , nodeSet.getString(4)
+                        , nodeSet.getString(5)
+                        , nodeSet.getString(6)
+                        , nodeSet.getString(7)
+                        , nodeSet.getString(8)
+                        , nodeSet.getString(9)
+                        , nodeSet.getString(10)
+                        , nodeSet.getString(11));
+            }
+            csvPrinterNodes.flush();
+            nodeSet.close();
+            fw.close();
+
+            // save edges
+            fw = new FileWriter("map/edges.csv", false);
+            CSVPrinter csvPrinterEdges = new CSVPrinter(fw, CSVFormat.DEFAULT
+                    .withHeader("edgeID", "startNode", "endNode"));
+            ResultSet edgeSet = dbHandler.runQuery("SELECT * FROM EDGE");
+            while (edgeSet.next()) {
+                csvPrinterEdges.printRecord(
+                        edgeSet.getString(1)
+                        , edgeSet.getString(2)
+                        , edgeSet.getString(3));
+            }
+            csvPrinterEdges.flush();
+            edgeSet.close();
+            fw.close();
+
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
     }
 }

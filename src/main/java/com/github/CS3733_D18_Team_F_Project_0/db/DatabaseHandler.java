@@ -32,6 +32,7 @@ public class DatabaseHandler {
         trackedItems.add(dbItem);
         dbItem.initDatabase(this);
         syncLocalFromDB(dbItem);
+        dbItem.syncCSVFromDB(this);
     }
 
     public void syncLocalFromDB(DatabaseItem dbItem) {
