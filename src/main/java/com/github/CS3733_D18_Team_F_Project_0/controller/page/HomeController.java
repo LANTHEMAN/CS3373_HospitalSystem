@@ -71,8 +71,8 @@ public class HomeController implements SwitchableController {
             new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/2-ICONS.png"),
             new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/3-ICONS.png")
     };
-    //@FXML
-    //private ImageView ivMap;
+    @FXML
+    private ImageView ivMap;
     @FXML
     private Pane mapContainer;
     @FXML
@@ -131,7 +131,7 @@ public class HomeController implements SwitchableController {
         rNode.setWireframePosition(new Point2D(777,777));
         */
 
-        this.drawNodes("02");
+        this.draw2DNodes("02");
 
         // zoom*2 on double-click
         gesturePane.setOnMouseClicked(e -> {
@@ -335,9 +335,9 @@ public class HomeController implements SwitchableController {
             reloadMap();
         }
         // make the map full sized when changed over
-        //double width = ivMap.getImage().getWidth();
-        //double height = ivMap.getImage().getHeight();
-        //reset(ivMap, width, height);
+        double width = ivMap.getImage().getWidth();
+        double height = ivMap.getImage().getHeight();
+        reset(ivMap, width, height);
     }
 
     // Add location on map
@@ -418,27 +418,30 @@ public class HomeController implements SwitchableController {
     }
 
     private void reloadMap() {
-        if (btnMapDimensions.getText().equals("2D Map")) {
-            //  ivMap.setImage(maps3D[level]);
+        String newLevel;
+        if (level == 0) {
+            newLevel = "L2";
+        } else if (level == 1) {
+            newLevel = "L1";
+        } else if (level == 2) {
+            newLevel = "0G";
+        } else if (level == 3) {
+            newLevel = "01";
+        } else if (level == 4) {
+            newLevel = "02";
         } else {
-            // ivMap.setImage(maps2D[level]);
-            clearNodes();
-            String newLevel;
+            newLevel = "03";
+        }
 
-            if (level == 0) {
-                newLevel = "L2";
-            } else if (level == 1) {
-                newLevel = "L1";
-            } else if (level == 2) {
-                newLevel = "0G";
-            } else if (level == 3) {
-                newLevel = "01";
-            } else if (level == 4) {
-                newLevel = "02";
-            } else {
-                newLevel = "03";
-            }
-            drawNodes(newLevel);
+        if (btnMapDimensions.getText().equals("2D Map")) {
+            ivMap.setImage(maps3D[level]);
+            clearNodes();
+            draw3DNodes(newLevel);
+
+        } else {
+            ivMap.setImage(maps2D[level]);
+            clearNodes();
+            draw2DNodes(newLevel);
         }
     }
 
@@ -486,14 +489,8 @@ public class HomeController implements SwitchableController {
                 viewport.getMinY() + yProportion * viewport.getHeight());
     }
 
-    private void drawNodes(String newLevel) {
+    private void draw2DNodes(String newLevel) {
         map = MapSingleton.getInstance().getMap();
-        for (Node node : map.getNodes(node -> node.getFloor().equals(newLevel))) {
-            Circle circle = new Circle(3, Color.RED);
-            circle.setCenterX(node.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            circle.setCenterY(node.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-            mapContainer.getChildren().add(circle);
-        }
         for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))) {
             Line line = new Line();
             line.setEndX(edge.getNode1().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
@@ -502,10 +499,34 @@ public class HomeController implements SwitchableController {
             line.setStartY(edge.getNode2().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
             mapContainer.getChildren().add(line);
         }
+        for (Node node : map.getNodes(node -> node.getFloor().equals(newLevel))) {
+            Circle circle = new Circle(1.5, Color.RED);
+            circle.setCenterX(node.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            circle.setCenterY(node.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+            mapContainer.getChildren().add(circle);
+        }
+    }
+
+    private void draw3DNodes(String newLevel) {
+        map = MapSingleton.getInstance().getMap();
+        for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))) {
+            Line line = new Line();
+            line.setEndX(edge.getNode1().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            line.setEndY(edge.getNode1().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2774.f);
+            line.setStartX(edge.getNode2().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            line.setStartY(edge.getNode2().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2774.f);
+            mapContainer.getChildren().add(line);
+        }
+        for (Node node : map.getNodes(node -> node.getFloor().equals(newLevel))) {
+            Circle circle = new Circle(1.5, Color.RED);
+            circle.setCenterX(node.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            circle.setCenterY(node.getWireframePosition().getY() * mapContainer.getMaxHeight() / 2774.f);
+            mapContainer.getChildren().add(circle);
+        }
     }
 
     private void clearNodes() {
         mapContainer.getChildren().clear();
-        //mapContainer.getChildren().add(ivMap);
+        mapContainer.getChildren().add(ivMap);
     }
 }
