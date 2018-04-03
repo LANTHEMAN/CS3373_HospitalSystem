@@ -2,6 +2,7 @@ package com.github.CS3733_D18_Team_F_Project_0.controller.page;
 
 import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
 import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
+import com.github.CS3733_D18_Team_F_Project_0.sr.ServiceRequest;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -21,19 +22,19 @@ public class SearchServiceRequestsController implements SwitchableController {
     public ComboBox availableTypes;
 
     @FXML
-    public TableView searchResultTable;
+    public TableView<ServiceRequest> searchResultTable;
     @FXML
-    public TableColumn id;
+    public TableColumn<ServiceRequest, Integer> idNumber;
     @FXML
-    public TableColumn type;
+    public TableColumn<ServiceRequest, String> requestType;
     @FXML
-    public TableColumn firstName;
+    public TableColumn<ServiceRequest, String> first_name;
     @FXML
-    public TableColumn lastName;
+    public TableColumn<ServiceRequest, String> last_name;
     @FXML
-    public TableColumn destination;
+    public TableColumn<ServiceRequest, String> destination;
     @FXML
-    public TableColumn priority;
+    public TableColumn<ServiceRequest, Integer> requestPriority;
     @FXML
-    public TableColumn status;
+    public TableColumn<ServiceRequest, String> theStatus;
 }
