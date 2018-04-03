@@ -44,12 +44,22 @@ public class HomeController implements SwitchableController {
     private final ObservableList<String> all = FXCollections.observableArrayList();
     private PaneSwitcher switcher;
     private Map map;
-    private int level = 0;
+    private int level = 4;
     private Image maps2D[] = {
-            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png")
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/00_thelowerlevel2.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/00_thelowerlevel1.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/00_thegroundfloor.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/01_thefirstfloor.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/03_thethirdfloor.png")
     };
     private Image maps3D[] = {
-            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/2-ICONS.png")
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/L2-ICONS.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/L1-ICONS.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/1-ICONS.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/1-ICONS.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/2-ICONS.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/3-ICONS.png")
     };
 
     @FXML
@@ -84,6 +94,20 @@ public class HomeController implements SwitchableController {
     private Text txtFindLocation;
     @FXML
     private Button btnLocationDirections;
+
+
+    @FXML
+    private Button btnLower2Floor;
+    @FXML
+    private Button btnLower1Floor;
+    @FXML
+    private Button btnGroundFloor;
+    @FXML
+    private Button btnFirstFloor;
+    @FXML
+    private Button btnSecondFloor;
+    @FXML
+    private Button btnThirdFloor;
 
     @FXML
     private Button btnMapDimensions;
@@ -375,6 +399,32 @@ public class HomeController implements SwitchableController {
         onGetDirections();
     }
 
+
+    @FXML
+    void changeFloorMap(ActionEvent e) {
+        if (e.getSource().equals(btnLower2Floor)) {
+            level = 0;
+        } else if (e.getSource().equals(btnLower1Floor)) {
+            level = 1;
+        } else if (e.getSource().equals(btnGroundFloor)) {
+            level = 2;
+        } else if (e.getSource().equals(btnFirstFloor)) {
+            level = 3;
+        } else if (e.getSource().equals(btnSecondFloor)) {
+            level = 4;
+        } else if (e.getSource().equals(btnThirdFloor)){
+            level = 5;
+        }
+        reloadMap();
+    }
+
+    private void reloadMap() {
+        if (btnMapDimensions.getText().equals("2D Map")) {
+            ivMap.setImage(maps3D[level]);
+        } else {
+            ivMap.setImage(maps2D[level]);
+        }
+    }
 
     // Image movement helper functions
 

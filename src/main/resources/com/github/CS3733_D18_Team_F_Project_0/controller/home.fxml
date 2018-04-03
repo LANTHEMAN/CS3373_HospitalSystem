@@ -21,7 +21,7 @@
 <?import javafx.scene.text.Text?>
 <?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.HomeController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.HomeController">
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="931.4708251953125" />
         <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="400.0" minWidth="258.2379150390625" prefWidth="279.5291748046875" />
@@ -325,12 +325,12 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="70.0" prefWidth="90.0" text="%GroundFloor" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="70.0" prefWidth="90.0" text="%LowerLevel1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="70.0" prefWidth="90.0" text="%LowerLevel2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="70.0" prefWidth="90.0" text="%FirstFloor" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="70.0" prefWidth="90.0" text="%SecondFloor" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="70.0" prefWidth="90.0" text="%ThirdFloor" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                        <Button fx:id="btnLower2Floor" alignment="CENTER" mnemonicParsing="false" onAction="#changeFloorMap" prefHeight="70.0" prefWidth="90.0" text="%LowerLevel2" textAlignment="CENTER" wrapText="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Button fx:id="btnLower1Floor" alignment="CENTER" mnemonicParsing="false" onAction="#changeFloorMap" prefHeight="70.0" prefWidth="90.0" text="%LowerLevel1" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Button fx:id="btnGroundFloor" alignment="CENTER" mnemonicParsing="false" onAction="#changeFloorMap" prefHeight="70.0" prefWidth="90.0" text="%GroundFloor" textAlignment="CENTER" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <Button fx:id="btnFirstFloor" alignment="CENTER" mnemonicParsing="false" onAction="#changeFloorMap" prefHeight="70.0" prefWidth="90.0" text="%FirstFloor" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <Button fx:id="btnSecondFloor" alignment="CENTER" mnemonicParsing="false" onAction="#changeFloorMap" prefHeight="70.0" prefWidth="90.0" text="%SecondFloor" textAlignment="CENTER" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                        <Button fx:id="btnThirdFloor" alignment="CENTER" mnemonicParsing="false" onAction="#changeFloorMap" prefHeight="70.0" prefWidth="90.0" text="%ThirdFloor" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
                      </children>
                   </GridPane>
                   <Button alignment="CENTER" mnemonicParsing="false" onAction="#onFloorCancel" prefHeight="47.0" prefWidth="89.0" text="%Cancel" />
