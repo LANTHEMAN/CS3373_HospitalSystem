@@ -194,12 +194,7 @@ public class HomeController implements SwitchableController {
 
             ivMap.setViewport(new Rectangle2D(newMinX, newMinY, newWidth, newHeight));
         });
-/*        ivMap.setOnMouseClicked(e -> {
-            if (e.getClickCount() == 2) {
-                reset(ivMap, width, height);
-            }
-        });
-*/
+
         ivMap.fitWidthProperty().bindBidirectional(mapContainer.maxWidthProperty());
         ivMap.fitHeightProperty().bindBidirectional(mapContainer.maxHeightProperty());
 
@@ -225,12 +220,6 @@ public class HomeController implements SwitchableController {
                 "Emergrency Services");
         cboxDestinationType.getSelectionModel().selectFirst(); // or ".select("All");
 
-        /*cboxAvailableLocations.getItems().clear();
-        cboxAvailableLocations.getItems().addAll(
-                "Patient Room 1",
-                "Patient Room 2",
-                "Patient Room 3");
-        cboxAvailableLocations.setItems(patientRooms);*/
         //cboxAvailableLocations.getItems().addAll(patientRooms, bathrooms);
 
         all.addAll(patientRooms);
@@ -324,17 +313,15 @@ public class HomeController implements SwitchableController {
     void onMapDimensions() {
         if (btnMapDimensions.getText().equals("3D Map")) {
             btnMapDimensions.setText("2D Map");
-            ivMap.setImage(maps3D[level]);
-            double width = ivMap.getImage().getWidth();
-            double height = ivMap.getImage().getHeight();
-            reset(ivMap, width, height);
+            reloadMap();
         } else {
             btnMapDimensions.setText("3D Map");
-            ivMap.setImage(maps2D[level]);
-            double width = ivMap.getImage().getWidth();
-            double height = ivMap.getImage().getHeight();
-            reset(ivMap, width, height);
+            reloadMap();
         }
+        // make the map full sized when changed over
+        double width = ivMap.getImage().getWidth();
+        double height = ivMap.getImage().getHeight();
+        reset(ivMap, width, height);
     }
 
 
