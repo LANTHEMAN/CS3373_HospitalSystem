@@ -56,7 +56,8 @@ public class HomeController implements SwitchableController {
     public ComboBox cboxAvailableLocations;
     private PaneSwitcher switcher;
     private Map map;
-    //private int level = 4;
+
+    private ObservableResourceFactory resFactory = new ObservableResourceFactory();
 
     public static Image maps2D[];
     public static Image maps3D[];
@@ -67,6 +68,9 @@ public class HomeController implements SwitchableController {
     private Pane mapContainer;
     @FXML
     private ScrollPane scrollMap;
+
+    @FXML
+    private Text MainTitle;
 
     @FXML
     private VBox vbxMenu;
@@ -128,8 +132,7 @@ public class HomeController implements SwitchableController {
         //map.removeNode(rNode);
         rNode.setWireframePosition(new Point2D(777,777));
         */
-
-        this.draw2DNodes(MapSingleton.floor);
+        reloadMap();
 
         // zoom*2 on double-click
         gesturePane.setOnMouseClicked(e -> {
@@ -402,23 +405,23 @@ public class HomeController implements SwitchableController {
     @FXML
     void changeFloorMap(ActionEvent e) {
         if (e.getSource().equals(btnLower2Floor)) {
-            //level = 0;
             MapSingleton.floor = "L2";
+            MainTitle.setText("Brigham and Women's Hospital: Lower Level 2");
         } else if (e.getSource().equals(btnLower1Floor)) {
-            //level = 1;
             MapSingleton.floor = "L1";
+            MainTitle.setText("Brigham and Women's Hospital: Lower Level 1");
         } else if (e.getSource().equals(btnGroundFloor)) {
-            //level = 2;
             MapSingleton.floor = "0G";
+            MainTitle.setText("Brigham and Women's Hospital: Ground Floor");
         } else if (e.getSource().equals(btnFirstFloor)) {
-            //level = 3;
             MapSingleton.floor = "01";
+            MainTitle.setText("Brigham and Women's Hospital: Level 1");
         } else if (e.getSource().equals(btnSecondFloor)) {
-            //level = 4;
             MapSingleton.floor = "02";
+            MainTitle.setText("Brigham and Women's Hospital: Level 2");
         } else if (e.getSource().equals(btnThirdFloor)) {
-            //level = 5;
             MapSingleton.floor = "03";
+            MainTitle.setText("Brigham and Women's Hospital: Level 3");
         }
         reloadMap();
     }
