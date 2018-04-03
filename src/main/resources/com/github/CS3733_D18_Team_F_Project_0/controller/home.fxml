@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
@@ -19,9 +20,9 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
+<?import net.kurobako.gesturefx.GesturePane?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.HomeController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.HomeController">
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="931.4708251953125" />
         <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="400.0" minWidth="258.2379150390625" prefWidth="279.5291748046875" />
@@ -48,7 +49,8 @@
                 <Text fx:id="txtUser" fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="Guest" translateX="35.0" wrappingWidth="164.80001831054688" x="35.0" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                     <font>
                         <Font name="System Bold" size="15.0" />
-                    </font></Text>
+                    </font>
+                </Text>
                 <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="49.0" prefWidth="925.0" snapToPixel="false" spacing="30.0">
                     <children>
                         <MenuButton fx:id="LanguageSelect" mnemonicParsing="false" text="%SelectLanguage">
@@ -67,7 +69,8 @@
                                                 <Image url="@Flags/French_Flag.png" />
                                             </image>
                                         </ImageView>
-                                    </graphic></MenuItem>
+                                    </graphic>
+                                </MenuItem>
                                 <MenuItem mnemonicParsing="false" onAction="#onSpanish" text="Español">
                                     <graphic>
                                         <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="false">
@@ -75,7 +78,8 @@
                                                 <Image url="@Flags/Spanish_Flag.png" />
                                             </image>
                                         </ImageView>
-                                    </graphic></MenuItem>
+                                    </graphic>
+                                </MenuItem>
                                 <MenuItem mnemonicParsing="false" onAction="#onChinese" text="中文">
                                     <graphic>
                                         <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="false">
@@ -83,7 +87,8 @@
                                                 <Image url="@Flags/Chinese_Flag.jpg" />
                                             </image>
                                         </ImageView>
-                                    </graphic></MenuItem>
+                                    </graphic>
+                                </MenuItem>
                             </items>
                             <HBox.margin>
                                 <Insets top="12.5" />
@@ -102,27 +107,20 @@
                 <Text fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="%BrighamTitleSecondFloor" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                     <font>
                         <Font size="22.0" />
-                    </font></Text>
-            <Pane fx:id="mapContainer" maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-               <children>
-                      <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="true" preserveRatio="true">
-                          <image>
-                              <Image url="@BW2D%20Maps/02_thesecondfloor.png" />
-                          </image>
-                      </ImageView>
-               </children>
-            </Pane>
-                <ImageView fx:id="ivZoomIn" fitHeight="43.0" fitWidth="33.0" onMouseClicked="#onZoomIn" pickOnBounds="true" preserveRatio="true" translateX="-110.0" translateY="-30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-                    <image>
-                        <Image url="@zoomIn.png" />
-                    </image>
-                </ImageView>
-                <ImageView fx:id="ivZoomOut" fitHeight="32.0" fitWidth="32.0" layoutX="775.0" layoutY="136.0" onMouseClicked="#onZoomOut" pickOnBounds="true" preserveRatio="true" translateX="-80.0" translateY="-30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-                    <image>
-                        <Image url="@zoomOut.png" />
-                    </image>
-                </ImageView>
-            <Button fx:id="btnMapDimensions" mnemonicParsing="false" onAction="#onMapDimensions" text="3D Map" translateX="-80.0" translateY="-65.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                    </font>
+                </Text>
+                        <GesturePane fx:id="gesturePane" HBarEnabled="false" VBarEnabled="false" maxHeight="578.0" maxWidth="844.0" prefHeight="200.0" prefWidth="200.0" scrollMode="ZOOM" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" VBox.vgrow="ALWAYS">
+                            <Pane fx:id="mapContainer" maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0">
+                                <children>
+                                    <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="false" preserveRatio="false">
+                                        <image>
+                                            <Image url="@BW2D%20Maps/02_thesecondfloor.png" />
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Pane>
+                        </GesturePane>
+                <Button fx:id="btnMapDimensions" mnemonicParsing="false" onAction="#onMapDimensions" text="3D Map" translateX="-80.0" translateY="-65.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                 <VBox fx:id="addLocationPopup" alignment="CENTER" maxHeight="190.0" maxWidth="150.0" prefHeight="190.0" prefWidth="150.0" spacing="10.0" style="-fx-background-color: rgba(217, 217, 217, 0.9); -fx-border-style: solid; -fx-border-color: grey;" visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add Location" />
@@ -182,6 +180,11 @@
                         <Button fx:id="btnLocationDirections" alignment="CENTER" mnemonicParsing="false" onAction="#onLocationDirections" text="Get Directions" textFill="RED" />
                     </children>
                 </VBox>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll to Zoom &amp; Drag to Move" translateX="-70.0" translateY="-40.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Text>
             </children>
         </GridPane>
         <GridPane prefHeight="730.0" prefWidth="0.0" style="-fx-background-color: E7F3F8;" GridPane.columnIndex="1">
@@ -305,42 +308,43 @@
                             </panes>
                         </Accordion>
                         <Button mnemonicParsing="false" onAction="#onLocationCancel" text="%Cancel" />
-                    </children></VBox>
-            <VBox fx:id="vbxDirections" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" visible="false" GridPane.rowIndex="1">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\%StartLocation" />
-                  <ComboBox prefWidth="150.0" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\%End Location" />
-                  <ComboBox prefWidth="150.0" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Details:" />
-                  <Button mnemonicParsing="false" onAction="#onDirectionsCancel" text="\%Cancel" />
-               </children>
-            </VBox>
-            <VBox fx:id="vbxFloor" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" visible="false" GridPane.rowIndex="1">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\%SelectFloor" />
-                  <GridPane alignment="CENTER" prefHeight="299.0" prefWidth="280.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="70.0" prefWidth="90.0" text="%GroundFloor" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="70.0" prefWidth="90.0" text="%LowerLevel1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="70.0" prefWidth="90.0" text="%LowerLevel2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="70.0" prefWidth="90.0" text="%FirstFloor" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="70.0" prefWidth="90.0" text="%SecondFloor" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                        <Button alignment="CENTER" mnemonicParsing="false" prefHeight="70.0" prefWidth="90.0" text="%ThirdFloor" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                     </children>
-                  </GridPane>
-                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#onFloorCancel" prefHeight="47.0" prefWidth="89.0" text="%Cancel" />
-               </children>
-            </VBox>
+                    </children>
+                </VBox>
+                <VBox fx:id="vbxDirections" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" visible="false" GridPane.rowIndex="1">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\%StartLocation" />
+                        <ComboBox prefWidth="150.0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\%End Location" />
+                        <ComboBox prefWidth="150.0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Details:" />
+                        <Button mnemonicParsing="false" onAction="#onDirectionsCancel" text="\%Cancel" />
+                    </children>
+                </VBox>
+                <VBox fx:id="vbxFloor" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" visible="false" GridPane.rowIndex="1">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\%SelectFloor" />
+                        <GridPane alignment="CENTER" prefHeight="299.0" prefWidth="280.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <Button fx:id="btnLower2Floor" alignment="CENTER" mnemonicParsing="false" onAction="#changeFloorMap" prefHeight="70.0" prefWidth="90.0" text="%LowerLevel2" textAlignment="CENTER" wrapText="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                <Button fx:id="btnLower1Floor" alignment="CENTER" mnemonicParsing="false" onAction="#changeFloorMap" prefHeight="70.0" prefWidth="90.0" text="%LowerLevel1" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                <Button fx:id="btnGroundFloor" alignment="CENTER" mnemonicParsing="false" onAction="#changeFloorMap" prefHeight="70.0" prefWidth="90.0" text="%GroundFloor" textAlignment="CENTER" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                <Button fx:id="btnFirstFloor" alignment="CENTER" mnemonicParsing="false" onAction="#changeFloorMap" prefHeight="70.0" prefWidth="90.0" text="%FirstFloor" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                <Button fx:id="btnSecondFloor" alignment="CENTER" mnemonicParsing="false" onAction="#changeFloorMap" prefHeight="70.0" prefWidth="90.0" text="%SecondFloor" textAlignment="CENTER" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                                <Button fx:id="btnThirdFloor" alignment="CENTER" mnemonicParsing="false" onAction="#changeFloorMap" prefHeight="70.0" prefWidth="90.0" text="%ThirdFloor" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                            </children>
+                        </GridPane>
+                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#onFloorCancel" prefHeight="47.0" prefWidth="89.0" text="%Cancel" />
+                    </children>
+                </VBox>
             </children>
         </GridPane>
     </children>

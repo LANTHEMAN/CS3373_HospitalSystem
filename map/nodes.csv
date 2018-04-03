@@ -2,40 +2,40 @@ nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned,xco
 HHALL00102,1875.0,925.0,"2 ",Tower,HALL,Hallway Connector 1 Floor 2,Hallway H00102,Team H,1840.0,1296.0
 HHALL00202,1955.0,900.0,"2 ",Tower,HALL,Hallway Connector 2 Floor 2,Hallway H00202,Team H,1920.0,1300.0
 HRETL00102,1935.0,860.0,"2 ",Tower,RETL,Garden Cafe,Garden Cafe,Team H,1901.0,1262.0
-HHALL00302,2035.0,900.0,"2 ",Tower,HALL,Hallway Connector 3 Floor 2,Hallway H00302,Team H,1999.0,1324.0
-HSTAI00102,2060.0,880.0,"2 ",Tower,STAI,Stairwell 1 Floor 2,Stairwell 0102,Team H,2025.0,1315.0
-HHALL00402,1875.0,1025.0,"2 ",Tower,HALL,Hallway Connector 4 Floor 2,Hallway H00402,Team H,1838.0,1376.0
-HHALL00502,1825.0,1025.0,"2 ",Tower,HALL,Hallway Connector 5 Floor 2,Hallway H00502,Team H,1788.0,1361.0
-HRETL00202,1615.0,1025.0,"2 ",Tower,RETL,Vending Machine Floor 2?,Vending Machine,Team H,1580.0,1298.0
-HBATH00102,1605.0,1008.0,"2 ",Tower,BATH,Bathroom 1 Tower Floor 2,Bathroom 0102,Team H,1570.0,1281.0
-HRETL00302,1825.0,1080.0,"2 ",Tower,RETL,Gift Shop Tower Floor 2,Gift Shop,Team H,1787.0,1404.0
-HHALL00602,1775.0,1080.0,"2 ",Tower,HALL,Hallway Connector 6 Floor 2,Hallway H00602,Team H,1737.0,1389.0
-HHALL00702,1740.0,1165.0,"2 ",Tower,HALL,Hallway Connector 7 Floor 2,Hallway H00702,Team H,1700.0,1447.0
-HSTAI00202,1695.0,1165.0,"2 ",Tower,STAI,Stairwell 2 Tower Floor 2,Stairwell 0202,Team H,1656.0,1433.0
-HHALL00802,1740.0,1230.0,"2 ",Tower,HALL,Hallway Connector 8 Floor 2,Hallway H00802,Team H,1699.0,1498.0
-HSTAI00302,1790.0,1230.0,"2 ",Tower,STAI,Escalator 1 Floor 2,Escalator 1 Floor 2,Team H,1749.0,1513.0
-HHALL00902,1740.0,1280.0,"2 ",Tower,HALL,Hallway Connector 9 Floor 2,Hallway H00902,Team H,1698.0,1538.0
-HHALL01002,2055.0,1280.0,"2 ",Tower,HALL,Hallway Connector 10 Floor 2,Hallway H01002,Team H,2010.0,1632.0
-HDEPT00102,2055.0,1330.0,"2 ",Tower,DEPT,Endoscopy,Endoscopy,Team H,2009.0,1672.0
-HHALL00503,1680.0,1290.0,"3 ",Tower,HALL,Hallway Connector 5 Floor 3,Hallway H00502,Team H,1638.0,1528.0
-HSTAI00103,1680.0,1275.0,"3 ",Tower,STAI,Stairwell 1 Floor 3,Stairwell,Team H,1638.0,1516.0
-HHALL00403,1325.0,1290.0,"3 ",Tower,HALL,Hallway Connector 4 Floor 3,Hallway H00403,Team H,1286.0,1422.0
-HHALL00303,1325.0,985.0,"3 ",Tower,HALL,Hallway Connector 3 Floor 3,Hallway H00303,Team H,1293.0,1179.0
-HHALL00203,1235.0,985.0,"3 ",Tower,HALL,Hallway Connector 2 Floor 3,Hallway H00203,Team H,1203.0,1153.0
-HLABS00103,1235.0,865.0,"3 ",Tower,LABS,Reproductive Endocrine Labs,Reproductive Endocrine Labs,Team H,1206.0,1057.0
-HHALL00103,1325.0,655.0,"3 ",Tower,HALL,Hallway Connector 1 Floor 3,Hallway H00103,Team H,1300.0,917.0
-HHALL00603,1735.0,925.0,"3 ",Tower,HALL,Hallway Connector 6 Floor 3,Hallway H00603,Team H,1701.0,1254.0
-HHALL00703,1735.0,900.0,"3 ",Tower,HALL,Hallway Connector 7 Floor 3,Hallway H00703,Team H,1702.0,1234.0
-HDEPT00103,1725.0,900.0,"3 ",Tower,DEPT,Dialysis Waiting Room,Dialysis WR,Team H,1692.0,1231.0
-HHALL00803,1735.0,865.0,"3 ",Tower,HALL,Hallway Connector 8 Floor 3,Hallway H00803,Team H,1702.0,1206.0
-HSERV00103,1750.0,865.0,"3 ",Tower,SERV,Nursing Room,Nursing Room,Team H,1717.0,1211.0
-HHALL00903,1735.0,820.0,"3 ",Tower,HALL,Hallway Connector 9 Floor 3,Hallway H00903,Team H,1703.0,1171.0
-HHALL01003,1785.0,820.0,"3 ",Tower,HALL,Hallway Connector 10 Floor 3,Hallway H01003,Team H,1753.0,1186.0
-HBATH00103,1785.0,830.0,"3 ",Tower,BATH,Bathroom 1 Tower Floor 3,Bathroom 0103,Team H,1753.0,1194.0
-HHALL01103,1690.0,820.0,"3 ",Tower,HALL,Hallway Connector 11 Floor 3,Hallway H01103,Team H,1659.0,1157.0
-HDEPT00203,1690.0,830.0,"3 ",Tower,DEPT,MICU 3B/C Waiting Room,MICU 3B/C WR,Team H,1659.0,1165.0
-HHALL01203,1600.0,820.0,"3 ",Tower,HALL,Hallway Connector 12 Floor 3,Hallway H01203,Team H,1569.0,1130.0
-HHALL01303,1600.0,1030.0,"3 ",Tower,HALL,Hallway Connector 13 Floor 3,Hallway H01303,Team H,1565.0,1297.0
-HHALL01403,1735.0,1030.0,"3 ",Tower,HALL,Hallway Connector 14 Floor 3,Hallway H01403,Team H,1699.0,1338.0
-HHALL01503,1735.0,985.0,"3 ",Tower,HALL,Hallway Connector 15 Floor 3,Hallway H01503,Team H,1700.0,1302.0
-HBATH00203,1750.0,985.0,"3 ",Tower,BATH,Bathroom 2 Tower Floor 3,Bathroom 0203,Team H,1715.0,1306.0
+HHALL00302,2035.0,900.0,"2 ",Tower,HALL,Hallway Connector 3 Floor 2,Hallway H00302,Team H,1972.0,1330.0
+HSTAI00102,2060.0,880.0,"2 ",Tower,STAI,Stairwell 1 Floor 2,Stairwell 0102,Team H,2000.0,1316.0
+HHALL00402,1875.0,1025.0,"2 ",Tower,HALL,Hallway Connector 4 Floor 2,Hallway H00402,Team H,1811.0,1342.0
+HHALL00502,1825.0,1025.0,"2 ",Tower,HALL,Hallway Connector 5 Floor 2,Hallway H00502,Team H,1770.0,1340.0
+HRETL00202,1615.0,1025.0,"2 ",Tower,RETL,Vending Machine Floor 2?,Vending Machine,Team H,1640.0,1286.0
+HBATH00102,1605.0,1008.0,"2 ",Tower,BATH,Bathroom 1 Tower Floor 2,Bathroom 0102,Team H,1626.0,1268.0
+HRETL00302,1825.0,1080.0,"2 ",Tower,RETL,Gift Shop Tower Floor 2,Gift Shop,Team H,1775.0,1364.0
+HHALL00602,1775.0,1080.0,"2 ",Tower,HALL,Hallway Connector 6 Floor 2,Hallway H00602,Team H,1733.0,1351.0
+HHALL00702,1740.0,1165.0,"2 ",Tower,HALL,Hallway Connector 7 Floor 2,Hallway H00702,Team H,1662.0,1395.0
+HSTAI00202,1695.0,1165.0,"2 ",Tower,STAI,Stairwell 2 Tower Floor 2,Stairwell 0202,Team H,1632.0,1382.0
+HHALL00802,1740.0,1230.0,"2 ",Tower,HALL,Hallway Connector 8 Floor 2,Hallway H00802,Team H,1640.0,1423.0
+HSTAI00302,1790.0,1230.0,"2 ",Tower,STAI,Escalator 1 Floor 2,Escalator 1 Floor 2,Team H,1679.0,1440.0
+HHALL00902,1740.0,1280.0,"2 ",Tower,HALL,Hallway Connector 9 Floor 2,Hallway H00902,Team H,1621.0,1443.0
+HHALL01002,2055.0,1280.0,"2 ",Tower,HALL,Hallway Connector 10 Floor 2,Hallway H01002,Team H,1852.0,1536.0
+HDEPT00102,2055.0,1330.0,"2 ",Tower,DEPT,Endoscopy,Endoscopy,Team H,1835.0,1567.0
+HHALL00503,1680.0,1290.0,"3 ",Tower,HALL,Hallway Connector 5 Floor 3,Hallway H00502,Team H,1571.0,1416.0
+HSTAI00103,1680.0,1275.0,"3 ",Tower,STAI,Stairwell 1 Floor 3,Stairwell,Team H,1589.0,1398.0
+HHALL00403,1325.0,1290.0,"3 ",Tower,HALL,Hallway Connector 4 Floor 3,Hallway H00403,Team H,1337.0,1325.0
+HHALL00303,1325.0,985.0,"3 ",Tower,HALL,Hallway Connector 3 Floor 3,Hallway H00303,Team H,1450.0,1158.0
+HHALL00203,1235.0,985.0,"3 ",Tower,HALL,Hallway Connector 2 Floor 3,Hallway H00203,Team H,1382.0,1132.0
+HLABS00103,1235.0,865.0,"3 ",Tower,LABS,Reproductive Endocrine Labs,Reproductive Endocrine Labs,Team H,1412.0,1092.0
+HHALL00103,1325.0,655.0,"3 ",Tower,HALL,Hallway Connector 1 Floor 3,Hallway H00103,Team H,1565.0,982.0
+HHALL00603,1735.0,925.0,"3 ",Tower,HALL,Hallway Connector 6 Floor 3,Hallway H00603,Team H,1766.0,1225.0
+HHALL00703,1735.0,900.0,"3 ",Tower,HALL,Hallway Connector 7 Floor 3,Hallway H00703,Team H,1778.0,1214.0
+HDEPT00103,1725.0,900.0,"3 ",Tower,DEPT,Dialysis Waiting Room,Dialysis WR,Team H,1765.0,1220.0
+HHALL00803,1735.0,865.0,"3 ",Tower,HALL,Hallway Connector 8 Floor 3,Hallway H00803,Team H,1786.0,1202.0
+HSERV00103,1750.0,865.0,"3 ",Tower,SERV,Nursing Room,Nursing Room,Team H,1812.0,1194.0
+HHALL00903,1735.0,820.0,"3 ",Tower,HALL,Hallway Connector 9 Floor 3,Hallway H00903,Team H,1801.0,1180.0
+HHALL01003,1785.0,820.0,"3 ",Tower,HALL,Hallway Connector 10 Floor 3,Hallway H01003,Team H,1849.0,1192.0
+HBATH00103,1785.0,830.0,"3 ",Tower,BATH,Bathroom 1 Tower Floor 3,Bathroom 0103,Team H,1845.0,1200.0
+HHALL01103,1690.0,820.0,"3 ",Tower,HALL,Hallway Connector 11 Floor 3,Hallway H01103,Team H,1777.0,1170.0
+HDEPT00203,1690.0,830.0,"3 ",Tower,DEPT,MICU 3B/C Waiting Room,MICU 3B/C WR,Team H,1772.0,1177.0
+HHALL01203,1600.0,820.0,"3 ",Tower,HALL,Hallway Connector 12 Floor 3,Hallway H01203,Team H,1707.0,1145.0
+HHALL01303,1600.0,1030.0,"3 ",Tower,HALL,Hallway Connector 13 Floor 3,Hallway H01303,Team H,1630.0,1257.0
+HHALL01403,1735.0,1030.0,"3 ",Tower,HALL,Hallway Connector 14 Floor 3,Hallway H01403,Team H,1728.0,1292.0
+HHALL01503,1735.0,985.0,"3 ",Tower,HALL,Hallway Connector 15 Floor 3,Hallway H01503,Team H,1744.0,1269.0
+HBATH00203,1750.0,985.0,"3 ",Tower,BATH,Bathroom 2 Tower Floor 3,Bathroom 0203,Team H,1754.0,1274.0

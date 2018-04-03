@@ -3,27 +3,34 @@ package com.github.CS3733_D18_Team_F_Project_0.controller.page;
 import com.github.CS3733_D18_Team_F_Project_0.Map;
 import com.github.CS3733_D18_Team_F_Project_0.MapSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.controller.*;
+import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
+import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
+import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
+import com.github.CS3733_D18_Team_F_Project_0.controller.UTF8Control;
+import com.github.CS3733_D18_Team_F_Project_0.graph.Edge;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.animation.Interpolator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
-import javafx.scene.Parent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
+import net.kurobako.gesturefx.GesturePane;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -31,6 +38,7 @@ import java.util.ResourceBundle;
 
 public class HomeController implements SwitchableController {
 
+    private static final int MIN_PIXELS = 200;
     private final ObservableList<String> patientRooms = FXCollections.observableArrayList(
             "Patient Room 1",
             "Patient Room 2",
@@ -39,24 +47,38 @@ public class HomeController implements SwitchableController {
             "Bathroom 1",
             "Bathroom 2");
     private final ObservableList<String> all = FXCollections.observableArrayList();
-    private PaneSwitcher switcher;
-    private Map map;
-    private int level = 0;
-    private Image maps2D[] = {
-            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png")
-    };
-    private Image maps3D[] = {
-            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/2-ICONS.png")
-    };
-
     @FXML
     public Button DirectionsSwitch;
     @FXML
     public ComboBox cboxDestinationType;
     @FXML
     public ComboBox cboxAvailableLocations;
+    private PaneSwitcher switcher;
+    private Map map;
+    private int level = 4;
+    private Image maps2D[] = {
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/00_thelowerlevel2.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/00_thelowerlevel1.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/00_thegroundfloor.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/01_thefirstfloor.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/03_thethirdfloor.png")
+    };
+    private Image maps3D[] = {
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/L2-ICONS.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/L1-ICONS.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/1-ICONS.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/1-ICONS.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/2-ICONS.png"),
+            new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/3-ICONS.png")
+    };
     @FXML
     private ImageView ivMap;
+    @FXML
+    private Pane mapContainer;
+    @FXML
+    private ScrollPane scrollMap;
+
     @FXML
     private VBox vbxMenu;
     @FXML
@@ -65,14 +87,12 @@ public class HomeController implements SwitchableController {
     private VBox vbxDirections;
     @FXML
     private VBox vbxFloor;
-
     @FXML
     private VBox addLocationPopup;
     @FXML
     private TextField txtXPos;
     @FXML
     private TextField txtYPos;
-
     @FXML
     private VBox findLocationPopup;
     @FXML
@@ -83,28 +103,33 @@ public class HomeController implements SwitchableController {
     private Button btnLocationDirections;
 
     @FXML
-    private Button btnMapDimensions;
+    private GesturePane gesturePane;
 
     @FXML
-    private Pane mapContainer;
-    private static final int MIN_PIXELS = 200;
+    private Button btnLower2Floor;
+    @FXML
+    private Button btnLower1Floor;
+    @FXML
+    private Button btnGroundFloor;
+    @FXML
+    private Button btnFirstFloor;
+    @FXML
+    private Button btnSecondFloor;
+    @FXML
+    private Button btnThirdFloor;
 
     @FXML
     private Text txtUser;
+    @FXML
+    private Button btnMapDimensions;
+
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
         //to make initial admin with secure password
         txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
-        /*
-        Pane root = switcher.getPane(Screens.Home);
-        root.getChildren().add(new Button("Hello World"));
-        */
 
-        // preload the 2D and 3D floor map
-        //image3D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
-        //image2D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png");
         // testing area for db sync
         /*
         Node rNode = map.getNodes(node -> node.getNodeID().equals("HREST77702")).iterator().next();
@@ -112,15 +137,35 @@ public class HomeController implements SwitchableController {
         rNode.setWireframePosition(new Point2D(777,777));
         */
 
-        // preload the 2D and 3D floor map
-       // image3D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
-        //image2D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png");
+        this.draw2DNodes("02");
+
+        // zoom*2 on double-click
+        gesturePane.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+                Point2D pivotOnTarget = gesturePane.targetPointAt(new Point2D(e.getX(), e.getY()))
+                        .orElse(gesturePane.targetPointAtViewportCentre());
+                // increment of scale makes more sense exponentially instead of linearly
+                gesturePane.animate(Duration.millis(200))
+                        .interpolateWith(Interpolator.EASE_BOTH)
+                        .zoomBy(gesturePane.getCurrentScale(), pivotOnTarget);
+            }
+        });
+
+        /*
+        gesturePane.setOnScroll(e -> {
+                    Point2D pivotOnTarget = gesturePane.targetPointAt(new Point2D(e.getX(), e.getY()))
+                            .orElse(gesturePane.targetPointAtViewportCentre());
+                    gesturePane.zoomBy(-1.5, pivotOnTarget);
+                }
+        );
+        */
+
         // mouse start *************************************************************
 
-        double width = ivMap.getImage().getWidth();
-        double height = ivMap.getImage().getHeight();
-        reset(ivMap, width, height);
-
+        //double width = ivMap.getImage().getWidth();
+        //double height = ivMap.getImage().getHeight();
+        //reset(ivMap, width, height);
+/*
         ObjectProperty<Point2D> mouseDown = new SimpleObjectProperty<>();
 
         ivMap.setOnMousePressed(e -> {
@@ -169,14 +214,10 @@ public class HomeController implements SwitchableController {
 
             ivMap.setViewport(new Rectangle2D(newMinX, newMinY, newWidth, newHeight));
         });
-/*        ivMap.setOnMouseClicked(e -> {
-            if (e.getClickCount() == 2) {
-                reset(ivMap, width, height);
-            }
-        });
-*/
+
         ivMap.fitWidthProperty().bindBidirectional(mapContainer.maxWidthProperty());
         ivMap.fitHeightProperty().bindBidirectional(mapContainer.maxHeightProperty());
+
 
         // mouse end *************************************************************
 
@@ -190,6 +231,7 @@ public class HomeController implements SwitchableController {
                 addLocationPopup.setVisible(true);
             }
         });
+        */
 
         cboxDestinationType.getItems().clear();
         cboxDestinationType.getItems().addAll(
@@ -200,12 +242,6 @@ public class HomeController implements SwitchableController {
                 "Emergrency Services");
         cboxDestinationType.getSelectionModel().selectFirst(); // or ".select("All");
 
-        /*cboxAvailableLocations.getItems().clear();
-        cboxAvailableLocations.getItems().addAll(
-                "Patient Room 1",
-                "Patient Room 2",
-                "Patient Room 3");
-        cboxAvailableLocations.setItems(patientRooms);*/
         //cboxAvailableLocations.getItems().addAll(patientRooms, bathrooms);
 
         all.addAll(patientRooms);
@@ -298,36 +334,17 @@ public class HomeController implements SwitchableController {
     @FXML
     void onMapDimensions() {
         if (btnMapDimensions.getText().equals("3D Map")) {
-            //Image image = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
             btnMapDimensions.setText("2D Map");
-            ivMap.setImage(maps3D[level]);
-            double width = ivMap.getImage().getWidth();
-            double height = ivMap.getImage().getHeight();
-            reset(ivMap, width, height);
+            reloadMap();
         } else {
-            //Image image = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png");
             btnMapDimensions.setText("3D Map");
-            ivMap.setImage(maps2D[level]);
-            double width = ivMap.getImage().getWidth();
-            double height = ivMap.getImage().getHeight();
-            reset(ivMap, width, height);
+            reloadMap();
         }
-
+        // make the map full sized when changed over
+        double width = ivMap.getImage().getWidth();
+        double height = ivMap.getImage().getHeight();
+        reset(ivMap, width, height);
     }
-
-    @FXML
-    void onZoomIn() {
-        // Viewports?
-        ivMap.setFitHeight(ivMap.getFitHeight() * 2);
-        ivMap.setFitWidth(ivMap.getFitWidth() * 2);
-    }
-
-    @FXML
-    void onZoomOut() {
-        ivMap.setFitHeight(ivMap.getFitHeight() * 0.5);
-        ivMap.setFitWidth(ivMap.getFitWidth() * 0.5);
-    }
-
 
     // Add location on map
 
@@ -388,6 +405,52 @@ public class HomeController implements SwitchableController {
     }
 
 
+    @FXML
+    void changeFloorMap(ActionEvent e) {
+        if (e.getSource().equals(btnLower2Floor)) {
+            level = 0;
+        } else if (e.getSource().equals(btnLower1Floor)) {
+            level = 1;
+        } else if (e.getSource().equals(btnGroundFloor)) {
+            level = 2;
+        } else if (e.getSource().equals(btnFirstFloor)) {
+            level = 3;
+        } else if (e.getSource().equals(btnSecondFloor)) {
+            level = 4;
+        } else if (e.getSource().equals(btnThirdFloor)) {
+            level = 5;
+        }
+        reloadMap();
+    }
+
+    private void reloadMap() {
+        String newLevel;
+        if (level == 0) {
+            newLevel = "L2";
+        } else if (level == 1) {
+            newLevel = "L1";
+        } else if (level == 2) {
+            newLevel = "0G";
+        } else if (level == 3) {
+            newLevel = "01";
+        } else if (level == 4) {
+            newLevel = "02";
+        } else {
+            newLevel = "03";
+        }
+
+        if (btnMapDimensions.getText().equals("2D Map")) {
+            ivMap.setImage(maps3D[level]);
+            clearNodes();
+            draw3DNodes(newLevel);
+
+        } else {
+            ivMap.setImage(maps2D[level]);
+            clearNodes();
+            draw2DNodes(newLevel);
+        }
+    }
+
     // Image movement helper functions
 
     // reset to the top left:
@@ -400,8 +463,8 @@ public class HomeController implements SwitchableController {
     private void shift(ImageView imageView, Point2D delta) {
         Rectangle2D viewport = imageView.getViewport();
 
-        double width = imageView.getImage().getWidth() ;
-        double height = imageView.getImage().getHeight() ;
+        double width = imageView.getImage().getWidth();
+        double height = imageView.getImage().getHeight();
 
         double maxX = width - viewport.getWidth();
         double maxY = height - viewport.getHeight();
@@ -432,4 +495,44 @@ public class HomeController implements SwitchableController {
                 viewport.getMinY() + yProportion * viewport.getHeight());
     }
 
+    private void draw2DNodes(String newLevel) {
+        map = MapSingleton.getInstance().getMap();
+        for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))) {
+            Line line = new Line();
+            line.setEndX(edge.getNode1().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            line.setEndY(edge.getNode1().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+            line.setStartX(edge.getNode2().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            line.setStartY(edge.getNode2().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+            mapContainer.getChildren().add(line);
+        }
+        for (Node node : map.getNodes(node -> node.getFloor().equals(newLevel))) {
+            Circle circle = new Circle(1.5, Color.RED);
+            circle.setCenterX(node.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            circle.setCenterY(node.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+            mapContainer.getChildren().add(circle);
+        }
+    }
+
+    private void draw3DNodes(String newLevel) {
+        map = MapSingleton.getInstance().getMap();
+        for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))) {
+            Line line = new Line();
+            line.setEndX(edge.getNode1().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            line.setEndY(edge.getNode1().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
+            line.setStartX(edge.getNode2().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            line.setStartY(edge.getNode2().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
+            mapContainer.getChildren().add(line);
+        }
+        for (Node node : map.getNodes(node -> node.getFloor().equals(newLevel))) {
+            Circle circle = new Circle(1.5, Color.RED);
+            circle.setCenterX(node.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            circle.setCenterY(node.getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
+            mapContainer.getChildren().add(circle);
+        }
+    }
+
+    private void clearNodes() {
+        mapContainer.getChildren().clear();
+        mapContainer.getChildren().add(ivMap);
+    }
 }
