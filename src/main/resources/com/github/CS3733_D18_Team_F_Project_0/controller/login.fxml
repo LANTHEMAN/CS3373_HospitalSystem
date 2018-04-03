@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
 
-<?import javafx.scene.control.PasswordField?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="365.0" prefWidth="467.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.LoginController">
    <children>
       <Text layoutX="108.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brigham and Womens Hospital">
@@ -23,8 +23,9 @@
       <Text layoutX="108.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%Username" />
       <Text layoutX="108.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%Password" />
       <Button fx:id="loginClose" layoutX="129.0" layoutY="287.0" mnemonicParsing="false" onAction="#onLoginClose" prefHeight="37.0" prefWidth="76.0" text="%Login" />
-      <TextField layoutX="206.0" layoutY="152.0" />
-      <PasswordField layoutX="205.0" layoutY="202.0" />
+      <TextField fx:id="username" layoutX="206.0" layoutY="152.0" />
+      <PasswordField fx:id="password" layoutX="205.0" layoutY="202.0" />
       <Button fx:id="cancelClose" layoutX="261.0" layoutY="287.0" mnemonicParsing="false" onAction="#onCancelClose" prefHeight="37.0" prefWidth="76.0" text="%Cancel" />
+      <Text fx:id="error" fill="RED" layoutX="50.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="366.23614969849586" />
    </children>
 </AnchorPane>

@@ -2,7 +2,7 @@ package com.github.CS3733_D18_Team_F_Project_0.controller;
 
 public class User {
     String uname;
-    String psword;
+    private String psword;
     String type;
 
     public User(String uname, String psword, String type) {

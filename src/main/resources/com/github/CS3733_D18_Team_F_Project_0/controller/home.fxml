@@ -45,7 +45,7 @@
                         <Image url="@default-user.png" />
                     </image>
                 </ImageView>
-                <Text fx:id="txtUser" fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="%Guest" translateX="35.0" x="35.0" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                <Text fx:id="txtUser" fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="Guest" translateX="35.0" wrappingWidth="164.80001831054688" x="35.0" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                     <font>
                         <Font name="System Bold" size="15.0" />
                     </font></Text>

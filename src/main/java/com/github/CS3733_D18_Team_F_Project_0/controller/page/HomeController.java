@@ -89,11 +89,15 @@ public class HomeController implements SwitchableController {
     private Pane mapContainer;
     private static final int MIN_PIXELS = 200;
 
+    @FXML
+    private Text txtUser;
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
-        PermissionSingleton.getInstance();
+        //to make initial admin with secure password
+        PermissionSingleton.getInstance().addUser(new User("Admin","1234","admin"));
+        txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
         /*
         Pane root = switcher.getPane(Screens.Home);
         root.getChildren().add(new Button("Hello World"));
