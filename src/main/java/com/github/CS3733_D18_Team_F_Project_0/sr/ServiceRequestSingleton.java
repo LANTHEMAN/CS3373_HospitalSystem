@@ -6,17 +6,18 @@ import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseSingleton;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public class ServiceRequestSingleton implements DatabaseItem {
     private static ServiceRequestSingleton ourInstance = new ServiceRequestSingleton();
-
+    // just for testing
+    private static HashMap<DatabaseHandler, ServiceRequestSingleton> testDatabases = new HashMap<>();
     private DatabaseHandler dbHandler;
     private ArrayList<ServiceRequest> listOfRequests = new ArrayList<>();
     private int id = 0;
-
-    // just for testing
-    private static HashMap<DatabaseHandler, ServiceRequestSingleton> testDatabases = new HashMap<>();
 
     private ServiceRequestSingleton() {
         // initialize this class with the database
@@ -25,20 +26,20 @@ public class ServiceRequestSingleton implements DatabaseItem {
 
         // TODO get largest ID from database
         int max = -1;
-        String sql = "SELECT MAX(ID) FROM ServiceRequest";
+        String sql = "SELECT MAX(ID) FROM SERVICEREQUEST";
         ResultSet rs = dbHandler.runQuery(sql);
         try {
-            if (rs.next()) {
-                max = rs.getInt("ID");
+            if(rs.next()) {
+                max = rs.getInt(1);
             }
-        } catch(Exception e){
-            max = 0;
+        } catch (Exception e) {
+            max = -1;
         }
 
-        id = max;
+        id = max + 1;
     }
 
-    private ServiceRequestSingleton(DatabaseHandler dbHandler){
+    private ServiceRequestSingleton(DatabaseHandler dbHandler) {
         this.dbHandler = dbHandler;
         dbHandler.trackAndInitItem(this);
     }
@@ -46,8 +47,9 @@ public class ServiceRequestSingleton implements DatabaseItem {
     public static ServiceRequestSingleton getInstance() {
         return ourInstance;
     }
-    public static ServiceRequestSingleton getInstance(DatabaseHandler dbHandler){
-        if(testDatabases.containsKey(dbHandler)){
+
+    public static ServiceRequestSingleton getInstance(DatabaseHandler dbHandler) {
+        if (testDatabases.containsKey(dbHandler)) {
             return testDatabases.get(dbHandler);
         }
         testDatabases.put(dbHandler, new ServiceRequestSingleton(dbHandler));
@@ -66,10 +68,10 @@ public class ServiceRequestSingleton implements DatabaseItem {
     public void sendServiceRequest(ServiceRequest s) {
         String sql = "INSERT INTO ServiceRequest VALUES (" + s.getId()
                 + ", '" + s.getType()
-                + "', '"+ s.getFirstName()
-                + "', '"+ s.getLastName()
-                + "', '"+ s.getLocation()
-                + "', '"+ s.getDescription()
+                + "', '" + s.getFirstName()
+                + "', '" + s.getLastName()
+                + "', '" + s.getLocation()
+                + "', '" + s.getDescription()
                 + "', " + s.getPriority()
                 + ", '" + s.getStatus() + "')";
         dbHandler.runAction(sql);
@@ -112,7 +114,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
     public void initDatabase(DatabaseHandler dbHandler) {
         dbHandler.runSQLScript("init_node_db.sql");
         dbHandler.runSQLScript("init_sr_db.sql");
-        if(dbHandler != DatabaseSingleton.getInstance().getDbHandler()){
+        if (dbHandler != DatabaseSingleton.getInstance().getDbHandler()) {
             initDatabase(DatabaseSingleton.getInstance().getDbHandler());
         }
     }
@@ -124,8 +126,8 @@ public class ServiceRequestSingleton implements DatabaseItem {
 
     @Override
     public void syncLocalFromDB(String tableName, ResultSet resultSet) {
-        try{
-            if(tableName.equals("ServiceRequest")){
+        try {
+            if (tableName.equals("ServiceRequest")) {
                 while (resultSet.next()) {
                     int id = resultSet.getInt(1);
                     String type = resultSet.getString(2);
@@ -136,10 +138,10 @@ public class ServiceRequestSingleton implements DatabaseItem {
                     int priority = resultSet.getInt(7);
                     String status = resultSet.getString(8);
 
-                    // TODO create ServiceRequest
+                    
                     ServiceRequest s;
                     String[] parts = instructions.split("/////", 2);
-                    switch(type){
+                    switch (type) {
                         case "Religious Services":
                             String religion = parts[0];
                             String descriptionR = parts[1];
@@ -181,7 +183,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
         this.listOfRequests = listOfRequests;
     }
 
-    public void addServiceRequest(ServiceRequest s){
+    public void addServiceRequest(ServiceRequest s) {
         int listSize = this.listOfRequests.size();
         int flag = 0;
         ArrayList<ServiceRequest> newList = new ArrayList<>();
@@ -204,7 +206,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
         this.setListOfRequests(newList);
     }
 
-    public ArrayList<ServiceRequest> addServiceRequest(ServiceRequest s, ArrayList<ServiceRequest> listReq){
+    public ArrayList<ServiceRequest> addServiceRequest(ServiceRequest s, ArrayList<ServiceRequest> listReq) {
         int listSize = listReq.size();
         int flag = 0;
         ArrayList<ServiceRequest> newList = new ArrayList<>();
@@ -227,7 +229,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
         return newList;
     }
 
-    public ArrayList<ServiceRequest> resultSetToServiceRequest(ResultSet resultSet){
+    public ArrayList<ServiceRequest> resultSetToServiceRequest(ResultSet resultSet) {
         ArrayList<ServiceRequest> requests = new ArrayList<>();
         try {
             while (resultSet.next()) {
@@ -258,7 +260,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
 
                 requests = addServiceRequest(s, requests);
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return requests;

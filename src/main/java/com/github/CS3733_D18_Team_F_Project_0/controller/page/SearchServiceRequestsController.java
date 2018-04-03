@@ -20,7 +20,7 @@ public class SearchServiceRequestsController implements SwitchableController {
     private PaneSwitcher switcher;
     String searchType;
     String filter;
-    private ObservableList<ServiceRequest> listRequests;
+    private ArrayList<ServiceRequest> listRequests;
 
 
     @FXML
@@ -127,10 +127,10 @@ public class SearchServiceRequestsController implements SwitchableController {
             return;
         }
         for(ServiceRequest i: requests){
-            listRequests.add(i);
+            searchResultTable.getItems().add(i);
         }
-
-        searchResultTable.getItems().setAll(listRequests);
+        listRequests = requests;
+        //searchResultTable.getItems().setAll(listRequests);
     }
 
     @FXML
