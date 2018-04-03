@@ -55,7 +55,6 @@ public class ReligiousServicesController implements SwitchableController {
 
     @FXML
     void onSubmit() {
-        //TODO: create form from text fields and send to database
         int requiredFieldsEmpty = 0;
         String r;
         String first_name;
@@ -93,7 +92,7 @@ public class ReligiousServicesController implements SwitchableController {
         location = destination.getText();
         String new_description = r + "/////" + description + "\n";
         //System.out.print(new_description);
-        ServiceRequest request = new ReligiousServices(first_name, last_name, location, new_description, 0, r);
+        ServiceRequest request = new ReligiousServices(first_name, last_name, location, new_description, "Incomplete", 1, r);
         ServiceRequestSingleton.getInstance().sendServiceRequest(request);
         ServiceRequestSingleton.getInstance().addServiceRequest(request);
         switcher.switchTo(Screens.ServiceRequest);

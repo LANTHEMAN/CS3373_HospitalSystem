@@ -93,7 +93,7 @@ public class LanguageInterpreterController implements SwitchableController {
         location = destination.getText();
         String new_description = l + "/////" + description;
         //System.out.print(new_description);
-        ServiceRequest request = new LanguageInterpreter(first_name, last_name, location, new_description, 0, l);
+        ServiceRequest request = new LanguageInterpreter(first_name, last_name, location, new_description, "Incomplete", 1, l);
         ServiceRequestSingleton.getInstance().sendServiceRequest(request);
         ServiceRequestSingleton.getInstance().addServiceRequest(request);
         switcher.switchTo(Screens.ServiceRequest);

@@ -18,6 +18,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
     private DatabaseHandler dbHandler;
     private ArrayList<ServiceRequest> listOfRequests = new ArrayList<>();
     private int id = 0;
+    private ServiceRequest popUpRequest;
 
     private ServiceRequestSingleton() {
         // initialize this class with the database
@@ -32,6 +33,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
             if(rs.next()) {
                 max = rs.getInt(1);
             }
+            rs.close();
         } catch (Exception e) {
             max = -1;
         }
@@ -60,9 +62,12 @@ public class ServiceRequestSingleton implements DatabaseItem {
         return id++;
     }
 
-    private void updateStatus(ServiceRequest s) {
-        String sql = "UPDATE ServiceRequest SET status = " + s.getStatus() + " WHERE id = " + s.getId() + ";";
+    public void updateStatus(ServiceRequest s) {
+        String sql = "UPDATE ServiceRequest SET status = '" + s.getStatus() + "' WHERE id = " + s.getId();
         dbHandler.runAction(sql);
+        sql = "SELECT * FROM ServiceRequest";
+        ResultSet rs = dbHandler.runQuery(sql);
+        syncLocalFromDB("ServiceRequest", rs);
     }
 
     public void sendServiceRequest(ServiceRequest s) {
@@ -75,18 +80,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 + "', " + s.getPriority()
                 + ", '" + s.getStatus() + "')";
         dbHandler.runAction(sql);
-    }
-
-    public ServiceRequest setComplete(ServiceRequest s) {
-        s.setStatus("Request Complete");
-        this.updateStatus(s);
-        return s;
-    }
-
-    public ServiceRequest setInProgress(ServiceRequest s) {
-        s.setStatus("In Progress");
-        this.updateStatus(s);
-        return s;
     }
 
     public ResultSet getRequests() {
@@ -105,7 +98,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
     }
 
     public ResultSet getRequestsOfPriority(int p) {
-        String sql = "SELECT * FROM ServiceRequest WHERE priority = " + p + ";";
+        String sql = "SELECT * FROM ServiceRequest WHERE priority = " + p;
         return dbHandler.runQuery(sql);
     }
 
@@ -138,7 +131,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
                     int priority = resultSet.getInt(7);
                     String status = resultSet.getString(8);
 
-                    
+
                     ServiceRequest s;
                     String[] parts = instructions.split("/////", 2);
                     switch (type) {
@@ -250,12 +243,15 @@ public class ServiceRequestSingleton implements DatabaseItem {
                     case "Religious Services":
 
                         s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special);
+                        break;
 
                     case "Language Interpreter":
                         s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
+                        break;
 
                     default:
                         s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
+                        break;
                 }
 
                 requests = addServiceRequest(s, requests);
@@ -264,5 +260,13 @@ public class ServiceRequestSingleton implements DatabaseItem {
             e.printStackTrace();
         }
         return requests;
+    }
+
+    public void setPopUpRequest(ServiceRequest popUpRequest) {
+        this.popUpRequest = popUpRequest;
+    }
+
+    public ServiceRequest getPopUpRequest() {
+        return popUpRequest;
     }
 }

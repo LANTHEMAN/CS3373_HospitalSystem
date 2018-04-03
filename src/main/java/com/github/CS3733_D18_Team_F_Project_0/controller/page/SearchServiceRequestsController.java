@@ -8,19 +8,22 @@ import com.github.CS3733_D18_Team_F_Project_0.sr.ServiceRequestSingleton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
+import javafx.util.Callback;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SearchServiceRequestsController implements SwitchableController {
     private PaneSwitcher switcher;
     String searchType;
     String filter;
-    private ArrayList<ServiceRequest> listRequests;
+    private ObservableList<ServiceRequest> listRequests;
 
 
     @FXML
@@ -31,23 +34,24 @@ public class SearchServiceRequestsController implements SwitchableController {
     @FXML
     public TableView<ServiceRequest> searchResultTable;
     @FXML
-    public TableColumn<ServiceRequest, Button> btns;
+    public TableColumn btnsCol;
     @FXML
-    public TableColumn<ServiceRequest, Integer> idNumber;
+    public TableColumn<ServiceRequest, Integer> idNumberCol;
     @FXML
-    public TableColumn<ServiceRequest, String> requestType;
+    public TableColumn<ServiceRequest, String> requestTypeCol;
     @FXML
-    public TableColumn<ServiceRequest, String> first_name;
+    public TableColumn<ServiceRequest, String> firstNameCol;
     @FXML
-    public TableColumn<ServiceRequest, String> last_name;
+    public TableColumn<ServiceRequest, String> lastNameCol;
     @FXML
-    public TableColumn<ServiceRequest, String> destination;
+    public TableColumn<ServiceRequest, String> destinationCol;
     @FXML
-    public TableColumn<ServiceRequest, Integer> requestPriority;
+    public TableColumn<ServiceRequest, Integer> requestPriorityCol;
     @FXML
-    public TableColumn<ServiceRequest, String> theStatus;
+    public TableColumn<ServiceRequest, String> theStatusCol;
 
     private final ObservableList<String> priority = FXCollections.observableArrayList(
+            "0",
             "1",
             "2",
             "3",
@@ -68,83 +72,153 @@ public class SearchServiceRequestsController implements SwitchableController {
         filterType.getItems().addAll("Priority", "Status", "Type");
     }
 
+
+
     @FXML
     void onFilterType() {
         searchType = "none";
         filter = "none";
         try {
             if (filterType.getSelectionModel().getSelectedItem().equals("Priority")) {
+                searchType = "Priority";
                 availableTypes.setItems(priority);
                 availableTypes.setVisible(true);
             } else if (filterType.getSelectionModel().getSelectedItem().equals("Status")) {
+                searchType = "Status";
                 availableTypes.setItems(status);
                 availableTypes.setVisible(true);
             } else if (filterType.getSelectionModel().getSelectedItem().equals("Type")) {
+                searchType = "Type";
                 availableTypes.setItems(type);
                 availableTypes.setVisible(true);
             }
-        } catch(NullPointerException e){
+        } catch (NullPointerException e) {
             searchType = "none";
         }
     }
 
     @FXML
     void onAvailableTypes() {
-        try{
+        try {
             filter = availableTypes.getSelectionModel().getSelectedItem().toString();
-        }catch(NullPointerException e){
+        } catch (NullPointerException e) {
             filter = "none";
         }
     }
 
     @FXML
-    void onSearch(){
+    void onSearch() {
         ArrayList<ServiceRequest> requests = new ArrayList<>();
-        if(filter.equalsIgnoreCase("none")){
-            ResultSet all = ServiceRequestSingleton.getInstance().getRequests();
-            requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(all);
-        }else {
-            switch (searchType) {
-                case "Priority":
-                    ResultSet rp = ServiceRequestSingleton.getInstance().getRequestsOfPriority(Integer.parseInt(filter));
-                    requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(rp);
-                    break;
+        try {
+            if (filter.equalsIgnoreCase("none")) {
+                ResultSet all = ServiceRequestSingleton.getInstance().getRequests();
+                requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(all);
+                all.close();
+            } else {
+                switch (searchType) {
+                    case "Priority":
+                        ResultSet rp = ServiceRequestSingleton.getInstance().getRequestsOfPriority(Integer.parseInt(filter));
+                        requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(rp);
+                        rp.close();
+                        break;
 
-                case "Status":
-                    ResultSet rs = ServiceRequestSingleton.getInstance().getRequestsOfStatus(filter);
-                    requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(rs);
-                    break;
+                    case "Status":
+                        ResultSet rs = ServiceRequestSingleton.getInstance().getRequestsOfStatus(filter);
+                        requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(rs);
+                        rs.close();
+                        break;
 
-                case "Type":
-                    ResultSet rt = ServiceRequestSingleton.getInstance().getRequestsOfType(filter);
-                    requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(rt);
-                    break;
+                    case "Type":
+                        ResultSet rt = ServiceRequestSingleton.getInstance().getRequestsOfType(filter);
+                        requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(rt);
+                        rt.close();
+                        break;
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+        searchResultTable.getItems().clear();
 
         //TODO: put result of search into table
-        if(requests.size() < 1){
+        if (requests.size() < 1) {
+            //TODO: indicate to user that there are no results
             return;
+        } else {
+            listRequests = FXCollections.observableArrayList(requests);
         }
-        for(ServiceRequest i: requests){
-            searchResultTable.getItems().add(i);
-        }
-        listRequests = requests;
-        //searchResultTable.getItems().setAll(listRequests);
+
+        searchResultTable.setEditable(false);
+
+        idNumberCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, Integer>("id"));
+        requestTypeCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("type"));
+        firstNameCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("firstName"));
+        lastNameCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("lastName"));
+        destinationCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String >("location"));
+        requestPriorityCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, Integer>("priority"));
+        theStatusCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("status"));
+        btnsCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
+
+        Callback<TableColumn<ServiceRequest, String>, TableCell<ServiceRequest, String>> cellFactory
+                = //
+                new Callback<TableColumn<ServiceRequest, String>, TableCell<ServiceRequest, String>>() {
+                    @Override
+                    public TableCell call(final TableColumn<ServiceRequest, String> param) {
+                        final TableCell<ServiceRequest, String> cell = new TableCell<ServiceRequest, String>() {
+
+                            final Button btn = new Button("Select");
+
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    btn.setOnAction(event -> {
+                                        ServiceRequest s = getTableView().getItems().get(getIndex());
+                                        onSelect(s);
+                                    });
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        btnsCol.setCellFactory(cellFactory);
+
+        searchResultTable.setItems(listRequests);
+
+
+
+
+
     }
 
     @FXML
-    void onClear(){
+    public void onSelect(ServiceRequest s){
+        ServiceRequestSingleton.getInstance().setPopUpRequest(s);
+        switcher.popup(Screens.ServiceRequestPopUp);
+    }
+
+    @FXML
+    void onClear() {
         availableTypes.setVisible(false);
         availableTypes.valueProperty().set(null);
         filterType.valueProperty().set(null);
         searchType = "none";
         filter = "none";
+        searchResultTable.getItems().clear();
     }
 
     @FXML
-    void onCancel(){
+    void onCancel() {
         switcher.switchTo(Screens.ServiceRequest);
     }
+
 
 }

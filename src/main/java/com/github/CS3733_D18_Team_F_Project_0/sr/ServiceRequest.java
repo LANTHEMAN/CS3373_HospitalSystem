@@ -13,14 +13,14 @@ public abstract class ServiceRequest {
     private int priority;
 
 
-    public ServiceRequest(String type, String firstName, String lastName, String location, String description, int priority) {
+    public ServiceRequest(String type, String firstName, String lastName, String location, String description, String status, int priority) {
         this.type = type;
         this.id = ServiceRequestSingleton.getInstance().generateNewID();
         this.firstName = firstName;
         this.lastName = lastName;
         this.location = location;
         this.description = description;
-        this.status = "Incomplete";
+        this.status = status;
         this.priority = priority;
     }
 
