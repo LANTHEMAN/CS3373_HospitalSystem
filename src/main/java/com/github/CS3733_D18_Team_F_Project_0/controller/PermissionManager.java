@@ -9,13 +9,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class UserController implements DatabaseItem {
+public class PermissionManager implements DatabaseItem {
     ArrayList<User> users;
-    UserController(){
+    PermissionManager(){
         users = new ArrayList<User>();
     }
 
-    public UserController(ArrayList<User> users) {
+    public PermissionManager(ArrayList<User> users) {
         this.users = users;
     }
 
@@ -36,7 +36,11 @@ public class UserController implements DatabaseItem {
     public void syncLocalFromDB(String tableName, ResultSet resultSet) {
         try{
             while(resultSet.next()){
-                
+                String username = resultSet.getString(1);
+                String password = resultSet.getString(2);
+                String type = resultSet.getString(3);
+                User newUser = new User(username,password,type);
+                users.add(newUser);
             }
         }
         catch(SQLException e){
@@ -50,8 +54,6 @@ public class UserController implements DatabaseItem {
     }
 
     @Override
-    public void syncCSVFromDB(DatabaseHandler dbHandler) {
-
-    }
+    public void syncCSVFromDB(DatabaseHandler dbHandler) {}
 }
 
