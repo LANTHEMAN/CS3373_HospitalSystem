@@ -56,7 +56,7 @@ public class HomeController implements SwitchableController {
     public ComboBox cboxAvailableLocations;
     private PaneSwitcher switcher;
     private Map map;
-    private int level = 4;
+    //private int level = 4;
 
     public static Image maps2D[];
     public static Image maps3D[];
@@ -129,7 +129,7 @@ public class HomeController implements SwitchableController {
         rNode.setWireframePosition(new Point2D(777,777));
         */
 
-        this.draw2DNodes("02");
+        this.draw2DNodes(MapSingleton.floor);
 
         // zoom*2 on double-click
         gesturePane.setOnMouseClicked(e -> {
@@ -325,11 +325,13 @@ public class HomeController implements SwitchableController {
 
     @FXML
     void onMapDimensions() {
-        if (btnMapDimensions.getText().equals("3D Map")) {
+        if (MapSingleton.is2D) {
             btnMapDimensions.setText("2D Map");
+            MapSingleton.is2D = false;
             reloadMap();
         } else {
             btnMapDimensions.setText("3D Map");
+            MapSingleton.is2D = true;
             reloadMap();
         }
         // make the map full sized when changed over
@@ -400,46 +402,51 @@ public class HomeController implements SwitchableController {
     @FXML
     void changeFloorMap(ActionEvent e) {
         if (e.getSource().equals(btnLower2Floor)) {
-            level = 0;
+            //level = 0;
+            MapSingleton.floor = "L2";
         } else if (e.getSource().equals(btnLower1Floor)) {
-            level = 1;
+            //level = 1;
+            MapSingleton.floor = "L1";
         } else if (e.getSource().equals(btnGroundFloor)) {
-            level = 2;
+            //level = 2;
+            MapSingleton.floor = "0G";
         } else if (e.getSource().equals(btnFirstFloor)) {
-            level = 3;
+            //level = 3;
+            MapSingleton.floor = "01";
         } else if (e.getSource().equals(btnSecondFloor)) {
-            level = 4;
+            //level = 4;
+            MapSingleton.floor = "02";
         } else if (e.getSource().equals(btnThirdFloor)) {
-            level = 5;
+            //level = 5;
+            MapSingleton.floor = "03";
         }
         reloadMap();
     }
 
     private void reloadMap() {
-        String newLevel;
-        if (level == 0) {
-            newLevel = "L2";
-        } else if (level == 1) {
-            newLevel = "L1";
-        } else if (level == 2) {
-            newLevel = "0G";
-        } else if (level == 3) {
-            newLevel = "01";
-        } else if (level == 4) {
-            newLevel = "02";
+        int index;
+        if (MapSingleton.floor.equals("L2")) {
+            index = 0;
+        } else if (MapSingleton.floor.equals("L1")) {
+            index = 1;
+        } else if (MapSingleton.floor.equals("0G")) {
+            index = 2;
+        } else if (MapSingleton.floor.equals("01")) {
+            index = 3;
+        } else if (MapSingleton.floor.equals("02")) {
+            index = 4;
         } else {
-            newLevel = "03";
+            index = 5;
         }
 
-        if (btnMapDimensions.getText().equals("2D Map")) {
-            ivMap.setImage(maps3D[level]);
+        if (!MapSingleton.is2D) {
+            ivMap.setImage(maps3D[index]);
             clearNodes();
-            draw3DNodes(newLevel);
-
+            draw3DNodes(MapSingleton.floor);
         } else {
-            ivMap.setImage(maps2D[level]);
+            ivMap.setImage(maps2D[index]);
             clearNodes();
-            draw2DNodes(newLevel);
+            draw2DNodes(MapSingleton.floor);
         }
     }
 
