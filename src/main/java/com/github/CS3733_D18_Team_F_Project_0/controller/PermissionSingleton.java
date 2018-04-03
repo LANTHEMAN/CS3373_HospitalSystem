@@ -32,7 +32,7 @@ public class PermissionSingleton {
         return pmanage;
     }
     public boolean isAdmin(){
-        if(userPrivilege.equals(Privilege.ADMIN)){
+        if(userPrivilege.equals(Privilege.ADMIN) || userPrivilege.equals(Privilege.SYSADMIN)){
             return true;
         }
         return false;
