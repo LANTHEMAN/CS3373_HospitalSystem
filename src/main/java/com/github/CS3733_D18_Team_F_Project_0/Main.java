@@ -16,19 +16,25 @@ import java.util.Comparator;
 
 public class Main extends Application {
     public static void main(String[] args) {
+        long fileSize = 0;
         // get rid of the database folder if its empty
-        File file = new File("database/seg0");
-        if (file.exists() && file.isDirectory() && file.list().length == 0) {
-            // delete the empty database folder
-            try {
+        try {
+            fileSize = Files.find(Paths.get("database"), 3
+                    , (p, bfa) -> bfa.isRegularFile())
+                    .mapToLong(path -> path.toFile().length())
+                    .sum();
+
+            // delete the database if it is empty
+            if (fileSize < 100) {
                 Files.walk(Paths.get("database"))
                         .sorted(Comparator.reverseOrder())
                         .map(Path::toFile)
                         .forEach(File::delete);
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        
         launch(args);
     }
 
