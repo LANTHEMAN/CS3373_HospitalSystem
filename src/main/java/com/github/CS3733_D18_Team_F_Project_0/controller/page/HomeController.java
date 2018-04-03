@@ -96,7 +96,6 @@ public class HomeController implements SwitchableController {
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
         //to make initial admin with secure password
-        PermissionSingleton.getInstance().addUser(new User("Admin","1234","admin"));
         txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
         /*
         Pane root = switcher.getPane(Screens.Home);

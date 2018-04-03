@@ -14,6 +14,7 @@ public class PermissionSingleton {
         dbHandler.trackAndInitItem(pmanage);
         userPrivilege = Privilege.GUEST;
         currUser = "Guest";
+        addUser(new User("Admin","1234","admin"));
     }
     private static class loginHelper{
         static final PermissionSingleton INSTANCE = new PermissionSingleton();
