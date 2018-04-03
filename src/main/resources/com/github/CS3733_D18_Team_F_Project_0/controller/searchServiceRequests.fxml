@@ -12,13 +12,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.SearchServiceRequestsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="602.0" prefWidth="952.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.SearchServiceRequestsController">
    <children>
       <HBox alignment="TOP_CENTER" layoutX="175.0" prefHeight="600.0" prefWidth="725.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TableView prefHeight="600.0" prefWidth="713.0">
+            <TableView fx:id="searchResultTable" prefHeight="602.0" prefWidth="738.0">
               <columns>
-                <TableColumn fx:id="idNumber" editable="false" minWidth="0.0" prefWidth="50.14288330078125" resizable="false" text="ID" />
+                  <TableColumn fx:id="btns" editable="false" minWidth="0.0" prefWidth="64.0" resizable="false" text="CHOOSE" />
+                <TableColumn fx:id="idNumber" editable="false" minWidth="0.0" prefWidth="38.0" resizable="false" text="ID" />
                   <TableColumn fx:id="requestType" editable="false" prefWidth="112.28570556640625" resizable="false" text="TYPE" />
                   <TableColumn fx:id="first_name" editable="false" prefWidth="107.2857666015625" resizable="false" text="FIRST NAME" />
                   <TableColumn fx:id="last_name" editable="false" prefWidth="104.7142333984375" resizable="false" text="LAST NAME" />
@@ -33,7 +34,7 @@
             <ScrollBar orientation="VERTICAL" />
          </children>
       </HBox>
-      <VBox alignment="TOP_CENTER" layoutX="14.0" prefHeight="600.0" prefWidth="173.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="727.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="TOP_CENTER" layoutX="14.0" prefHeight="602.0" prefWidth="190.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="762.0" AnchorPane.topAnchor="0.0">
          <children>
             <Pane prefHeight="23.0" prefWidth="220.0" />
             <Label text="Search Service Requests">
@@ -48,11 +49,15 @@
                </font>
             </Label>
             <Pane prefHeight="29.0" prefWidth="221.0" />
-            <ComboBox fx:id="filterType" prefWidth="150.0" />
+            <ComboBox fx:id="filterType" onAction="#onFilterType" prefWidth="150.0" />
             <Pane prefHeight="49.0" prefWidth="221.0" />
-            <ComboBox fx:id="availableTypes" prefWidth="150.0" visible="false" />
-            <HBox prefHeight="202.0" prefWidth="220.0" />
-            <Button mnemonicParsing="false" prefHeight="71.0" prefWidth="100.0" text="Search" />
+            <ComboBox fx:id="availableTypes" onAction="#onAvailableTypes" prefWidth="150.0" visible="false" />
+            <Pane prefHeight="34.0" prefWidth="190.0" />
+            <Button mnemonicParsing="false" onAction="#onClear" text="Clear" />
+            <HBox prefHeight="34.0" prefWidth="190.0" />
+            <Button mnemonicParsing="false" onAction="#onSearch" prefHeight="71.0" prefWidth="100.0" text="Search" />
+            <HBox prefHeight="63.0" prefWidth="190.0" />
+            <Button mnemonicParsing="false" onAction="#onCancel" prefHeight="40.0" prefWidth="100.0" text="Cancel" />
          </children>
       </VBox>
    </children>

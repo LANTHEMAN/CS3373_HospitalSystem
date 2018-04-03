@@ -64,14 +64,14 @@ public class ServiceRequestSingleton implements DatabaseItem {
     }
 
     public void sendServiceRequest(ServiceRequest s) {
-        String sql = "INSERT INTO ServiceRequest VALUES ("+s.getId()
-                +", '"+s.getType()
-                +"', '"+s.getFirstName()
-                +"', '"+s.getLastName()
-                +"', '"+s.getLocation()
-                +"', '"+s.getDescription()
-                +"', " +s.getPriority()
-                +", '"+s.getStatus()+"')";
+        String sql = "INSERT INTO ServiceRequest VALUES (" + s.getId()
+                + ", '" + s.getType()
+                + "', '"+ s.getFirstName()
+                + "', '"+ s.getLastName()
+                + "', '"+ s.getLocation()
+                + "', '"+ s.getDescription()
+                + "', " + s.getPriority()
+                + ", '" + s.getStatus() + "')";
         dbHandler.runAction(sql);
     }
 
@@ -144,16 +144,19 @@ public class ServiceRequestSingleton implements DatabaseItem {
                             String religion = parts[0];
                             String descriptionR = parts[1];
                             s = new ReligiousServices(id, firstName, lastName, location, descriptionR, status, priority, religion);
+                            break;
 
                         case "Language Interpreter":
                             String language = parts[0];
                             String descriptionL = parts[1];
                             s = new LanguageInterpreter(id, firstName, lastName, location, descriptionL, status, priority, language);
+                            break;
 
                         default:
                             String languageD = parts[0];
                             String descriptionLD = parts[1];
                             s = new LanguageInterpreter(id, firstName, lastName, location, descriptionLD, status, priority, languageD);
+                            break;
                     }
 
                     this.addServiceRequest(s);
@@ -199,5 +202,65 @@ public class ServiceRequestSingleton implements DatabaseItem {
         }
 
         this.setListOfRequests(newList);
+    }
+
+    public ArrayList<ServiceRequest> addServiceRequest(ServiceRequest s, ArrayList<ServiceRequest> listReq){
+        int listSize = listReq.size();
+        int flag = 0;
+        ArrayList<ServiceRequest> newList = new ArrayList<>();
+        if (listSize == 0) {
+            newList.add(0, s);
+        } else {
+            for (ServiceRequest i : listReq) {
+                if (i.getId() > s.getId() && flag == 0) {
+                    newList.add(s);
+                    flag++;
+                } else {
+                    newList.add(i);
+                }
+            }
+            if (flag == 0) {
+                newList.add(s);
+            }
+        }
+
+        return newList;
+    }
+
+    public ArrayList<ServiceRequest> resultSetToServiceRequest(ResultSet resultSet){
+        ArrayList<ServiceRequest> requests = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                int id = resultSet.getInt(1);
+                String type = resultSet.getString(2);
+                String firstName = resultSet.getString(3);
+                String lastName = resultSet.getString(4);
+                String location = resultSet.getString(5);
+                String instructions = resultSet.getString(6);
+                int priority = resultSet.getInt(7);
+                String status = resultSet.getString(8);
+
+                ServiceRequest s;
+                String[] parts = instructions.split("/////", 2);
+                String special = parts[0];
+                String description = parts[1];
+                switch (type) {
+                    case "Religious Services":
+
+                        s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special);
+
+                    case "Language Interpreter":
+                        s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
+
+                    default:
+                        s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
+                }
+
+                requests = addServiceRequest(s, requests);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return requests;
     }
 }
