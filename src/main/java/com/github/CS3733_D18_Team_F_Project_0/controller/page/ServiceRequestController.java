@@ -28,5 +28,9 @@ public class ServiceRequestController implements SwitchableController {
     void onLanguageInterpreterButtonSwitch(){
         switcher.switchTo(Screens.LanguageInterpreter);
     }
+    @FXML
+    void onSearchButtonSwitch(){
+        switcher.switchTo(Screens.SearchServiceRequests);
+    }
 }
 
