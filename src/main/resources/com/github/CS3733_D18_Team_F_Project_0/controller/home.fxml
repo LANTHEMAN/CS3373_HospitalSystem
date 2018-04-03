@@ -109,11 +109,10 @@
                         <Font size="22.0" />
                     </font>
                 </Text>
-
                         <GesturePane fx:id="gesturePane" HBarEnabled="false" VBarEnabled="false" maxHeight="578.0" maxWidth="844.0" prefHeight="200.0" prefWidth="200.0" scrollMode="ZOOM" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" VBox.vgrow="ALWAYS">
                             <Pane fx:id="mapContainer" maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0">
                                 <children>
-                                    <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="false" preserveRatio="false">
                                         <image>
                                             <Image url="@BW2D%20Maps/02_thesecondfloor.png" />
                                         </image>
@@ -121,8 +120,6 @@
                                 </children>
                             </Pane>
                         </GesturePane>
-
-
                 <Button fx:id="btnMapDimensions" mnemonicParsing="false" onAction="#onMapDimensions" text="3D Map" translateX="-80.0" translateY="-65.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                 <VBox fx:id="addLocationPopup" alignment="CENTER" maxHeight="190.0" maxWidth="150.0" prefHeight="190.0" prefWidth="150.0" spacing="10.0" style="-fx-background-color: rgba(217, 217, 217, 0.9); -fx-border-style: solid; -fx-border-color: grey;" visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
                     <children>

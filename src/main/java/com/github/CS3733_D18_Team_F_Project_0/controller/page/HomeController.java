@@ -512,15 +512,15 @@ public class HomeController implements SwitchableController {
         for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))) {
             Line line = new Line();
             line.setEndX(edge.getNode1().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            line.setEndY(edge.getNode1().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2774.f);
+            line.setEndY(edge.getNode1().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
             line.setStartX(edge.getNode2().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            line.setStartY(edge.getNode2().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2774.f);
+            line.setStartY(edge.getNode2().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
             mapContainer.getChildren().add(line);
         }
         for (Node node : map.getNodes(node -> node.getFloor().equals(newLevel))) {
             Circle circle = new Circle(1.5, Color.RED);
             circle.setCenterX(node.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            circle.setCenterY(node.getWireframePosition().getY() * mapContainer.getMaxHeight() / 2774.f);
+            circle.setCenterY(node.getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
             mapContainer.getChildren().add(circle);
         }
     }
