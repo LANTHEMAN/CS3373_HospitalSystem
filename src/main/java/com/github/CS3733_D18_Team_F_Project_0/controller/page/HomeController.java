@@ -6,26 +6,25 @@ import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
 import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
 import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
 import com.github.CS3733_D18_Team_F_Project_0.controller.UTF8Control;
+import com.github.CS3733_D18_Team_F_Project_0.graph.Edge;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
-import javafx.scene.Parent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
 import java.util.Locale;
@@ -34,6 +33,7 @@ import java.util.ResourceBundle;
 
 public class HomeController implements SwitchableController {
 
+    private static final int MIN_PIXELS = 200;
     private final ObservableList<String> patientRooms = FXCollections.observableArrayList(
             "Patient Room 1",
             "Patient Room 2",
@@ -42,6 +42,12 @@ public class HomeController implements SwitchableController {
             "Bathroom 1",
             "Bathroom 2");
     private final ObservableList<String> all = FXCollections.observableArrayList();
+    @FXML
+    public Button DirectionsSwitch;
+    @FXML
+    public ComboBox cboxDestinationType;
+    @FXML
+    public ComboBox cboxAvailableLocations;
     private PaneSwitcher switcher;
     private Map map;
     private int level = 4;
@@ -61,13 +67,6 @@ public class HomeController implements SwitchableController {
             new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/2-ICONS.png"),
             new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/3-ICONS.png")
     };
-
-    @FXML
-    public Button DirectionsSwitch;
-    @FXML
-    public ComboBox cboxDestinationType;
-    @FXML
-    public ComboBox cboxAvailableLocations;
     @FXML
     private ImageView ivMap;
     @FXML
@@ -78,14 +77,12 @@ public class HomeController implements SwitchableController {
     private VBox vbxDirections;
     @FXML
     private VBox vbxFloor;
-
     @FXML
     private VBox addLocationPopup;
     @FXML
     private TextField txtXPos;
     @FXML
     private TextField txtYPos;
-
     @FXML
     private VBox findLocationPopup;
     @FXML
@@ -111,20 +108,28 @@ public class HomeController implements SwitchableController {
 
     @FXML
     private Button btnMapDimensions;
-
     @FXML
     private Pane mapContainer;
-    private static final int MIN_PIXELS = 200;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
 
-        /*
-        Pane root = switcher.getPane(Screens.Home);
-        root.getChildren().add(new Button("Hello World"));
-        */
+        for(Node node : map.getNodes(node -> node.getFloor().equals("02"))){
+            Circle circle = new Circle(3, Color.RED);
+            circle.setCenterX(node.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            circle.setCenterY(node.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+            mapContainer.getChildren().add(circle);
+        }
+        for(Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals("02"))){
+            Line line = new Line();
+            line.setEndX(edge.getNode1().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            line.setEndY(edge.getNode1().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+            line.setStartX(edge.getNode2().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            line.setStartY(edge.getNode2().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+            mapContainer.getChildren().add(line);
+        }
 
         // preload the 2D and 3D floor map
         //image3D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
@@ -137,7 +142,7 @@ public class HomeController implements SwitchableController {
         */
 
         // preload the 2D and 3D floor map
-       // image3D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
+        // image3D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
         //image2D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png");
         // mouse start *************************************************************
 
@@ -438,8 +443,8 @@ public class HomeController implements SwitchableController {
     private void shift(ImageView imageView, Point2D delta) {
         Rectangle2D viewport = imageView.getViewport();
 
-        double width = imageView.getImage().getWidth() ;
-        double height = imageView.getImage().getHeight() ;
+        double width = imageView.getImage().getWidth();
+        double height = imageView.getImage().getHeight();
 
         double maxX = width - viewport.getWidth();
         double maxY = height - viewport.getHeight();
