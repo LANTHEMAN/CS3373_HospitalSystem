@@ -12,6 +12,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -131,9 +132,6 @@ public class HomeController implements SwitchableController {
             mapContainer.getChildren().add(line);
         }
 
-        // preload the 2D and 3D floor map
-        //image3D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
-        //image2D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png");
         // testing area for db sync
         /*
         Node rNode = map.getNodes(node -> node.getNodeID().equals("HREST77702")).iterator().next();
@@ -141,9 +139,7 @@ public class HomeController implements SwitchableController {
         rNode.setWireframePosition(new Point2D(777,777));
         */
 
-        // preload the 2D and 3D floor map
-        // image3D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
-        //image2D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png");
+
         // mouse start *************************************************************
 
         double width = ivMap.getImage().getWidth();
@@ -327,23 +323,19 @@ public class HomeController implements SwitchableController {
     @FXML
     void onMapDimensions() {
         if (btnMapDimensions.getText().equals("3D Map")) {
-            //Image image = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
             btnMapDimensions.setText("2D Map");
             ivMap.setImage(maps3D[level]);
             double width = ivMap.getImage().getWidth();
             double height = ivMap.getImage().getHeight();
             reset(ivMap, width, height);
         } else {
-            //Image image = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/BW2D Maps/02_thesecondfloor.png");
             btnMapDimensions.setText("3D Map");
             ivMap.setImage(maps2D[level]);
             double width = ivMap.getImage().getWidth();
             double height = ivMap.getImage().getHeight();
             reset(ivMap, width, height);
         }
-
     }
-
 
 
     // Add location on map
