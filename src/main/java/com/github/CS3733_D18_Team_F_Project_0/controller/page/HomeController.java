@@ -12,6 +12,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -114,22 +115,8 @@ public class HomeController implements SwitchableController {
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
-        map = MapSingleton.getInstance().getMap();
 
-        for(Node node : map.getNodes(node -> node.getFloor().equals("02"))){
-            Circle circle = new Circle(3, Color.RED);
-            circle.setCenterX(node.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            circle.setCenterY(node.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-            mapContainer.getChildren().add(circle);
-        }
-        for(Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals("02"))){
-            Line line = new Line();
-            line.setEndX(edge.getNode1().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            line.setEndY(edge.getNode1().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-            line.setStartX(edge.getNode2().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            line.setStartY(edge.getNode2().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-            mapContainer.getChildren().add(line);
-        }
+        this.drawNodes("02");
 
         // preload the 2D and 3D floor map
         //image3D = new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/04 L2 NO ICONS.png");
@@ -344,8 +331,6 @@ public class HomeController implements SwitchableController {
 
     }
 
-
-
     // Add location on map
 
     @FXML
@@ -428,6 +413,24 @@ public class HomeController implements SwitchableController {
             ivMap.setImage(maps3D[level]);
         } else {
             ivMap.setImage(maps2D[level]);
+            clearNodes();
+            String newLevel;
+
+            if(level == 0){
+                newLevel = "L2";
+            }else if(level == 1){
+                newLevel = "L1";
+            }else if(level == 2){
+                newLevel = "0G";
+            }else if(level == 3){
+                newLevel = "01";
+            }else if(level == 4){
+                newLevel = "02";
+            }else{
+                newLevel = "03";
+            }
+
+            detNodes(newLevel);
         }
     }
 
@@ -475,4 +478,26 @@ public class HomeController implements SwitchableController {
                 viewport.getMinY() + yProportion * viewport.getHeight());
     }
 
+    private void drawNodes(String newLevel){
+        map = MapSingleton.getInstance().getMap();
+        for(Node node : map.getNodes(node -> node.getFloor().equals(newLevel))){
+            Circle circle = new Circle(3, Color.RED);
+            circle.setCenterX(node.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            circle.setCenterY(node.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+            mapContainer.getChildren().add(circle);
+        }
+        for(Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))){
+            Line line = new Line();
+            line.setEndX(edge.getNode1().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            line.setEndY(edge.getNode1().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+            line.setStartX(edge.getNode2().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            line.setStartY(edge.getNode2().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+            mapContainer.getChildren().add(line);
+        }
+    }
+
+    private void clearNodes(){
+        mapContainer.getChildren().clear();
+        mapContainer.getChildren().add(ivMap);
+    }
 }
