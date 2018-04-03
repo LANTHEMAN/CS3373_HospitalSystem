@@ -18,6 +18,7 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -71,6 +72,11 @@ public class HomeController implements SwitchableController {
     @FXML
     private ImageView ivMap;
     @FXML
+    private Pane mapContainer;
+    @FXML
+    private ScrollPane scrollMap;
+
+    @FXML
     private VBox vbxMenu;
     @FXML
     private VBox vbxLocation;
@@ -109,8 +115,6 @@ public class HomeController implements SwitchableController {
 
     @FXML
     private Button btnMapDimensions;
-    @FXML
-    private Pane mapContainer;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
