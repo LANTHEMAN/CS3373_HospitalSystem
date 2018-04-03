@@ -10,6 +10,7 @@ mainClassName = "com.github.CS3733_D18_Team_F_Project_0.Main"
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
 dependencies {
@@ -26,7 +27,8 @@ dependencies {
 		[group: 'org.apache.derby', name: 'derby', version: '10.11.1.1'],
 		[group: 'org.apache.derby', name: 'derbyclient', version: '10.11.1.1'],
 		[group: 'org.apache.derby', name: 'derbytools', version: '10.11.1.1'],
-		[group: 'org.apache.commons', name: 'commons-csv', version: '1.5']
+		[group: 'org.apache.commons', name: 'commons-csv', version: '1.5'],
+		[group: 'net.kurobako.gesturefx', name: 'gesturefx', version: '0.2.0']
 	)
 }
 

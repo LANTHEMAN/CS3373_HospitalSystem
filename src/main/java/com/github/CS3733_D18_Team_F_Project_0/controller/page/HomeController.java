@@ -8,8 +8,7 @@ import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
 import com.github.CS3733_D18_Team_F_Project_0.controller.UTF8Control;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Edge;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.animation.Interpolator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,12 +21,15 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
+import net.kurobako.gesturefx.GesturePane;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -69,8 +71,8 @@ public class HomeController implements SwitchableController {
             new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/2-ICONS.png"),
             new Image("com/github/CS3733_D18_Team_F_Project_0/controller/Wireframes/3-ICONS.png")
     };
-    @FXML
-    private ImageView ivMap;
+    //@FXML
+    //private ImageView ivMap;
     @FXML
     private Pane mapContainer;
     @FXML
@@ -99,6 +101,8 @@ public class HomeController implements SwitchableController {
     @FXML
     private Button btnLocationDirections;
 
+    @FXML
+    private GesturePane gesturePane;
 
     @FXML
     private Button btnLower2Floor;
@@ -120,8 +124,6 @@ public class HomeController implements SwitchableController {
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
 
-        this.drawNodes("02");
-
         // testing area for db sync
         /*
         Node rNode = map.getNodes(node -> node.getNodeID().equals("HREST77702")).iterator().next();
@@ -129,13 +131,33 @@ public class HomeController implements SwitchableController {
         rNode.setWireframePosition(new Point2D(777,777));
         */
 
+        this.drawNodes("02");
+
+        // zoom*2 on double-click
+        gesturePane.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+                Point2D pivotOnTarget = gesturePane.targetPointAt(new Point2D(e.getX(), e.getY()))
+                        .orElse(gesturePane.targetPointAtViewportCentre());
+                // increment of scale makes more sense exponentially instead of linearly
+                gesturePane.animate(Duration.millis(200))
+                        .interpolateWith(Interpolator.EASE_BOTH)
+                        .zoomBy(gesturePane.getCurrentScale(), pivotOnTarget);
+            }
+        });
+        gesturePane.setOnScroll(e -> {
+                    Point2D pivotOnTarget = gesturePane.targetPointAt(new Point2D(e.getX(), e.getY()))
+                            .orElse(gesturePane.targetPointAtViewportCentre());
+                    gesturePane.zoomBy(-1.5, pivotOnTarget);
+                }
+        );
+
 
         // mouse start *************************************************************
 
-        double width = ivMap.getImage().getWidth();
-        double height = ivMap.getImage().getHeight();
-        reset(ivMap, width, height);
-
+        //double width = ivMap.getImage().getWidth();
+        //double height = ivMap.getImage().getHeight();
+        //reset(ivMap, width, height);
+/*
         ObjectProperty<Point2D> mouseDown = new SimpleObjectProperty<>();
 
         ivMap.setOnMousePressed(e -> {
@@ -188,6 +210,7 @@ public class HomeController implements SwitchableController {
         ivMap.fitWidthProperty().bindBidirectional(mapContainer.maxWidthProperty());
         ivMap.fitHeightProperty().bindBidirectional(mapContainer.maxHeightProperty());
 
+
         // mouse end *************************************************************
 
         // the add location popup
@@ -200,6 +223,7 @@ public class HomeController implements SwitchableController {
                 addLocationPopup.setVisible(true);
             }
         });
+        */
 
         cboxDestinationType.getItems().clear();
         cboxDestinationType.getItems().addAll(
@@ -309,9 +333,9 @@ public class HomeController implements SwitchableController {
             reloadMap();
         }
         // make the map full sized when changed over
-        double width = ivMap.getImage().getWidth();
-        double height = ivMap.getImage().getHeight();
-        reset(ivMap, width, height);
+        //double width = ivMap.getImage().getWidth();
+        //double height = ivMap.getImage().getHeight();
+        //reset(ivMap, width, height);
     }
 
     // Add location on map
@@ -385,7 +409,7 @@ public class HomeController implements SwitchableController {
             level = 3;
         } else if (e.getSource().equals(btnSecondFloor)) {
             level = 4;
-        } else if (e.getSource().equals(btnThirdFloor)){
+        } else if (e.getSource().equals(btnThirdFloor)) {
             level = 5;
         }
         reloadMap();
@@ -393,27 +417,26 @@ public class HomeController implements SwitchableController {
 
     private void reloadMap() {
         if (btnMapDimensions.getText().equals("2D Map")) {
-            ivMap.setImage(maps3D[level]);
+            //  ivMap.setImage(maps3D[level]);
         } else {
-            ivMap.setImage(maps2D[level]);
+            // ivMap.setImage(maps2D[level]);
             clearNodes();
             String newLevel;
 
-            if(level == 0){
+            if (level == 0) {
                 newLevel = "L2";
-            }else if(level == 1){
+            } else if (level == 1) {
                 newLevel = "L1";
-            }else if(level == 2){
+            } else if (level == 2) {
                 newLevel = "0G";
-            }else if(level == 3){
+            } else if (level == 3) {
                 newLevel = "01";
-            }else if(level == 4){
+            } else if (level == 4) {
                 newLevel = "02";
-            }else{
+            } else {
                 newLevel = "03";
             }
-
-            detNodes(newLevel);
+            drawNodes(newLevel);
         }
     }
 
@@ -461,15 +484,15 @@ public class HomeController implements SwitchableController {
                 viewport.getMinY() + yProportion * viewport.getHeight());
     }
 
-    private void drawNodes(String newLevel){
+    private void drawNodes(String newLevel) {
         map = MapSingleton.getInstance().getMap();
-        for(Node node : map.getNodes(node -> node.getFloor().equals(newLevel))){
+        for (Node node : map.getNodes(node -> node.getFloor().equals(newLevel))) {
             Circle circle = new Circle(3, Color.RED);
             circle.setCenterX(node.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
             circle.setCenterY(node.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
             mapContainer.getChildren().add(circle);
         }
-        for(Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))){
+        for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))) {
             Line line = new Line();
             line.setEndX(edge.getNode1().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
             line.setEndY(edge.getNode1().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
@@ -479,8 +502,8 @@ public class HomeController implements SwitchableController {
         }
     }
 
-    private void clearNodes(){
+    private void clearNodes() {
         mapContainer.getChildren().clear();
-        mapContainer.getChildren().add(ivMap);
+        //mapContainer.getChildren().add(ivMap);
     }
 }
