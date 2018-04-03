@@ -132,6 +132,8 @@ public class HomeController implements SwitchableController {
         maps2D = ImageCacheSingleton.maps2D;
         maps3D = ImageCacheSingleton.maps3D;
 
+        gesturePane.zoomTo(2, new Point2D(600,600));
+
         // testing area for db sync
         /*
         Node rNode = map.getNodes(node -> node.getNodeID().equals("HREST77702")).iterator().next();
