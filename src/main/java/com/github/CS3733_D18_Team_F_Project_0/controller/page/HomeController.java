@@ -116,12 +116,18 @@ public class HomeController implements SwitchableController {
     @FXML
     private Button btnMapDimensions;
 
+    @FXML
+    private Button loginPopup;
+
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
         //to make initial admin with secure password
         txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
+        if(PermissionSingleton.getInstance().getCurrUser().equals("Guest") == false){
+            loginPopup.setText("Logout");
+        }
 
         maps2D = ImageCacheSingleton.maps2D;
         maps3D = ImageCacheSingleton.maps3D;
@@ -249,6 +255,12 @@ public class HomeController implements SwitchableController {
 
     @FXML
     void onLoginPopup() {
+        if(loginPopup.getText().equals("Logout")){
+            PermissionSingleton.getInstance().logout();
+            loginPopup.setText("Admin Login");
+            txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
+            return;
+        }
         switcher.popup(Screens.Login);
     }
 
