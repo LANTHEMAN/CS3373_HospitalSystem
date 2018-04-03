@@ -10,7 +10,7 @@ public class Screens {
     public static final Screen ReligiousServices = new Screen("religiousServices.fxml", ReligiousServicesController.class);
     public static final Screen LanguageInterpreter = new Screen("languageInterpreter.fxml", LanguageInterpreterController.class);
 
-    public static class Screen {
+    static class Screen {
         public final String fxmlFile;
         public final Class<? extends SwitchableController> Controller;
 
