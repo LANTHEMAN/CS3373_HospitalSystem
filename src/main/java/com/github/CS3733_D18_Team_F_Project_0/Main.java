@@ -53,6 +53,8 @@ public class Main extends Application {
 
         primaryStage.setTitle("Brigham and Women's Hospital");
         primaryStage.setScene(scene);
+        primaryStage.setMaximized(true);
+        primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 }
