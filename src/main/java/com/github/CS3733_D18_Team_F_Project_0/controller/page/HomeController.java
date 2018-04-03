@@ -144,13 +144,15 @@ public class HomeController implements SwitchableController {
                         .zoomBy(gesturePane.getCurrentScale(), pivotOnTarget);
             }
         });
+
+        /*
         gesturePane.setOnScroll(e -> {
                     Point2D pivotOnTarget = gesturePane.targetPointAt(new Point2D(e.getX(), e.getY()))
                             .orElse(gesturePane.targetPointAtViewportCentre());
                     gesturePane.zoomBy(-1.5, pivotOnTarget);
                 }
         );
-
+        */
 
         // mouse start *************************************************************
 

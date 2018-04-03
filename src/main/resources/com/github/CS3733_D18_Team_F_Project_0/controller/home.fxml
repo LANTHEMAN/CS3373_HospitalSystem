@@ -111,12 +111,12 @@
                         <Font size="22.0"/>
                     </font>
                 </Text>
-                <ScrollPane fx:id="scrollMap" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="578.0"
-                            maxWidth="844.0" pannable="true" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER"
-                            GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                    <content>
+
                         <GesturePane fx:id="gesturePane" fitHeight="false" fitWidth="false"
-                                     prefHeight="578.0" prefWidth="844.0" VBox.vgrow="ALWAYS">
+                                    VBox.vgrow="ALWAYS"
+                                     maxHeight="578.0"
+                                     maxWidth="844.0" prefHeight="200.0" prefWidth="200.0"
+                                     GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                             <Pane fx:id="mapContainer" maxHeight="578.0" maxWidth="844.0" prefHeight="578.0"
                                   prefWidth="844.0">
                                 <children>
@@ -129,8 +129,8 @@
                                 </children>
                             </Pane>
                         </GesturePane>
-                    </content>
-                </ScrollPane>
+
+
                 <Button fx:id="btnMapDimensions" mnemonicParsing="false" onAction="#onMapDimensions" text="3D Map"
                         translateX="-80.0" translateY="-65.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2"
                         GridPane.valignment="BOTTOM"/>
