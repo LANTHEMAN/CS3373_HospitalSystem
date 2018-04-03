@@ -2,10 +2,7 @@ package com.github.CS3733_D18_Team_F_Project_0.controller.page;
 
 import com.github.CS3733_D18_Team_F_Project_0.Map;
 import com.github.CS3733_D18_Team_F_Project_0.MapSingleton;
-import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
-import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
-import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
-import com.github.CS3733_D18_Team_F_Project_0.controller.UTF8Control;
+import com.github.CS3733_D18_Team_F_Project_0.controller.*;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -96,7 +93,7 @@ public class HomeController implements SwitchableController {
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
-
+        PermissionSingleton.getInstance();
         /*
         Pane root = switcher.getPane(Screens.Home);
         root.getChildren().add(new Button("Hello World"));

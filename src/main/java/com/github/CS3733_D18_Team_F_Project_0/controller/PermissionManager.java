@@ -22,9 +22,9 @@ public class PermissionManager implements DatabaseItem {
     @Override
     public void initDatabase(DatabaseHandler dbHandler) {
         try{
-            if(!dbHandler.tableExists("USER")){
-                System.out.println("DB: Initializing USER table entry");
-                dbHandler.runSQLScript("init_user_db.sql");
+            if(!dbHandler.tableExists("HUSER")){
+                System.out.println("DB: Initializing HUSERS table entry");
+                dbHandler.runVerboseSQLScript("init_user_db.sql");
             }
         }
         catch (SQLException e) {
@@ -50,7 +50,7 @@ public class PermissionManager implements DatabaseItem {
 
     @Override
     public LinkedList<String> getTableNames() {
-        return null;
+        return new LinkedList<>(Arrays.asList("HUSER"));
     }
 
     @Override
