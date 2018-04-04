@@ -71,7 +71,8 @@ public class ServiceRequestSingleton implements DatabaseItem {
     }
 
     public void sendServiceRequest(ServiceRequest s) {
-        String sql = "INSERT INTO ServiceRequest VALUES (" + s.getId()
+        String sql = "INSERT INTO ServiceRequest(id, type, firstName, lastName, location, instructions, priority, status)"
+                + " VALUES (" + s.getId()
                 + ", '" + s.getType()
                 + "', '" + s.getFirstName()
                 + "', '" + s.getLastName()
