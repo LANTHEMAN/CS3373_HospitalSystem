@@ -385,7 +385,6 @@ public class HomeController implements SwitchableController {
 
 
     // Find Location
-
     @FXML
     void onDestinationType() {
         // create an object with a translation string and a database string name/id?
@@ -411,7 +410,6 @@ public class HomeController implements SwitchableController {
         findLocationPopup.setTranslateY(100);
         txtFindLocation.setText("" + cboxAvailableLocations.getSelectionModel().getSelectedItem());
         findLocationPopup.setVisible(true);
-
     }
 
     @FXML
