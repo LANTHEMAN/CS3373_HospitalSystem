@@ -58,6 +58,7 @@ public class HomeController implements SwitchableController {
     Node selectedNodeStart = null;
     Node pathStartNode = null;
     Node pathEndNode = null;
+    boolean ctrlHeld = false;
     private PaneSwitcher switcher;
     private Map map;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
@@ -115,8 +116,6 @@ public class HomeController implements SwitchableController {
     private Button btnMapDimensions;
     @FXML
     private Button loginPopup;
-
-    boolean ctrlHeld = false;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -209,6 +208,7 @@ public class HomeController implements SwitchableController {
                 nodeCircleHashMap.get(node).setFill(Color.BLUE);
 
                 if (node == selectedNodeStart) {
+                    selectedNodeStart = null;
                     selectedNodeStart = null;
                     return;
                 }
