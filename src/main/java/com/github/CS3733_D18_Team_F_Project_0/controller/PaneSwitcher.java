@@ -82,7 +82,6 @@ public class PaneSwitcher {
         Scene popScene = new Scene(panes.get(screen.fxmlFile));
         popup.setScene(popScene);
         popup.show();
-
     }
 
     public void closePopup(Screens.Screen screen) {
