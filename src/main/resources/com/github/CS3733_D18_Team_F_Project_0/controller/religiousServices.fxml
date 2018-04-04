@@ -29,7 +29,7 @@
             <Label fx:id="religionRequired" layoutX="223.0" layoutY="79.0" text="%RequiredField" textFill="RED" visible="false" />
             <Label fx:id="lastNameRequired" layoutX="526.0" layoutY="163.0" text="%RequiredField" textFill="RED" visible="false" />
             <Label fx:id="firstNameRequired" layoutX="223.0" layoutY="163.0" text="%RequiredField" textFill="RED" visible="false" />
-            <Label fx:id="locationRequired" layoutX="223.0" layoutY="203.0" text="*%RequiredField" textFill="RED" visible="false" />
+            <Label fx:id="locationRequired" layoutX="223.0" layoutY="203.0" text="%RequiredField" textFill="RED" visible="false" />
          </children>
       </AnchorPane>
    </children>
