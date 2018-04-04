@@ -60,6 +60,8 @@ public class HomeController implements SwitchableController {
     Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
     HashMap<Node, Circle> nodeCircleHashMap = new HashMap<>();
     Node selectedNodeStart = null;
+    Node pathStartNode = null;
+    Node pathEndNode = null;
     private PaneSwitcher switcher;
     private Map map;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
@@ -162,13 +164,13 @@ public class HomeController implements SwitchableController {
         rNode.setWireframePosition(new Point2D(777,777));
         */
         reloadMap();
-        switcher.getScene().setOnKeyPressed(ke ->{
-            if(ke.isControlDown()){
+        switcher.getScene().setOnKeyPressed(ke -> {
+            if (ke.isControlDown()) {
                 gesturePane.setGestureEnabled(false);
             }
         });
-        switcher.getScene().setOnKeyReleased(ke ->{
-            if(!ke.isControlDown()){
+        switcher.getScene().setOnKeyReleased(ke -> {
+            if (!ke.isControlDown()) {
                 gesturePane.setGestureEnabled(true);
                 selectedNodeStart = null;
             }
@@ -176,11 +178,13 @@ public class HomeController implements SwitchableController {
 
         mapContainer.setOnMouseReleased(e -> {
             if (selectedNodeStart == null || !MapSingleton.is2D) {
-                return; 
+                return;
             }
 
-            System.out.println("e = " + e);
-            
+            if (!PermissionSingleton.getInstance().isAdmin()) {
+                return;
+            }
+
             double map_x = 5000;
             double map_y = 3400;
             double map3D_x = 5000;
@@ -219,8 +223,7 @@ public class HomeController implements SwitchableController {
                 selectedNodeStart = null;
                 clearNodes();
                 reloadMap();
-            }
-            else {
+            } else {
                 selectedNodeStart = null;
             }
 
@@ -236,9 +239,6 @@ public class HomeController implements SwitchableController {
                 map_y = map3D_y;
             }
 
-            System.out.println("Clicks = " + e.getClickCount());
-
-
             Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
@@ -253,9 +253,23 @@ public class HomeController implements SwitchableController {
                 Node node = nodes.iterator().next();
                 nodeCircleHashMap.get(node).setFill(Color.BLUE);
                 selectedNodeStart = node;
+
+                if (vbxDirections.isVisible()) {
+                    if (pathStartNode == null) {
+                        pathStartNode = selectedNodeStart;
+                    } else {
+                        pathEndNode = selectedNodeStart;
+                    }
+                }
+
             } else {
                 selectedNodeStart = null;
             }
+
+            if (!PermissionSingleton.getInstance().isAdmin()) {
+                return;
+            }
+
 
             // remove a node
             if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 2) {
