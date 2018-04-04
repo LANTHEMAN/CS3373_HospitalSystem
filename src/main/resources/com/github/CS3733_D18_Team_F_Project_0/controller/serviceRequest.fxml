@@ -8,15 +8,15 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="628.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.ServiceRequestController">
    <children>
-      <Button fx:id="ReligiousServices" layoutX="70.0" layoutY="160.0" mnemonicParsing="false" onAction="#onReligiousButtonSwitch" prefHeight="87.0" prefWidth="206.0" text="%ReligiousServices" />
-      <Button fx:id="LanguageInterpreter" layoutX="342.0" layoutY="160.0" mnemonicParsing="false" onAction="#onLanguageInterpreterButtonSwitch" prefHeight="87.0" prefWidth="206.0" text="%LanguageInterpreter" />
-      <Button fx:id="Cancel" layoutX="206.0" layoutY="292.0" mnemonicParsing="false" onAction="#onCancelSwitch" prefHeight="87.0" prefWidth="206.0" text="%Cancel" />
+      <Button fx:id="ReligiousServices" layoutX="70.0" layoutY="160.0" mnemonicParsing="false" onAction="#onReligiousButtonSwitch" prefHeight="87.0" prefWidth="206.0" text="Religious Services" />
+      <Button fx:id="LanguageInterpreter" layoutX="342.0" layoutY="160.0" mnemonicParsing="false" onAction="#onLanguageInterpreterButtonSwitch" prefHeight="87.0" prefWidth="206.0" text="Language Interpreter" />
+      <Button fx:id="Cancel" layoutX="206.0" layoutY="292.0" mnemonicParsing="false" onAction="#onCancelSwitch" prefHeight="87.0" prefWidth="206.0" text="Cancel" />
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="128.0" layoutY="14.0" text="%ServiceRequest">
          <font>
             <Font size="52.0" />
          </font>
       </Label>
       <Label layoutX="276.0" layoutY="81.0" text="%Choose" />
-      <Button layoutX="454.0" layoutY="414.0" mnemonicParsing="false" onAction="#onSearchButtonSwitch" prefHeight="42.0" prefWidth="160.0" text="%SearchServiceRequests" />
+      <Button fx:id="searchBtn" layoutX="454.0" layoutY="414.0" mnemonicParsing="false" onAction="#onSearchButtonSwitch" prefHeight="42.0" prefWidth="160.0" text="Search Service Requests" visible="false" />
    </children>
 </AnchorPane>

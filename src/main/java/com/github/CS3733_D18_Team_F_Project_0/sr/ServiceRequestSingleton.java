@@ -70,6 +70,11 @@ public class ServiceRequestSingleton implements DatabaseItem {
         syncLocalFromDB("ServiceRequest", rs);
     }
 
+    public void updateCompletedBy(ServiceRequest s){
+        String sql = "UPDATE ServiceRequest SET completedBy = '" + s.getCompletedBy() + "' WHERE id = " + s.getId();
+        dbHandler.runAction(sql);
+    }
+
     public void sendServiceRequest(ServiceRequest s) {
         String sql = "INSERT INTO ServiceRequest(id, type, firstName, lastName, location, instructions, priority, status)"
                 + " VALUES (" + s.getId()
@@ -131,27 +136,44 @@ public class ServiceRequestSingleton implements DatabaseItem {
                     String instructions = resultSet.getString(6);
                     int priority = resultSet.getInt(7);
                     String status = resultSet.getString(8);
+                    String completedBy = null;
+                    if(status.equals("Complete")) {
+                        try {
+                            completedBy = resultSet.getString(9);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            completedBy = null;
+                        }
+                    }
 
 
                     ServiceRequest s;
                     String[] parts = instructions.split("/////", 2);
+                    String special = parts[0];
+                    String description = parts[1];
                     switch (type) {
                         case "Religious Services":
-                            String religion = parts[0];
-                            String descriptionR = parts[1];
-                            s = new ReligiousServices(id, firstName, lastName, location, descriptionR, status, priority, religion);
+                            if(completedBy == null){
+                                s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special);
+                            }else{
+                                s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, completedBy);
+                            }
                             break;
 
                         case "Language Interpreter":
-                            String language = parts[0];
-                            String descriptionL = parts[1];
-                            s = new LanguageInterpreter(id, firstName, lastName, location, descriptionL, status, priority, language);
+                            if(completedBy == null) {
+                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
+                            }else{
+                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, completedBy);
+                            }
                             break;
 
                         default:
-                            String languageD = parts[0];
-                            String descriptionLD = parts[1];
-                            s = new LanguageInterpreter(id, firstName, lastName, location, descriptionLD, status, priority, languageD);
+                            if(completedBy == null) {
+                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
+                            }else{
+                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, completedBy);
+                            }
                             break;
                     }
 
@@ -235,6 +257,15 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 String instructions = resultSet.getString(6);
                 int priority = resultSet.getInt(7);
                 String status = resultSet.getString(8);
+                String username = null;
+                if(status.equals("Complete")) {
+                    try {
+                        username = resultSet.getString(9);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        username = null;
+                    }
+                }
 
                 ServiceRequest s;
                 String[] parts = instructions.split("/////", 2);
@@ -242,15 +273,27 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 String description = parts[1];
                 switch (type) {
                     case "Religious Services":
-                        s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special);
+                        if(username == null){
+                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special);
+                        }else{
+                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, username);
+                        }
                         break;
 
                     case "Language Interpreter":
-                        s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
+                        if(username == null){
+                            s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
+                        }else{
+                            s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, username);
+                        }
                         break;
 
                     default:
-                        s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
+                        if(username == null){
+                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special);
+                        }else{
+                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, username);
+                        }
                         break;
                 }
 

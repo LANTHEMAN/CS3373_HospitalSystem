@@ -1,6 +1,7 @@
 package com.github.CS3733_D18_Team_F_Project_0.controller.page;
 
 import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
+import com.github.CS3733_D18_Team_F_Project_0.controller.PermissionSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
 import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
 import com.github.CS3733_D18_Team_F_Project_0.sr.ServiceRequest;
@@ -33,7 +34,10 @@ public class ServiceRequestPopUpController implements SwitchableController {
     public TextArea instructionsTextArea;
     @FXML
     public ComboBox statusBox;
-
+    @FXML
+    public Label completedByLabel;
+    @FXML
+    public Label usernameLabel;
 
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
@@ -50,6 +54,12 @@ public class ServiceRequestPopUpController implements SwitchableController {
         instructionsTextArea.setEditable(false);
 
         statusBox.getItems().addAll("Incomplete", "In Progress", "Complete");
+
+        if(s.getStatus().equals("Complete")){
+            completedByLabel.setVisible(true);
+            usernameLabel.setVisible(true);
+            usernameLabel.setText(s.getCompletedBy());
+        }
     }
 
     public void onStatusBox(){
@@ -76,7 +86,12 @@ public class ServiceRequestPopUpController implements SwitchableController {
     public void onSubmit(){
         if(statusChange && newStatus.compareTo(s.getStatus()) != 0){
             s.setStatus(newStatus);
+            if(newStatus.equals("Complete")){
+                s.setCompletedBy(PermissionSingleton.getInstance().getCurrUser());
+                ServiceRequestSingleton.getInstance().updateCompletedBy(s);
+            }
             ServiceRequestSingleton.getInstance().updateStatus(s);
+
         }
         switcher.closePopup(Screens.SearchServiceRequests);
     }
