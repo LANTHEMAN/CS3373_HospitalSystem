@@ -481,6 +481,9 @@ public class HomeController implements SwitchableController {
 
         clearNodes();
         reloadMap();
+
+        pathEndNode = null;
+        pathStartNode = null;
     }
 
     @FXML
