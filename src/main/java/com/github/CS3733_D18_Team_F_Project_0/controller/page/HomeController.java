@@ -4,9 +4,7 @@ import com.github.CS3733_D18_Team_F_Project_0.ImageCacheSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.Map;
 import com.github.CS3733_D18_Team_F_Project_0.MapSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.controller.*;
-import com.github.CS3733_D18_Team_F_Project_0.graph.Edge;
-import com.github.CS3733_D18_Team_F_Project_0.graph.NewNodeBuilder;
-import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
+import com.github.CS3733_D18_Team_F_Project_0.graph.*;
 import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,13 +26,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import net.kurobako.gesturefx.GesturePane;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static com.github.CS3733_D18_Team_F_Project_0.MapSingleton.floor;
 
@@ -61,6 +57,9 @@ public class HomeController implements SwitchableController {
     Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
     HashMap<Node, Circle> nodeCircleHashMap = new HashMap<>();
     Node selectedNodeStart = null;
+    Node pathStartNode = null;
+    Node pathEndNode = null;
+    boolean ctrlHeld = false;
     private PaneSwitcher switcher;
     private Map map;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
@@ -179,25 +178,29 @@ public class HomeController implements SwitchableController {
         rNode.setWireframePosition(new Point2D(777,777));
         */
         reloadMap();
-        switcher.getScene().setOnKeyPressed(ke ->{
-            if(ke.isControlDown()){
+        switcher.getScene().setOnKeyPressed(ke -> {
+            if (ke.isControlDown()) {
                 gesturePane.setGestureEnabled(false);
+                ctrlHeld = true;
             }
         });
-        switcher.getScene().setOnKeyReleased(ke ->{
-            if(!ke.isControlDown()){
+        switcher.getScene().setOnKeyReleased(ke -> {
+            if (!ke.isControlDown()) {
                 gesturePane.setGestureEnabled(true);
                 selectedNodeStart = null;
+                ctrlHeld = false;
             }
         });
 
         mapContainer.setOnMouseReleased(e -> {
             if (selectedNodeStart == null || !MapSingleton.is2D) {
-                return; 
+                return;
             }
 
-            System.out.println("e = " + e);
-            
+            if (!PermissionSingleton.getInstance().isAdmin() || !ctrlHeld) {
+                return;
+            }
+
             double map_x = 5000;
             double map_y = 3400;
             double map3D_x = 5000;
@@ -223,6 +226,7 @@ public class HomeController implements SwitchableController {
 
                 if (node == selectedNodeStart) {
                     selectedNodeStart = null;
+                    selectedNodeStart = null;
                     return;
                 }
 
@@ -236,8 +240,7 @@ public class HomeController implements SwitchableController {
                 selectedNodeStart = null;
                 clearNodes();
                 reloadMap();
-            }
-            else {
+            } else {
                 selectedNodeStart = null;
             }
 
@@ -252,9 +255,6 @@ public class HomeController implements SwitchableController {
                 map_x = map3D_x;
                 map_y = map3D_y;
             }
-
-            System.out.println("Clicks = " + e.getClickCount());
-
 
             Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
                     , e.getY() * map_y / mapContainer.getMaxHeight());
@@ -272,9 +272,23 @@ public class HomeController implements SwitchableController {
                 selectedNodeStart = node;
                 // TODO set modification fields to the appropriate values****
                 gpaneNodeInfo.setVisible(true);
+
+                if (vbxDirections.isVisible()) {
+                    if (pathStartNode == null) {
+                        pathStartNode = selectedNodeStart;
+                    }else if(selectedNodeStart != pathStartNode){
+                        pathEndNode = selectedNodeStart;
+                    }
+                }
+
             } else {
                 selectedNodeStart = null;
             }
+
+            if (!PermissionSingleton.getInstance().isAdmin()) {
+                return;
+            }
+
 
             // remove a node
             if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 2) {
@@ -340,6 +354,76 @@ public class HomeController implements SwitchableController {
         switcher.popup(Screens.Login);
     }
 
+    @FXML
+    void onDrawPath(){
+        if(pathStartNode != null && pathEndNode != null){
+            Path path = AStar.getPath(MapSingleton.getInstance().getMap().graph, pathStartNode, pathEndNode);
+            ArrayList<Node> nodes = path.getNodes();
+            ArrayList<Edge> edges = path.getEdges();
+
+            if(MapSingleton.is2D) {
+                for (Edge edge : edges) {
+                    Line line = new Line();
+                    line.setEndX(edge.getNode1().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+                    line.setEndY(edge.getNode1().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+                    line.setStartX(edge.getNode2().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+                    line.setStartY(edge.getNode2().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+                    line.setFill(Color.BLUE);
+                    mapContainer.getChildren().add(line);
+                }
+                for (Node node : nodes) {
+                    Circle circle = new Circle(1.5, Color.RED);
+                    circle.setCenterX(node.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+                    circle.setCenterY(node.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+                    circle.setFill(Color.PURPLE);
+                    mapContainer.getChildren().add(circle);
+                }
+
+                Text startText = new Text(pathStartNode.getShortName());
+                Text endText = new Text(pathEndNode.getShortName());
+
+                startText.setX(pathStartNode.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+                startText.setY(pathStartNode.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+                startText.setFont(Font.font("Verdana", 5));
+                endText.setX(pathEndNode.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+                endText.setY(pathEndNode.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+                endText.setFont(Font.font("Verdana", 5));
+
+                mapContainer.getChildren().addAll(startText, endText);
+            }else{
+                for (Edge edge : edges) {
+                    Line line = new Line();
+                    line.setEndX(edge.getNode1().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+                    line.setEndY(edge.getNode1().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
+                    line.setStartX(edge.getNode2().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+                    line.setStartY(edge.getNode2().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
+                    line.setFill(Color.BLUE);
+                    mapContainer.getChildren().add(line);
+                }
+                for (Node node : nodes) {
+                    Circle circle = new Circle(1.5, Color.RED);
+                    circle.setCenterX(node.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+                    circle.setCenterY(node.getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
+                    circle.setFill(Color.PURPLE);
+                    mapContainer.getChildren().add(circle);
+                }
+                Text startText = new Text(pathStartNode.getShortName());
+                Text endText = new Text(pathEndNode.getShortName());
+
+                startText.setX(pathStartNode.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+                startText.setY(pathStartNode.getWireframePosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+                startText.setFont(Font.font("Verdana", 5));
+                endText.setX(pathEndNode.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+                endText.setY(pathEndNode.getWireframePosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+                endText.setFont(Font.font("Verdana", 5));
+
+                mapContainer.getChildren().addAll(startText, endText);
+            }
+        }else{
+            System.out.println("Invalid nodes");
+        }
+    }
+
 
     // Popup upon help request
 
@@ -373,6 +457,9 @@ public class HomeController implements SwitchableController {
     void onDirectionsCancel() {
         vbxDirections.setVisible(false);
         vbxMenu.setVisible(true);
+
+        clearNodes();
+        reloadMap();
     }
 
     @FXML

@@ -25,9 +25,9 @@ public class Path {
             prevNode = node;
         }
 
-        if (!(nodes.size() > 1 && nodes.size() != edges.size() - 1)) {
-            throw new AssertionError("The nodes must be connected by edges!");
-        }
+        //if (!(nodes.size() > 1 && nodes.size() != edges.size() - 1)) {
+        //    throw new AssertionError("The nodes must be connected by edges!");
+        //}
     }
 
     /**
