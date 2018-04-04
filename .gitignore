@@ -28,6 +28,7 @@ classes/*
 build/*
 out/*
 database/*
+map/*
 
 derby.log
 *.lock

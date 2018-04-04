@@ -28,7 +28,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import javafx.util.Pair;
 import net.kurobako.gesturefx.GesturePane;
 
 import java.util.HashMap;
@@ -59,6 +58,8 @@ public class HomeController implements SwitchableController {
     @FXML
     public ComboBox<String> cboxAvailableLocations;
     Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
+    HashMap<Node, Circle> nodeCircleHashMap = new HashMap<>();
+    Node selectedNodeStart = null;
     private PaneSwitcher switcher;
     private Map map;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
@@ -117,11 +118,6 @@ public class HomeController implements SwitchableController {
     @FXML
     private Button loginPopup;
 
-    HashMap<Node, Circle> nodeCircleHashMap = new HashMap<>();
-
-    Node selectedNodeStart = null;
-    Node selectedNodeEnd = null;
-
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
@@ -166,26 +162,30 @@ public class HomeController implements SwitchableController {
         rNode.setWireframePosition(new Point2D(777,777));
         */
         reloadMap();
-
-
-        // the add location popup
-        ivMap.setOnMouseClicked(e -> {
-            if (e.getClickCount() == 2 && !addLocationPopup.isVisible()) {
-
+        switcher.getScene().setOnKeyPressed(ke ->{
+            if(ke.isControlDown()){
+                gesturePane.setGestureEnabled(false);
+            }
+        });
+        switcher.getScene().setOnKeyReleased(ke ->{
+            if(!ke.isControlDown()){
+                gesturePane.setGestureEnabled(true);
+                selectedNodeStart = null;
             }
         });
 
+        mapContainer.setOnMouseReleased(e -> {
+            if (selectedNodeStart == null || !MapSingleton.is2D) {
+                return; 
+            }
 
-
-
-        // new node on double right click
-        mapContainer.setOnMouseClicked(e -> {
-
+            System.out.println("e = " + e);
+            
             double map_x = 5000;
             double map_y = 3400;
             double map3D_x = 5000;
             double map3D_y = 2772;
-            if(!MapSingleton.is2D){
+            if (!MapSingleton.is2D) {
                 map_x = map3D_x;
                 map_y = map3D_y;
             }
@@ -197,40 +197,85 @@ public class HomeController implements SwitchableController {
                     , node.getPosition().getY()).distance(mapPos) < 8
             );
 
-            if(nodes.size() > 0){
+            if (nodes.size() > 0) {
+                // TODO get closest node
+                clearNodes();
+                reloadMap();
+                Node node = nodes.iterator().next();
+                nodeCircleHashMap.get(node).setFill(Color.BLUE);
+
+                if (node == selectedNodeStart) {
+                    selectedNodeStart = null;
+                    return;
+                }
+
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    map.addEdge(node, selectedNodeStart);
+                }
+
+                if (e.getButton() == MouseButton.SECONDARY) {
+                    map.removeEdge(node, selectedNodeStart);
+                }
+                selectedNodeStart = null;
+                clearNodes();
+                reloadMap();
+            }
+            else {
+                selectedNodeStart = null;
+            }
+
+        });
+
+        mapContainer.setOnMouseClicked(e -> {
+            double map_x = 5000;
+            double map_y = 3400;
+            double map3D_x = 5000;
+            double map3D_y = 2772;
+            if (!MapSingleton.is2D) {
+                map_x = map3D_x;
+                map_y = map3D_y;
+            }
+
+            System.out.println("Clicks = " + e.getClickCount());
+
+
+            Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
+                    , e.getY() * map_y / mapContainer.getMaxHeight());
+
+            HashSet<Node> nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
+                    , node.getPosition().getY()).distance(mapPos) < 8
+            );
+
+            if (nodes.size() > 0) {
                 // TODO get closest node
                 clearNodes();
                 reloadMap();
                 Node node = nodes.iterator().next();
                 nodeCircleHashMap.get(node).setFill(Color.BLUE);
                 selectedNodeStart = node;
-            }
-            else{
+            } else {
                 selectedNodeStart = null;
             }
 
             // remove a node
             if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 2) {
-                if(!MapSingleton.is2D){
+                if (!MapSingleton.is2D) {
                     return;
                 }
-                if(nodes.size() > 0) {
-                    selectedNodeStart = null;
-                    selectedNodeEnd = null;
+                if (nodes.size() > 0) {
                     // TODO get closest node
-                    map.removeNode(nodes.iterator().next());
+                    map.removeNode(selectedNodeStart);
+                    selectedNodeStart = null;
                     clearNodes();
                     reloadMap();
                 }
-
-
+                selectedNodeStart = null;
             }
             // create a new node
             if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
-                if(!MapSingleton.is2D){
+                if (!MapSingleton.is2D) {
                     return;
                 }
-
                 addLocationPopup.setTranslateX(e.getSceneX() - 90);
                 addLocationPopup.setTranslateY(e.getSceneY() - 400);
                 newNode_x.setEditable(false);
@@ -241,6 +286,7 @@ public class HomeController implements SwitchableController {
                 newNodeCircle.setCenterX(Double.parseDouble(newNode_x.getText()) * mapContainer.getMaxWidth() / map_x);
                 newNodeCircle.setCenterY(Double.parseDouble(newNode_y.getText()) * mapContainer.getMaxHeight() / map_y);
                 addLocationPopup.setVisible(true);
+                selectedNodeStart = null;
             }
         });
 
