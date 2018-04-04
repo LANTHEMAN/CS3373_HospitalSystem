@@ -6,5 +6,6 @@ lastName varchar(50),
 location varchar(50),
 instructions varchar(200),
 priority int,
-status varchar(50)
+status varchar(50),
+completedBy varchar(20) REFERENCES HUser(username)
 );

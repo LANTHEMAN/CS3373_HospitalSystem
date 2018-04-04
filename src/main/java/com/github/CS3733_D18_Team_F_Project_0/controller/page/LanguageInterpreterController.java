@@ -25,7 +25,7 @@ public class LanguageInterpreterController implements SwitchableController {
 
     @FXML
     TextField firstName;
-    
+
     @FXML
     TextField lastName;
 
