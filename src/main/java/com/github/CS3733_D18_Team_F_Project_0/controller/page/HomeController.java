@@ -22,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -30,6 +31,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import net.kurobako.gesturefx.GesturePane;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -52,10 +55,12 @@ public class HomeController implements SwitchableController {
     @FXML
     public Button DirectionsSwitch;
     @FXML
-    public ComboBox cboxDestinationType;
+    public ComboBox<String> cboxDestinationType;
     @FXML
-    public ComboBox cboxAvailableLocations;
+    public ComboBox<String> cboxAvailableLocations;
     Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
+    HashMap<Node, Circle> nodeCircleHashMap = new HashMap<>();
+    Node selectedNodeStart = null;
     private PaneSwitcher switcher;
     private Map map;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
@@ -84,7 +89,7 @@ public class HomeController implements SwitchableController {
     @FXML
     private TextField newNode_shortName;
     @FXML
-    private ComboBox newNode_type;
+    private ComboBox<String> newNode_type;
     @FXML
     private VBox findLocationPopup;
     @FXML
@@ -114,13 +119,16 @@ public class HomeController implements SwitchableController {
     @FXML
     private Button loginPopup;
 
+    @FXML
+    private GridPane gpaneNodeInfo;
+
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
         //to make initial admin with secure password
         txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
-        if (PermissionSingleton.getInstance().getCurrUser().equals("Guest") == false) {
+        if (!PermissionSingleton.getInstance().getCurrUser().equals("Guest")) {
             loginPopup.setText("Logout");
         }
 
@@ -158,31 +166,131 @@ public class HomeController implements SwitchableController {
         rNode.setWireframePosition(new Point2D(777,777));
         */
         reloadMap();
-
-
-        // the add location popup
-        ivMap.setOnMouseClicked(e -> {
-            if (e.getClickCount() == 2 && addLocationPopup.isVisible() == false) {
-
+        switcher.getScene().setOnKeyPressed(ke ->{
+            if(ke.isControlDown()){
+                gesturePane.setGestureEnabled(false);
+            }
+        });
+        switcher.getScene().setOnKeyReleased(ke ->{
+            if(!ke.isControlDown()){
+                gesturePane.setGestureEnabled(true);
+                selectedNodeStart = null;
             }
         });
 
-        // new node on double right click
-        mapContainer.setOnMouseClicked(e -> {
-            if (!MapSingleton.is2D) {
-                return;
+        mapContainer.setOnMouseReleased(e -> {
+            if (selectedNodeStart == null || !MapSingleton.is2D) {
+                return; 
             }
+
+            System.out.println("e = " + e);
+            
+            double map_x = 5000;
+            double map_y = 3400;
+            double map3D_x = 5000;
+            double map3D_y = 2772;
+            if (!MapSingleton.is2D) {
+                map_x = map3D_x;
+                map_y = map3D_y;
+            }
+
+            Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
+                    , e.getY() * map_y / mapContainer.getMaxHeight());
+
+            HashSet<Node> nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
+                    , node.getPosition().getY()).distance(mapPos) < 8
+            );
+
+            if (nodes.size() > 0) {
+                // TODO get closest node
+                clearNodes();
+                reloadMap();
+                Node node = nodes.iterator().next();
+                nodeCircleHashMap.get(node).setFill(Color.BLUE);
+
+                if (node == selectedNodeStart) {
+                    selectedNodeStart = null;
+                    return;
+                }
+
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    map.addEdge(node, selectedNodeStart);
+                }
+
+                if (e.getButton() == MouseButton.SECONDARY) {
+                    map.removeEdge(node, selectedNodeStart);
+                }
+                selectedNodeStart = null;
+                clearNodes();
+                reloadMap();
+            }
+            else {
+                selectedNodeStart = null;
+            }
+
+        });
+
+        mapContainer.setOnMouseClicked(e -> {
+            double map_x = 5000;
+            double map_y = 3400;
+            double map3D_x = 5000;
+            double map3D_y = 2772;
+            if (!MapSingleton.is2D) {
+                map_x = map3D_x;
+                map_y = map3D_y;
+            }
+
+            System.out.println("Clicks = " + e.getClickCount());
+
+
+            Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
+                    , e.getY() * map_y / mapContainer.getMaxHeight());
+
+            HashSet<Node> nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
+                    , node.getPosition().getY()).distance(mapPos) < 8
+            );
+
+            if (nodes.size() > 0) {
+                // TODO get closest node
+                clearNodes();
+                reloadMap();
+                Node node = nodes.iterator().next();
+                nodeCircleHashMap.get(node).setFill(Color.BLUE);
+                selectedNodeStart = node;
+            } else {
+                selectedNodeStart = null;
+            }
+
+            // remove a node
             if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 2) {
+                if (!MapSingleton.is2D) {
+                    return;
+                }
+                if (nodes.size() > 0) {
+                    // TODO get closest node
+                    map.removeNode(selectedNodeStart);
+                    selectedNodeStart = null;
+                    clearNodes();
+                    reloadMap();
+                }
+                selectedNodeStart = null;
+            }
+            // create a new node
+            if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+                if (!MapSingleton.is2D) {
+                    return;
+                }
                 addLocationPopup.setTranslateX(e.getSceneX() - 90);
                 addLocationPopup.setTranslateY(e.getSceneY() - 400);
                 newNode_x.setEditable(false);
                 newNode_y.setEditable(false);
-                newNode_x.setText("" + (int) (e.getX() * 5000.f / mapContainer.getMaxWidth()));
-                newNode_y.setText("" + (int) (e.getY() * 3400.f / mapContainer.getMaxHeight()));
+                newNode_x.setText("" + (int) (e.getX() * map_x / mapContainer.getMaxWidth()));
+                newNode_y.setText("" + (int) (e.getY() * map_y / mapContainer.getMaxHeight()));
                 newNodeCircle.setVisible(true);
-                newNodeCircle.setCenterX(Double.parseDouble(newNode_x.getText()) * mapContainer.getMaxWidth() / 5000.f);
-                newNodeCircle.setCenterY(Double.parseDouble(newNode_y.getText()) * mapContainer.getMaxHeight() / 3400.f);
+                newNodeCircle.setCenterX(Double.parseDouble(newNode_x.getText()) * mapContainer.getMaxWidth() / map_x);
+                newNodeCircle.setCenterY(Double.parseDouble(newNode_y.getText()) * mapContainer.getMaxHeight() / map_y);
                 addLocationPopup.setVisible(true);
+                selectedNodeStart = null;
             }
         });
 
@@ -311,12 +419,12 @@ public class HomeController implements SwitchableController {
         reset(ivMap, width, height);
     }
 
-    // Add location on map
 
+    // Add location on map
 
     @FXML
     void onAddLocationConfirm() {
-        String type = (String) newNode_type.getSelectionModel().getSelectedItem();
+        String type = newNode_type.getSelectionModel().getSelectedItem();
         // TODO move into NodeBuilder
         int height;
         switch (floor) {
@@ -383,6 +491,10 @@ public class HomeController implements SwitchableController {
         newNodeCircle.setVisible(false);
     }
 
+    @FXML
+    void onNodeSelection() {
+        gpaneNodeInfo.setVisible(false);
+    }
 
     // Find Location
     @FXML
@@ -519,6 +631,7 @@ public class HomeController implements SwitchableController {
     }
 
     private void draw2DNodes(String newLevel) {
+        nodeCircleHashMap.clear();
         map = MapSingleton.getInstance().getMap();
         for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))) {
             Line line = new Line();
@@ -533,6 +646,7 @@ public class HomeController implements SwitchableController {
             circle.setCenterX(node.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
             circle.setCenterY(node.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
             mapContainer.getChildren().add(circle);
+            nodeCircleHashMap.put(node, circle);
         }
 
         mapContainer.getChildren().add(newNodeCircle);
@@ -540,6 +654,7 @@ public class HomeController implements SwitchableController {
     }
 
     private void draw3DNodes(String newLevel) {
+        nodeCircleHashMap.clear();
         map = MapSingleton.getInstance().getMap();
         for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))) {
             Line line = new Line();
@@ -554,6 +669,7 @@ public class HomeController implements SwitchableController {
             circle.setCenterX(node.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
             circle.setCenterY(node.getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
             mapContainer.getChildren().add(circle);
+            nodeCircleHashMap.put(node, circle);
         }
     }
 
