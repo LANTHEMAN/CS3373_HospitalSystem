@@ -158,11 +158,11 @@ public class DatabaseHandlerTest {
                 .setWireframePosition(new Point2D(0, 0))
                 .build();
 
-        LanguageInterpreter s = new LanguageInterpreter("Language Interpreter", nodeA, "Test 1", "Incomplete", "German", 0);
-        s.parseIntoDescription();
+//        LanguageInterpreter s = new LanguageInterpreter("Language Interpreter", nodeA, "Test 1", "Incomplete", "German", 0);
+  //      s.parseIntoDescription();
 
-        ServiceRequestSingleton ps = ServiceRequestSingleton.getInstance(dbHandler);
-        ps.sendServiceRequest(s);
+    //    ServiceRequestSingleton ps = ServiceRequestSingleton.getInstance(dbHandler);
+      //  ps.sendServiceRequest(s);
 
 
     }
