@@ -30,7 +30,7 @@ public class Map implements DatabaseItem, Observer {
     // TODO: add this object to be notified by changes in a node
 
     DatabaseHandler dbHandler;
-    Graph graph;
+    public Graph graph;
 
     public Map() {
         graph = new Graph();
