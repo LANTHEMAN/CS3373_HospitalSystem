@@ -21,7 +21,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import net.kurobako.gesturefx.GesturePane?>
+<!--<?import net.kurobako.gesturefx.GesturePane?>-->
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.HomeController">
     <columnConstraints>
@@ -110,7 +110,7 @@
                         <Font size="22.0" />
                     </font>
                 </Text>
-                        <GesturePane fx:id="gesturePane" HBarEnabled="false" VBarEnabled="false" fitHeight="false" fitMode="CENTER" fitWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minScale="2.0" minWidth="-Infinity" scrollMode="ZOOM" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" VBox.vgrow="ALWAYS">
+                        <!--<GesturePane fx:id="gesturePane" HBarEnabled="false" VBarEnabled="false" fitHeight="false" fitMode="CENTER" fitWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minScale="2.0" minWidth="-Infinity" scrollMode="ZOOM" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" VBox.vgrow="ALWAYS">-->
                             <Pane fx:id="mapContainer" maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0">
                                 <children>
                                     <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="false" preserveRatio="false">
@@ -120,7 +120,7 @@
                                     </ImageView>
                                 </children>
                             </Pane>
-                        </GesturePane>
+                        <!--</GesturePane>-->
                 <Button fx:id="btnMapDimensions" mnemonicParsing="false" onAction="#onMapDimensions" text="3D Map" translateX="-80.0" translateY="-65.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                 <VBox fx:id="addLocationPopup" alignment="CENTER" maxHeight="235.0" maxWidth="178.0" prefHeight="235.0" prefWidth="177.0" spacing="10.0" style="-fx-background-color: rgba(217, 217, 217, 0.9); -fx-border-style: solid; -fx-border-color: grey;" visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
                     <children>
@@ -215,17 +215,12 @@
                         <Button fx:id="btnLocationDirections" alignment="CENTER" mnemonicParsing="false" onAction="#onLocationDirections" text="%GetDirections" textFill="RED" />
                     </children>
                 </VBox>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%ScrollToZoom" translateX="-70.0" translateY="-40.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-                    <font>
-                        <Font size="15.0" />
-                    </font>
-                </Text>
-            <Button mnemonicParsing="false" text="Help" translateX="-70.0" translateY="-10.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
             <Text fx:id="txtAdminHelp" strokeType="OUTSIDE" strokeWidth="0.0" translateX="-70.0" translateY="-20.0" visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
+            <Button mnemonicParsing="false" onAction="#onHelpPopup" text="Help" translateX="-80.0" translateY="-30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
             </children>
         </GridPane>
         <GridPane prefHeight="730.0" prefWidth="208.0" style="-fx-background-color: #80b3ff;" GridPane.columnIndex="1">
@@ -406,18 +401,18 @@
         </rowConstraints>
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Short Name:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <TextField layoutX="195.0" layoutY="169.0" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <TextField fx:id="modNode_shortName" layoutX="195.0" layoutY="169.0" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Text layoutX="65.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Long Name:" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <TextField layoutX="10.0" layoutY="16.0" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <TextField fx:id="modeNode_longName" layoutX="10.0" layoutY="16.0" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type:" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-            <ComboBox maxWidth="100.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <ComboBox fx:id="modNode_type" maxWidth="100.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Building:" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-            <ComboBox maxWidth="100.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+            <ComboBox fx:id="modeNode_building" maxWidth="100.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="X:" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-            <TextField layoutX="10.0" layoutY="24.0" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+            <TextField fx:id="modNode_x" layoutX="10.0" layoutY="24.0" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Y:" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-            <TextField maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-            <Button mnemonicParsing="false" text="Modify Node" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
+            <TextField fx:id="modNode_y" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+            <Button mnemonicParsing="false" onAction="#onNodeModify" text="Modify Node" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
             <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onNodeSelection" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
          </children>
       </GridPane>

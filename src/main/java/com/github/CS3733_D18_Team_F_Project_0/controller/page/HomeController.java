@@ -119,8 +119,21 @@ public class HomeController implements SwitchableController {
     @FXML
     private Button loginPopup;
 
+    // the modify Node information panel on the left
     @FXML
     private GridPane gpaneNodeInfo;
+    @FXML
+    private TextField modNode_shortName;
+    @FXML
+    private TextField modNode_longName;
+    @FXML
+    private ComboBox modNode_type;
+    @FXML
+    private ComboBox modNode_building;
+    @FXML
+    private TextField modNode_x;
+    @FXML
+    private TextField modNode_y;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -326,6 +339,14 @@ public class HomeController implements SwitchableController {
     }
 
 
+    // Popup upon help request
+
+    @FXML
+    void onHelpPopup() {
+        switcher.popup(Screens.Help);
+    }
+
+
     // Menus on right
 
     @FXML
@@ -494,6 +515,11 @@ public class HomeController implements SwitchableController {
     @FXML
     void onNodeSelection() {
         gpaneNodeInfo.setVisible(false);
+    }
+
+    @FXML
+    void onNodeModify() {
+
     }
 
     // Find Location
