@@ -11,6 +11,8 @@ import com.github.CS3733_D18_Team_F_Project_0.controller.UTF8Control;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Edge;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
 import javafx.animation.Interpolator;
+import javafx.beans.binding.Binding;
+import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -135,6 +137,14 @@ public class HomeController implements SwitchableController {
 
         maps2D = ImageCacheSingleton.maps2D;
         maps3D = ImageCacheSingleton.maps3D;
+
+        if(MapSingleton.is2D) {
+            StringBinding mapDim = switcher.resFac.getStringBinding("3DMap");
+            btnMapDimensions.setText(mapDim.get());
+        }else{
+            StringBinding mapDim = switcher.resFac.getStringBinding("2DMap");
+            btnMapDimensions.setText(mapDim.get());
+        }
 
         gesturePane.zoomTo(2, new Point2D(600,600));
 
@@ -358,12 +368,15 @@ public class HomeController implements SwitchableController {
 
     @FXML
     void onMapDimensions() {
+        StringBinding mapDim;
         if (MapSingleton.is2D) {
-            btnMapDimensions.setText("2D Map");
+            mapDim = switcher.resFac.getStringBinding("2DMap");
+            btnMapDimensions.setText(mapDim.get());
             MapSingleton.is2D = false;
             reloadMap();
         } else {
-            btnMapDimensions.setText("3D Map");
+            mapDim = switcher.resFac.getStringBinding("3DMap");
+            btnMapDimensions.setText(mapDim.get());
             MapSingleton.is2D = true;
             reloadMap();
         }
