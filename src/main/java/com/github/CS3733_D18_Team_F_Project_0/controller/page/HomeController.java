@@ -270,6 +270,8 @@ public class HomeController implements SwitchableController {
                 Node node = nodes.iterator().next();
                 nodeCircleHashMap.get(node).setFill(Color.BLUE);
                 selectedNodeStart = node;
+                // TODO set modification fields to the appropriate values****
+                gpaneNodeInfo.setVisible(true);
             } else {
                 selectedNodeStart = null;
             }
@@ -513,12 +515,25 @@ public class HomeController implements SwitchableController {
     }
 
     @FXML
-    void onNodeSelection() {
+    void onModificationCancel() {
         gpaneNodeInfo.setVisible(false);
     }
 
     @FXML
     void onNodeModify() {
+        //TODO SEND TO VARIABLE TO DATABASE!!!!!
+        // remove old location
+        // add new location with private variables as declared above
+       /* Node newNode = new NewNodeBuilder()
+                .setNodeType(modNode_type.getSelectionModel().getSelectedItem().toString())
+                .setNumNodeType(typeCount)              // TODO set numNodeType
+                .setFloor(floor)
+                .setBuilding(modNode_building.getSelectionModel().getSelectedItem().toString())    // TODO set building
+                .setShortName(modNode_shortName)
+                .setLongName(modNode_longName) // TODO get long name
+                .setPosition(new Point3D(Double.parseDouble(modNode_x.getText()), Double.parseDouble(modNode_y.getText()), height))
+                .build();
+        map.createNode(newNode);*/
 
     }
 
