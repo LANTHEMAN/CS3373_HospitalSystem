@@ -1,7 +1,6 @@
 package com.github.CS3733_D18_Team_F_Project_0.controller;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -13,10 +12,10 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class PaneSwitcher {
+    public ObservableResourceFactory resFac = new ObservableResourceFactory();
     private HashMap<String, Pane> panes;
     private Scene scene;
     private Stage popup = new Stage();
-    public ObservableResourceFactory resFac = new ObservableResourceFactory();
 
     public PaneSwitcher(Scene scene) {
         this.scene = scene;
@@ -24,6 +23,10 @@ public class PaneSwitcher {
         resFac.setResources(ResourceBundle.getBundle("LanguageBundle", new Locale("en", "US")));
 
         popup.initModality(Modality.APPLICATION_MODAL);
+    }
+
+    public Scene getScene() {
+        return scene;
     }
 
     public Pane getPane(Screens.Screen screen) {
