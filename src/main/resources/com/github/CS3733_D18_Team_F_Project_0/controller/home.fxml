@@ -388,7 +388,7 @@
                 </VBox>
             </children>
         </GridPane>
-      <GridPane maxWidth="300.0" prefHeight="136.0" prefWidth="161.0" style="-fx-background-color: rgba(217, 217, 217, 0.9);">
+      <GridPane fx:id="gpaneNodeInfo" maxWidth="250.0" prefHeight="136.0" prefWidth="161.0" style="-fx-background-color: rgba(217, 217, 217, 0.9);">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -418,7 +418,7 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Y:" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
             <TextField maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
             <Button mnemonicParsing="false" text="Modify Node" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
-            <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
+            <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onNodeSelection" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
     </children>

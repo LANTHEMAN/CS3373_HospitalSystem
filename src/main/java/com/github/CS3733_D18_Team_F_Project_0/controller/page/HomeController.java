@@ -22,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -113,6 +114,9 @@ public class HomeController implements SwitchableController {
     private Button btnMapDimensions;
     @FXML
     private Button loginPopup;
+
+    @FXML
+    private GridPane gpaneNodeInfo;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -311,8 +315,8 @@ public class HomeController implements SwitchableController {
         reset(ivMap, width, height);
     }
 
-    // Add location on map
 
+    // Add location on map
 
     @FXML
     void onAddLocationConfirm() {
@@ -383,6 +387,10 @@ public class HomeController implements SwitchableController {
         newNodeCircle.setVisible(false);
     }
 
+    @FXML
+    void onNodeSelection() {
+        gpaneNodeInfo.setVisible(false);
+    }
 
     // Find Location
     @FXML
