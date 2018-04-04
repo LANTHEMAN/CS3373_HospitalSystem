@@ -53,8 +53,8 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
             throw new AssertionError("You must set a position.");
         }
         if (wireframePosition == null) {
-            wireframePosition = new Point2D((960/967)*position.getX() + (-112/4835)*position.getY() + (20238/967),
-                                            (1444/4835)*position.getX() + (19236/24175)*position.getY() + (86068/4835));
+            wireframePosition = new Point2D((960.f / 967.f) * position.getX() + (-112.f / 4835.f) * position.getY() + (20238.f / 967.f),
+                    (1444.f / 4835.f) * position.getX() + (19236.f / 24175.f) * position.getY() + (86068.f / 4835.f));
         }
 
         if (building == null) {
@@ -64,7 +64,7 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
         if (shortName == null) {
             shortName = nodeID + "[Unset shortName]";
         }
-        if(longName == null){
+        if (longName == null) {
             longName = shortName + "[Unset longName]";
         }
 
