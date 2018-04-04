@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.HelpController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="565.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="565.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.HelpController">
    <children>
       <GridPane prefHeight="400.0" prefWidth="565.0">
         <columnConstraints>
@@ -96,7 +96,7 @@
                </rowConstraints>
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Remove Path:" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Start location and right click drag to end location" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Holding ctrl, Select Start location and right click drag to end location" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Move/Pan Map: " GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Zoom: " GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll map around to zoom" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
@@ -110,7 +110,7 @@
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Remove Location:" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Double right click" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add Path:" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Start location and left clickdrag to end location" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Holding ctrl, Select Start location and left clickdrag to end location" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                </children>
             </GridPane>
             <Button mnemonicParsing="false" onAction="#onCancelClose" text="Cancel" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
