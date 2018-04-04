@@ -120,6 +120,8 @@ public class HomeController implements SwitchableController {
     @FXML
     private Button loginPopup;
 
+    boolean ctrlHeld = false;
+
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
@@ -167,12 +169,14 @@ public class HomeController implements SwitchableController {
         switcher.getScene().setOnKeyPressed(ke -> {
             if (ke.isControlDown()) {
                 gesturePane.setGestureEnabled(false);
+                ctrlHeld = true;
             }
         });
         switcher.getScene().setOnKeyReleased(ke -> {
             if (!ke.isControlDown()) {
                 gesturePane.setGestureEnabled(true);
                 selectedNodeStart = null;
+                ctrlHeld = false;
             }
         });
 
@@ -181,7 +185,7 @@ public class HomeController implements SwitchableController {
                 return;
             }
 
-            if (!PermissionSingleton.getInstance().isAdmin()) {
+            if (!PermissionSingleton.getInstance().isAdmin() || !ctrlHeld) {
                 return;
             }
 
