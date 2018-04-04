@@ -49,6 +49,10 @@ public class PermissionSingleton {
         }
         return false;
     }
+    public void logout(){
+        userPrivilege = Privilege.GUEST;
+        currUser = "Guest";
+    }
     private static String getPrivilege(String type){
         if(type.equals("sysadmin")){
             return Privilege.SYSADMIN;
