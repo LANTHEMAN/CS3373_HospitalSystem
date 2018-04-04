@@ -40,7 +40,7 @@ test {
 }
 
 jar {
-	baseName = 'LanguageBundle'
+	baseName = 'hospitalMap'
 	from('src/main/resources'){
 		include 'LanguageBundle'
 	}

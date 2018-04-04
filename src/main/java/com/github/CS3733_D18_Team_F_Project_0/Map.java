@@ -267,11 +267,11 @@ public class Map implements DatabaseItem, Observer {
                     existingCompiledNodeFile = true;
 
                 } else {
-                    nodeFilePaths = Files.walk(Paths.get(dbHandler.getClass().getResource("map").toURI()))
+                    nodeFilePaths = Files.walk(Paths.get(getClass().getResource("db/map").toURI()))
                             .filter(Files::isRegularFile)
                             .filter(path -> path.getFileName().toString().contains("odes.csv"))
                             .map(path -> path.getFileName().toString())
-                            .map(path -> "map/" + path)
+                            .map(path -> "db/map/" + path)
                             .collect(Collectors.toList());
                 }
 
@@ -282,7 +282,7 @@ public class Map implements DatabaseItem, Observer {
                         csvFile = new File(nodeFilePath);
                     } else {
                         System.out.println("Missing database, generating Nodes from db/map/*odes.csv files.");
-                        csvFile = new File(dbHandler.getClass().getResource(nodeFilePath).toURI().getPath());
+                        csvFile = new File(getClass().getResource(nodeFilePath).toURI().getPath());
                     }
 
                     CSVParser parser = CSVParser.parse(csvFile, StandardCharsets.UTF_8, CSVFormat.RFC4180);
