@@ -59,6 +59,7 @@ public class HomeController implements SwitchableController {
     Node selectedNodeStart = null;
     Node pathStartNode = null;
     Node pathEndNode = null;
+    Node modifyNode = null;
     boolean ctrlHeld = false;
     private PaneSwitcher switcher;
     private Map map;
@@ -143,6 +144,8 @@ public class HomeController implements SwitchableController {
         if (!PermissionSingleton.getInstance().getCurrUser().equals("Guest")) {
             loginPopup.setText("Logout");
         }
+
+        gpaneNodeInfo.setVisible(false);
 
         maps2D = ImageCacheSingleton.maps2D;
         maps3D = ImageCacheSingleton.maps3D;
@@ -259,9 +262,15 @@ public class HomeController implements SwitchableController {
             Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
-            HashSet<Node> nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
-                    , node.getPosition().getY()).distance(mapPos) < 8
-            );
+            HashSet<Node> nodes;
+            if (MapSingleton.is2D) {
+                nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
+                        , node.getPosition().getY()).distance(mapPos) < 8);
+            } else {
+                nodes = map.getNodes(node -> new Point2D(node.getWireframePosition().getX()
+                        , node.getWireframePosition().getY()).distance(mapPos) < 8);
+            }
+
 
             if (nodes.size() > 0) {
                 // TODO get closest node
@@ -271,12 +280,24 @@ public class HomeController implements SwitchableController {
                 nodeCircleHashMap.get(node).setFill(Color.BLUE);
                 selectedNodeStart = node;
                 // TODO set modification fields to the appropriate values****
-                gpaneNodeInfo.setVisible(true);
+
+                if (PermissionSingleton.getInstance().isAdmin()) {
+                    gpaneNodeInfo.setVisible(true);
+                }
+
+                modNode_x.setText(String.valueOf(node.getPosition().getX()));
+                modNode_y.setText(String.valueOf(node.getPosition().getY()));
+                modNode_shortName.setText(node.getShortName());
+                modNode_longName.setText(node.getLongName());
+                // TODO implement change building, change type
+
+                modifyNode = node;
+
 
                 if (vbxDirections.isVisible()) {
                     if (pathStartNode == null) {
                         pathStartNode = selectedNodeStart;
-                    }else if(selectedNodeStart != pathStartNode){
+                    } else if (selectedNodeStart != pathStartNode) {
                         pathEndNode = selectedNodeStart;
                     }
                 }
@@ -355,13 +376,13 @@ public class HomeController implements SwitchableController {
     }
 
     @FXML
-    void onDrawPath(){
-        if(pathStartNode != null && pathEndNode != null){
+    void onDrawPath() {
+        if (pathStartNode != null && pathEndNode != null) {
             Path path = AStar.getPath(MapSingleton.getInstance().getMap().graph, pathStartNode, pathEndNode);
             ArrayList<Node> nodes = path.getNodes();
             ArrayList<Edge> edges = path.getEdges();
 
-            if(MapSingleton.is2D) {
+            if (MapSingleton.is2D) {
                 for (Edge edge : edges) {
                     Line line = new Line();
                     line.setEndX(edge.getNode1().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
@@ -390,7 +411,7 @@ public class HomeController implements SwitchableController {
                 endText.setFont(Font.font("Verdana", 5));
 
                 mapContainer.getChildren().addAll(startText, endText);
-            }else{
+            } else {
                 for (Edge edge : edges) {
                     Line line = new Line();
                     line.setEndX(edge.getNode1().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
@@ -419,7 +440,7 @@ public class HomeController implements SwitchableController {
 
                 mapContainer.getChildren().addAll(startText, endText);
             }
-        }else{
+        } else {
             System.out.println("Invalid nodes");
         }
     }
@@ -578,7 +599,7 @@ public class HomeController implements SwitchableController {
 
         Node newNode = new NewNodeBuilder()
                 .setNodeType(type)
-                .setNumNodeType(typeCount)              // TODO set numNodeType
+                .setNumNodeType(typeCount)
                 .setFloor(floor)
                 .setBuilding("New Building")    // TODO set building
                 .setShortName(newNode_shortName.getText())
@@ -608,20 +629,14 @@ public class HomeController implements SwitchableController {
 
     @FXML
     void onNodeModify() {
-        //TODO SEND TO VARIABLE TO DATABASE!!!!!
-        // remove old location
-        // add new location with private variables as declared above
-       /* Node newNode = new NewNodeBuilder()
-                .setNodeType(modNode_type.getSelectionModel().getSelectedItem().toString())
-                .setNumNodeType(typeCount)              // TODO set numNodeType
-                .setFloor(floor)
-                .setBuilding(modNode_building.getSelectionModel().getSelectedItem().toString())    // TODO set building
-                .setShortName(modNode_shortName)
-                .setLongName(modNode_longName) // TODO get long name
-                .setPosition(new Point3D(Double.parseDouble(modNode_x.getText()), Double.parseDouble(modNode_y.getText()), height))
-                .build();
-        map.createNode(newNode);*/
+        modifyNode.setPosition(new Point3D(Double.parseDouble(modNode_x.getText())
+                , Double.parseDouble(modNode_y.getText())
+                , modifyNode.getPosition().getZ()));
+        modifyNode.setShortName(modNode_shortName.getText());
+        modifyNode.setLongName(modNode_longName.getText());
 
+        clearNodes();
+        reloadMap();
     }
 
     // Find Location
