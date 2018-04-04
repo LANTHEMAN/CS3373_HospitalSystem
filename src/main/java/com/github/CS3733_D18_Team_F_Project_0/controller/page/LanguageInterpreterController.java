@@ -25,10 +25,7 @@ public class LanguageInterpreterController implements SwitchableController {
 
     @FXML
     TextField firstName;
-    void onCancel() {
-        switcher.switchTo(Screens.ServiceRequest);
-    }
-
+    
     @FXML
     TextField lastName;
 
