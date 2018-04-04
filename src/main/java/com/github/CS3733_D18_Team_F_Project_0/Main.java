@@ -32,7 +32,6 @@ public class Main extends Application {
                         .forEach(File::delete);
             }
         } catch (IOException e) {
-            e.printStackTrace();
         }
         
         launch(args);

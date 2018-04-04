@@ -267,11 +267,10 @@ public class Map implements DatabaseItem, Observer {
                     existingCompiledNodeFile = true;
 
                 } else {
-                    nodeFilePaths = Files.walk(Paths.get(getClass().getResource("db/map").toURI()))
+                    nodeFilePaths = Files.walk(Paths.get("initMap"))
                             .filter(Files::isRegularFile)
                             .filter(path -> path.getFileName().toString().contains("odes.csv"))
-                            .map(path -> path.getFileName().toString())
-                            .map(path -> "db/map/" + path)
+                            .map(path -> "initMap/" + path.getFileName().toString())
                             .collect(Collectors.toList());
                 }
 
@@ -281,8 +280,8 @@ public class Map implements DatabaseItem, Observer {
                         System.out.println("Missing database, Loading Nodes from map/nodes.csv");
                         csvFile = new File(nodeFilePath);
                     } else {
-                        System.out.println("Missing database, generating Nodes from db/map/*odes.csv files.");
-                        csvFile = new File(getClass().getResource(nodeFilePath).toURI().getPath());
+                        System.out.println("Missing database, generating Nodes from initMap/*odes.csv files.");
+                        csvFile = new File(nodeFilePath);
                     }
 
                     CSVParser parser = CSVParser.parse(csvFile, StandardCharsets.UTF_8, CSVFormat.RFC4180);
@@ -320,7 +319,7 @@ public class Map implements DatabaseItem, Observer {
                     }
                 }
             }
-        } catch (SQLException | IOException | URISyntaxException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
 
@@ -338,11 +337,11 @@ public class Map implements DatabaseItem, Observer {
                     existingCompiledEdgeFile = true;
 
                 } else {
-                    edgeFilePaths = Files.walk(Paths.get(dbHandler.getClass().getResource("map").toURI()))
+                    edgeFilePaths = Files.walk(Paths.get("initMap"))
                             .filter(Files::isRegularFile)
                             .filter(path -> path.getFileName().toString().contains("dges.csv"))
                             .map(path -> path.getFileName().toString())
-                            .map(path -> "map/" + path)
+                            .map(path -> "initMap/" + path)
                             .collect(Collectors.toList());
                 }
 
@@ -353,7 +352,7 @@ public class Map implements DatabaseItem, Observer {
                         csvFile = new File(edgeFilePath);
                     } else {
                         System.out.println("Missing database, generating Edges from db/map/*dges.csv files.");
-                        csvFile = new File(dbHandler.getClass().getResource(edgeFilePath).toURI().getPath());
+                        csvFile = new File(edgeFilePath);
                     }
 
                     CSVParser parser = CSVParser.parse(csvFile, StandardCharsets.UTF_8, CSVFormat.RFC4180);
@@ -376,7 +375,7 @@ public class Map implements DatabaseItem, Observer {
                     }
                 }
             }
-        } catch (IOException | SQLException | URISyntaxException e1) {
+        } catch (IOException | SQLException e1) {
             e1.printStackTrace();
         }
     }
