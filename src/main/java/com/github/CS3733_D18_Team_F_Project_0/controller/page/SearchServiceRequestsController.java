@@ -1,6 +1,7 @@
 package com.github.CS3733_D18_Team_F_Project_0.controller.page;
 
 import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
+import com.github.CS3733_D18_Team_F_Project_0.controller.PermissionSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
 import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
 import com.github.CS3733_D18_Team_F_Project_0.sr.ServiceRequest;
@@ -70,6 +71,7 @@ public class SearchServiceRequestsController implements SwitchableController {
         filter = "none";
 
         filterType.getItems().addAll("Priority", "Status", "Type");
+
     }
 
 

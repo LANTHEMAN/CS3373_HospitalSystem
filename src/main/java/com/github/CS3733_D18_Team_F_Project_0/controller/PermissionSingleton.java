@@ -3,6 +3,9 @@ package com.github.CS3733_D18_Team_F_Project_0.controller;
 import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseHandler;
 import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseSingleton;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class PermissionSingleton {
     DatabaseHandler dbHandler;
     PermissionManager pmanage;
@@ -14,7 +17,10 @@ public class PermissionSingleton {
         dbHandler.trackAndInitItem(pmanage);
         userPrivilege = Privilege.GUEST;
         currUser = "Guest";
-        addUser(new User("Admin","1234","admin"));
+        if(!userExist("Admin")) {
+            addUser(new User("Admin", "1234", "admin"));
+        }
+
     }
     private static class loginHelper{
         static final PermissionSingleton INSTANCE = new PermissionSingleton();
@@ -64,11 +70,41 @@ public class PermissionSingleton {
             return Privilege.GUEST;
         }
     }
-    public void addUser(User u){
-        pmanage.users.add(u);
-    }
 
     public String getCurrUser() {
         return currUser;
     }
+
+    public void addUser(User u) {
+        pmanage.users.add(u);
+        String sql = "INSERT INTO HUser"
+                + " VALUES ('" + u.getUname()
+                + "', '" + u.getPsword()
+                + "', '" + u.getType()
+                +"')";
+        dbHandler.runAction(sql);
+    }
+
+    public boolean userExist(String username){
+        ResultSet rs;
+        String sql = "SELECT * FROM HUser WHERE username = '" + username + "'";
+        try {
+            rs = dbHandler.runQuery(sql);
+
+            if(!rs.next()){
+                rs.close();
+                return false;
+            }else{
+                rs.close();
+                return true;
+            }
+
+
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

@@ -11,6 +11,7 @@ public abstract class ServiceRequest {
     private String description;
     private String status;
     private int priority;
+    private String completedBy;
 
 
     public ServiceRequest(String type, String firstName, String lastName, String location, String description, String status, int priority) {
@@ -33,6 +34,18 @@ public abstract class ServiceRequest {
         this.description = description;
         this.status = status;
         this.priority = priority;
+    }
+
+    public ServiceRequest(String type, int id, String firstName, String lastName, String location, String description, String status, int priority, String completedBy){
+        this.type = type;
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.location = location;
+        this.description = description;
+        this.status = status;
+        this.priority = priority;
+        this.completedBy = completedBy;
     }
 
     public String getFirstName() {
@@ -93,5 +106,13 @@ public abstract class ServiceRequest {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public String getCompletedBy() {
+        return completedBy;
+    }
+
+    public void setCompletedBy(String completedBy) {
+        this.completedBy = completedBy;
     }
 }

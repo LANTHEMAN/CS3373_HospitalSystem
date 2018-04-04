@@ -55,5 +55,7 @@ public class PermissionManager implements DatabaseItem {
 
     @Override
     public void syncCSVFromDB(DatabaseHandler dbHandler) {}
+
+
 }
 
