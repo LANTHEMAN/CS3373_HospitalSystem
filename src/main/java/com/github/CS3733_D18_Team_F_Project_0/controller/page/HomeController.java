@@ -28,8 +28,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.util.Pair;
 import net.kurobako.gesturefx.GesturePane;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -52,9 +55,9 @@ public class HomeController implements SwitchableController {
     @FXML
     public Button DirectionsSwitch;
     @FXML
-    public ComboBox cboxDestinationType;
+    public ComboBox<String> cboxDestinationType;
     @FXML
-    public ComboBox cboxAvailableLocations;
+    public ComboBox<String> cboxAvailableLocations;
     Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
     private PaneSwitcher switcher;
     private Map map;
@@ -84,7 +87,7 @@ public class HomeController implements SwitchableController {
     @FXML
     private TextField newNode_shortName;
     @FXML
-    private ComboBox newNode_type;
+    private ComboBox<String> newNode_type;
     @FXML
     private VBox findLocationPopup;
     @FXML
@@ -114,13 +117,15 @@ public class HomeController implements SwitchableController {
     @FXML
     private Button loginPopup;
 
+    HashMap<Node, Circle> nodeCircleHashMap = new HashMap<>();
+
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
         //to make initial admin with secure password
         txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
-        if (PermissionSingleton.getInstance().getCurrUser().equals("Guest") == false) {
+        if (!PermissionSingleton.getInstance().getCurrUser().equals("Guest")) {
             loginPopup.setText("Logout");
         }
 
@@ -162,7 +167,7 @@ public class HomeController implements SwitchableController {
 
         // the add location popup
         ivMap.setOnMouseClicked(e -> {
-            if (e.getClickCount() == 2 && addLocationPopup.isVisible() == false) {
+            if (e.getClickCount() == 2 && !addLocationPopup.isVisible()) {
 
             }
         });
@@ -172,6 +177,23 @@ public class HomeController implements SwitchableController {
             if (!MapSingleton.is2D) {
                 return;
             }
+
+            Point2D mapPos = new Point2D(e.getX() * 5000.f / mapContainer.getMaxWidth()
+                    , e.getY() * 3400.f / mapContainer.getMaxHeight());
+
+            HashSet<Node> nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
+                    , node.getPosition().getY()).distance(mapPos) < 8
+            );
+
+            if(nodes.size() > 0){
+                // TODO get closest node
+                clearNodes();
+                reloadMap();
+                Node node = nodes.iterator().next();
+                nodeCircleHashMap.get(node).setFill(Color.BLUE);
+            }
+
+
             if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 2) {
                 addLocationPopup.setTranslateX(e.getSceneX() - 90);
                 addLocationPopup.setTranslateY(e.getSceneY() - 400);
@@ -316,7 +338,7 @@ public class HomeController implements SwitchableController {
 
     @FXML
     void onAddLocationConfirm() {
-        String type = (String) newNode_type.getSelectionModel().getSelectedItem();
+        String type = newNode_type.getSelectionModel().getSelectedItem();
         // TODO move into NodeBuilder
         int height;
         switch (floor) {
@@ -519,6 +541,7 @@ public class HomeController implements SwitchableController {
     }
 
     private void draw2DNodes(String newLevel) {
+        nodeCircleHashMap.clear();
         map = MapSingleton.getInstance().getMap();
         for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))) {
             Line line = new Line();
@@ -533,6 +556,7 @@ public class HomeController implements SwitchableController {
             circle.setCenterX(node.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
             circle.setCenterY(node.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
             mapContainer.getChildren().add(circle);
+            nodeCircleHashMap.put(node, circle);
         }
 
         mapContainer.getChildren().add(newNodeCircle);
@@ -540,6 +564,7 @@ public class HomeController implements SwitchableController {
     }
 
     private void draw3DNodes(String newLevel) {
+        nodeCircleHashMap.clear();
         map = MapSingleton.getInstance().getMap();
         for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))) {
             Line line = new Line();
@@ -554,6 +579,7 @@ public class HomeController implements SwitchableController {
             circle.setCenterX(node.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
             circle.setCenterY(node.getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
             mapContainer.getChildren().add(circle);
+            nodeCircleHashMap.put(node, circle);
         }
     }
 
