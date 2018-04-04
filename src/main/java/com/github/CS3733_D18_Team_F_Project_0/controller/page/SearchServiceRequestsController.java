@@ -139,7 +139,11 @@ public class SearchServiceRequestsController implements SwitchableController {
             e.printStackTrace();
         }
 
-        searchResultTable.getItems().clear();
+        try {
+            searchResultTable.getItems().clear();
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
 
         //TODO: put result of search into table
         if (requests.size() < 1) {
@@ -212,7 +216,11 @@ public class SearchServiceRequestsController implements SwitchableController {
         filterType.valueProperty().set(null);
         searchType = "none";
         filter = "none";
-        searchResultTable.getItems().clear();
+        try {
+            searchResultTable.getItems().clear();
+        }catch(NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
     @FXML
