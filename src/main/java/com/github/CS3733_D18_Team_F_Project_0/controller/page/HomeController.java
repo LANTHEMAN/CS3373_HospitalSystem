@@ -83,9 +83,13 @@ public class HomeController implements SwitchableController {
     @FXML
     private VBox addLocationPopup;
     @FXML
-    private TextField txtXPos;
+    private TextField newNode_x;
     @FXML
-    private TextField txtYPos;
+    private TextField newNode_y;
+    @FXML
+    private TextField newNode_shortName;
+    @FXML
+    private ComboBox newNode_type;
     @FXML
     private VBox findLocationPopup;
     @FXML
@@ -136,15 +140,27 @@ public class HomeController implements SwitchableController {
         */
         reloadMap();
 
-        // zoom*2 on double-click
-        gesturePane.setOnMouseClicked(e -> {
-            if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
-                Point2D pivotOnTarget = gesturePane.targetPointAt(new Point2D(e.getX(), e.getY()))
-                        .orElse(gesturePane.targetPointAtViewportCentre());
-                // increment of scale makes more sense exponentially instead of linearly
-                gesturePane.animate(Duration.millis(200))
-                        .interpolateWith(Interpolator.EASE_BOTH)
-                        .zoomBy(gesturePane.getCurrentScale(), pivotOnTarget);
+
+        // the add location popup
+        ivMap.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2 && addLocationPopup.isVisible() == false) {
+
+            }
+        });
+
+        // new node on double right click
+        mapContainer.setOnMouseClicked(e -> {
+            if(!MapSingleton.is2D){
+                return;
+            }
+
+
+            if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 2) {
+                addLocationPopup.setTranslateX(e.getX() + 170);
+                addLocationPopup.setTranslateY(e.getY() - 80);
+                newNode_x.setText("" + (int) (e.getX() * 5000.f / mapContainer.getMaxWidth()));
+                newNode_y.setText("" + (int) (e.getY() * 3400.f / mapContainer.getMaxHeight()));
+                addLocationPopup.setVisible(true);
             }
         });
 
@@ -349,17 +365,16 @@ public class HomeController implements SwitchableController {
 
     @FXML
     void onAddLocationConfirm() {
-        // TODO Send txtXPos.getText() and txtYPos.getText() to database
         addLocationPopup.setVisible(false);
-        txtXPos.setText("");
-        txtYPos.setText("");
+        newNode_shortName.setText("");
+
+
     }
 
     @FXML
     void onAddLocationCancel() {
         addLocationPopup.setVisible(false);
-        txtXPos.setText("");
-        txtYPos.setText("");
+        newNode_shortName.setText("");
     }
 
 
