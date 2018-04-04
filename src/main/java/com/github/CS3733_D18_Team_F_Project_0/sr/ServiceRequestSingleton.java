@@ -241,7 +241,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 String description = parts[1];
                 switch (type) {
                     case "Religious Services":
-
                         s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special);
                         break;
 
