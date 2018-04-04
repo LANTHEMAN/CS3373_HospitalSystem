@@ -19,10 +19,12 @@ public class LanguageInterpreterController implements SwitchableController {
     }
 
     @FXML
-    void onCancel(){ switcher.switchTo(Screens.ServiceRequest); }
+    void onCancel() {
+        switcher.switchTo(Screens.ServiceRequest);
+    }
 
     @FXML
-    void onSubmit(){
+    void onSubmit() {
         //TODO: create form from text fields and send to database
         switcher.switchTo(Screens.ServiceRequest);
     }

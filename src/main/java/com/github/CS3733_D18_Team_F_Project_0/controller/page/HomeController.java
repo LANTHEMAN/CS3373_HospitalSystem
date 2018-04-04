@@ -4,20 +4,16 @@ import com.github.CS3733_D18_Team_F_Project_0.ImageCacheSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.Map;
 import com.github.CS3733_D18_Team_F_Project_0.MapSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.controller.*;
-import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
-import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
-import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
-import com.github.CS3733_D18_Team_F_Project_0.controller.UTF8Control;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Edge;
+import com.github.CS3733_D18_Team_F_Project_0.graph.NewNodeBuilder;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
-import javafx.animation.Interpolator;
-import javafx.beans.binding.Binding;
 import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -32,16 +28,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import static com.github.CS3733_D18_Team_F_Project_0.MapSingleton.floor;
+
 
 public class HomeController implements SwitchableController {
 
     private static final int MIN_PIXELS = 200;
+    public static Image maps2D[];
+    public static Image maps3D[];
     private final ObservableList<String> patientRooms = FXCollections.observableArrayList(
             "Patient Room 1",
             "Patient Room 2",
@@ -56,24 +55,18 @@ public class HomeController implements SwitchableController {
     public ComboBox cboxDestinationType;
     @FXML
     public ComboBox cboxAvailableLocations;
+    Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
     private PaneSwitcher switcher;
     private Map map;
-
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
-
-    public static Image maps2D[];
-    public static Image maps3D[];
-
     @FXML
     private ImageView ivMap;
     @FXML
     private Pane mapContainer;
     @FXML
     private ScrollPane scrollMap;
-
     @FXML
     private Text MainTitle;
-
     @FXML
     private VBox vbxMenu;
     @FXML
@@ -100,10 +93,8 @@ public class HomeController implements SwitchableController {
     private Text txtFindLocation;
     @FXML
     private Button btnLocationDirections;
-
     @FXML
     private GesturePane gesturePane;
-
     @FXML
     private Button btnLower2Floor;
     @FXML
@@ -116,12 +107,10 @@ public class HomeController implements SwitchableController {
     private Button btnSecondFloor;
     @FXML
     private Button btnThirdFloor;
-
     @FXML
     private Text txtUser;
     @FXML
     private Button btnMapDimensions;
-
     @FXML
     private Button loginPopup;
 
@@ -131,22 +120,36 @@ public class HomeController implements SwitchableController {
         map = MapSingleton.getInstance().getMap();
         //to make initial admin with secure password
         txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
-        if(PermissionSingleton.getInstance().getCurrUser().equals("Guest") == false){
+        if (PermissionSingleton.getInstance().getCurrUser().equals("Guest") == false) {
             loginPopup.setText("Logout");
         }
 
         maps2D = ImageCacheSingleton.maps2D;
         maps3D = ImageCacheSingleton.maps3D;
 
-        if(MapSingleton.is2D) {
+        if (MapSingleton.is2D) {
             StringBinding mapDim = switcher.resFac.getStringBinding("3DMap");
             btnMapDimensions.setText(mapDim.get());
-        }else{
+        } else {
             StringBinding mapDim = switcher.resFac.getStringBinding("2DMap");
             btnMapDimensions.setText(mapDim.get());
         }
 
-        gesturePane.zoomTo(2, new Point2D(600,600));
+        gesturePane.zoomTo(2, new Point2D(600, 600));
+
+        newNode_type.getItems().addAll("HALL"
+                , "ELEV" // TODO set elevator query
+                , "REST"
+                , "STAI"
+                , "DEPT"
+                , "LABS"
+                , "INFO"
+                , "CONF"
+                , "EXIT"
+                , "ELEV"
+                , "RETL"
+                , "SERV");
+        newNode_type.getSelectionModel().selectFirst();
 
         // testing area for db sync
         /*
@@ -166,101 +169,23 @@ public class HomeController implements SwitchableController {
 
         // new node on double right click
         mapContainer.setOnMouseClicked(e -> {
-            if(!MapSingleton.is2D){
+            if (!MapSingleton.is2D) {
                 return;
             }
-
-
             if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 2) {
-                addLocationPopup.setTranslateX(e.getX() + 170);
-                addLocationPopup.setTranslateY(e.getY() - 80);
+                addLocationPopup.setTranslateX(e.getSceneX() - 90);
+                addLocationPopup.setTranslateY(e.getSceneY() - 400);
+                newNode_x.setEditable(false);
+                newNode_y.setEditable(false);
                 newNode_x.setText("" + (int) (e.getX() * 5000.f / mapContainer.getMaxWidth()));
                 newNode_y.setText("" + (int) (e.getY() * 3400.f / mapContainer.getMaxHeight()));
+                newNodeCircle.setVisible(true);
+                newNodeCircle.setCenterX(Double.parseDouble(newNode_x.getText()) * mapContainer.getMaxWidth() / 5000.f);
+                newNodeCircle.setCenterY(Double.parseDouble(newNode_y.getText()) * mapContainer.getMaxHeight() / 3400.f);
                 addLocationPopup.setVisible(true);
             }
         });
 
-        /*
-        gesturePane.setOnScroll(e -> {
-                    Point2D pivotOnTarget = gesturePane.targetPointAt(new Point2D(e.getX(), e.getY()))
-                            .orElse(gesturePane.targetPointAtViewportCentre());
-                    gesturePane.zoomBy(-1.5, pivotOnTarget);
-                }
-        );
-        */
-
-        // mouse start *************************************************************
-
-        //double width = ivMap.getImage().getWidth();
-        //double height = ivMap.getImage().getHeight();
-        //reset(ivMap, width, height);
-/*
-        ObjectProperty<Point2D> mouseDown = new SimpleObjectProperty<>();
-
-        ivMap.setOnMousePressed(e -> {
-            Point2D mousePress = imageViewToImage(ivMap, new Point2D(e.getX(), e.getY()));
-            mouseDown.set(mousePress);
-        });
-        ivMap.setOnMouseDragged(e -> {
-            Point2D dragPoint = imageViewToImage(ivMap, new Point2D(e.getX(), e.getY()));
-            shift(ivMap, dragPoint.subtract(mouseDown.get()));
-            mouseDown.set(imageViewToImage(ivMap, new Point2D(e.getX(), e.getY())));
-        });
-        ivMap.setOnScroll(e -> {
-            double delta = e.getDeltaY();
-            Rectangle2D viewport = ivMap.getViewport();
-
-            double scale = clamp(Math.pow(1.01, delta),
-
-                    // don't scale so we're zoomed in to fewer than MIN_PIXELS in any direction:
-                    Math.min(MIN_PIXELS / viewport.getWidth(), MIN_PIXELS / viewport.getHeight()),
-
-                    // don't scale so that we're bigger than image dimensions:
-                    Math.max(width / viewport.getWidth(), height / viewport.getHeight())
-
-            );
-
-            Point2D mouse = imageViewToImage(ivMap, new Point2D(e.getX(), e.getY()));
-
-            double newWidth = viewport.getWidth() * scale;
-            double newHeight = viewport.getHeight() * scale;
-
-            // To keep the visual point under the mouse from moving, we need
-            // (x - newViewportMinX) / (x - currentViewportMinX) = scale
-            // where x is the mouse X coordinate in the image
-
-            // solving this for newViewportMinX gives
-
-            // newViewportMinX = x - (x - currentViewportMinX) * scale
-
-            // we then clamp this value so the image never scrolls out
-            // of the imageview:
-
-            double newMinX = clamp(mouse.getX() - (mouse.getX() - viewport.getMinX()) * scale,
-                    0, width - newWidth);
-            double newMinY = clamp(mouse.getY() - (mouse.getY() - viewport.getMinY()) * scale,
-                    0, height - newHeight);
-
-            ivMap.setViewport(new Rectangle2D(newMinX, newMinY, newWidth, newHeight));
-        });
-
-        ivMap.fitWidthProperty().bindBidirectional(mapContainer.maxWidthProperty());
-        ivMap.fitHeightProperty().bindBidirectional(mapContainer.maxHeightProperty());
-
-
-        // mouse end *************************************************************
-
-        // the add location popup
-        ivMap.setOnMouseClicked(e -> {
-            if (e.getClickCount() == 2 && addLocationPopup.isVisible() == false) {
-                addLocationPopup.setTranslateX(e.getX() + 10);
-                addLocationPopup.setTranslateY(e.getY() - 180);
-                txtXPos.setText("" + (int) e.getX());
-                txtYPos.setText("" + (int) e.getY());
-                addLocationPopup.setVisible(true);
-            }
-        });
-        */
 
         cboxDestinationType.getItems().clear();
         cboxDestinationType.getItems().addAll(
@@ -283,7 +208,7 @@ public class HomeController implements SwitchableController {
 
     @FXML
     void onLoginPopup() {
-        if(loginPopup.getText().equals("Logout")){
+        if (loginPopup.getText().equals("Logout")) {
             PermissionSingleton.getInstance().logout();
             loginPopup.setText("Admin Login");
             txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
@@ -388,18 +313,74 @@ public class HomeController implements SwitchableController {
 
     // Add location on map
 
+
     @FXML
     void onAddLocationConfirm() {
+        String type = (String) newNode_type.getSelectionModel().getSelectedItem();
+        // TODO move into NodeBuilder
+        int height;
+        switch (floor) {
+            case "01":
+                height = 100;
+                break;
+            case "02":
+                height = 200;
+                break;
+            case "03":
+                height = 300;
+                break;
+            case "L2":
+                height = -200;
+                break;
+            case "L1":
+                height = -100;
+                break;
+            case "0G":
+                height = 0;
+                break;
+            default:
+                throw new AssertionError("Invalid floor level stored in Database: " + floor);
+        }
+
+        int typeCount = 0;
+        if (!type.equals("ELEV")) {
+            try {
+                typeCount = map.getNodes()
+                        .stream()
+                        .filter(node -> node.getNodeType().equals(type))
+                        .map(node -> node.getNodeID().substring(5, 8))
+                        .map(Integer::parseInt)
+                        .max(Integer::compare)
+                        .get();
+                typeCount++;
+            } catch (Exception e) {
+                typeCount = 0;
+            }
+        }
+
+        Node newNode = new NewNodeBuilder()
+                .setNodeType(type)
+                .setNumNodeType(typeCount)              // TODO set numNodeType
+                .setFloor(floor)
+                .setBuilding("New Building")    // TODO set building
+                .setShortName(newNode_shortName.getText())
+                .setLongName(newNode_shortName.getText()) // TODO get long name
+                .setPosition(new Point3D(Double.parseDouble(newNode_x.getText()), Double.parseDouble(newNode_y.getText()), height))
+                .build();
+        map.createNode(newNode);
+
         addLocationPopup.setVisible(false);
         newNode_shortName.setText("");
+        newNodeCircle.setVisible(false);
 
-
+        reloadMap();
     }
 
     @FXML
     void onAddLocationCancel() {
         addLocationPopup.setVisible(false);
         newNode_shortName.setText("");
+        newNodeCircle.setVisible(false);
     }
 
 
@@ -447,22 +428,22 @@ public class HomeController implements SwitchableController {
     @FXML
     void changeFloorMap(ActionEvent e) {
         if (e.getSource().equals(btnLower2Floor)) {
-            MapSingleton.floor = "L2";
+            floor = "L2";
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 2");
         } else if (e.getSource().equals(btnLower1Floor)) {
-            MapSingleton.floor = "L1";
+            floor = "L1";
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 1");
         } else if (e.getSource().equals(btnGroundFloor)) {
-            MapSingleton.floor = "0G";
+            floor = "0G";
             MainTitle.setText("Brigham and Women's Hospital: Ground Floor");
         } else if (e.getSource().equals(btnFirstFloor)) {
-            MapSingleton.floor = "01";
+            floor = "01";
             MainTitle.setText("Brigham and Women's Hospital: Level 1");
         } else if (e.getSource().equals(btnSecondFloor)) {
-            MapSingleton.floor = "02";
+            floor = "02";
             MainTitle.setText("Brigham and Women's Hospital: Level 2");
         } else if (e.getSource().equals(btnThirdFloor)) {
-            MapSingleton.floor = "03";
+            floor = "03";
             MainTitle.setText("Brigham and Women's Hospital: Level 3");
         }
         reloadMap();
@@ -470,15 +451,15 @@ public class HomeController implements SwitchableController {
 
     private void reloadMap() {
         int index;
-        if (MapSingleton.floor.equals("L2")) {
+        if (floor.equals("L2")) {
             index = 0;
-        } else if (MapSingleton.floor.equals("L1")) {
+        } else if (floor.equals("L1")) {
             index = 1;
-        } else if (MapSingleton.floor.equals("0G")) {
+        } else if (floor.equals("0G")) {
             index = 2;
-        } else if (MapSingleton.floor.equals("01")) {
+        } else if (floor.equals("01")) {
             index = 3;
-        } else if (MapSingleton.floor.equals("02")) {
+        } else if (floor.equals("02")) {
             index = 4;
         } else {
             index = 5;
@@ -487,11 +468,11 @@ public class HomeController implements SwitchableController {
         if (!MapSingleton.is2D) {
             ivMap.setImage(maps3D[index]);
             clearNodes();
-            draw3DNodes(MapSingleton.floor);
+            draw3DNodes(floor);
         } else {
             ivMap.setImage(maps2D[index]);
             clearNodes();
-            draw2DNodes(MapSingleton.floor);
+            draw2DNodes(floor);
         }
     }
 
@@ -555,6 +536,9 @@ public class HomeController implements SwitchableController {
             circle.setCenterY(node.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
             mapContainer.getChildren().add(circle);
         }
+
+        mapContainer.getChildren().add(newNodeCircle);
+        newNodeCircle.setVisible(false);
     }
 
     private void draw3DNodes(String newLevel) {
