@@ -119,6 +119,9 @@ public class HomeController implements SwitchableController {
 
     HashMap<Node, Circle> nodeCircleHashMap = new HashMap<>();
 
+    Node selectedNodeStart = null;
+    Node selectedNodeEnd = null;
+
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
@@ -172,14 +175,23 @@ public class HomeController implements SwitchableController {
             }
         });
 
+
+
+
         // new node on double right click
         mapContainer.setOnMouseClicked(e -> {
-            if (!MapSingleton.is2D) {
-                return;
+
+            double map_x = 5000;
+            double map_y = 3400;
+            double map3D_x = 5000;
+            double map3D_y = 2772;
+            if(!MapSingleton.is2D){
+                map_x = map3D_x;
+                map_y = map3D_y;
             }
 
-            Point2D mapPos = new Point2D(e.getX() * 5000.f / mapContainer.getMaxWidth()
-                    , e.getY() * 3400.f / mapContainer.getMaxHeight());
+            Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
+                    , e.getY() * map_y / mapContainer.getMaxHeight());
 
             HashSet<Node> nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
                     , node.getPosition().getY()).distance(mapPos) < 8
@@ -191,19 +203,43 @@ public class HomeController implements SwitchableController {
                 reloadMap();
                 Node node = nodes.iterator().next();
                 nodeCircleHashMap.get(node).setFill(Color.BLUE);
+                selectedNodeStart = node;
+            }
+            else{
+                selectedNodeStart = null;
             }
 
-
+            // remove a node
             if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 2) {
+                if(!MapSingleton.is2D){
+                    return;
+                }
+                if(nodes.size() > 0) {
+                    selectedNodeStart = null;
+                    selectedNodeEnd = null;
+                    // TODO get closest node
+                    map.removeNode(nodes.iterator().next());
+                    clearNodes();
+                    reloadMap();
+                }
+
+
+            }
+            // create a new node
+            if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+                if(!MapSingleton.is2D){
+                    return;
+                }
+
                 addLocationPopup.setTranslateX(e.getSceneX() - 90);
                 addLocationPopup.setTranslateY(e.getSceneY() - 400);
                 newNode_x.setEditable(false);
                 newNode_y.setEditable(false);
-                newNode_x.setText("" + (int) (e.getX() * 5000.f / mapContainer.getMaxWidth()));
-                newNode_y.setText("" + (int) (e.getY() * 3400.f / mapContainer.getMaxHeight()));
+                newNode_x.setText("" + (int) (e.getX() * map_x / mapContainer.getMaxWidth()));
+                newNode_y.setText("" + (int) (e.getY() * map_y / mapContainer.getMaxHeight()));
                 newNodeCircle.setVisible(true);
-                newNodeCircle.setCenterX(Double.parseDouble(newNode_x.getText()) * mapContainer.getMaxWidth() / 5000.f);
-                newNodeCircle.setCenterY(Double.parseDouble(newNode_y.getText()) * mapContainer.getMaxHeight() / 3400.f);
+                newNodeCircle.setCenterX(Double.parseDouble(newNode_x.getText()) * mapContainer.getMaxWidth() / map_x);
+                newNodeCircle.setCenterY(Double.parseDouble(newNode_y.getText()) * mapContainer.getMaxHeight() / map_y);
                 addLocationPopup.setVisible(true);
             }
         });
