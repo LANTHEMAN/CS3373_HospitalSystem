@@ -70,6 +70,13 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
         return new Node(position, wireframePosition, 0, nodeID, floor, building, nodeType, shortName, longName);
     }
 
+    // only for testing node and graph!
+    public NewNodeBuilder forceNumNodeType(int numNodeType){
+        this.numNodeType = numNodeType;
+        return this;
+    }
+
+
     /**
      * @param map the map that this node will be added to
      * @return this to allow chained builder calls

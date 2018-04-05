@@ -52,7 +52,7 @@ public abstract class NodeBuilder<T> {
      */
     public T setPosition(Point2D position) {
         if (floor == null) {
-            throw new AssertionError("You muse set the height before you set a position");
+            throw new AssertionError("You must set the height before you set a position");
         }
         this.position = new Point3D(position.getX(), position.getY(), Node.getHeight(floor));
         return subClass.cast(this);

@@ -37,6 +37,11 @@ public class Map implements DatabaseItem, Observer {
         dbHandler = DatabaseSingleton.getInstance().getDbHandler();
     }
 
+    public Map(DatabaseHandler dbHandler){
+        graph = new Graph();
+        this.dbHandler = dbHandler;
+    }
+
     public void createNode(Node node) {
         try {
             // test that the node does not already exist
