@@ -13,10 +13,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -33,6 +30,8 @@ import net.kurobako.gesturefx.GesturePane;
 import java.util.*;
 
 import static com.github.CS3733_D18_Team_F_Project_0.MapSingleton.floor;
+import static java.lang.Math.cos;
+import static java.lang.StrictMath.sin;
 
 
 public class HomeController implements SwitchableController {
@@ -135,6 +134,18 @@ public class HomeController implements SwitchableController {
     @FXML
     private TextField modNode_y;
 
+
+    @FXML
+    private Slider tf_transx;
+    @FXML
+    private Slider tf_transy;
+    @FXML
+    private Slider tf_scalex;
+    @FXML
+    private Slider tf_scaley;
+    @FXML
+    private Slider tf_rotate;
+
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
@@ -144,6 +155,48 @@ public class HomeController implements SwitchableController {
         if (!PermissionSingleton.getInstance().getCurrUser().equals("Guest")) {
             loginPopup.setText("Logout");
         }
+
+
+
+        tf_transx.setMin(-1000);
+        tf_transx.setMax(1000);
+        tf_transy.setMin(-1000);
+        tf_transy.setMax(1000);
+
+        tf_scalex.setMin(0);
+        tf_scalex.setMax(1000);
+        tf_scaley.setMin(0);
+        tf_scaley.setMax(1000);
+
+        tf_rotate.setMin(0);
+        tf_rotate.setMax(1000);
+
+
+        tf_transx.setOnMouseReleased(event -> {
+            clearNodes();
+            draw3DNodes(MapSingleton.floor);
+        });
+        tf_transy.setOnMouseReleased(event -> {
+            clearNodes();
+            draw3DNodes(MapSingleton.floor);
+        });
+        tf_scalex.setOnMouseReleased(event -> {
+            clearNodes();
+            draw3DNodes(MapSingleton.floor);
+        });
+        tf_scaley.setOnMouseReleased(event -> {
+            clearNodes();
+            draw3DNodes(MapSingleton.floor);
+        });
+        tf_rotate.setOnMouseReleased(event -> {
+            clearNodes();
+            draw3DNodes(MapSingleton.floor);
+        });
+
+
+
+
+
 
         gpaneNodeInfo.setVisible(false);
 
@@ -188,6 +241,9 @@ public class HomeController implements SwitchableController {
             }
         });
         switcher.getScene().setOnKeyReleased(ke -> {
+            clearNodes();
+            draw3DNodes(MapSingleton.floor);
+
             if (!ke.isControlDown()) {
                 gesturePane.setGestureEnabled(true);
                 selectedNodeStart = null;
@@ -838,23 +894,69 @@ public class HomeController implements SwitchableController {
     }
 
     private void draw3DNodes(String newLevel) {
+
+
+        System.out.println("----------------------------------");
+        double transX = tf_transx.getValue();
+        System.out.println("transX = " + transX);
+        double transY = tf_transy.getValue();
+        System.out.println("transY = " + transY);
+        double scaleX = tf_scalex.getValue()  / 1000.f;
+        System.out.println("scaleX = " + scaleX);
+        double scaleY = tf_scaley.getValue()  / 1000.f;
+        System.out.println("scaleY = " + scaleY);
+        double rotateAngle = tf_rotate.getValue() / 1000.f;
+        System.out.println("rotateAngle = " + rotateAngle);
+        System.out.println("----------------------------------");
+
+
+        double a = scaleX * cos(rotateAngle);
+        double b = -scaleY * sin(rotateAngle);
+        double c = transX * scaleX * cos(rotateAngle) - transY * scaleY * sin(rotateAngle);// + transX;
+        double d = scaleX * sin(rotateAngle);
+        double e = scaleY * cos(rotateAngle);
+        double f = transX * scaleX * sin(rotateAngle) + transY * scaleY * cos(rotateAngle);// + transY;
+
+
+
+            /*double a = scaleX * cos(rotateAngle);
+            double b = -scaleY * sin(rotateAngle);
+            double c = transX;// * scaleX * cos(rotateAngle) - transY * scaleY * sin(rotateAngle);
+            double d = scaleX * sin(rotateAngle);
+            double e = scaleY * cos(rotateAngle);
+            double f = transY;*/
+
+
+
+
         nodeCircleHashMap.clear();
         map = MapSingleton.getInstance().getMap();
+        /*
+
         for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))) {
             Line line = new Line();
-            line.setEndX(edge.getNode1().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            line.setEndY(edge.getNode1().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
-            line.setStartX(edge.getNode2().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            line.setStartY(edge.getNode2().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
+            line.setEndX(edge.getNode1().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            line.setEndY(edge.getNode1().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
+            line.setStartX(edge.getNode2().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
+            line.setStartY(edge.getNode2().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
             mapContainer.getChildren().add(line);
         }
+        */
+
+
         for (Node node : map.getNodes(node -> node.getFloor().equals(newLevel))) {
             Circle circle = new Circle(1.5, Color.RED);
-            circle.setCenterX(node.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            circle.setCenterY(node.getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
+            Point2D wireframePosition = new Point2D(a*node.getPosition().getX() + b*node.getPosition().getY() + c,
+                    d * node.getPosition().getX() + e * node.getPosition().getY() + f);
+
+            circle.setCenterX(wireframePosition.getX() * mapContainer.getMaxWidth() / 5000.f);
+            circle.setCenterY(wireframePosition.getY() * mapContainer.getMaxHeight() / 2772.f);
             mapContainer.getChildren().add(circle);
             nodeCircleHashMap.put(node, circle);
         }
+
+        mapContainer.getChildren().add(newNodeCircle);
+        newNodeCircle.setVisible(false);
     }
 
     private void clearNodes() {

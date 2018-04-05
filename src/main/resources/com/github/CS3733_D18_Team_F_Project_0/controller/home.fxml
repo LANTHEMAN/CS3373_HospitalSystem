@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
@@ -20,7 +21,6 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 <?import net.kurobako.gesturefx.GesturePane?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1211.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.HomeController">
@@ -237,30 +237,6 @@
                         <Font size="20.0" />
                     </font>
                 </Text>
-                <VBox fx:id="vbxMenu" alignment="CENTER" prefHeight="665.0" prefWidth="230.0" spacing="40.0" GridPane.rowIndex="1">
-                    <children>
-                        <Button fx:id="btnFindLocation" mnemonicParsing="false" onAction="#onFindLocation" prefHeight="90.0" prefWidth="140.0" text="%FindLocation" textAlignment="CENTER" wrapText="true">
-                            <font>
-                                <Font name="Helvetica Light" size="17.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="DirectionsSwitch" mnemonicParsing="false" onAction="#onGetDirections" prefHeight="90.0" prefWidth="140.0" text="%GetDirections" textAlignment="CENTER" wrapText="true">
-                            <font>
-                                <Font name="Helvetica Light" size="17.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="FloorSwitch" mnemonicParsing="false" onAction="#onSwitchFloor" prefHeight="90.0" prefWidth="140.0" text="%SwitchFloor" textAlignment="CENTER" wrapText="true">
-                            <font>
-                                <Font name="Helvetica Light" size="17.0" />
-                            </font>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#onServiceRequest" prefHeight="90.0" prefWidth="140.0" text="%RequestService" textAlignment="CENTER" wrapText="true">
-                            <font>
-                                <Font name="Helvetica Light" size="17.0" />
-                            </font>
-                        </Button>
-                    </children>
-                </VBox>
                 <VBox fx:id="vbxLocation" prefHeight="200.0" prefWidth="100.0" spacing="10.0" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%DestinationType" />
@@ -354,7 +330,7 @@
                         <ComboBox prefWidth="150.0" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%Details" />
                         <Button mnemonicParsing="false" onAction="#onDirectionsCancel" text="%Cancel" />
-                        <Button mnemonicParsing="false" onAction="#onDrawPath" text="Submit"/>
+                        <Button mnemonicParsing="false" onAction="#onDrawPath" text="Submit" />
                     </children>
                 </VBox>
                 <VBox fx:id="vbxFloor" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" visible="false" GridPane.rowIndex="1">
@@ -382,9 +358,18 @@
                         <Button alignment="CENTER" mnemonicParsing="false" onAction="#onFloorCancel" prefHeight="47.0" prefWidth="89.0" text="%Cancel" />
                     </children>
                 </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+               <children>
+                  <Slider fx:id="tf_transx" />
+                  <Slider fx:id="tf_transy" />
+                  <Slider fx:id="tf_scalex" />
+                  <Slider fx:id="tf_scaley" />
+                  <Slider fx:id="tf_rotate" />
+               </children>
+            </VBox>
             </children>
         </GridPane>
-      <GridPane fx:id="gpaneNodeInfo" maxWidth="250.0" prefHeight="136.0" prefWidth="161.0" style="-fx-background-color: rgba(217, 217, 217, 0.9);">
+      <GridPane fx:id="gpaneNodeInfo" maxWidth="250.0" prefHeight="136.0" prefWidth="161.0" style="-fx-background-color: rgba(217, 217, 217, 0.9);" visible="false">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
