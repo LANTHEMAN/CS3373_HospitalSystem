@@ -1,9 +1,7 @@
 package com.github.CS3733_D18_Team_F_Project_0.graph;
 
+import com.github.CS3733_D18_Team_F_Project_0.Map;
 import javafx.geometry.Point2D;
-
-import java.util.Arrays;
-import java.util.HashSet;
 
 public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
     // keeps track of the number of nodes of this node type
@@ -75,11 +73,32 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
     }
 
     /**
-     * @param numNodeType the number of nodes of this node type
+     * @param map the map that this node will be added to
      * @return this to allow chained builder calls
      */
-    public NewNodeBuilder setNumNodeType(int numNodeType) {
-        this.numNodeType = numNodeType;
+    public NewNodeBuilder setNumNodeType(Map map) {
+        if (nodeType == null) {
+            throw new AssertionError("Set node type before assigning a number");
+        }
+
+        if (nodeType.equals("ELEV")) {
+            throw new AssertionError("You must assign a elevatorChar to an elevator, not a numNodeType");
+        }
+
+        int typeCount = 0;
+        try {
+            typeCount = map.getNodes()
+                    .stream()
+                    .filter(node -> node.getNodeType().equals(nodeType))
+                    .map(node -> node.getNodeID().substring(5, 8))
+                    .map(Integer::parseInt)
+                    .max(Integer::compare)
+                    .get();
+            typeCount++;
+        } catch (Exception e) {
+        }
+
+        this.numNodeType = typeCount;
         return this;
     }
 

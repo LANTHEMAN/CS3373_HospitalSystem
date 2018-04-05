@@ -567,25 +567,11 @@ public class HomeController implements SwitchableController {
                 throw new AssertionError("Invalid floor level stored in Database: " + floor);
         }
 
-        int typeCount = 0;
-        if (!type.equals("ELEV")) {
-            try {
-                typeCount = map.getNodes()
-                        .stream()
-                        .filter(node -> node.getNodeType().equals(type))
-                        .map(node -> node.getNodeID().substring(5, 8))
-                        .map(Integer::parseInt)
-                        .max(Integer::compare)
-                        .get();
-                typeCount++;
-            } catch (Exception e) {
-                typeCount = 0;
-            }
-        }
+
 
         Node newNode = new NewNodeBuilder()
                 .setNodeType(type)
-                .setNumNodeType(typeCount)
+                .setNumNodeType(map)
                 .setFloor(floor)
                 .setBuilding("New Building")    // TODO set building
                 .setShortName(newNode_shortName.getText())
