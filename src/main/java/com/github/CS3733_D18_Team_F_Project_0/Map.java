@@ -22,6 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class Map implements DatabaseItem, Observer {
@@ -35,6 +36,11 @@ public class Map implements DatabaseItem, Observer {
     public Map() {
         graph = new Graph();
         dbHandler = DatabaseSingleton.getInstance().getDbHandler();
+    }
+
+    public Map(DatabaseHandler dbHandler){
+        graph = new Graph();
+        this.dbHandler = dbHandler;
     }
 
     public void createNode(Node node) {
@@ -182,6 +188,30 @@ public class Map implements DatabaseItem, Observer {
 
     public com.github.CS3733_D18_Team_F_Project_0.graph.Path getPath(Node node1, Node node2) {
         return AStar.getPath(graph, node1, node2);
+    }
+
+    //Note: This function gets you the closest node on the specified floor. Don't use this if you don't know what floor you're looking for!
+    public Node findNodeClosestTo(double x1, double y1, String floor){
+        double closestDistance = Double.MAX_VALUE;
+        String closestNodeID = "";
+        for(Node n: getNodes()){
+            if(floor != n.getFloor()){
+                continue;
+            }
+           double x2 = n.getPosition().getX();
+           double y2 = n.getPosition().getY();
+           double distance = Math.sqrt(((x2 - x1) * (x2 - x1)) + (y2 - y1) * (y2 - y1));
+           if(distance < closestDistance){
+               closestDistance = distance;
+               closestNodeID = n.getNodeID();
+           }
+        }
+        for (Node n: getNodes()){
+            if(n.getNodeID().equals(closestNodeID)){
+                return n;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -393,37 +423,14 @@ public class Map implements DatabaseItem, Observer {
                     while (resultSet.next()) {
                         int height;
                         String floor = resultSet.getString(1).substring(8);
-                        switch (floor) {
-                            case "L2":
-                                height = -200;
-                                break;
-                            case "L1":
-                                height = -100;
-                                break;
-                            case "0G":
-                                height = 0;
-                                break;
-                            case "01":
-                                height = 100;
-                                break;
-                            case "02":
-                                height = 200;
-                                break;
-                            case "03":
-                                height = 300;
-                                break;
-                            default:
-                                throw new AssertionError("Invalid flor level stored in Database: " + floor);
-                        }
 
                         // extract data from database
                         String nodeID = resultSet.getString(1);
                         String longName = resultSet.getString(7);
                         String shortName = resultSet.getString(8);
                         String building = resultSet.getString(5);
-                        Point3D position = new Point3D(Double.parseDouble(resultSet.getString(2))
-                                , Double.parseDouble(resultSet.getString(3))
-                                , height);
+                        Point2D position = new Point2D(Double.parseDouble(resultSet.getString(2))
+                                , Double.parseDouble(resultSet.getString(3)));
                         Point2D wireframePosition = new Point2D(Double.parseDouble(resultSet.getString(10))
                                 , Double.parseDouble(resultSet.getString(11)));
 

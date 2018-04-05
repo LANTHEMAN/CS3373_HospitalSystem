@@ -1,8 +1,6 @@
 package com.github.CS3733_D18_Team_F_Project_0.graph;
 
 public class ExistingNodeBuilder extends NodeBuilder<ExistingNodeBuilder> {
-    // the floor of the Node
-    String floor = null;
     // the nodeType of this Node
     String nodeType = null;
     // the database ID of this node
@@ -53,26 +51,11 @@ public class ExistingNodeBuilder extends NodeBuilder<ExistingNodeBuilder> {
             nodeType = "REST";
         }
 
-        if (!(nodeType.equals("HALL")
-                || nodeType.equals("ELEV")
-                || nodeType.equals("REST")
-                || nodeType.equals("STAI")
-                || nodeType.equals("DEPT")
-                || nodeType.equals("LABS")
-                || nodeType.equals("INFO")
-                || nodeType.equals("CONF")
-                || nodeType.equals("EXIT")
-                || nodeType.equals("RETL")
-                || nodeType.equals("SERV"))) {
+        if (!(getNodeTypes().contains(nodeType))) {
             throw new AssertionError("The nodeType of the nodeID was invalid: " + nodeType);
         }
         floor = nodeID.substring(nodeID.length() - 2);
-        if (!(floor.equals("L1")
-                || floor.equals("L2")
-                || floor.equals("0G")
-                || floor.equals("01")
-                || floor.equals("02")
-                || floor.equals("03"))) {
+        if (!(getFloors().contains(floor))) {
             throw new AssertionError("Unknown Floor Number. Must be any of: 0G, 01, 02, 03, L1, L2");
         }
         // set the nodeID last to ensure that it was valid
