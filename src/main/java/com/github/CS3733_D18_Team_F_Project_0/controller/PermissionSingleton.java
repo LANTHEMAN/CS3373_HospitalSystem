@@ -49,7 +49,7 @@ public class PermissionSingleton {
         for (User u : pmanage.users) {
             if (u.uname.equals(uname)) {
                 if (u.getPsword().equals(psword)) {
-                    userPrivilege = getPrivilege(u.type);
+                    userPrivilege = getPrivilege(u.getType());
                     currUser = uname;
                     return true;
                 }
