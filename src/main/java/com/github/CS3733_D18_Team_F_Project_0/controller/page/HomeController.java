@@ -4,6 +4,8 @@ import com.github.CS3733_D18_Team_F_Project_0.ImageCacheSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.Map;
 import com.github.CS3733_D18_Team_F_Project_0.MapSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.controller.*;
+import com.github.CS3733_D18_Team_F_Project_0.gfx.MapDrawable;
+import com.github.CS3733_D18_Team_F_Project_0.gfx.impl.UglyMapDrawer;
 import com.github.CS3733_D18_Team_F_Project_0.graph.*;
 import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
@@ -720,46 +722,13 @@ public class HomeController implements SwitchableController {
     }
 
     private void draw2DNodes(String newLevel) {
-        nodeCircleHashMap.clear();
-        map = MapSingleton.getInstance().getMap();
-        for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))) {
-            Line line = new Line();
-            line.setEndX(edge.getNode1().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            line.setEndY(edge.getNode1().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-            line.setStartX(edge.getNode2().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            line.setStartY(edge.getNode2().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-            mapContainer.getChildren().add(line);
-        }
-        for (Node node : map.getNodes(node -> node.getFloor().equals(newLevel))) {
-            Circle circle = new Circle(1.5, Color.RED);
-            circle.setCenterX(node.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            circle.setCenterY(node.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-            mapContainer.getChildren().add(circle);
-            nodeCircleHashMap.put(node, circle);
-        }
-
-        mapContainer.getChildren().add(newNodeCircle);
-        newNodeCircle.setVisible(false);
+        MapDrawable mapDrawer = new UglyMapDrawer(map);
+        mapDrawer.draw(mapContainer);
     }
 
     private void draw3DNodes(String newLevel) {
-        nodeCircleHashMap.clear();
-        map = MapSingleton.getInstance().getMap();
-        for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))) {
-            Line line = new Line();
-            line.setEndX(edge.getNode1().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            line.setEndY(edge.getNode1().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
-            line.setStartX(edge.getNode2().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            line.setStartY(edge.getNode2().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
-            mapContainer.getChildren().add(line);
-        }
-        for (Node node : map.getNodes(node -> node.getFloor().equals(newLevel))) {
-            Circle circle = new Circle(1.5, Color.RED);
-            circle.setCenterX(node.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            circle.setCenterY(node.getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
-            mapContainer.getChildren().add(circle);
-            nodeCircleHashMap.put(node, circle);
-        }
+        MapDrawable mapDrawer = new UglyMapDrawer(map);
+        mapDrawer.draw(mapContainer);
     }
 
     private void clearNodes() {
