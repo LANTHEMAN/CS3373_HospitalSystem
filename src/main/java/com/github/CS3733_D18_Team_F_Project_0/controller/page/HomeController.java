@@ -359,6 +359,37 @@ public class HomeController implements SwitchableController {
         all.addAll(patientRooms);
         all.addAll(bathrooms);
         cboxAvailableLocations.getItems().addAll(all);
+
+        for(int i = 0; i < 25; i++){
+            for(int j = 0; j < 34; j++){
+                int typeCount = 0;
+                String type = "HALL";
+                    try {
+                        typeCount = map.getNodes()
+                                .stream()
+                                .filter(node -> node.getNodeType().equals(type))
+                                .map(node -> node.getNodeID().substring(5, 8))
+                                .map(Integer::parseInt)
+                                .max(Integer::compare)
+                                .get();
+                        typeCount++;
+                    } catch (Exception e) {
+                        typeCount = 0;
+                    }
+                Node newNode = new NewNodeBuilder()
+                        .setNodeType(type)
+                        .setNumNodeType(typeCount)
+                        .setFloor("02")
+                        .setBuilding("New Building")    // TODO set building
+                        .setShortName("afwif" + i + "" + j)
+                        .setLongName("aiwheifuah" + i + "" + j) // TODO get long name
+                        .setPosition(new Point3D(i * 5000/25, j * 3400/34, 100))
+                        .build();
+                map.createNode(newNode);
+            }
+        }
+
+        reloadMap();
     }
 
 

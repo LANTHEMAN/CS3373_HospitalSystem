@@ -2,6 +2,9 @@ package com.github.CS3733_D18_Team_F_Project_0.graph;
 
 import javafx.geometry.Point2D;
 
+import static java.lang.Math.cos;
+import static java.lang.StrictMath.sin;
+
 public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
     // keeps track of the number of nodes of this node type
     private int numNodeType = -1;
@@ -53,7 +56,7 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
             throw new AssertionError("You must set a position.");
         }
         if (wireframePosition == null) {
-            wireframePosition = new Point2D(1.241*position.getX() - 0.3757*position.getY(), 0.6193*position.getX() + 0.4233*position.getY());
+            wireframePosition = new Point2D(.89*position.getX() - .10 * position.getY() * cos(.5), .34*position.getX()*cos(.5) + .62*position.getY());
         }
 
         if (building == null) {
