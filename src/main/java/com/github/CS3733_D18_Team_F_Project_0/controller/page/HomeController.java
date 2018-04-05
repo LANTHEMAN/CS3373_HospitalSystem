@@ -160,26 +160,9 @@ public class HomeController implements SwitchableController {
 
         gesturePane.zoomTo(2, new Point2D(600, 600));
 
-        newNode_type.getItems().addAll("HALL"
-                , "ELEV" // TODO set elevator query
-                , "REST"
-                , "STAI"
-                , "DEPT"
-                , "LABS"
-                , "INFO"
-                , "CONF"
-                , "EXIT"
-                , "ELEV"
-                , "RETL"
-                , "SERV");
+        newNode_type.getItems().addAll(NodeBuilder.getNodeTypes());
         newNode_type.getSelectionModel().selectFirst();
 
-        // testing area for db sync
-        /*
-        Node rNode = map.getNodes(node -> node.getNodeID().equals("HREST77702")).iterator().next();
-        //map.removeNode(rNode);
-        rNode.setWireframePosition(new Point2D(777,777));
-        */
         reloadMap();
         switcher.getScene().setOnKeyPressed(ke -> {
             if (ke.isControlDown()) {

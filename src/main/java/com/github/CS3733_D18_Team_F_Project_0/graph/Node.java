@@ -142,16 +142,8 @@ public class Node extends Observable {
      * @param nodeType the new node type of this node
      */
     public void setNodeType(String nodeType, int nodeTypeCount) {
-        if (!(nodeType.equals("HALL")
-                || nodeType.equals("REST")
-                || nodeType.equals("STAI")
-                || nodeType.equals("DEPT")
-                || nodeType.equals("LABS")
-                || nodeType.equals("INFO")
-                || nodeType.equals("CONF")
-                || nodeType.equals("EXIT")
-                || nodeType.equals("RETL")
-                || nodeType.equals("SERV"))) {
+        if (!(NodeBuilder.getNodeTypes().contains(nodeType))
+                || nodeType.equals("ELEV")) {
             throw new AssertionError("The nodeType was invalid.");
         }
         if (nodeTypeCount > 999 || nodeTypeCount < 0) {

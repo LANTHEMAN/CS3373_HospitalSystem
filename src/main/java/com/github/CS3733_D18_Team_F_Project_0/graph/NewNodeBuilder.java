@@ -2,6 +2,9 @@ package com.github.CS3733_D18_Team_F_Project_0.graph;
 
 import javafx.geometry.Point2D;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
     // keeps track of the number of nodes of this node type
     private int numNodeType = -1;
@@ -98,17 +101,7 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
      * @return this to allow chained builder calls
      */
     public NewNodeBuilder setNodeType(String nodeType) {
-        if (!(nodeType.equals("HALL")
-                || nodeType.equals("ELEV")
-                || nodeType.equals("REST")
-                || nodeType.equals("STAI")
-                || nodeType.equals("DEPT")
-                || nodeType.equals("LABS")
-                || nodeType.equals("INFO")
-                || nodeType.equals("CONF")
-                || nodeType.equals("EXIT")
-                || nodeType.equals("RETL")
-                || nodeType.equals("SERV"))) {
+        if (!(getNodeTypes().contains(nodeType))) {
             throw new AssertionError("The nodeType was invalid.");
         }
         this.nodeType = nodeType;

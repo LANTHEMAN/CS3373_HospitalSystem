@@ -53,17 +53,7 @@ public class ExistingNodeBuilder extends NodeBuilder<ExistingNodeBuilder> {
             nodeType = "REST";
         }
 
-        if (!(nodeType.equals("HALL")
-                || nodeType.equals("ELEV")
-                || nodeType.equals("REST")
-                || nodeType.equals("STAI")
-                || nodeType.equals("DEPT")
-                || nodeType.equals("LABS")
-                || nodeType.equals("INFO")
-                || nodeType.equals("CONF")
-                || nodeType.equals("EXIT")
-                || nodeType.equals("RETL")
-                || nodeType.equals("SERV"))) {
+        if (!(getNodeTypes().contains(nodeType))) {
             throw new AssertionError("The nodeType of the nodeID was invalid: " + nodeType);
         }
         floor = nodeID.substring(nodeID.length() - 2);

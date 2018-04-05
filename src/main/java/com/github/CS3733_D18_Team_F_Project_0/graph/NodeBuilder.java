@@ -3,6 +3,9 @@ package com.github.CS3733_D18_Team_F_Project_0.graph;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 public abstract class NodeBuilder<T> {
     protected final Class<T> subClass;
 
@@ -17,12 +20,26 @@ public abstract class NodeBuilder<T> {
     //The full name of this node location
     protected String longName = null;
 
-
     protected NodeBuilder(Class<T> subClass) {
         this.subClass = subClass;
     }
 
-    /**n
+    public static HashSet<String> getNodeTypes() {
+        return new HashSet<>(Arrays.asList("HALL"
+                , "ELEV"
+                , "REST"
+                , "STAI"
+                , "DEPT"
+                , "LABS"
+                , "INFO"
+                , "CONF"
+                , "EXIT"
+                , "RETL"
+                , "SERV"));
+
+    }
+
+    /**
      * @param position the position of this node
      * @return this to allow chained builder calls
      */
