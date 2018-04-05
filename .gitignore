@@ -27,10 +27,15 @@ hs_err_pid*
 classes/*
 build/*
 out/*
+database/*
+map/*
 
 derby.log
 *.lock
 *.iml
+
+# used for testing
+temp/*
 
 # keep necessary gradle files
 gradle-app.setting

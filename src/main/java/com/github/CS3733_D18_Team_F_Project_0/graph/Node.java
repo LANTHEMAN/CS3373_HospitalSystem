@@ -3,11 +3,15 @@ package com.github.CS3733_D18_Team_F_Project_0.graph;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 
-public class Node {
+import java.util.Observable;
+
+public class Node extends Observable {
     // the database ID of this node
     private final String nodeID;
     // the name of the floor where this node is located
     private final String floor;
+    // the type of location this node is at
+    private final String nodeType;
     // actual 3d position of node
     private Point3D position;
     // position of the node on the wireframe map
@@ -16,13 +20,13 @@ public class Node {
     private double additionalWeight = 0;
     // the name of the building this node is located in
     private String building;
-    // the type of location this node is at
-    private String nodeType;
     // an abbreviation of the name of this node
     private String shortName;
+    // full name of this node
+    private String longName;
 
     Node(Point3D position, Point2D wireframePosition, double additionalWeight, String nodeID, String floor, String building
-            , String nodeType, String shortName) {
+            , String nodeType, String shortName, String longName) {
         this.position = position;
         this.wireframePosition = wireframePosition;
         this.additionalWeight = additionalWeight;
@@ -31,6 +35,7 @@ public class Node {
         this.building = building;
         this.nodeType = nodeType;
         this.shortName = shortName;
+        this.longName = longName;
     }
 
     /**
@@ -38,6 +43,12 @@ public class Node {
      */
     public String getNodeID() {
         return nodeID;
+    }
+
+    private void setNodeID(String newNodeID) {
+        // deletes this node and creates a new one
+        signalClassChanged(newNodeID);
+        // this node should be 'deleted' now
     }
 
     /**
@@ -87,6 +98,7 @@ public class Node {
      */
     public void setPosition(Point3D position) {
         this.position = position;
+        signalClassChanged();
     }
 
     /**
@@ -101,6 +113,7 @@ public class Node {
      */
     public void setWireframePosition(Point2D wireframePosition) {
         this.wireframePosition = wireframePosition;
+        signalClassChanged();
     }
 
     /**
@@ -115,6 +128,7 @@ public class Node {
      */
     public void setBuilding(String building) {
         this.building = building;
+        signalClassChanged();
     }
 
     /**
@@ -127,9 +141,8 @@ public class Node {
     /**
      * @param nodeType the new node type of this node
      */
-    public void setNodeType(String nodeType) {
+    public void setNodeType(String nodeType, int nodeTypeCount) {
         if (!(nodeType.equals("HALL")
-                || nodeType.equals("ELEV")
                 || nodeType.equals("REST")
                 || nodeType.equals("STAI")
                 || nodeType.equals("DEPT")
@@ -141,7 +154,32 @@ public class Node {
                 || nodeType.equals("SERV"))) {
             throw new AssertionError("The nodeType was invalid.");
         }
-        this.nodeType = nodeType;
+        if (nodeTypeCount > 999 || nodeTypeCount < 0) {
+            throw new AssertionError("The nodeTypeCount was out of bounds.");
+        }
+
+        // notify the change in nodeID
+        String newNodeID = nodeID.substring(0, 1)
+                + nodeType
+                + String.format("%03d", nodeTypeCount)
+                + nodeID.substring(8);
+        setNodeID(newNodeID);
+    }
+
+    public void setNodeType(String nodeType, char elevatorChar) {
+        if (!(nodeType.equals("ELEV"))) {
+            throw new AssertionError("The nodeType was invalid.");
+        }
+        if (!(Character.isLetter(elevatorChar))) {
+            throw new AssertionError("You must assign a valid elevator character!");
+        }
+
+        // notify the change in nodeID
+        String newNodeID = nodeID.substring(0, 1)
+                + nodeType
+                + "00" + elevatorChar
+                + nodeID.substring(8);
+        setNodeID(newNodeID);
     }
 
     /**
@@ -156,5 +194,26 @@ public class Node {
      */
     public void setShortName(String shortName) {
         this.shortName = shortName;
+        signalClassChanged();
     }
+
+    public String getLongName() {
+        return longName;
+    }
+
+    public void setLongName(String longName) {
+        this.longName = longName;
+        signalClassChanged();
+    }
+
+    private void signalClassChanged() {
+        this.setChanged();
+        this.notifyObservers();
+    }
+
+    private void signalClassChanged(Object arg) {
+        this.setChanged();
+        this.notifyObservers(arg);
+    }
+
 }
