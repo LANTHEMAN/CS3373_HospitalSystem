@@ -3,12 +3,13 @@ package com.github.CS3733_D18_Team_F_Project_0.controller;
 public class User {
     String uname;
     private String psword;
-    String type;
+    String privilege;
+    
 
     public User(String uname, String psword, String type) {
         this.uname = uname;
         this.psword = psword;
-        this.type = type;
+        this.privilege = type;
     }
 
     public String getUname() {
@@ -20,7 +21,7 @@ public class User {
     }
 
     public String getType() {
-        return type;
+        return privilege;
     }
 
     public void setUname(String uname) {
@@ -32,6 +33,8 @@ public class User {
     }
 
     public void setType(String type) {
-        this.type = type;
+        this.privilege = type;
     }
+
+
 }
