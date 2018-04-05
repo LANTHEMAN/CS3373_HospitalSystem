@@ -285,10 +285,17 @@ public class HomeController implements SwitchableController {
                     gpaneNodeInfo.setVisible(true);
                 }
 
-                modNode_x.setText(String.valueOf(node.getPosition().getX()));
-                modNode_y.setText(String.valueOf(node.getPosition().getY()));
+                if (MapSingleton.is2D) {
+                    modNode_x.setText(String.valueOf(node.getPosition().getX()));
+                    modNode_y.setText(String.valueOf(node.getPosition().getY()));
+                }else{
+                    modNode_x.setText(String.valueOf(node.getWireframePosition().getX()));
+                    modNode_y.setText(String.valueOf(node.getWireframePosition().getY()));
+                }
+
                 modNode_shortName.setText(node.getShortName());
                 modNode_longName.setText(node.getLongName());
+
                 // TODO implement change building, change type
 
                 modifyNode = node;
@@ -360,7 +367,7 @@ public class HomeController implements SwitchableController {
         all.addAll(bathrooms);
         cboxAvailableLocations.getItems().addAll(all);
 
-        for(int i = 0; i < 25; i++){
+        /*for(int i = 0; i < 25; i++){
             for(int j = 0; j < 34; j++){
                 int typeCount = 0;
                 String type = "HALL";
@@ -387,7 +394,7 @@ public class HomeController implements SwitchableController {
                         .build();
                 map.createNode(newNode);
             }
-        }
+        }*/
 
         reloadMap();
     }

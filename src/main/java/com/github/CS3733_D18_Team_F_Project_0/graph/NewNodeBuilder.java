@@ -56,7 +56,35 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
             throw new AssertionError("You must set a position.");
         }
         if (wireframePosition == null) {
-            wireframePosition = new Point2D(.89*position.getX() - .10 * position.getY() * cos(.5), .34*position.getX()*cos(.5) + .62*position.getY());
+
+            //double transX = 960.0;
+            //double transY = -120.0;
+            //double scaleX = 0.75;
+            //double scaleY = 0.60;
+            //double rotateAngle = 0.4;
+
+            double transX = 1350;
+            double transY = -1050;
+            double scaleX = 1;
+            double scaleY = 1;
+            double rotateAngle = .47;
+
+            double a = scaleX * cos(rotateAngle);
+            double b = -scaleY * sin(rotateAngle);
+            double c = transX * scaleX * cos(rotateAngle) - transY * scaleY * sin(rotateAngle) + transX;
+            double d = scaleX * sin(rotateAngle);
+            double e = scaleY * cos(rotateAngle);
+            double f = transX * scaleX * sin(rotateAngle) + transY * scaleY * cos(rotateAngle) + transY;
+
+            /*double a = scaleX * cos(rotateAngle);
+            double b = -scaleY * sin(rotateAngle);
+            double c = transX;// * scaleX * cos(rotateAngle) - transY * scaleY * sin(rotateAngle);
+            double d = scaleX * sin(rotateAngle);
+            double e = scaleY * cos(rotateAngle);
+            double f = transY;*/
+
+            wireframePosition = new Point2D(a*position.getX() + b*position.getY() + c,
+                    d * position.getX() + e * position.getY() + f);
         }
 
         if (building == null) {
