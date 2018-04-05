@@ -53,8 +53,7 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
             throw new AssertionError("You must set a position.");
         }
         if (wireframePosition == null) {
-            wireframePosition = new Point2D((960.f / 967.f) * position.getX() + (-112.f / 4835.f) * position.getY() + (20238.f / 967.f),
-                    (1444.f / 4835.f) * position.getX() + (19236.f / 24175.f) * position.getY() + (86068.f / 4835.f));
+            wireframePosition = new Point2D(1.241*position.getX() - 0.3757*position.getY(), 0.6193*position.getX() + 0.4233*position.getY());
         }
 
         if (building == null) {
