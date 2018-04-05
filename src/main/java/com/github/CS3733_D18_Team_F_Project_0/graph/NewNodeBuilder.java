@@ -10,8 +10,6 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
     private char elevatorChar;
     // the type of location this node is at
     private String nodeType = null;
-    // the name of the floor where this node is located
-    private String floor = null;
 
     /**
      * A builder class to make entirely new nodes
