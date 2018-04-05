@@ -19,6 +19,8 @@ public class ServiceRequestSingleton implements DatabaseItem {
     private ArrayList<ServiceRequest> listOfRequests = new ArrayList<>();
     private int id = 0;
     private ServiceRequest popUpRequest;
+    private String lastFilter;
+    private String lastSearch;
 
     private ServiceRequestSingleton() {
         // initialize this class with the database
@@ -311,5 +313,23 @@ public class ServiceRequestSingleton implements DatabaseItem {
 
     public ServiceRequest getPopUpRequest() {
         return popUpRequest;
+    }
+
+    public String getLastFilter() {
+        return lastFilter;
+    }
+
+    public void setSearch(String lastFilter, String lastSearch) {
+        this.lastFilter = lastFilter;
+        this.lastSearch = lastSearch;
+    }
+
+    public String getLastSearch() {
+        return lastSearch;
+    }
+
+    public void setSearchNull(){
+        this.lastFilter = null;
+        this.lastSearch = null;
     }
 }
