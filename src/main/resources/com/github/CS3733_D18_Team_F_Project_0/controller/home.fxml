@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXNodesList?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -224,6 +226,24 @@
                     </font>
                 </Text>
                 <Button mnemonicParsing="false" onAction="#onHelpPopup" text="Help" translateX="-80.0" translateY="-30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+               <children>
+                  <JFXHamburger alignment="CENTER_RIGHT">
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </JFXHamburger>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+               <children>
+                  <JFXNodesList>
+                     <HBox.margin>
+                        <Insets right="40.0" />
+                     </HBox.margin>
+                  </JFXNodesList>
+               </children>
+            </HBox>
             </children>
         </GridPane>
         <GridPane fx:id="gpaneNodeInfo" maxWidth="250.0" prefHeight="136.0" prefWidth="161.0" style="-fx-background-color: rgba(217, 217, 217, 0.9);" visible="false">
