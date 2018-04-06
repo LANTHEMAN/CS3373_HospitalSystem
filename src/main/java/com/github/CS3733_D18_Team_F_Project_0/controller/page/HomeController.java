@@ -362,7 +362,7 @@ public class HomeController implements SwitchableController {
     @FXML
     void onDrawPath() {
         if (pathStartNode != null && pathEndNode != null) {
-            Path path = MapSingleton.getInstance().getMap().getPath(pathStartNode, pathEndNode);
+            Path path = map.getPath(pathStartNode, pathEndNode);
             ArrayList<Node> nodes = path.getNodes();
             ArrayList<Edge> edges = path.getEdges();
 

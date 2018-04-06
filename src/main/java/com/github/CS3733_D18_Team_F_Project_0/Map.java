@@ -5,7 +5,6 @@ import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseItem;
 import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.graph.*;
 import javafx.geometry.Point2D;
-import javafx.geometry.Point3D;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
@@ -14,7 +13,6 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,23 +20,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-public class Map implements DatabaseItem, Observer {
+public class Map extends Observable implements DatabaseItem, Observer {
 
     // TODO: draw nodes
     // TODO: add this object to be notified by changes in a node
 
-    DatabaseHandler dbHandler;
-    Graph graph;
+    private DatabaseHandler dbHandler;
+    private Graph graph;
 
     public Map() {
         graph = new Graph();
         dbHandler = DatabaseSingleton.getInstance().getDbHandler();
     }
 
-    public Map(DatabaseHandler dbHandler){
+    public Map(DatabaseHandler dbHandler) {
         graph = new Graph();
         this.dbHandler = dbHandler;
     }
@@ -71,7 +68,8 @@ public class Map implements DatabaseItem, Observer {
             dbHandler.runAction(cmd);
             syncCSVFromDB(dbHandler);
 
-            // TODO reflect the nodes to draw
+            setChanged();
+            notifyObservers();
 
         } catch (AssertionError e) {
             e.printStackTrace();
@@ -99,7 +97,8 @@ public class Map implements DatabaseItem, Observer {
         dbHandler.runAction(cmd);
         syncCSVFromDB(dbHandler);
 
-        // TODO reflect the nodes to draw
+        setChanged();
+        notifyObservers();
     }
 
     // TODO implement
@@ -125,7 +124,8 @@ public class Map implements DatabaseItem, Observer {
         dbHandler.runAction(cmd);
         syncCSVFromDB(dbHandler);
 
-        // TODO reflect the edges to draw
+        setChanged();
+        notifyObservers();
     }
 
     public void removeEdge(Node node1, Node node2) {
@@ -158,7 +158,8 @@ public class Map implements DatabaseItem, Observer {
         dbHandler.runAction(cmd);
         syncCSVFromDB(dbHandler);
 
-        // TODO reflect the edges to draw
+        setChanged();
+        notifyObservers();
     }
 
 
@@ -191,23 +192,23 @@ public class Map implements DatabaseItem, Observer {
     }
 
     //Note: This function gets you the closest node on the specified floor. Don't use this if you don't know what floor you're looking for!
-    public Node findNodeClosestTo(double x1, double y1, String floor){
+    public Node findNodeClosestTo(double x1, double y1, String floor) {
         double closestDistance = Double.MAX_VALUE;
         String closestNodeID = "";
-        for(Node n: getNodes()){
-            if(floor != n.getFloor()){
+        for (Node n : getNodes()) {
+            if (floor != n.getFloor()) {
                 continue;
             }
-           double x2 = n.getPosition().getX();
-           double y2 = n.getPosition().getY();
-           double distance = Math.sqrt(((x2 - x1) * (x2 - x1)) + (y2 - y1) * (y2 - y1));
-           if(distance < closestDistance){
-               closestDistance = distance;
-               closestNodeID = n.getNodeID();
-           }
+            double x2 = n.getPosition().getX();
+            double y2 = n.getPosition().getY();
+            double distance = Math.sqrt(((x2 - x1) * (x2 - x1)) + (y2 - y1) * (y2 - y1));
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestNodeID = n.getNodeID();
+            }
         }
-        for (Node n: getNodes()){
-            if(n.getNodeID().equals(closestNodeID)){
+        for (Node n : getNodes()) {
+            if (n.getNodeID().equals(closestNodeID)) {
                 return n;
             }
         }
@@ -235,6 +236,9 @@ public class Map implements DatabaseItem, Observer {
                     + " WHERE ID='" + node.getNodeID() + "'";
             dbHandler.runAction(cmd);
             syncCSVFromDB(dbHandler);
+
+            setChanged();
+            notifyObservers();
         }
         // if arg == String, the nodeID and all edgeIDs have to be updated in the database
         else {
@@ -271,6 +275,8 @@ public class Map implements DatabaseItem, Observer {
             for (Node neighbor : neighbors) {
                 addEdge(newNode, neighbor);
             }
+            setChanged();
+            notifyObservers();
         }
     }
 
