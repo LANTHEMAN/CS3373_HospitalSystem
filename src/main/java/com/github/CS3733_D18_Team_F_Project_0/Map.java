@@ -38,6 +38,11 @@ public class Map implements DatabaseItem, Observer {
         dbHandler = DatabaseSingleton.getInstance().getDbHandler();
     }
 
+    public Map(DatabaseHandler dbHandler){
+        graph = new Graph();
+        this.dbHandler = dbHandler;
+    }
+
     public void createNode(Node node) {
         try {
             // test that the node does not already exist
@@ -414,37 +419,14 @@ public class Map implements DatabaseItem, Observer {
                     while (resultSet.next()) {
                         int height;
                         String floor = resultSet.getString(1).substring(8);
-                        switch (floor) {
-                            case "L2":
-                                height = -200;
-                                break;
-                            case "L1":
-                                height = -100;
-                                break;
-                            case "0G":
-                                height = 0;
-                                break;
-                            case "01":
-                                height = 100;
-                                break;
-                            case "02":
-                                height = 200;
-                                break;
-                            case "03":
-                                height = 300;
-                                break;
-                            default:
-                                throw new AssertionError("Invalid flor level stored in Database: " + floor);
-                        }
 
                         // extract data from database
                         String nodeID = resultSet.getString(1);
                         String longName = resultSet.getString(7);
                         String shortName = resultSet.getString(8);
                         String building = resultSet.getString(5);
-                        Point3D position = new Point3D(Double.parseDouble(resultSet.getString(2))
-                                , Double.parseDouble(resultSet.getString(3))
-                                , height);
+                        Point2D position = new Point2D(Double.parseDouble(resultSet.getString(2))
+                                , Double.parseDouble(resultSet.getString(3)));
                         Point2D wireframePosition = new Point2D(Double.parseDouble(resultSet.getString(10))
                                 , Double.parseDouble(resultSet.getString(11)));
 

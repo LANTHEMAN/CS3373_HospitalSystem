@@ -1,5 +1,6 @@
 package com.github.CS3733_D18_Team_F_Project_0.graph;
 
+import com.github.CS3733_D18_Team_F_Project_0.Map;
 import javafx.geometry.Point2D;
 
 public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
@@ -9,8 +10,6 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
     private char elevatorChar;
     // the type of location this node is at
     private String nodeType = null;
-    // the name of the floor where this node is located
-    private String floor = null;
 
     /**
      * A builder class to make entirely new nodes
@@ -71,12 +70,40 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
         return new Node(position, wireframePosition, 0, nodeID, floor, building, nodeType, shortName, longName);
     }
 
+    // only for testing node and graph!
+    public NewNodeBuilder forceNumNodeType(int numNodeType){
+        this.numNodeType = numNodeType;
+        return this;
+    }
+
+
     /**
-     * @param numNodeType the number of nodes of this node type
+     * @param map the map that this node will be added to
      * @return this to allow chained builder calls
      */
-    public NewNodeBuilder setNumNodeType(int numNodeType) {
-        this.numNodeType = numNodeType;
+    public NewNodeBuilder setNumNodeType(Map map) {
+        if (nodeType == null) {
+            throw new AssertionError("Set node type before assigning a number");
+        }
+
+        if (nodeType.equals("ELEV")) {
+            throw new AssertionError("You must assign a elevatorChar to an elevator, not a numNodeType");
+        }
+
+        int typeCount = 0;
+        try {
+            typeCount = map.getNodes()
+                    .stream()
+                    .filter(node -> node.getNodeType().equals(nodeType))
+                    .map(node -> node.getNodeID().substring(5, 8))
+                    .map(Integer::parseInt)
+                    .max(Integer::compare)
+                    .get();
+            typeCount++;
+        } catch (Exception e) {
+        }
+
+        this.numNodeType = typeCount;
         return this;
     }
 
@@ -98,17 +125,7 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
      * @return this to allow chained builder calls
      */
     public NewNodeBuilder setNodeType(String nodeType) {
-        if (!(nodeType.equals("HALL")
-                || nodeType.equals("ELEV")
-                || nodeType.equals("REST")
-                || nodeType.equals("STAI")
-                || nodeType.equals("DEPT")
-                || nodeType.equals("LABS")
-                || nodeType.equals("INFO")
-                || nodeType.equals("CONF")
-                || nodeType.equals("EXIT")
-                || nodeType.equals("RETL")
-                || nodeType.equals("SERV"))) {
+        if (!(getNodeTypes().contains(nodeType))) {
             throw new AssertionError("The nodeType was invalid.");
         }
         this.nodeType = nodeType;

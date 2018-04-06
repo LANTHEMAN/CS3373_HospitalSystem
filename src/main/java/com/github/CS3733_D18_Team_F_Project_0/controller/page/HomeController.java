@@ -11,7 +11,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
-import javafx.geometry.Point3D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -160,26 +159,9 @@ public class HomeController implements SwitchableController {
 
         gesturePane.zoomTo(2, new Point2D(600, 600));
 
-        newNode_type.getItems().addAll("HALL"
-                , "ELEV" // TODO set elevator query
-                , "REST"
-                , "STAI"
-                , "DEPT"
-                , "LABS"
-                , "INFO"
-                , "CONF"
-                , "EXIT"
-                , "ELEV"
-                , "RETL"
-                , "SERV");
+        newNode_type.getItems().addAll(NodeBuilder.getNodeTypes());
         newNode_type.getSelectionModel().selectFirst();
 
-        // testing area for db sync
-        /*
-        Node rNode = map.getNodes(node -> node.getNodeID().equals("HREST77702")).iterator().next();
-        //map.removeNode(rNode);
-        rNode.setWireframePosition(new Point2D(777,777));
-        */
         reloadMap();
         switcher.getScene().setOnKeyPressed(ke -> {
             if (ke.isControlDown()) {
@@ -560,54 +542,16 @@ public class HomeController implements SwitchableController {
     void onAddLocationConfirm() {
         String type = newNode_type.getSelectionModel().getSelectedItem();
         // TODO move into NodeBuilder
-        int height;
-        switch (floor) {
-            case "01":
-                height = 100;
-                break;
-            case "02":
-                height = 200;
-                break;
-            case "03":
-                height = 300;
-                break;
-            case "L2":
-                height = -200;
-                break;
-            case "L1":
-                height = -100;
-                break;
-            case "0G":
-                height = 0;
-                break;
-            default:
-                throw new AssertionError("Invalid floor level stored in Database: " + floor);
-        }
 
-        int typeCount = 0;
-        if (!type.equals("ELEV")) {
-            try {
-                typeCount = map.getNodes()
-                        .stream()
-                        .filter(node -> node.getNodeType().equals(type))
-                        .map(node -> node.getNodeID().substring(5, 8))
-                        .map(Integer::parseInt)
-                        .max(Integer::compare)
-                        .get();
-                typeCount++;
-            } catch (Exception e) {
-                typeCount = 0;
-            }
-        }
 
         Node newNode = new NewNodeBuilder()
                 .setNodeType(type)
-                .setNumNodeType(typeCount)
+                .setNumNodeType(map)
                 .setFloor(floor)
                 .setBuilding("New Building")    // TODO set building
                 .setShortName(newNode_shortName.getText())
                 .setLongName(newNode_shortName.getText()) // TODO get long name
-                .setPosition(new Point3D(Double.parseDouble(newNode_x.getText()), Double.parseDouble(newNode_y.getText()), height))
+                .setPosition(new Point2D(Double.parseDouble(newNode_x.getText()), Double.parseDouble(newNode_y.getText())))
                 .build();
         map.createNode(newNode);
 
@@ -632,9 +576,8 @@ public class HomeController implements SwitchableController {
 
     @FXML
     void onNodeModify() {
-        modifyNode.setPosition(new Point3D(Double.parseDouble(modNode_x.getText())
-                , Double.parseDouble(modNode_y.getText())
-                , modifyNode.getPosition().getZ()));
+        modifyNode.setPosition(new Point2D(Double.parseDouble(modNode_x.getText())
+                , Double.parseDouble(modNode_y.getText())));
         modifyNode.setShortName(modNode_shortName.getText());
         modifyNode.setLongName(modNode_longName.getText());
 

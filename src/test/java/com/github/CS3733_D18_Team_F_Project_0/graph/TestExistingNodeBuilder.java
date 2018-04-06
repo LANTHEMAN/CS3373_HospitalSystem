@@ -18,7 +18,7 @@ public class TestExistingNodeBuilder {
         new ExistingNodeBuilder()
                 .setNodeID("FHALL001L2")
                 .setBuilding("Place")
-                .setPosition(new Point3D(0, 0, 0))
+                .setPosition(new Point2D(0, 0))
                 .setShortName("Place in place")
                 .setLongName("cool")
                 .setWireframePosition(new Point2D(0, 0))
@@ -32,7 +32,7 @@ public class TestExistingNodeBuilder {
         new ExistingNodeBuilder()
                 .setNodeID("FHELL001L2")
                 .setBuilding("Place")
-                .setPosition(new Point3D(0, 0, 0))
+                .setPosition(new Point2D(0, 0))
                 .setShortName("Place in place")
                 .setWireframePosition(new Point2D(0, 0))
                 .build();
@@ -43,7 +43,7 @@ public class TestExistingNodeBuilder {
         new ExistingNodeBuilder()
                 .setNodeID("FHALL001QQ")
                 .setBuilding("Place")
-                .setPosition(new Point3D(0, 0, 0))
+                .setPosition(new Point2D(0, 0))
                 .setShortName("Place in place")
                 .setWireframePosition(new Point2D(0, 0))
                 .build();
@@ -54,7 +54,7 @@ public class TestExistingNodeBuilder {
         new ExistingNodeBuilder()
                 .setNodeID("FHALL001L")
                 .setBuilding("Place")
-                .setPosition(new Point3D(0, 0, 0))
+                .setPosition(new Point2D(0, 0))
                 .setShortName("Place in place")
                 .setWireframePosition(new Point2D(0, 0))
                 .build();
@@ -65,7 +65,7 @@ public class TestExistingNodeBuilder {
         new ExistingNodeBuilder()
                 .setNodeID("FHALL001L1")
                 .setBuilding("Place")
-                .setPosition(new Point3D(0, 0, 0))
+                .setPosition(new Point2D(0, 0))
                 .setShortName("Place in place")
                 .build();
     }

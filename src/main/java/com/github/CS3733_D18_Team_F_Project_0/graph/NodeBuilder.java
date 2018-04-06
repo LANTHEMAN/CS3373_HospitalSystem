@@ -3,6 +3,10 @@ package com.github.CS3733_D18_Team_F_Project_0.graph;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.HashSet;
+
 public abstract class NodeBuilder<T> {
     protected final Class<T> subClass;
 
@@ -16,18 +20,41 @@ public abstract class NodeBuilder<T> {
     protected String shortName = null;
     //The full name of this node location
     protected String longName = null;
-
+    // the floor of the Node
+    String floor = null;
 
     protected NodeBuilder(Class<T> subClass) {
         this.subClass = subClass;
     }
 
-    /**n
+    public static HashSet<String> getNodeTypes() {
+        return new HashSet<>(Arrays.asList("HALL"
+                , "ELEV"
+                , "REST"
+                , "STAI"
+                , "DEPT"
+                , "LABS"
+                , "INFO"
+                , "CONF"
+                , "EXIT"
+                , "RETL"
+                , "SERV"));
+
+    }
+
+    public static HashSet<String> getFloors(){
+        return new HashSet<>(Arrays.asList("03", "02", "01", "0G", "L1", "L2"));
+    }
+
+    /**
      * @param position the position of this node
      * @return this to allow chained builder calls
      */
-    public T setPosition(Point3D position) {
-        this.position = position;
+    public T setPosition(Point2D position) {
+        if (floor == null) {
+            throw new AssertionError("You must set the height before you set a position");
+        }
+        this.position = new Point3D(position.getX(), position.getY(), Node.getHeight(floor));
         return subClass.cast(this);
     }
 

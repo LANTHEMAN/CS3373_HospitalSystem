@@ -38,6 +38,33 @@ public class Node extends Observable {
         this.longName = longName;
     }
 
+    public static int getHeight(String floor) {
+        int height;
+        switch (floor) {
+            case "01":
+                height = 100;
+                break;
+            case "02":
+                height = 200;
+                break;
+            case "03":
+                height = 300;
+                break;
+            case "L2":
+                height = -200;
+                break;
+            case "L1":
+                height = -100;
+                break;
+            case "0G":
+                height = 0;
+                break;
+            default:
+                throw new AssertionError("Floor was not set");
+        }
+        return height;
+    }
+
     /**
      * @return the id string of the node
      */
@@ -89,16 +116,20 @@ public class Node extends Observable {
     /**
      * @return the position of this node
      */
-    public Point3D getPosition() {
-        return position;
+    public Point2D getPosition() {
+        return new Point2D(position.getX(), position.getY());
     }
 
     /**
      * @param position the new position of this node
      */
-    public void setPosition(Point3D position) {
-        this.position = position;
+    public void setPosition(Point2D position) {
+        this.position = new Point3D(position.getX(), position.getY(), getHeight());
         signalClassChanged();
+    }
+
+    public int getHeight() {
+        return getHeight(floor);
     }
 
     /**
@@ -142,16 +173,8 @@ public class Node extends Observable {
      * @param nodeType the new node type of this node
      */
     public void setNodeType(String nodeType, int nodeTypeCount) {
-        if (!(nodeType.equals("HALL")
-                || nodeType.equals("REST")
-                || nodeType.equals("STAI")
-                || nodeType.equals("DEPT")
-                || nodeType.equals("LABS")
-                || nodeType.equals("INFO")
-                || nodeType.equals("CONF")
-                || nodeType.equals("EXIT")
-                || nodeType.equals("RETL")
-                || nodeType.equals("SERV"))) {
+        if (!(NodeBuilder.getNodeTypes().contains(nodeType))
+                || nodeType.equals("ELEV")) {
             throw new AssertionError("The nodeType was invalid.");
         }
         if (nodeTypeCount > 999 || nodeTypeCount < 0) {
