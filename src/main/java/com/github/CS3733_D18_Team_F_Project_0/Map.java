@@ -188,9 +188,10 @@ public class Map implements DatabaseItem, Observer {
     //Note: This function gets you the closest node on the specified floor. Don't use this if you don't know what floor you're looking for!
     public Node findNodeClosestTo(double x1, double y1, String floor){
         double closestDistance = Double.MAX_VALUE;
-        String closestNodeID = "";
+
+        Node closestNode = null;
         for(Node n: getNodes()){
-            if(floor != n.getFloor()){
+            if(!floor.equals(n.getFloor())){
                 continue;
             }
            double x2 = n.getPosition().getX();
@@ -198,15 +199,10 @@ public class Map implements DatabaseItem, Observer {
            double distance = Math.sqrt(((x2 - x1) * (x2 - x1)) + (y2 - y1) * (y2 - y1));
            if(distance < closestDistance){
                closestDistance = distance;
-               closestNodeID = n.getNodeID();
+               closestNode = n;
            }
         }
-        for (Node n: getNodes()){
-            if(n.getNodeID().equals(closestNodeID)){
-                return n;
-            }
-        }
-        return null;
+        return closestNode;
     }
 
     @Override
