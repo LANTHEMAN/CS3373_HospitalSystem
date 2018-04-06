@@ -31,7 +31,7 @@ public class CircleNodeDrawer extends NodeDrawable {
 
     @Override
     public void draw(Pane pane) {
-        boolean is2D = MapSingleton.is2D;
+        boolean is2D = MapSingleton.getInstance().getMap().is2D();
         double imageWidth = 5000;
         double imageHeight = is2D ? 3400 : 2772;
         double posX = is2D ? node.getPosition().getX() : node.getWireframePosition().getX();

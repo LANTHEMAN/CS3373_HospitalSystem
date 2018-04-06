@@ -23,11 +23,11 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Map extends Observable implements DatabaseItem, Observer {
-
-    // TODO: save current floor here and not in MapSingleton
-
     private DatabaseHandler dbHandler;
     private Graph graph;
+    private String floor = "02";
+    // TODO change to enumeration
+    private boolean is2D = true;
 
     public Map() {
         graph = new Graph();
@@ -37,6 +37,31 @@ public class Map extends Observable implements DatabaseItem, Observer {
     public Map(DatabaseHandler dbHandler) {
         graph = new Graph();
         this.dbHandler = dbHandler;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        if (!NodeBuilder.getFloors().contains(floor)) {
+            throw new AssertionError("Not a valid floor");
+        }
+        if (!this.floor.equals(floor)) {
+            this.floor = floor;
+            setChanged();
+            notifyObservers();
+        }
+    }
+
+    public boolean is2D() {
+        return is2D;
+    }
+
+    public void setIs2D(boolean is2D) {
+        this.is2D = is2D;
+        setChanged();
+        notifyObservers();
     }
 
     public void createNode(Node node) {
@@ -191,24 +216,34 @@ public class Map extends Observable implements DatabaseItem, Observer {
     }
 
     //Note: This function gets you the closest node on the specified floor. Don't use this if you don't know what floor you're looking for!
-    public Node findNodeClosestTo(double x1, double y1, String floor) {
-        double closestDistance = Double.MAX_VALUE;
+    public Node findNodeClosestTo(double x1, double y1) {
+        return findNodeClosestTo(x1, y1, true);
+    }
 
+    //Note: This function gets you the closest node on the specified floor. Don't use this if you don't know what floor you're looking for!
+    public Node findNodeClosestTo(double x1, double y1, boolean is2D) {
+        double closestDistance = Double.MAX_VALUE;
         Node closestNode = null;
-        for(Node n: getNodes()){
-            if(!floor.equals(n.getFloor())){
+        for (Node n : getNodes()) {
+            if (!floor.equals(n.getFloor())) {
                 continue;
             }
-           double x2 = n.getPosition().getX();
-           double y2 = n.getPosition().getY();
-           double distance = Math.sqrt(((x2 - x1) * (x2 - x1)) + (y2 - y1) * (y2 - y1));
-           if(distance < closestDistance){
-               closestDistance = distance;
-               closestNode = n;
-           }
+            double x2 = n.getPosition().getX();
+            double y2 = n.getPosition().getY();
+            if(!is2D){
+                x2 = n.getWireframePosition().getX();
+                y2 = n.getWireframePosition().getY();
+            }
+            double distance = Math.sqrt(((x2 - x1) * (x2 - x1)) + (y2 - y1) * (y2 - y1));
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestNode = n;
+            }
         }
         return closestNode;
     }
+
+
 
     @Override
     public void update(Observable o, Object arg) {
@@ -216,7 +251,6 @@ public class Map extends Observable implements DatabaseItem, Observer {
             return;
         }
         Node node = (Node) o;
-
 
         // if arg is null the nodeID did not change and just update the node properties
         if (arg == null) {

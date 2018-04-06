@@ -19,7 +19,7 @@ public class LineEdgeDrawer extends EdgeDrawable {
 
     @Override
     public void draw(Pane pane) {
-        boolean is2D = MapSingleton.is2D;
+        boolean is2D = MapSingleton.getInstance().getMap().is2D();
         double imageWidth = 5000;
         double imageHeight = is2D ? 3400 : 2772;
         double posX1 = is2D ? edge.getNode1().getPosition().getX() : edge.getNode1().getWireframePosition().getX();

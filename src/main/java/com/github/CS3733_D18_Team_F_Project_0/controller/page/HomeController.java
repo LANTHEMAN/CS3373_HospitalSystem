@@ -34,9 +34,6 @@ import net.kurobako.gesturefx.GesturePane;
 
 import java.util.*;
 
-import static com.github.CS3733_D18_Team_F_Project_0.MapSingleton.floor;
-
-
 public class HomeController implements SwitchableController {
 
     private static final int MIN_PIXELS = 200;
@@ -155,7 +152,7 @@ public class HomeController implements SwitchableController {
         maps2D = ImageCacheSingleton.maps2D;
         maps3D = ImageCacheSingleton.maps3D;
 
-        if (MapSingleton.is2D) {
+        if (map.is2D()) {
             StringBinding mapDim = switcher.resFac.getStringBinding("3DMap");
             btnMapDimensions.setText(mapDim.get());
         } else {
@@ -184,7 +181,7 @@ public class HomeController implements SwitchableController {
         });
 
         mapContainer.setOnMouseReleased(e -> {
-            if (selectedNodeStart == null || !MapSingleton.is2D) {
+            if (selectedNodeStart == null || !map.is2D()) {
                 return;
             }
 
@@ -196,7 +193,7 @@ public class HomeController implements SwitchableController {
             double map_y = 3400;
             double map3D_x = 5000;
             double map3D_y = 2772;
-            if (!MapSingleton.is2D) {
+            if (!map.is2D()) {
                 map_x = map3D_x;
                 map_y = map3D_y;
             }
@@ -236,10 +233,8 @@ public class HomeController implements SwitchableController {
         mapContainer.setOnMouseClicked(e -> {
             double map_x = 5000;
             double map_y = 3400;
-            double map3D_x = 5000;
             double map3D_y = 2772;
-            if (!MapSingleton.is2D) {
-                map_x = map3D_x;
+            if (!map.is2D()) {
                 map_y = map3D_y;
             }
 
@@ -247,7 +242,7 @@ public class HomeController implements SwitchableController {
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
             HashSet<Node> nodes;
-            if (MapSingleton.is2D) {
+            if (map.is2D()) {
                 nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
                         , node.getPosition().getY()).distance(mapPos) < 8);
             } else {
@@ -255,10 +250,8 @@ public class HomeController implements SwitchableController {
                         , node.getWireframePosition().getY()).distance(mapPos) < 8);
             }
 
-
             if (nodes.size() > 0) {
-                // TODO get closest node
-                Node node = nodes.iterator().next();
+                Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D());
                 mapDrawController.selectNode(node);
                 selectedNodeStart = node;
                 // TODO set modification fields to the appropriate values****
@@ -295,7 +288,7 @@ public class HomeController implements SwitchableController {
 
             // remove a node
             if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 2) {
-                if (!MapSingleton.is2D) {
+                if (!map.is2D()) {
                     return;
                 }
                 if (nodes.size() > 0) {
@@ -307,7 +300,7 @@ public class HomeController implements SwitchableController {
             }
             // create a new node
             if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
-                if (!MapSingleton.is2D) {
+                if (!map.is2D()) {
                     return;
                 }
                 addLocationPopup.setTranslateX(e.getSceneX() - 90);
@@ -366,7 +359,7 @@ public class HomeController implements SwitchableController {
             ArrayList<Node> nodes = path.getNodes();
             ArrayList<Edge> edges = path.getEdges();
 
-            if (MapSingleton.is2D) {
+            if (map.is2D()) {
                 for (Edge edge : edges) {
                     Line line = new Line();
                     line.setEndX(edge.getNode1().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
@@ -517,15 +510,15 @@ public class HomeController implements SwitchableController {
     @FXML
     void onMapDimensions() {
         StringBinding mapDim;
-        if (MapSingleton.is2D) {
+        if (map.is2D()) {
             mapDim = switcher.resFac.getStringBinding("2DMap");
             btnMapDimensions.setText(mapDim.get());
-            MapSingleton.is2D = false;
+            map.setIs2D(false);
             reloadMap();
         } else {
             mapDim = switcher.resFac.getStringBinding("3DMap");
             btnMapDimensions.setText(mapDim.get());
-            MapSingleton.is2D = true;
+            map.setIs2D(true);
             reloadMap();
         }
         // make the map full sized when changed over
@@ -546,7 +539,7 @@ public class HomeController implements SwitchableController {
         Node newNode = new NewNodeBuilder()
                 .setNodeType(type)
                 .setNumNodeType(map)
-                .setFloor(floor)
+                .setFloor(map.getFloor())
                 .setBuilding("New Building")    // TODO set building
                 .setShortName(newNode_shortName.getText())
                 .setLongName(newNode_shortName.getText()) // TODO get long name
@@ -623,22 +616,22 @@ public class HomeController implements SwitchableController {
     @FXML
     void changeFloorMap(ActionEvent e) {
         if (e.getSource().equals(btnLower2Floor)) {
-            floor = "L2";
+            map.setFloor("L2");
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 2");
         } else if (e.getSource().equals(btnLower1Floor)) {
-            floor = "L1";
+            map.setFloor("L1");
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 1");
         } else if (e.getSource().equals(btnGroundFloor)) {
-            floor = "0G";
+            map.setFloor("0G");
             MainTitle.setText("Brigham and Women's Hospital: Ground Floor");
         } else if (e.getSource().equals(btnFirstFloor)) {
-            floor = "01";
+            map.setFloor("01");
             MainTitle.setText("Brigham and Women's Hospital: Level 1");
         } else if (e.getSource().equals(btnSecondFloor)) {
-            floor = "02";
+            map.setFloor("02");
             MainTitle.setText("Brigham and Women's Hospital: Level 2");
         } else if (e.getSource().equals(btnThirdFloor)) {
-            floor = "03";
+            map.setFloor("03");
             MainTitle.setText("Brigham and Women's Hospital: Level 3");
         }
         reloadMap();
@@ -646,21 +639,21 @@ public class HomeController implements SwitchableController {
 
     private void reloadMap() {
         int index;
-        if (floor.equals("L2")) {
+        if (map.getFloor().equals("L2")) {
             index = 0;
-        } else if (floor.equals("L1")) {
+        } else if (map.getFloor().equals("L1")) {
             index = 1;
-        } else if (floor.equals("0G")) {
+        } else if (map.getFloor().equals("0G")) {
             index = 2;
-        } else if (floor.equals("01")) {
+        } else if (map.getFloor().equals("01")) {
             index = 3;
-        } else if (floor.equals("02")) {
+        } else if (map.getFloor().equals("02")) {
             index = 4;
         } else {
             index = 5;
         }
 
-        if (!MapSingleton.is2D) {
+        if (!map.is2D()) {
             ivMap.setImage(maps3D[index]);
 
         } else {
