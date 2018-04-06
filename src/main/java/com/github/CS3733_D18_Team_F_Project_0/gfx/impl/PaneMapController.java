@@ -3,6 +3,7 @@ package com.github.CS3733_D18_Team_F_Project_0.gfx.impl;
 import com.github.CS3733_D18_Team_F_Project_0.Map;
 import com.github.CS3733_D18_Team_F_Project_0.gfx.MapDrawable;
 import com.github.CS3733_D18_Team_F_Project_0.gfx.PaneController;
+import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
 import javafx.scene.layout.Pane;
 
 import java.util.Observable;
@@ -29,6 +30,11 @@ public class PaneMapController extends PaneController implements Observer {
     public void refresh() {
         clear();
         draw();
+    }
+
+    public void selectNode(Node node){
+        mapDrawer.selectNode(node);
+        refresh();
     }
 
 

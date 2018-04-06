@@ -16,4 +16,7 @@ public abstract class NodeDrawable implements Drawable{
     public void update(Node node){
         this.node = node;
     }
+
+    public abstract void selectNode();
+    public abstract void unselectNode();
 }

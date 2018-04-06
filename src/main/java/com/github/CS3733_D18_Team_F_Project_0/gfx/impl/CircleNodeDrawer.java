@@ -9,12 +9,24 @@ import javafx.scene.shape.Circle;
 
 public class CircleNodeDrawer extends NodeDrawable {
 
+    private boolean isSelected = false;
+
     protected CircleNodeDrawer(Node node) {
         super(node);
     }
 
     public CircleNodeDrawer() {
         super();
+    }
+
+    @Override
+    public void selectNode() {
+        isSelected = true;
+    }
+
+    @Override
+    public void unselectNode() {
+        isSelected = false;
     }
 
     @Override
@@ -25,9 +37,18 @@ public class CircleNodeDrawer extends NodeDrawable {
         double posX = is2D ? node.getPosition().getX() : node.getWireframePosition().getX();
         double posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
 
-        Circle circle = new Circle(1, Color.RED);
-        circle.setCenterX(posX * pane.getMaxWidth() / imageWidth);
-        circle.setCenterY(posY * pane.getMaxHeight() / imageHeight);
-        pane.getChildren().add(circle);
+        if(!isSelected){
+            Circle circle = new Circle(1.5, Color.RED);
+            circle.setCenterX(posX * pane.getMaxWidth() / imageWidth);
+            circle.setCenterY(posY * pane.getMaxHeight() / imageHeight);
+            pane.getChildren().add(circle);
+        }
+        else{
+            Circle circle = new Circle(2.2, Color.CORNFLOWERBLUE);
+            circle.setCenterX(posX * pane.getMaxWidth() / imageWidth);
+            circle.setCenterY(posY * pane.getMaxHeight() / imageHeight);
+            pane.getChildren().add(circle);
+        }
+
     }
 }

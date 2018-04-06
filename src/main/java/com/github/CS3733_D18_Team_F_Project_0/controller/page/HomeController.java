@@ -5,6 +5,7 @@ import com.github.CS3733_D18_Team_F_Project_0.Map;
 import com.github.CS3733_D18_Team_F_Project_0.MapSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.controller.*;
 import com.github.CS3733_D18_Team_F_Project_0.gfx.MapDrawable;
+import com.github.CS3733_D18_Team_F_Project_0.gfx.impl.PaneMapController;
 import com.github.CS3733_D18_Team_F_Project_0.gfx.impl.UglyMapDrawer;
 import com.github.CS3733_D18_Team_F_Project_0.graph.*;
 import javafx.beans.binding.StringBinding;
@@ -56,7 +57,6 @@ public class HomeController implements SwitchableController {
     @FXML
     public ComboBox<String> cboxAvailableLocations;
     Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
-    HashMap<Node, Circle> nodeCircleHashMap = new HashMap<>();
     Node selectedNodeStart = null;
     Node pathStartNode = null;
     Node pathEndNode = null;
@@ -136,10 +136,14 @@ public class HomeController implements SwitchableController {
     @FXML
     private TextField modNode_y;
 
+    PaneMapController mapDrawController;
+
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
+        mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
+
         //to make initial admin with secure password
         txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
         if (!PermissionSingleton.getInstance().getCurrUser().equals("Guest")) {
@@ -206,10 +210,8 @@ public class HomeController implements SwitchableController {
 
             if (nodes.size() > 0) {
                 // TODO get closest node
-                clearNodes();
-                reloadMap();
                 Node node = nodes.iterator().next();
-                nodeCircleHashMap.get(node).setFill(Color.BLUE);
+                mapDrawController.selectNode(node);
 
                 if (node == selectedNodeStart) {
                     selectedNodeStart = null;
@@ -225,8 +227,6 @@ public class HomeController implements SwitchableController {
                     map.removeEdge(node, selectedNodeStart);
                 }
                 selectedNodeStart = null;
-                clearNodes();
-                reloadMap();
             } else {
                 selectedNodeStart = null;
             }
@@ -258,10 +258,8 @@ public class HomeController implements SwitchableController {
 
             if (nodes.size() > 0) {
                 // TODO get closest node
-                clearNodes();
-                reloadMap();
                 Node node = nodes.iterator().next();
-                nodeCircleHashMap.get(node).setFill(Color.BLUE);
+                mapDrawController.selectNode(node);
                 selectedNodeStart = node;
                 // TODO set modification fields to the appropriate values****
 
@@ -304,8 +302,6 @@ public class HomeController implements SwitchableController {
                     // TODO get closest node
                     map.removeNode(selectedNodeStart);
                     selectedNodeStart = null;
-                    clearNodes();
-                    reloadMap();
                 }
                 selectedNodeStart = null;
             }
@@ -463,9 +459,6 @@ public class HomeController implements SwitchableController {
         vbxDirections.setVisible(false);
         vbxMenu.setVisible(true);
 
-        clearNodes();
-        reloadMap();
-
         pathEndNode = null;
         pathStartNode = null;
     }
@@ -582,9 +575,6 @@ public class HomeController implements SwitchableController {
                 , Double.parseDouble(modNode_y.getText())));
         modifyNode.setShortName(modNode_shortName.getText());
         modifyNode.setLongName(modNode_longName.getText());
-
-        clearNodes();
-        reloadMap();
     }
 
     // Find Location
@@ -668,12 +658,9 @@ public class HomeController implements SwitchableController {
 
         if (!MapSingleton.is2D) {
             ivMap.setImage(maps3D[index]);
-            clearNodes();
-            draw3DNodes(floor);
+
         } else {
             ivMap.setImage(maps2D[index]);
-            clearNodes();
-            draw2DNodes(floor);
         }
     }
 
@@ -719,20 +706,5 @@ public class HomeController implements SwitchableController {
         return new Point2D(
                 viewport.getMinX() + xProportion * viewport.getWidth(),
                 viewport.getMinY() + yProportion * viewport.getHeight());
-    }
-
-    private void draw2DNodes(String newLevel) {
-        MapDrawable mapDrawer = new UglyMapDrawer(map);
-        mapDrawer.draw(mapContainer);
-    }
-
-    private void draw3DNodes(String newLevel) {
-        MapDrawable mapDrawer = new UglyMapDrawer(map);
-        mapDrawer.draw(mapContainer);
-    }
-
-    private void clearNodes() {
-        mapContainer.getChildren().clear();
-        mapContainer.getChildren().add(ivMap);
     }
 }

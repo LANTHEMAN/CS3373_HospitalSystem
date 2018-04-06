@@ -24,8 +24,7 @@ import java.util.stream.Collectors;
 
 public class Map extends Observable implements DatabaseItem, Observer {
 
-    // TODO: draw nodes
-    // TODO: add this object to be notified by changes in a node
+    // TODO: save current floor here and not in MapSingleton
 
     private DatabaseHandler dbHandler;
     private Graph graph;
@@ -196,7 +195,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
         double closestDistance = Double.MAX_VALUE;
         String closestNodeID = "";
         for (Node n : getNodes()) {
-            if (floor != n.getFloor()) {
+            if (!floor.equals(n.getFloor())) {
                 continue;
             }
             double x2 = n.getPosition().getX();
