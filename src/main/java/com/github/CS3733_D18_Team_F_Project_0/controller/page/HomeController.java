@@ -919,15 +919,15 @@ public class HomeController implements SwitchableController {
         double transY = tf_transy.getValue();
         System.out.println("transY = " + transY);
         double transXp = tf_transxp.getValue() / 1000.f;
-        System.out.println("transXp = " + transXp / 1000.f);
+        System.out.println("transXp = " + transXp);
         double transYp = tf_transyp.getValue() / 1000.f;
-        System.out.println("transYp = " + transYp / 1000.f);
+        System.out.println("transYp = " + transYp);
         double scaleX = tf_scalex.getValue()  / 1000.f;
-        System.out.println("scaleX = " + scaleX / 1000.f);
+        System.out.println("scaleX = " + scaleX);
         double scaleY = tf_scaley.getValue()  / 1000.f;
-        System.out.println("scaleY = " + scaleY / 1000.f);
+        System.out.println("scaleY = " + scaleY);
         double rotateAngle = tf_rotate.getValue() / 1000.f;
-        System.out.println("rotateAngle = " + rotateAngle / 1000.f);
+        System.out.println("rotateAngle = " + rotateAngle);
         System.out.println("----------------------------------");
 
 
