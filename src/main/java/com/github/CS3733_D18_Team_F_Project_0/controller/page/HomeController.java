@@ -145,6 +145,10 @@ public class HomeController implements SwitchableController {
     private Slider tf_scaley;
     @FXML
     private Slider tf_rotate;
+    @FXML
+    private Slider tf_transxp;
+    @FXML
+    private Slider tf_transyp;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -158,10 +162,15 @@ public class HomeController implements SwitchableController {
 
 
 
-        tf_transx.setMin(-1000);
-        tf_transx.setMax(1000);
-        tf_transy.setMin(-1000);
-        tf_transy.setMax(1000);
+        tf_transx.setMin(-3000);
+        tf_transx.setMax(3000);
+        tf_transy.setMin(-3000);
+        tf_transy.setMax(3000);
+
+        tf_transxp.setMin(0);
+        tf_transxp.setMax(4000);
+        tf_transyp.setMin(0);
+        tf_transyp.setMax(4000);
 
         tf_scalex.setMin(0);
         tf_scalex.setMax(1000);
@@ -169,7 +178,7 @@ public class HomeController implements SwitchableController {
         tf_scaley.setMax(1000);
 
         tf_rotate.setMin(0);
-        tf_rotate.setMax(1000);
+        tf_rotate.setMax(700);
 
 
         tf_transx.setOnMouseReleased(event -> {
@@ -177,6 +186,14 @@ public class HomeController implements SwitchableController {
             draw3DNodes(MapSingleton.floor);
         });
         tf_transy.setOnMouseReleased(event -> {
+            clearNodes();
+            draw3DNodes(MapSingleton.floor);
+        });
+        tf_transxp.setOnMouseReleased(event -> {
+            clearNodes();
+            draw3DNodes(MapSingleton.floor);
+        });
+        tf_transyp.setOnMouseReleased(event -> {
             clearNodes();
             draw3DNodes(MapSingleton.floor);
         });
@@ -901,6 +918,10 @@ public class HomeController implements SwitchableController {
         System.out.println("transX = " + transX);
         double transY = tf_transy.getValue();
         System.out.println("transY = " + transY);
+        double transXp = tf_transxp.getValue() / 1000.f;
+        System.out.println("transXp = " + transX);
+        double transYp = tf_transyp.getValue() / 1000.f;
+        System.out.println("transYp = " + transY);
         double scaleX = tf_scalex.getValue()  / 1000.f;
         System.out.println("scaleX = " + scaleX);
         double scaleY = tf_scaley.getValue()  / 1000.f;
@@ -911,20 +932,11 @@ public class HomeController implements SwitchableController {
 
 
         double a = scaleX * cos(rotateAngle);
-        double b = -scaleY * sin(rotateAngle);
-        double c = transX * scaleX * cos(rotateAngle) - transY * scaleY * sin(rotateAngle);// + transX;
-        double d = scaleX * sin(rotateAngle);
+        double b = -scaleY * sin(rotateAngle) * transXp;
+        double c = transX * scaleX * cos(rotateAngle) - transY * scaleY * sin(rotateAngle);
+        double d = scaleX * sin(rotateAngle) * transYp;
         double e = scaleY * cos(rotateAngle);
-        double f = transX * scaleX * sin(rotateAngle) + transY * scaleY * cos(rotateAngle);// + transY;
-
-
-
-            /*double a = scaleX * cos(rotateAngle);
-            double b = -scaleY * sin(rotateAngle);
-            double c = transX;// * scaleX * cos(rotateAngle) - transY * scaleY * sin(rotateAngle);
-            double d = scaleX * sin(rotateAngle);
-            double e = scaleY * cos(rotateAngle);
-            double f = transY;*/
+        double f = transX * scaleX * sin(rotateAngle) + transY * scaleY * cos(rotateAngle);
 
 
 

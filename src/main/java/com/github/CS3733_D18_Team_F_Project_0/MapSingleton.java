@@ -7,7 +7,7 @@ public class MapSingleton {
 
     DatabaseHandler dbHandler;
     Map map;
-    public static String floor = "02";
+    public static String floor = "0G";
     public static boolean is2D = true;
 
     private MapSingleton() {
