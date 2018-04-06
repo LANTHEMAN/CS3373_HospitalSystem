@@ -324,6 +324,8 @@ public class HomeController implements SwitchableController {
             }
         });
 
+        /*
+
 
         cboxDestinationType.getItems().clear();
         cboxDestinationType.getItems().addAll(
@@ -339,6 +341,8 @@ public class HomeController implements SwitchableController {
         all.addAll(patientRooms);
         all.addAll(bathrooms);
         cboxAvailableLocations.getItems().addAll(all);
+
+        */
     }
 
 
