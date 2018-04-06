@@ -3,6 +3,9 @@ package com.github.CS3733_D18_Team_F_Project_0.graph;
 import com.github.CS3733_D18_Team_F_Project_0.Map;
 import javafx.geometry.Point2D;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
     // keeps track of the number of nodes of this node type
     private int numNodeType = -1;
@@ -52,8 +55,23 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
             throw new AssertionError("You must set a position.");
         }
         if (wireframePosition == null) {
-            wireframePosition = new Point2D((960.f / 967.f) * position.getX() + (-112.f / 4835.f) * position.getY() + (20238.f / 967.f),
-                    (1444.f / 4835.f) * position.getX() + (19236.f / 24175.f) * position.getY() + (86068.f / 4835.f));
+            double transX = 1203.7;
+            double transY = 290.0;
+            double transXp = 3.94;
+            double transYp = 2.226;
+            double scaleX = 0.736;
+            double scaleY = 0.545;
+            double rotateAngle = 0.17;
+
+            double a = scaleX * cos(rotateAngle);
+            double b = -scaleY * sin(rotateAngle) * transXp;
+            double c = transX * scaleX * cos(rotateAngle) - transY * scaleY * sin(rotateAngle);
+            double d = scaleX * sin(rotateAngle) * transYp;
+            double e = scaleY * cos(rotateAngle);
+            double f = transX * scaleX * sin(rotateAngle) + transY * scaleY * cos(rotateAngle);
+
+            wireframePosition = new Point2D(a * position.getX() + b * position.getY() + c,
+                    d * position.getX() + e * position.getY() + f);
         }
 
         if (building == null) {
