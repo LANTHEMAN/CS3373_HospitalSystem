@@ -4,8 +4,7 @@ import com.github.CS3733_D18_Team_F_Project_0.ImageCacheSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.Map;
 import com.github.CS3733_D18_Team_F_Project_0.MapSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.controller.*;
-import com.github.CS3733_D18_Team_F_Project_0.gfx.MapDrawable;
-import com.github.CS3733_D18_Team_F_Project_0.gfx.impl.PaneMapController;
+import com.github.CS3733_D18_Team_F_Project_0.gfx.PaneMapController;
 import com.github.CS3733_D18_Team_F_Project_0.gfx.impl.UglyMapDrawer;
 import com.github.CS3733_D18_Team_F_Project_0.graph.*;
 import javafx.beans.binding.StringBinding;
@@ -14,10 +13,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,13 +29,16 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import net.kurobako.gesturefx.GesturePane;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class HomeController implements SwitchableController {
 
     private static final int MIN_PIXELS = 200;
-    public static Image maps2D[];
-    public static Image maps3D[];
+    private static Image maps2D[];
+    private static Image maps3D[];
     private final ObservableList<String> patientRooms = FXCollections.observableArrayList(
             "Patient Room 1",
             "Patient Room 2",
@@ -47,18 +47,15 @@ public class HomeController implements SwitchableController {
             "Bathroom 1",
             "Bathroom 2");
     private final ObservableList<String> all = FXCollections.observableArrayList();
-    @FXML
-    public Button DirectionsSwitch;
-    @FXML
-    public ComboBox<String> cboxDestinationType;
-    @FXML
-    public ComboBox<String> cboxAvailableLocations;
-    Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
-    Node selectedNodeStart = null;
-    Node pathStartNode = null;
-    Node pathEndNode = null;
-    Node modifyNode = null;
-    boolean ctrlHeld = false;
+
+
+    private PaneMapController mapDrawController;
+    private Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
+    private Node selectedNodeStart = null;
+    private Node pathStartNode = null;
+    private Node pathEndNode = null;
+    private Node modifyNode = null;
+    private boolean ctrlHeld = false;
     private PaneSwitcher switcher;
     private Map map;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
@@ -67,19 +64,14 @@ public class HomeController implements SwitchableController {
     @FXML
     private Pane mapContainer;
     @FXML
-    private ScrollPane scrollMap;
-    @FXML
     private Text MainTitle;
     @FXML
-    private VBox vbxMenu;
-    @FXML
-    private VBox vbxLocation;
-    @FXML
-    private VBox vbxDirections;
-    @FXML
-    private VBox vbxFloor;
-    @FXML
     private VBox addLocationPopup;
+
+
+    /**
+     * New node window
+     */
     @FXML
     private TextField newNode_x;
     @FXML
@@ -87,36 +79,21 @@ public class HomeController implements SwitchableController {
     @FXML
     private TextField newNode_shortName;
     @FXML
-    private ComboBox<String> newNode_type;
+    private ComboBox<String> newNode_type = new ComboBox<>(FXCollections.observableArrayList(NodeBuilder.getNodeTypes()));
+
+
     @FXML
     private VBox findLocationPopup;
     @FXML
-    private Circle locationCircle;
-    @FXML
     private Text txtFindLocation;
     @FXML
-    private Button btnLocationDirections;
-    @FXML
     private GesturePane gesturePane;
-    @FXML
-    private Button btnLower2Floor;
-    @FXML
-    private Button btnLower1Floor;
-    @FXML
-    private Button btnGroundFloor;
-    @FXML
-    private Button btnFirstFloor;
-    @FXML
-    private Button btnSecondFloor;
-    @FXML
-    private Button btnThirdFloor;
     @FXML
     private Text txtUser;
     @FXML
     private Button btnMapDimensions;
     @FXML
     private Button loginPopup;
-
     // the modify Node information panel on the left
     @FXML
     private GridPane gpaneNodeInfo;
@@ -125,21 +102,18 @@ public class HomeController implements SwitchableController {
     @FXML
     private TextField modNode_longName;
     @FXML
-    private ComboBox modNode_type;
-    @FXML
-    private ComboBox modNode_building;
-    @FXML
     private TextField modNode_x;
     @FXML
     private TextField modNode_y;
-
-    PaneMapController mapDrawController;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
         mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
+
+        mapDrawController.showPath(map.getPath
+                (map.findNodeClosestTo(0, 0), map.findNodeClosestTo(10000, 0)));
 
         //to make initial admin with secure password
         txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
@@ -191,10 +165,8 @@ public class HomeController implements SwitchableController {
 
             double map_x = 5000;
             double map_y = 3400;
-            double map3D_x = 5000;
             double map3D_y = 2772;
             if (!map.is2D()) {
-                map_x = map3D_x;
                 map_y = map3D_y;
             }
 
@@ -254,7 +226,6 @@ public class HomeController implements SwitchableController {
                 Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D());
                 mapDrawController.selectNode(node);
                 selectedNodeStart = node;
-                // TODO set modification fields to the appropriate values****
 
                 if (PermissionSingleton.getInstance().isAdmin()) {
                     gpaneNodeInfo.setVisible(true);
@@ -267,15 +238,6 @@ public class HomeController implements SwitchableController {
                 // TODO implement change building, change type
 
                 modifyNode = node;
-
-
-                if (vbxDirections.isVisible()) {
-                    if (pathStartNode == null) {
-                        pathStartNode = selectedNodeStart;
-                    } else if (selectedNodeStart != pathStartNode) {
-                        pathEndNode = selectedNodeStart;
-                    }
-                }
 
             } else {
                 selectedNodeStart = null;
@@ -316,26 +278,6 @@ public class HomeController implements SwitchableController {
                 selectedNodeStart = null;
             }
         });
-
-        /*
-
-
-        cboxDestinationType.getItems().clear();
-        cboxDestinationType.getItems().addAll(
-                "All",
-                "Patient Room",
-                "Bathroom",
-                "ATM",
-                "Emergrency Services");
-        cboxDestinationType.getSelectionModel().selectFirst(); // or ".select("All");
-
-        //cboxAvailableLocations.getItems().addAll(patientRooms, bathrooms);
-
-        all.addAll(patientRooms);
-        all.addAll(bathrooms);
-        cboxAvailableLocations.getItems().addAll(all);
-
-        */
     }
 
 
@@ -431,48 +373,6 @@ public class HomeController implements SwitchableController {
     }
 
 
-    // Menus on right
-
-    @FXML
-    void onFindLocation() {
-        vbxMenu.setVisible(false);
-        vbxLocation.setVisible(true);
-    }
-
-    @FXML
-    void onLocationCancel() {
-        vbxLocation.setVisible(false);
-        vbxMenu.setVisible(true);
-    }
-
-    @FXML
-    void onGetDirections() {
-        vbxMenu.setVisible(false);
-        vbxDirections.setVisible(true);
-    }
-
-    @FXML
-    void onDirectionsCancel() {
-        vbxDirections.setVisible(false);
-        vbxMenu.setVisible(true);
-
-        pathEndNode = null;
-        pathStartNode = null;
-    }
-
-    @FXML
-    void onSwitchFloor() {
-        vbxMenu.setVisible(false);
-        vbxFloor.setVisible(true);
-    }
-
-    @FXML
-    void onFloorCancel() {
-        vbxFloor.setVisible(false);
-        vbxMenu.setVisible(true);
-    }
-
-
     // Language
 
     @FXML
@@ -521,10 +421,6 @@ public class HomeController implements SwitchableController {
             map.setIs2D(true);
             reloadMap();
         }
-        // make the map full sized when changed over
-        double width = ivMap.getImage().getWidth();
-        double height = ivMap.getImage().getHeight();
-        reset(ivMap, width, height);
     }
 
 
@@ -577,6 +473,7 @@ public class HomeController implements SwitchableController {
     // Find Location
     @FXML
     void onDestinationType() {
+        /*
         // create an object with a translation string and a database string name/id?
         if (cboxDestinationType.getSelectionModel().getSelectedItem().equals("Patient Room")) {
             cboxAvailableLocations.setItems(patientRooms);
@@ -586,10 +483,12 @@ public class HomeController implements SwitchableController {
             // default to displaying all types?
             cboxAvailableLocations.setItems(all);
         }
+        */
     }
 
     @FXML
     void onAvailableLocations() {
+        /*
         // TODO get the actual x, y, and name
         // need that database package object as above^
         // get id from object, get x and y from database
@@ -600,21 +499,25 @@ public class HomeController implements SwitchableController {
         findLocationPopup.setTranslateY(100);
         txtFindLocation.setText("" + cboxAvailableLocations.getSelectionModel().getSelectedItem());
         findLocationPopup.setVisible(true);
+        */
     }
 
     @FXML
     void onLocationDirections() {
+        /*
         // hide location selection
         findLocationPopup.setVisible(false);
         vbxLocation.setVisible(false);
         // find directions with this location
         // TODO need to set field of txtfield first!!!!! (like putting in register before pass)
         onGetDirections();
+        */
     }
 
 
     @FXML
     void changeFloorMap(ActionEvent e) {
+        /*
         if (e.getSource().equals(btnLower2Floor)) {
             map.setFloor("L2");
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 2");
@@ -635,6 +538,7 @@ public class HomeController implements SwitchableController {
             MainTitle.setText("Brigham and Women's Hospital: Level 3");
         }
         reloadMap();
+        */
     }
 
     private void reloadMap() {
@@ -659,49 +563,6 @@ public class HomeController implements SwitchableController {
         } else {
             ivMap.setImage(maps2D[index]);
         }
-    }
 
-    // Image movement helper functions
-
-    // reset to the top left:
-    private void reset(ImageView imageView, double width, double height) {
-        imageView.setViewport(new Rectangle2D(0, 0, width, height));
-    }
-
-    // shift the viewport of the imageView by the specified delta, clamping so
-    // the viewport does not move off the actual image:
-    private void shift(ImageView imageView, Point2D delta) {
-        Rectangle2D viewport = imageView.getViewport();
-
-        double width = imageView.getImage().getWidth();
-        double height = imageView.getImage().getHeight();
-
-        double maxX = width - viewport.getWidth();
-        double maxY = height - viewport.getHeight();
-
-        double minX = clamp(viewport.getMinX() - delta.getX(), 0, maxX);
-        double minY = clamp(viewport.getMinY() - delta.getY(), 0, maxY);
-
-        imageView.setViewport(new Rectangle2D(minX, minY, viewport.getWidth(), viewport.getHeight()));
-    }
-
-    private double clamp(double value, double min, double max) {
-
-        if (value < min)
-            return min;
-        if (value > max)
-            return max;
-        return value;
-    }
-
-    // convert mouse coordinates in the imageView to coordinates in the actual image:
-    private Point2D imageViewToImage(ImageView imageView, Point2D imageViewCoordinates) {
-        double xProportion = imageViewCoordinates.getX() / imageView.getBoundsInLocal().getWidth();
-        double yProportion = imageViewCoordinates.getY() / imageView.getBoundsInLocal().getHeight();
-
-        Rectangle2D viewport = imageView.getViewport();
-        return new Point2D(
-                viewport.getMinX() + xProportion * viewport.getWidth(),
-                viewport.getMinY() + yProportion * viewport.getHeight());
     }
 }

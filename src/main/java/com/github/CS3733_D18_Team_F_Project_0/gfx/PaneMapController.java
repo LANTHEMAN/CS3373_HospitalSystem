@@ -1,9 +1,10 @@
-package com.github.CS3733_D18_Team_F_Project_0.gfx.impl;
+package com.github.CS3733_D18_Team_F_Project_0.gfx;
 
 import com.github.CS3733_D18_Team_F_Project_0.Map;
 import com.github.CS3733_D18_Team_F_Project_0.gfx.MapDrawable;
 import com.github.CS3733_D18_Team_F_Project_0.gfx.PaneController;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
+import com.github.CS3733_D18_Team_F_Project_0.graph.Path;
 import javafx.scene.layout.Pane;
 
 import java.util.Observable;
@@ -37,6 +38,14 @@ public class PaneMapController extends PaneController implements Observer {
         refresh();
     }
 
+    public void showPath(Path path){
+        mapDrawer.showPath(path);
+        refresh();
+    }
+    public void unshowPath(){
+        mapDrawer.unshowPath();
+        refresh();
+    }
 
     @Override
     public void update(Observable o, Object arg) {

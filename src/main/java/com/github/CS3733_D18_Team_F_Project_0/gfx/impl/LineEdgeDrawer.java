@@ -5,9 +5,12 @@ import com.github.CS3733_D18_Team_F_Project_0.gfx.EdgeDrawable;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Edge;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 
 public class LineEdgeDrawer extends EdgeDrawable {
+
+    Paint color = Color.SILVER;
 
     public LineEdgeDrawer(Edge edge) {
         super(edge);
@@ -15,6 +18,10 @@ public class LineEdgeDrawer extends EdgeDrawable {
 
     public LineEdgeDrawer() {
         super();
+    }
+    public LineEdgeDrawer(Paint color) {
+        super();
+        this.color = color;
     }
 
     @Override
@@ -32,7 +39,7 @@ public class LineEdgeDrawer extends EdgeDrawable {
         line.setStartY(posY1 * pane.getMaxHeight() / imageHeight);
         line.setEndX(posX2 * pane.getMaxWidth() / imageWidth);
         line.setEndY(posY2 * pane.getMaxHeight() / imageHeight);
-        line.setFill(Color.BLUE);
+        line.setStroke(color);
         pane.getChildren().add(line);
     }
 }
