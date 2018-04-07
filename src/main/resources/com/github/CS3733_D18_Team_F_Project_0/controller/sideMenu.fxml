@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="569.0" prefWidth="297.0" spacing="40.0" style="-fx-background-color: #5264ae;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.SideMenuController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="705.0" prefWidth="297.0" spacing="40.0" style="-fx-background-color: #5264ae;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.SideMenuController">
    <children>
-      <JFXButton alignment="CENTER" buttonType="RAISED" prefHeight="100.0" prefWidth="200.0" ripplerFill="#11119d" style="-fx-background-color: WHITE;" text="Get Directions" />
-      <JFXButton alignment="CENTER" buttonType="RAISED" prefHeight="100.0" prefWidth="200.0" ripplerFill="#11119d" style="-fx-background-color: WHITE;" text="Find Location" />
-      <JFXButton alignment="CENTER" buttonType="RAISED" prefHeight="100.0" prefWidth="200.0" ripplerFill="#11119d" style="-fx-background-color: WHITE;" text="Something Else" />
+      <ImageView fitHeight="246.0" fitWidth="301.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../../../../../../../../Downloads/header-background.jpg" />
+         </image>
+      </ImageView>
+      <JFXButton accessibleText="Get_Directions" alignment="CENTER" buttonType="RAISED" prefHeight="100.0" prefWidth="200.0" ripplerFill="#11119d" style="-fx-background-color: WHITE;" text="Get Directions" />
+      <JFXButton accessibleText="Find_Location" alignment="CENTER" buttonType="RAISED" prefHeight="100.0" prefWidth="200.0" ripplerFill="#11119d" style="-fx-background-color: WHITE;" text="Find Location" />
+      <JFXButton accessibleText="Service_Request" alignment="CENTER" buttonType="RAISED" prefHeight="100.0" prefWidth="200.0" ripplerFill="#11119d" style="-fx-background-color: WHITE;" text="Service Request">
+         <VBox.margin>
+            <Insets bottom="40.0" />
+         </VBox.margin></JFXButton>
    </children>
 </VBox>

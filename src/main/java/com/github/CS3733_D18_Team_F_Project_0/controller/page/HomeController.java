@@ -12,6 +12,7 @@ import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -359,6 +360,25 @@ public class HomeController implements SwitchableController {
         try {
             VBox box = FXMLLoader.load(getClass().getResource("../sideMenu.fxml"));
             drawer.setSidePane(box);
+            drawer.setOverLayVisible(false);
+
+            for(javafx.scene.Node node : box.getChildren()){
+                if(node.getAccessibleText() != null){
+                    node.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+                        switch (node.getAccessibleText()){
+                            case "Get_Directions":
+                                onGetDirections();
+                                break;
+                            case "Find_Location":
+                                onFindLocation();
+                                break;
+                            case "Service_Request":
+                                onServiceRequest();
+                                break;
+                        }
+                    });
+                }
+            }
 
             HamburgerBackArrowBasicTransition arrowBasicTransition = new HamburgerBackArrowBasicTransition(hamburger);
             arrowBasicTransition.setRate(-1);
@@ -366,11 +386,13 @@ public class HomeController implements SwitchableController {
                 arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
                 arrowBasicTransition.play();
 
+
                 if (drawer.isShown()) {
                     drawer.close();
                 } else {
                     drawer.open();
                 }
+
             });
         }catch(IOException e){
             e.printStackTrace();

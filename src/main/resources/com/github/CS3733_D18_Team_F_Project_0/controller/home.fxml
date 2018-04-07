@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
+<?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXNodesList?>
 <?import javafx.geometry.Insets?>
@@ -11,6 +12,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -24,7 +26,8 @@
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.HomeController">
     <columnConstraints>
-        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="1216.0" />
+      <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="256.0" />
+      <ColumnConstraints />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
@@ -34,7 +37,7 @@
     <children>
 
 
-        <GridPane fx:id="leftGPane" prefHeight="687.0" prefWidth="811.0">
+        <GridPane fx:id="leftGPane" prefHeight="687.0" prefWidth="811.0" GridPane.columnSpan="2">
             <columnConstraints>
                 <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
@@ -226,15 +229,7 @@
                     </font>
                 </Text>
                 <Button mnemonicParsing="false" onAction="#onHelpPopup" text="Help" translateX="-80.0" translateY="-30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
-            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-               <children>
-                  <JFXHamburger alignment="CENTER_RIGHT">
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                  </JFXHamburger>
-               </children>
-            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                <children>
                   <JFXNodesList>
@@ -246,7 +241,7 @@
             </HBox>
             </children>
         </GridPane>
-        <GridPane fx:id="gpaneNodeInfo" maxWidth="250.0" prefHeight="136.0" prefWidth="161.0" style="-fx-background-color: rgba(217, 217, 217, 0.9);" visible="false">
+        <GridPane fx:id="gpaneNodeInfo" maxWidth="250.0" prefHeight="136.0" prefWidth="161.0" style="-fx-background-color: rgba(217, 217, 217, 0.9);" visible="false" GridPane.columnSpan="2">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -279,5 +274,11 @@
                 <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onModificationCancel" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
             </children>
         </GridPane>
+      <AnchorPane prefHeight="720.0" prefWidth="1176.0">
+         <children>
+            <JFXDrawer fx:id="drawer" defaultDrawerSize="400.0" disable="true" layoutX="-1.0" layoutY="70.0" overLayVisible="false" prefHeight="650.0" prefWidth="298.0" />
+            <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="70.0" />
+         </children>
+      </AnchorPane>
     </children>
 </GridPane>
