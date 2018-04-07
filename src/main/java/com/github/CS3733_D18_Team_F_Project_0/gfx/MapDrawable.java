@@ -25,4 +25,12 @@ public abstract class MapDrawable implements Drawable {
     public abstract void showPath(Path path);
 
     public abstract void unshowPath();
+
+    public abstract void showNodes();
+
+    public abstract void unshowNodes();
+
+    public abstract void showEdges();
+
+    public abstract void unshowEdges();
 }

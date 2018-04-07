@@ -128,6 +128,11 @@ public class HomeController implements SwitchableController {
         newNode_type.getItems().addAll(NodeBuilder.getNodeTypes());
         newNode_type.getSelectionModel().selectFirst();
 
+        if(PermissionSingleton.getInstance().isAdmin()){
+            mapDrawController.showNodes();
+            mapDrawController.showEdges();
+        }
+
 
         // react to key presses and mouse clicks
         switcher.getScene().setOnKeyPressed(ke -> {

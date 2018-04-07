@@ -16,6 +16,8 @@ public class UglyMapDrawer extends MapDrawable {
 
     private Point2D selectedNodePos = null;
     private Path path = null;
+    private boolean showNodes = false;
+    private boolean showEdges = false;
 
     private EdgeDrawable edgeDrawer = new LineEdgeDrawer();
     private NodeDrawable nodeDrawer = new CircleNodeDrawer();
@@ -50,15 +52,37 @@ public class UglyMapDrawer extends MapDrawable {
     }
 
     @Override
+    public void showNodes() {
+        showNodes = true;
+    }
+
+    @Override
+    public void unshowNodes() {
+        showNodes = false;
+    }
+
+    @Override
+    public void showEdges() {
+        showEdges = true;
+    }
+
+    @Override
+    public void unshowEdges() {
+        showEdges = false;
+    }
+
+    @Override
     public void draw(Pane pane) {
         Node selectedNode = null;
         if (selectedNodePos != null) {
             selectedNode = map.findNodeClosestTo(selectedNodePos.getX(), selectedNodePos.getY(), true);
         }
 
-        for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(map.getFloor()))) {
-            edgeDrawer.update(edge);
-            edgeDrawer.draw(pane);
+        if (showEdges) {
+            for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(map.getFloor()))) {
+                edgeDrawer.update(edge);
+                edgeDrawer.draw(pane);
+            }
         }
 
         if (path != null) {
@@ -66,18 +90,20 @@ public class UglyMapDrawer extends MapDrawable {
             pathDrawer.draw(pane);
         }
 
-
-        for (Node node : map.getNodes(node -> node.getFloor().equals(map.getFloor()))) {
-            nodeDrawer.update(node);
-
-            if (selectedNode == node) {
-                nodeDrawer.selectNode();
+        if (showNodes) {
+            for (Node node : map.getNodes(node -> node.getFloor().equals(map.getFloor()))) {
+                nodeDrawer.update(node);
+                if (selectedNode == node) {
+                    continue;
+                }
+                nodeDrawer.draw(pane);
             }
-
+        }
+        if (selectedNode != null) {
+            nodeDrawer.update(selectedNode);
+            nodeDrawer.selectNode();
             nodeDrawer.draw(pane);
-
             nodeDrawer.unselectNode();
         }
-
     }
 }

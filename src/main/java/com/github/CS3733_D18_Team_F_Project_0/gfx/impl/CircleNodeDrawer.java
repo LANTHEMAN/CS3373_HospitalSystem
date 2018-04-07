@@ -38,13 +38,13 @@ public class CircleNodeDrawer extends NodeDrawable {
         double posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
 
         if(!isSelected){
-            Circle circle = new Circle(1.5, Color.RED);
+            Circle circle = new Circle(1, Color.BLUE);
             circle.setCenterX(posX * pane.getMaxWidth() / imageWidth);
             circle.setCenterY(posY * pane.getMaxHeight() / imageHeight);
             pane.getChildren().add(circle);
         }
         else{
-            Circle circle = new Circle(2.2, Color.CORNFLOWERBLUE);
+            Circle circle = new Circle(1.4, Color.CORNFLOWERBLUE);
             circle.setCenterX(posX * pane.getMaxWidth() / imageWidth);
             circle.setCenterY(posY * pane.getMaxHeight() / imageHeight);
             pane.getChildren().add(circle);

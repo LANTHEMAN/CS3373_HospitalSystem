@@ -47,6 +47,26 @@ public class PaneMapController extends PaneController implements Observer {
         refresh();
     }
 
+    public void showNodes() {
+        mapDrawer.showNodes();
+        refresh();
+    }
+
+    public void showEdges() {
+        mapDrawer.showEdges();
+        refresh();
+    }
+
+    public void unshowEdges() {
+        mapDrawer.unshowEdges();
+        refresh();
+    }
+
+    public void unshowNodes() {
+        mapDrawer.unshowNodes();
+        refresh();
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         refresh();

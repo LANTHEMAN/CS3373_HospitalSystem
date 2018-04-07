@@ -10,7 +10,7 @@ import javafx.scene.shape.Line;
 
 public class LineEdgeDrawer extends EdgeDrawable {
 
-    Paint color = Color.SILVER;
+    private Paint color = Color.BLACK;
 
     public LineEdgeDrawer(Edge edge) {
         super(edge);
