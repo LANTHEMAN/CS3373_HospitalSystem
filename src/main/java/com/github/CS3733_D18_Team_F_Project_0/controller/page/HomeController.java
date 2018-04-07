@@ -160,25 +160,33 @@ public class HomeController implements SwitchableController {
             loginPopup.setText("Logout");
         }
 
-
-
         tf_transx.setMin(-3000);
         tf_transx.setMax(3000);
+        tf_transx.setValue(1065.8);
+
         tf_transy.setMin(-3000);
         tf_transy.setMax(3000);
+        tf_scaley.setValue(340);
 
         tf_transxp.setMin(0);
-        tf_transxp.setMax(4000);
+        tf_transxp.setMax(7000);
+        tf_transxp.setValue(4000);
+
         tf_transyp.setMin(0);
         tf_transyp.setMax(4000);
+        tf_transyp.setValue(2540);
 
         tf_scalex.setMin(0);
         tf_scalex.setMax(1000);
+        tf_scalex.setValue(740);
+
         tf_scaley.setMin(0);
         tf_scaley.setMax(1000);
+        tf_scaley.setValue(525);
 
         tf_rotate.setMin(0);
         tf_rotate.setMax(700);
+        tf_rotate.setValue(144.0);
 
 
         tf_transx.setOnMouseReleased(event -> {
