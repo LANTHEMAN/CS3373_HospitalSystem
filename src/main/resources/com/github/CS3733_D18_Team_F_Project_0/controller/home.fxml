@@ -276,7 +276,7 @@
         </GridPane>
       <AnchorPane prefHeight="720.0" prefWidth="1176.0">
          <children>
-            <JFXDrawer fx:id="drawer" defaultDrawerSize="400.0" disable="true" layoutX="-1.0" layoutY="70.0" overLayVisible="false" prefHeight="650.0" prefWidth="298.0" />
+            <JFXDrawer fx:id="drawer" defaultDrawerSize="400.0" disable="true" layoutX="-1.0" layoutY="54.0" overLayVisible="false" prefHeight="666.0" prefWidth="298.0" />
             <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="70.0" />
          </children>
       </AnchorPane>

@@ -15,7 +15,7 @@
       </ImageView>
       <JFXButton accessibleText="Get_Directions" alignment="CENTER" buttonType="RAISED" prefHeight="100.0" prefWidth="200.0" ripplerFill="#11119d" style="-fx-background-color: WHITE;" text="Get Directions" />
       <JFXButton accessibleText="Find_Location" alignment="CENTER" buttonType="RAISED" prefHeight="100.0" prefWidth="200.0" ripplerFill="#11119d" style="-fx-background-color: WHITE;" text="Find Location" />
-      <JFXButton accessibleText="Service_Request" alignment="CENTER" buttonType="RAISED" prefHeight="100.0" prefWidth="200.0" ripplerFill="#11119d" style="-fx-background-color: WHITE;" text="Service Request">
+      <JFXButton accessibleText="Service_Request" alignment="CENTER" buttonType="RAISED" onAction="#onServiceRequest" prefHeight="100.0" prefWidth="200.0" ripplerFill="#11119d" style="-fx-background-color: WHITE;" text="Service Request">
          <VBox.margin>
             <Insets bottom="40.0" />
          </VBox.margin></JFXButton>
