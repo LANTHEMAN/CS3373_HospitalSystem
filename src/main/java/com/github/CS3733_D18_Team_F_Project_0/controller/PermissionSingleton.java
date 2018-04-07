@@ -11,6 +11,7 @@ public class PermissionSingleton {
     PermissionManager pmanage;
     String userPrivilege;
     String currUser;
+
     private PermissionSingleton() {
         this.dbHandler = DatabaseSingleton.getInstance().getDbHandler();
         this.pmanage = new PermissionManager();
@@ -29,6 +30,7 @@ public class PermissionSingleton {
         public static final String GUEST = "Guest";
         public static final String ADMIN = "Admin";
         public static final String SYSADMIN = "System Admin";
+        public static final String STAFF = "Staff";
     }
     public static PermissionSingleton getInstance() {
         return loginHelper.INSTANCE;
@@ -47,7 +49,7 @@ public class PermissionSingleton {
         for (User u : pmanage.users) {
             if (u.uname.equals(uname)) {
                 if (u.getPsword().equals(psword)) {
-                    userPrivilege = getPrivilege(u.type);
+                    userPrivilege = getPrivilege(u.getType());
                     currUser = uname;
                     return true;
                 }

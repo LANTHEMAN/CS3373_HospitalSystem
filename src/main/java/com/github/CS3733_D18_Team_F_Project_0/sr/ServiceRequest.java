@@ -2,6 +2,8 @@ package com.github.CS3733_D18_Team_F_Project_0.sr;
 
 import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
 
+import java.util.LinkedList;
+
 public abstract class ServiceRequest {
     private String type;
     private Integer id;
@@ -12,6 +14,7 @@ public abstract class ServiceRequest {
     private String status;
     private int priority;
     private String completedBy;
+    private LinkedList<String> occupationAccess;
 
 
     public ServiceRequest(String type, String firstName, String lastName, String location, String description, String status, int priority) {

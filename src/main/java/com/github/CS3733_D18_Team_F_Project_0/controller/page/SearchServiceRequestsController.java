@@ -6,11 +6,11 @@ import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
 import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
 import com.github.CS3733_D18_Team_F_Project_0.sr.ServiceRequest;
 import com.github.CS3733_D18_Team_F_Project_0.sr.ServiceRequestSingleton;
+import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -69,8 +69,17 @@ public class SearchServiceRequestsController implements SwitchableController {
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
         filter = "none";
+        searchType = "none";
 
         filterType.getItems().addAll("Priority", "Status", "Type");
+
+        String lastSearch = ServiceRequestSingleton.getInstance().getLastSearch();
+        String lastFilter = ServiceRequestSingleton.getInstance().getLastFilter();
+        if(lastSearch != null && lastFilter != null){
+            searchType = lastSearch;
+            filter = lastFilter;
+        }
+        onSearch();
 
     }
 
@@ -173,7 +182,7 @@ public class SearchServiceRequestsController implements SwitchableController {
                     public TableCell call(final TableColumn<ServiceRequest, String> param) {
                         final TableCell<ServiceRequest, String> cell = new TableCell<ServiceRequest, String>() {
 
-                            final Button btn = new Button("Select");
+                            final JFXButton btn = new JFXButton("Select");
 
                             @Override
                             public void updateItem(String item, boolean empty) {
@@ -199,10 +208,7 @@ public class SearchServiceRequestsController implements SwitchableController {
 
         searchResultTable.setItems(listRequests);
 
-
-
-
-
+        ServiceRequestSingleton.getInstance().setSearch(filter, searchType);
     }
 
     @FXML
@@ -223,10 +229,12 @@ public class SearchServiceRequestsController implements SwitchableController {
         }catch(NullPointerException e){
             e.printStackTrace();
         }
+        ServiceRequestSingleton.getInstance().setSearchNull();
     }
 
     @FXML
     void onCancel() {
+        ServiceRequestSingleton.getInstance().setSearchNull();
         switcher.switchTo(Screens.ServiceRequest);
     }
 
