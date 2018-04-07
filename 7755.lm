@@ -1,0 +1,83 @@
+Language model created by QuickLM on Sat Apr  7 17:41:39 EDT 2018
+Copyright (c) 1996-2010 Carnegie Mellon University and Alexander I. Rudnicky
+
+The model is in standard ARPA format, designed by Doug Paul while he was at MITRE.
+
+The code that was used to produce this language model is available in Open Source.
+Please visit http://www.speech.cs.cmu.edu/tools/ for more information
+
+The (fixed) discount mass is 0.5. The backoffs are computed using the ratio method.
+This model based on a corpus of 8 sentences and 18 words
+
+\data\
+ngram 1=18
+ngram 2=25
+ngram 3=17
+
+\1-grams:
+-0.9165 </s> -0.3010
+-0.9165 <s> -0.2449
+-1.5185 A -0.2877
+-1.8195 ADMIN -0.2944
+-1.8195 DIRECTIONS -0.2449
+-1.8195 FIND -0.2877
+-1.8195 FLOOR -0.2449
+-1.8195 GET -0.2944
+-1.8195 HELP -0.2449
+-1.8195 HOSPITAL -0.2944
+-1.8195 KIOSK -0.2449
+-1.8195 LANGUAGE -0.2449
+-1.8195 LOCATION -0.2449
+-1.8195 LOGIN -0.2449
+-1.8195 REQUEST -0.2877
+-1.8195 SELECT -0.2944
+-1.8195 SERVICE -0.2449
+-1.8195 SWITCH -0.2944
+
+\2-grams:
+-1.2041 <s> ADMIN 0.0000
+-1.2041 <s> FIND 0.0000
+-1.2041 <s> GET 0.0000
+-1.2041 <s> HELP 0.0000
+-1.2041 <s> HOSPITAL 0.0000
+-1.2041 <s> REQUEST 0.0000
+-1.2041 <s> SELECT 0.0000
+-1.2041 <s> SWITCH 0.0000
+-0.6021 A LOCATION 0.0000
+-0.6021 A SERVICE 0.0000
+-0.3010 ADMIN LOGIN 0.0000
+-0.3010 DIRECTIONS </s> -0.3010
+-0.3010 FIND A -0.1761
+-0.3010 FLOOR </s> -0.3010
+-0.3010 GET DIRECTIONS 0.0000
+-0.3010 HELP </s> -0.3010
+-0.3010 HOSPITAL KIOSK 0.0000
+-0.3010 KIOSK </s> -0.3010
+-0.3010 LANGUAGE </s> -0.3010
+-0.3010 LOCATION </s> -0.3010
+-0.3010 LOGIN </s> -0.3010
+-0.3010 REQUEST A -0.1761
+-0.3010 SELECT LANGUAGE 0.0000
+-0.3010 SERVICE </s> -0.3010
+-0.3010 SWITCH FLOOR 0.0000
+
+\3-grams:
+-0.3010 <s> ADMIN LOGIN
+-0.3010 <s> FIND A
+-0.3010 <s> GET DIRECTIONS
+-0.3010 <s> HELP </s>
+-0.3010 <s> HOSPITAL KIOSK
+-0.3010 <s> REQUEST A
+-0.3010 <s> SELECT LANGUAGE
+-0.3010 <s> SWITCH FLOOR
+-0.3010 A LOCATION </s>
+-0.3010 A SERVICE </s>
+-0.3010 ADMIN LOGIN </s>
+-0.3010 FIND A LOCATION
+-0.3010 GET DIRECTIONS </s>
+-0.3010 HOSPITAL KIOSK </s>
+-0.3010 REQUEST A SERVICE
+-0.3010 SELECT LANGUAGE </s>
+-0.3010 SWITCH FLOOR </s>
+
+\end\
