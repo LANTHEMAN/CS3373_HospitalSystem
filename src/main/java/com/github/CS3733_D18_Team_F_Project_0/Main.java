@@ -2,6 +2,7 @@ package com.github.CS3733_D18_Team_F_Project_0;
 
 import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
 import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
+import com.github.CS3733_D18_Team_F_Project_0.voice.VoiceLauncher;
 import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 import edu.cmu.sphinx.api.SpeechResult;
@@ -18,7 +19,7 @@ import java.nio.file.Paths;
 import java.util.Comparator;
 
 public class Main extends Application {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         long fileSize = 0;
         // get rid of the database folder if its empty
         try {
@@ -37,27 +38,16 @@ public class Main extends Application {
         } catch (IOException e) {
         }
 
-        Configuration configuration = new Configuration();
+        System.out.println("Initializing voice command");
+        VoiceLauncher voice = new VoiceLauncher();
 
-        configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
-        configuration.setDictionaryPath("resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
-        configuration.setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
+        Thread t = new Thread(voice);
+        t.start();
 
-        LiveSpeechRecognizer recognizer = new LiveSpeechRecognizer(configuration);
-        // Start recognition process pruning previously cached data.
+        launch(args);
 
-        recognizer.startRecognition(true);
-        SpeechResult result = recognizer.getResult();
-
-        System.out.println("Hello");
-        while(true){
-            result = recognizer.getResult();
-            System.out.println(result.getHypothesis());
-        }
-        // Pause recognition process. It can be resumed then with startRecognition(false).
-        //recognizer.stopRecognition();
-
-        //launch(args);
+        voice.terminate = true;
+        t.join();
     }
 
     @Override

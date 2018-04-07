@@ -1,0 +1,8 @@
+Admin Login
+Find a Location
+Get Directions
+Switch Floor
+Request a Service
+Help
+Select Language
+Hospital Kiosk
