@@ -373,7 +373,7 @@ public class HomeController implements SwitchableController {
                                 onFindLocation();
                                 break;
                             case "Service_Request":
-                                onServiceRequest();
+                                switcher.switchTo(Screens.ServiceRequest);
                                 break;
                         }
                     });
@@ -397,6 +397,8 @@ public class HomeController implements SwitchableController {
         }catch(IOException e){
             e.printStackTrace();
         }
+
+
 
     }
 
