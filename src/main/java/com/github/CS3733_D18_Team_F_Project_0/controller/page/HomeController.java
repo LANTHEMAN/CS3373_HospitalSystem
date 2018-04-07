@@ -5,11 +5,15 @@ import com.github.CS3733_D18_Team_F_Project_0.Map;
 import com.github.CS3733_D18_Team_F_Project_0.MapSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.controller.*;
 import com.github.CS3733_D18_Team_F_Project_0.graph.*;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
@@ -19,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -29,6 +34,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import net.kurobako.gesturefx.GesturePane;
 
+import java.io.IOException;
 import java.util.*;
 
 import static com.github.CS3733_D18_Team_F_Project_0.MapSingleton.floor;
@@ -133,6 +139,11 @@ public class HomeController implements SwitchableController {
     private TextField modNode_x;
     @FXML
     private TextField modNode_y;
+
+    @FXML
+    private JFXHamburger hamburger;
+    @FXML
+    private JFXDrawer drawer;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -345,6 +356,26 @@ public class HomeController implements SwitchableController {
         cboxAvailableLocations.getItems().addAll(all);
 
         */
+        try {
+            VBox box = FXMLLoader.load(getClass().getResource("../sideMenu.fxml"));
+            drawer.setSidePane(box);
+
+            HamburgerBackArrowBasicTransition arrowBasicTransition = new HamburgerBackArrowBasicTransition(hamburger);
+            arrowBasicTransition.setRate(-1);
+            hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+                arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
+                arrowBasicTransition.play();
+
+                if (drawer.isShown()) {
+                    drawer.close();
+                } else {
+                    drawer.open();
+                }
+            });
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
     }
 
 
