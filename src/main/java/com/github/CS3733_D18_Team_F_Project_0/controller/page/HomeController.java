@@ -6,7 +6,9 @@ import com.github.CS3733_D18_Team_F_Project_0.MapSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.controller.*;
 import com.github.CS3733_D18_Team_F_Project_0.gfx.PaneMapController;
 import com.github.CS3733_D18_Team_F_Project_0.gfx.impl.UglyMapDrawer;
-import com.github.CS3733_D18_Team_F_Project_0.graph.*;
+import com.github.CS3733_D18_Team_F_Project_0.graph.NewNodeBuilder;
+import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
+import com.github.CS3733_D18_Team_F_Project_0.graph.NodeBuilder;
 import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,12 +26,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import net.kurobako.gesturefx.GesturePane;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -37,8 +36,8 @@ import java.util.ResourceBundle;
 public class HomeController implements SwitchableController {
 
     private static final int MIN_PIXELS = 200;
-    private static Image maps2D[];
-    private static Image maps3D[];
+    private static Image maps2D[] = ImageCacheSingleton.maps2D;
+    private static Image maps3D[] = ImageCacheSingleton.maps3D;
     private final ObservableList<String> patientRooms = FXCollections.observableArrayList(
             "Patient Room 1",
             "Patient Room 2",
@@ -52,8 +51,6 @@ public class HomeController implements SwitchableController {
     private PaneMapController mapDrawController;
     private Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
     private Node selectedNodeStart = null;
-    private Node pathStartNode = null;
-    private Node pathEndNode = null;
     private Node modifyNode = null;
     private boolean ctrlHeld = false;
     private PaneSwitcher switcher;
@@ -63,8 +60,6 @@ public class HomeController implements SwitchableController {
     private ImageView ivMap;
     @FXML
     private Pane mapContainer;
-    @FXML
-    private Text MainTitle;
     @FXML
     private VBox addLocationPopup;
 
@@ -81,11 +76,6 @@ public class HomeController implements SwitchableController {
     @FXML
     private ComboBox<String> newNode_type = new ComboBox<>(FXCollections.observableArrayList(NodeBuilder.getNodeTypes()));
 
-
-    @FXML
-    private VBox findLocationPopup;
-    @FXML
-    private Text txtFindLocation;
     @FXML
     private GesturePane gesturePane;
     @FXML
@@ -109,9 +99,10 @@ public class HomeController implements SwitchableController {
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
+
+        // initialize map and map drawer
         map = MapSingleton.getInstance().getMap();
         mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
-
         mapDrawController.showPath(map.getPath
                 (map.findNodeClosestTo(0, 0), map.findNodeClosestTo(10000, 0)));
 
@@ -121,11 +112,10 @@ public class HomeController implements SwitchableController {
             loginPopup.setText("Logout");
         }
 
-        gpaneNodeInfo.setVisible(false);
+        // set default zoom
+        gesturePane.zoomTo(2, new Point2D(600, 600));
 
-        maps2D = ImageCacheSingleton.maps2D;
-        maps3D = ImageCacheSingleton.maps3D;
-
+        // dynamically change 2d/3d switcher button text
         if (map.is2D()) {
             StringBinding mapDim = switcher.resFac.getStringBinding("3DMap");
             btnMapDimensions.setText(mapDim.get());
@@ -134,12 +124,12 @@ public class HomeController implements SwitchableController {
             btnMapDimensions.setText(mapDim.get());
         }
 
-        gesturePane.zoomTo(2, new Point2D(600, 600));
-
+        // set up new node panel
         newNode_type.getItems().addAll(NodeBuilder.getNodeTypes());
         newNode_type.getSelectionModel().selectFirst();
 
-        reloadMap();
+
+        // react to key presses and mouse clicks
         switcher.getScene().setOnKeyPressed(ke -> {
             if (ke.isControlDown()) {
                 gesturePane.setGestureEnabled(false);
@@ -153,7 +143,6 @@ public class HomeController implements SwitchableController {
                 ctrlHeld = false;
             }
         });
-
         mapContainer.setOnMouseReleased(e -> {
             if (selectedNodeStart == null || !map.is2D()) {
                 return;
@@ -201,7 +190,6 @@ public class HomeController implements SwitchableController {
             }
 
         });
-
         mapContainer.setOnMouseClicked(e -> {
             double map_x = 5000;
             double map_y = 3400;
@@ -281,6 +269,9 @@ public class HomeController implements SwitchableController {
     }
 
 
+
+
+
     // Popup upon login
 
     @FXML
@@ -292,76 +283,6 @@ public class HomeController implements SwitchableController {
             return;
         }
         switcher.popup(Screens.Login);
-    }
-
-    @FXML
-    void onDrawPath() {
-        if (pathStartNode != null && pathEndNode != null) {
-            Path path = map.getPath(pathStartNode, pathEndNode);
-            ArrayList<Node> nodes = path.getNodes();
-            ArrayList<Edge> edges = path.getEdges();
-
-            if (map.is2D()) {
-                for (Edge edge : edges) {
-                    Line line = new Line();
-                    line.setEndX(edge.getNode1().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                    line.setEndY(edge.getNode1().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-                    line.setStartX(edge.getNode2().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                    line.setStartY(edge.getNode2().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-                    line.setFill(Color.BLUE);
-                    mapContainer.getChildren().add(line);
-                }
-                for (Node node : nodes) {
-                    Circle circle = new Circle(1.5, Color.RED);
-                    circle.setCenterX(node.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                    circle.setCenterY(node.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-                    circle.setFill(Color.PURPLE);
-                    mapContainer.getChildren().add(circle);
-                }
-
-                Text startText = new Text(pathStartNode.getShortName());
-                Text endText = new Text(pathEndNode.getShortName());
-
-                startText.setX(pathStartNode.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                startText.setY(pathStartNode.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-                startText.setFont(Font.font("Verdana", 5));
-                endText.setX(pathEndNode.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                endText.setY(pathEndNode.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-                endText.setFont(Font.font("Verdana", 5));
-
-                mapContainer.getChildren().addAll(startText, endText);
-            } else {
-                for (Edge edge : edges) {
-                    Line line = new Line();
-                    line.setEndX(edge.getNode1().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                    line.setEndY(edge.getNode1().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
-                    line.setStartX(edge.getNode2().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                    line.setStartY(edge.getNode2().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
-                    line.setFill(Color.BLUE);
-                    mapContainer.getChildren().add(line);
-                }
-                for (Node node : nodes) {
-                    Circle circle = new Circle(1.5, Color.RED);
-                    circle.setCenterX(node.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                    circle.setCenterY(node.getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
-                    circle.setFill(Color.PURPLE);
-                    mapContainer.getChildren().add(circle);
-                }
-                Text startText = new Text(pathStartNode.getShortName());
-                Text endText = new Text(pathEndNode.getShortName());
-
-                startText.setX(pathStartNode.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                startText.setY(pathStartNode.getWireframePosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-                startText.setFont(Font.font("Verdana", 5));
-                endText.setX(pathEndNode.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                endText.setY(pathEndNode.getWireframePosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-                endText.setFont(Font.font("Verdana", 5));
-
-                mapContainer.getChildren().addAll(startText, endText);
-            }
-        } else {
-            System.out.println("Invalid nodes");
-        }
     }
 
 
