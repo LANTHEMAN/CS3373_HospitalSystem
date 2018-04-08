@@ -2,6 +2,7 @@ package com.github.CS3733_D18_Team_F_Project_0;
 
 import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
 import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
+import com.github.CS3733_D18_Team_F_Project_0.controller.page.HomeController;
 import com.github.CS3733_D18_Team_F_Project_0.voice.VoiceLauncher;
 import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
@@ -40,14 +41,13 @@ public class Main extends Application {
         }
 
         System.out.println("Initializing voice command");
-        VoiceLauncher voice = new VoiceLauncher();
 
-        Thread t = new Thread(voice);
+        Thread t = new Thread(VoiceLauncher.getInstance());
         t.start();
 
         launch(args);
 
-        voice.terminate = true;
+        VoiceLauncher.getInstance().terminate();
         t.join();
     }
 
