@@ -9,10 +9,14 @@ import com.github.CS3733_D18_Team_F_Project_0.gfx.impl.UglyMapDrawer;
 import com.github.CS3733_D18_Team_F_Project_0.graph.NewNodeBuilder;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
 import com.github.CS3733_D18_Team_F_Project_0.graph.NodeBuilder;
+import com.github.CS3733_D18_Team_F_Project_0.voice.VoiceLauncher;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
@@ -27,13 +31,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.SynchronousQueue;
 
-public class HomeController implements SwitchableController {
+public class HomeController implements SwitchableController, Observer{
+
+    ConcurrentLinkedQueue<String> commands = new ConcurrentLinkedQueue<>();
 
     private static final int MIN_PIXELS = 200;
     private static Image maps2D[] = ImageCacheSingleton.maps2D;
@@ -99,9 +106,25 @@ public class HomeController implements SwitchableController {
     // kiosk location
     private Point2D startLocation = new Point2D(1875.0, 1025.0);
 
+    Timeline commandExecuter = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            String command = commands.poll();
+            if(command != null){
+                if(command.equals("HELP")){
+                    onHelpPopup();
+                }
+            }
+        }
+    }));
+
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
+        VoiceLauncher.getInstance().addObserver(this);
+
+        commandExecuter.setCycleCount(Timeline.INDEFINITE);
+        commandExecuter.play();
 
         // initialize map and map drawer
         map = MapSingleton.getInstance().getMap();
@@ -499,6 +522,24 @@ public class HomeController implements SwitchableController {
         } else {
             ivMap.setImage(maps2D[index]);
         }
+    }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        if (!(o instanceof VoiceLauncher)) {
+            return;
+        }
+
+        if(arg instanceof String){
+            String cmd = (String) arg;
+
+            if(arg.toString().equals("HOSPITAL KIOSK")){
+                System.out.println("Hospital Kiosk");
+            }
+
+            if(arg.toString().equals("HELP")){
+                commands.add(cmd);
+            }
+        }
     }
 }

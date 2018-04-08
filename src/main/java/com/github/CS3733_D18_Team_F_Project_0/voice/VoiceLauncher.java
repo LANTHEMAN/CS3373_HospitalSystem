@@ -13,24 +13,31 @@ import java.util.Scanner;
 
 public class VoiceLauncher extends Observable implements Runnable {
 
-    public boolean terminate = false;
+    private boolean terminate = false;
     Configuration configuration = new Configuration();
 
     HashSet<String> commandStrings = new HashSet<>();
 
-    public VoiceLauncher() throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File("Corpus.txt"));
+    public static VoiceLauncher getInstance(){ return LazyInitializer.INSTANCE; }
+
+    private VoiceLauncher(){
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(new File("Corpus.txt"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         while(scanner.hasNextLine()){
             commandStrings.add(scanner.nextLine().toUpperCase());
-        }
-
-        for(String s : commandStrings){
-            System.out.println(s);
         }
 
         configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
         configuration.setDictionaryPath("7755.dic");
         configuration.setLanguageModelPath("7755.lm");
+    }
+
+    private static class LazyInitializer {
+        static final VoiceLauncher INSTANCE = new VoiceLauncher();
     }
 
     public void run() {
@@ -42,8 +49,6 @@ public class VoiceLauncher extends Observable implements Runnable {
             //Create SpeechResult Object
             SpeechResult result;
             String command;
-
-            System.out.println("Start Talking");
 
             //Checking if recognizer has recognized the speech
             while ((result = recognize.getResult()) != null && !terminate) {
@@ -64,12 +69,14 @@ public class VoiceLauncher extends Observable implements Runnable {
     private void signalClassChanged(Object args) {
         this.setChanged();
         this.notifyObservers(args);
-
-        System.out.println(args.toString());
     }
 
     private boolean isValid(String command){
         return commandStrings.contains(command);
+    }
+
+    public void terminate(){
+        terminate = true;
     }
 }
 
