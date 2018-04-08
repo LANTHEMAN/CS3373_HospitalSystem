@@ -54,4 +54,8 @@ public class Edge {
     public Node getNode2() {
         return node2;
     }
+
+    public double getDistance(){
+        return node1.displacementTo(node2);
+    }
 }

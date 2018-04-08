@@ -96,6 +96,9 @@ public class HomeController implements SwitchableController {
     @FXML
     private TextField modNode_y;
 
+    // kiosk location
+    private Point2D startLocation = new Point2D(1875.0, 1025.0);
+
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
@@ -103,8 +106,6 @@ public class HomeController implements SwitchableController {
         // initialize map and map drawer
         map = MapSingleton.getInstance().getMap();
         mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
-        mapDrawController.showPath(map.getPath
-                (map.findNodeClosestTo(0, 0), map.findNodeClosestTo(10000, 0)));
 
         //to make initial admin with secure password
         txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
@@ -128,7 +129,7 @@ public class HomeController implements SwitchableController {
         newNode_type.getItems().addAll(NodeBuilder.getNodeTypes());
         newNode_type.getSelectionModel().selectFirst();
 
-        if(PermissionSingleton.getInstance().isAdmin()){
+        if (PermissionSingleton.getInstance().isAdmin()) {
             mapDrawController.showNodes();
             mapDrawController.showEdges();
         }
@@ -206,14 +207,26 @@ public class HomeController implements SwitchableController {
             Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
-            HashSet<Node> nodes;
-            if (map.is2D()) {
-                nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
-                        , node.getPosition().getY()).distance(mapPos) < 8);
-            } else {
-                nodes = map.getNodes(node -> new Point2D(node.getWireframePosition().getX()
-                        , node.getWireframePosition().getY()).distance(mapPos) < 8);
+            mapDrawController.showPath(map.getPath
+                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), map.is2D())
+                            , map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D())));
+
+            // if editing maps
+            HashSet<Node> nodes = new HashSet<>();
+            if (PermissionSingleton.getInstance().isAdmin()) {
+                if (map.is2D()) {
+                    nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
+                            , node.getPosition().getY()).distance(mapPos) < 8);
+                } else {
+                    nodes = map.getNodes(node -> new Point2D(node.getWireframePosition().getX()
+                            , node.getWireframePosition().getY()).distance(mapPos) < 8);
+                }
             }
+            // not editing map
+            else {
+                nodes.add(map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D()));
+            }
+
 
             if (nodes.size() > 0) {
                 Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D());
@@ -272,9 +285,6 @@ public class HomeController implements SwitchableController {
             }
         });
     }
-
-
-
 
 
     // Popup upon login
