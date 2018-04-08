@@ -87,7 +87,6 @@ public class PaneSwitcher {
     public void closePopup(Screens.Screen screen) {
         // will reset control back to the given screen (that should be displayed currently)
         popup.close();
-        load(screen);
         scene.setRoot(panes.get(screen.fxmlFile));
     }
 }

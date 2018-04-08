@@ -5,6 +5,7 @@ import com.github.CS3733_D18_Team_F_Project_0.Map;
 import com.github.CS3733_D18_Team_F_Project_0.MapSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.controller.*;
 import com.github.CS3733_D18_Team_F_Project_0.gfx.PaneMapController;
+import com.github.CS3733_D18_Team_F_Project_0.gfx.PaneVoiceController;
 import com.github.CS3733_D18_Team_F_Project_0.gfx.impl.UglyMapDrawer;
 import com.github.CS3733_D18_Team_F_Project_0.graph.NewNodeBuilder;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
@@ -36,15 +37,13 @@ import net.kurobako.gesturefx.GesturePane;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.SynchronousQueue;
 
-public class HomeController implements SwitchableController, Observer{
-
-    ConcurrentLinkedQueue<String> commands = new ConcurrentLinkedQueue<>();
+public class HomeController implements SwitchableController, Observer {
 
     private static final int MIN_PIXELS = 200;
     private static Image maps2D[] = ImageCacheSingleton.maps2D;
     private static Image maps3D[] = ImageCacheSingleton.maps3D;
+    final Boolean canSayCommand[] = {false};
     private final ObservableList<String> patientRooms = FXCollections.observableArrayList(
             "Patient Room 1",
             "Patient Room 2",
@@ -53,14 +52,48 @@ public class HomeController implements SwitchableController, Observer{
             "Bathroom 1",
             "Bathroom 2");
     private final ObservableList<String> all = FXCollections.observableArrayList();
-
-
+    ConcurrentLinkedQueue<String> commands = new ConcurrentLinkedQueue<>();
+    PaneVoiceController paneVoiceController;
     private PaneMapController mapDrawController;
     private Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
     private Node selectedNodeStart = null;
     private Node modifyNode = null;
     private boolean ctrlHeld = false;
     private PaneSwitcher switcher;
+    Timeline commandExecuter = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            String command = commands.poll();
+            if (command != null) {
+                if (command.equals("HOSPITAL KIOSK")) {
+                    paneVoiceController.setVisibility(true);
+                    canSayCommand[0] = true;
+                    new Timer(true).schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            System.out.println("command = " + command);
+                            canSayCommand[0] = false;
+                        }
+                    }, 5000);
+
+                } else {
+                    if (!canSayCommand[0]) {
+                        return;
+                    }
+                    canSayCommand[0] = false;
+                    paneVoiceController.setVisibility(false);
+
+                    switch (command) {
+                        case "HELP":
+                            onHelpPopup();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+    }));
     private Map map;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
     @FXML
@@ -69,8 +102,6 @@ public class HomeController implements SwitchableController, Observer{
     private Pane mapContainer;
     @FXML
     private VBox addLocationPopup;
-
-
     /**
      * New node window
      */
@@ -82,7 +113,6 @@ public class HomeController implements SwitchableController, Observer{
     private TextField newNode_shortName;
     @FXML
     private ComboBox<String> newNode_type = new ComboBox<>(FXCollections.observableArrayList(NodeBuilder.getNodeTypes()));
-
     @FXML
     private GesturePane gesturePane;
     @FXML
@@ -102,26 +132,17 @@ public class HomeController implements SwitchableController, Observer{
     private TextField modNode_x;
     @FXML
     private TextField modNode_y;
-
+    @FXML
+    private Pane voicePane;
     // kiosk location
     private Point2D startLocation = new Point2D(1875.0, 1025.0);
-
-    Timeline commandExecuter = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            String command = commands.poll();
-            if(command != null){
-                if(command.equals("HELP")){
-                    onHelpPopup();
-                }
-            }
-        }
-    }));
 
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
         VoiceLauncher.getInstance().addObserver(this);
+
+        paneVoiceController = new PaneVoiceController(voicePane);
 
         commandExecuter.setCycleCount(Timeline.INDEFINITE);
         commandExecuter.play();
@@ -201,7 +222,6 @@ public class HomeController implements SwitchableController, Observer{
                 mapDrawController.selectNode(node);
 
                 if (node == selectedNodeStart) {
-                    selectedNodeStart = null;
                     selectedNodeStart = null;
                     return;
                 }
@@ -530,14 +550,14 @@ public class HomeController implements SwitchableController, Observer{
             return;
         }
 
-        if(arg instanceof String){
+        if (arg instanceof String) {
             String cmd = (String) arg;
 
-            if(arg.toString().equals("HOSPITAL KIOSK")){
-                System.out.println("Hospital Kiosk");
+            if (arg.toString().equals("HOSPITAL KIOSK")) {
+                commands.add(cmd);
             }
 
-            if(arg.toString().equals("HELP")){
+            if (arg.toString().equals("HELP")) {
                 commands.add(cmd);
             }
         }
