@@ -182,7 +182,7 @@ public class SearchServiceRequestsController implements SwitchableController {
                     public TableCell call(final TableColumn<ServiceRequest, String> param) {
                         final TableCell<ServiceRequest, String> cell = new TableCell<ServiceRequest, String>() {
 
-                            final JFXButton btn = new JFXButton("Select");
+                            JFXButton btn = new JFXButton("Select");
 
                             @Override
                             public void updateItem(String item, boolean empty) {

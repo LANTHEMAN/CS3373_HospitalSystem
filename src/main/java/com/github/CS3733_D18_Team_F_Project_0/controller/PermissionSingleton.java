@@ -2,6 +2,7 @@ package com.github.CS3733_D18_Team_F_Project_0.controller;
 
 import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseHandler;
 import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseSingleton;
+import com.github.CS3733_D18_Team_F_Project_0.sr.ServiceRequestSingleton;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,19 +20,29 @@ public class PermissionSingleton {
         userPrivilege = Privilege.GUEST;
         currUser = "Guest";
         if(!userExist("Admin")) {
-            addUser(new User("Admin", "1234", "admin"));
+            addEmployee(new Employee("Admin", "1234", "Admin", "Default", "Admin", "Admin"));
+            ServiceRequestSingleton.getInstance().addOccupationLanguageInterpreter("Admin");
+            ServiceRequestSingleton.getInstance().addOccupationReligiousServices("Admin");
+        }
+        if(!userExist("SysAdmin")) {
+            addEmployee(new Employee("SysAdmin", "1234", "System Admin", "Sys", "Admin", "System Admin"));
+            ServiceRequestSingleton.getInstance().addOccupationLanguageInterpreter("System Admin");
+            ServiceRequestSingleton.getInstance().addOccupationReligiousServices("System Admin");
         }
 
     }
+
     private static class loginHelper{
         static final PermissionSingleton INSTANCE = new PermissionSingleton();
     }
+
     public static class Privilege{
         public static final String GUEST = "Guest";
         public static final String ADMIN = "Admin";
         public static final String SYSADMIN = "System Admin";
         public static final String STAFF = "Staff";
     }
+
     public static PermissionSingleton getInstance() {
         return loginHelper.INSTANCE;
     }
@@ -80,10 +91,23 @@ public class PermissionSingleton {
     public void addUser(User u) {
         pmanage.users.add(u);
         String sql = "INSERT INTO HUser"
-                + " VALUES ('" + u.getUname()
+                + " VALUES(username, password, privilege) ('" + u.getUname()
                 + "', '" + u.getPsword()
                 + "', '" + u.getType()
                 +"')";
+        dbHandler.runAction(sql);
+    }
+
+    public void addEmployee(Employee u) {
+        pmanage.users.add(u);
+        String sql = "INSERT INTO HUser"
+                + " VALUES ('" + u.getUname()
+                + "', '" + u.getPsword()
+                + "', '" + u.getType()
+                + "', '" + u.getFirstName()
+                + "', '" + u.getLastName()
+                + "', '" + u.getOccupation()
+                + "')";
         dbHandler.runAction(sql);
     }
 

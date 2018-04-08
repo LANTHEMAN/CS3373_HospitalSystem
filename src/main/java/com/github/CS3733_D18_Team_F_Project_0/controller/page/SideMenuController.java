@@ -13,8 +13,15 @@ public class SideMenuController implements SwitchableController {
     }
 
     @FXML
+    public void onGetDirections(){
+
+    }
+
+    @FXML
     public void onServiceRequest(){
         switcher.switchTo(Screens.ServiceRequest);
     }
+
+
 
 }

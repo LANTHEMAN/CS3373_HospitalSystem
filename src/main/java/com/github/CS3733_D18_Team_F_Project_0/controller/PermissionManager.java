@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+
+
 public class PermissionManager implements DatabaseItem {
     ArrayList<User> users;
     PermissionManager(){

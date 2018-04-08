@@ -115,6 +115,8 @@ public class ServiceRequestSingleton implements DatabaseItem {
     public void initDatabase(DatabaseHandler dbHandler) {
         dbHandler.runSQLScript("init_node_db.sql");
         dbHandler.runSQLScript("init_sr_db.sql");
+        dbHandler.runSQLScript("init_sr_li_db.sql");
+        dbHandler.runSQLScript("init_sr_rs_db.sql");
         if (dbHandler != DatabaseSingleton.getInstance().getDbHandler()) {
             initDatabase(DatabaseSingleton.getInstance().getDbHandler());
         }
@@ -331,5 +333,25 @@ public class ServiceRequestSingleton implements DatabaseItem {
     public void setSearchNull(){
         this.lastFilter = null;
         this.lastSearch = null;
+    }
+
+    public void addOccupationLanguageInterpreter(String occupation){
+        String sql = "INSERT INTO LanguageInterpreter"+" VALUES ('"+occupation+"')";
+        dbHandler.runAction(sql);
+    }
+
+    public void addOccupationReligiousServices(String occupation){
+        String sql = "INSERT INTO ReligiousServices"+" VALUES ('"+occupation+"')";
+        dbHandler.runAction(sql);
+    }
+
+    public void removeOccupationLanguageInterpreter(String occupation){
+        String sql = "DELETE FROM LanguageInterpreter WHERE occupation = '"+occupation+"'";
+        dbHandler.runAction(sql);
+    }
+
+    public void removeOccupationReligiousServices(String occupation){
+        String sql = "DELETE FROM ReligiousServices WHERE occupation = '"+occupation+"'";
+        dbHandler.runAction(sql);
     }
 }

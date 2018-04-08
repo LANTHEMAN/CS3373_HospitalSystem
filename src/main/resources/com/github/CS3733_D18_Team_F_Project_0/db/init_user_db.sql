@@ -3,5 +3,6 @@ Create Table HUser (
   password varchar(20),
   firstName VARCHAR(20),
   lastName VARCHAR(20),
-  privilege varchar(20)
+  privilege varchar(20),
+  occupation varchar(20)
 );

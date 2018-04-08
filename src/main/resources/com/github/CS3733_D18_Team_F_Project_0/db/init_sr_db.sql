@@ -7,5 +7,8 @@ location varchar(50),
 instructions varchar(200),
 priority int,
 status varchar(50),
-completedBy varchar(20) REFERENCES HUser(username)
+completedBy varchar(20) REFERENCES HUser(username),
+createdOn TIMESTAMP,
+started TIMESTAMP,
+completed TIMESTAMP
 );
