@@ -55,10 +55,7 @@ public class PermissionSingleton {
     }
 
     public boolean isAdmin() {
-        if (userPrivilege.equals(Privilege.ADMIN) || userPrivilege.equals(Privilege.SYSADMIN)) {
-            return true;
-        }
-        return false;
+        return (userPrivilege.equals(Privilege.ADMIN) || userPrivilege.equals(Privilege.SYSADMIN));
     }
 
     public boolean login(String uname, String psword) {

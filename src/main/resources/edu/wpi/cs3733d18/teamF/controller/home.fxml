@@ -77,8 +77,8 @@
       </VBox>
       <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="210.0" spacing="7.0" style="-fx-background-color: #606060;">
          <children>
-            <JFXTextField promptText="Username" style="-fx-background-color: WHITE;" />
-            <JFXPasswordField promptText="Password" style="-fx-background-color: WHITE;" />
+            <JFXTextField fx:id="loginUsername" promptText="Username" style="-fx-background-color: WHITE;" />
+            <JFXPasswordField fx:id="loginPassword" promptText="Password" style="-fx-background-color: WHITE;" />
          </children>
          <padding>
             <Insets left="30.0" right="30.0" />
@@ -89,7 +89,7 @@
             <Insets left="30.0" right="30.0" />
          </padding>
          <children>
-            <JFXButton buttonType="RAISED" prefHeight="25.0" prefWidth="112.0" style="-fx-background-color: WHITE;" />
+            <JFXButton fx:id="logoutBtn" buttonType="RAISED" prefHeight="25.0" prefWidth="112.0" style="-fx-background-color: WHITE;" text="Logout" />
          </children>
       </VBox>
         <GridPane fx:id="gpaneNodeInfo" maxWidth="250.0" prefHeight="601.0" prefWidth="250.0" style="-fx-background-color: rgba(217, 217, 217, 0.9);" visible="false" GridPane.columnSpan="2">

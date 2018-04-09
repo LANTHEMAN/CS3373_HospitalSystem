@@ -1,6 +1,6 @@
 package edu.wpi.cs3733d18.teamF.controller.page;
 
-import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
@@ -14,8 +14,6 @@ import edu.wpi.cs3733d18.teamF.graph.NewNodeBuilder;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.NodeBuilder;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -128,7 +126,8 @@ public class HomeController implements SwitchableController, Observer {
                             onHelpPopup();
                             break;
                         case "ADMIN LOGIN":
-                            onLoginPopup();
+                            //onLoginPopup();
+                            //TODO
                             break;
                         default:
                             break;
@@ -150,9 +149,11 @@ public class HomeController implements SwitchableController, Observer {
     private TextField modNode_y;
     @FXML
     private Pane voicePane;
+
     // kiosk location
     private Point2D startLocation = new Point2D(1875.0, 1025.0);
 
+    // menu in bottom left corner
     @FXML
     private JFXHamburger hamburger;
     @FXML
@@ -163,6 +164,8 @@ public class HomeController implements SwitchableController, Observer {
     private VBox adminBox;
     @FXML
     private VBox staffBox;
+
+    // login elements
     @FXML
     private JFXDrawer loginDrawer;
     @FXML
@@ -171,6 +174,12 @@ public class HomeController implements SwitchableController, Observer {
     private VBox logoutBox;
     @FXML
     private JFXButton loginBtn;
+    @FXML
+    private JFXButton logoutBtn;
+    @FXML
+    private JFXTextField loginUsername;
+    @FXML
+    private JFXPasswordField loginPassword;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -384,107 +393,113 @@ public class HomeController implements SwitchableController, Observer {
         cboxAvailableLocations.getItems().addAll(all);
 
         */
-        if(PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")){
-            loginDrawer.setSidePane(loginBox);
-            loginDrawer.setOverLayVisible(false);
+
+
+        // set the hamburger menu on bottom left accordingly
+        if (PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
+            setGuestMenu();
             loginBtn.setText("Login");
-
-            loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-                if(loginDrawer.isShown()){
-                    loginDrawer.close();
-                }else{
-                    loginDrawer.open();
-                }
-            });
-        }else{
-            loginDrawer.setSidePane(logoutBox);
-            loginDrawer.setOverLayVisible(false);
+        } else if(PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
+            setStaffMenu();
             loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
-
-            loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-                if(loginDrawer.isShown()){
-                    loginDrawer.close();
-                }else{
-                    loginDrawer.open();
-                }
-            });
+        } else if (PermissionSingleton.getInstance().isAdmin()) {
+            setAdminMenu();
+            loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
+        } else {
+            setGuestMenu();
+            loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
         }
 
 
-        if(!PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
+        setHamburgerEvent();
 
-            if(PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")){
-                adminBox.setVisible(false);
-                staffBox.setVisible(true);
-                staffDrawer.setSidePane(staffBox);
-                staffDrawer.setOverLayVisible(false);
-
-                HamburgerBasicCloseTransition arrowBasicTransition = new HamburgerBasicCloseTransition(hamburger);
-                arrowBasicTransition.setRate(-1);
-                hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-                    arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
-                    arrowBasicTransition.play();
-
-
-                    if (staffDrawer.isShown()) {
-                        staffDrawer.close();
-                    } else {
-                        staffDrawer.open();
-                    }
-
-                });
-
-            }else if(PermissionSingleton.getInstance().isAdmin()){
-                adminBox.setVisible(true);
-                staffBox.setVisible(false);
-                adminDrawer.setSidePane(adminBox);
-                adminDrawer.setOverLayVisible(false);
-
-                HamburgerBasicCloseTransition arrowBasicTransition = new HamburgerBasicCloseTransition(hamburger);
-                arrowBasicTransition.setRate(-1);
-                hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-                    arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
-                    arrowBasicTransition.play();
-
-
-                    if (adminDrawer.isShown()) {
-                        adminDrawer.close();
-                    } else {
-                        adminDrawer.open();
-                    }
-
-                });
-
-            } else{
-                adminBox.setVisible(false);
-                staffBox.setVisible(false);
-                hamburger.setVisible(false);
+        // login
+        loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            if (PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
+                loginDrawer.setSidePane(loginBox);
+                loginDrawer.setOverLayVisible(false);
+                loginBtn.setText("Login");
+            } else {
+                loginDrawer.setSidePane(logoutBox);
+                loginDrawer.setOverLayVisible(false);
+                loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
             }
 
+            if (loginDrawer.isShown()) {
+                // login in the user and close the drawer
+                if (PermissionSingleton.getInstance().login(loginUsername.getText(), loginPassword.getText())) {
+                    loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
 
+                    if (PermissionSingleton.getInstance().isAdmin()) {
+                        setAdminMenu();
+                    } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
+                        setStaffMenu();
+                    }
+                }
+                loginUsername.setText("");
+                loginPassword.setText("");
+                loginDrawer.close();
+            } else {
+                loginDrawer.open();
+            }
+        });
 
-
-        }else{
+        // logout
+        logoutBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            PermissionSingleton.getInstance().logout();
+            loginDrawer.close();
+            staffDrawer.close();
+            adminDrawer.close();
             adminBox.setVisible(false);
             staffBox.setVisible(false);
             hamburger.setVisible(false);
-        }
-
+            loginBtn.setText("Login");
+        });
 
     }
 
 
-    // Popup upon login
+    private void setHamburgerEvent() {
+        HamburgerBasicCloseTransition arrowBasicTransition = new HamburgerBasicCloseTransition(hamburger);
+        arrowBasicTransition.setRate(-1);
+        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+            arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
+            arrowBasicTransition.play();
 
-    @FXML
-    void onLoginPopup() {
-        if (loginPopup.getText().equals("Logout")) {
-            PermissionSingleton.getInstance().logout();
-            loginPopup.setText("Admin Login");
-            txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
-            return;
-        }
-        switcher.popup(Screens.Login);
+            if (staffDrawer.isShown()) {
+                staffDrawer.close();
+            } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
+                staffDrawer.open();
+            }
+
+            if (adminDrawer.isShown()) {
+                adminDrawer.close();
+            } else if (PermissionSingleton.getInstance().isAdmin()){
+                adminDrawer.open();
+            }
+        });
+    }
+
+    private void setGuestMenu() {
+        adminBox.setVisible(false);
+        staffBox.setVisible(false);
+        hamburger.setVisible(false);
+    }
+
+    private void setStaffMenu() {
+        hamburger.setVisible(true);
+        adminBox.setVisible(false);
+        staffBox.setVisible(true);
+        staffDrawer.setSidePane(staffBox);
+        staffDrawer.setOverLayVisible(false);
+    }
+
+    private void setAdminMenu() {
+        hamburger.setVisible(true);
+        adminBox.setVisible(true);
+        staffBox.setVisible(false);
+        adminDrawer.setSidePane(adminBox);
+        adminDrawer.setOverLayVisible(false);
     }
 
 
