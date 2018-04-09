@@ -137,7 +137,7 @@
             <RowConstraints />
             </rowConstraints>
             <children>
-                <GesturePane fx:id="gesturePane" HBarEnabled="false" VBarEnabled="false" fitMode="COVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minScale="2.3" minWidth="-Infinity" scrollMode="ZOOM" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                <GesturePane fx:id="gesturePane" HBarEnabled="false" VBarEnabled="false" fitMode="COVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minScale="2.3" minWidth="-Infinity" pickOnBounds="false" scrollMode="ZOOM" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                     <Pane maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0">
                         <children>
                             <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="false" preserveRatio="false">
@@ -150,6 +150,7 @@
                         </children>
                     </Pane>
                 </GesturePane>
+            <Pane fx:id="voicePane" prefHeight="148.0" prefWidth="1280.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
                 <Text fx:id="MainTitle" fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="%BrighamTitleSecondFloor" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <font>
                         <Font size="22.0" />
