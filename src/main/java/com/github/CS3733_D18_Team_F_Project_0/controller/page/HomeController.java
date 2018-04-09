@@ -363,25 +363,6 @@ public class HomeController implements SwitchableController {
             drawer.setOverLayVisible(false);
 
 
-            for(javafx.scene.Node node : box.getChildren()){
-                if(node.getAccessibleText() != null){
-                    node.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-                        switch (node.getAccessibleText()){
-                            case "Get_Directions":
-                                onGetDirections();
-                                break;
-                            case "Find_Location":
-                                onFindLocation();
-                                break;
-                            case "Service_Request":
-                                switcher.switchTo(Screens.ServiceRequest);
-                                break;
-                        }
-                    });
-                }
-            }
-
-
             HamburgerBackArrowBasicTransition arrowBasicTransition = new HamburgerBackArrowBasicTransition(hamburger);
             arrowBasicTransition.setRate(-1);
             hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
@@ -498,15 +479,12 @@ public class HomeController implements SwitchableController {
 
 
     // Menus on right
-
-    @FXML
-    void onFindLocation() {
+    public void onFindLocation() {
         vbxMenu.setVisible(false);
         vbxLocation.setVisible(true);
     }
 
-    @FXML
-    void onLocationCancel() {
+    public void onLocationCancel() {
         vbxLocation.setVisible(false);
         vbxMenu.setVisible(true);
     }
@@ -827,4 +805,6 @@ public class HomeController implements SwitchableController {
         mapContainer.getChildren().clear();
         mapContainer.getChildren().add(ivMap);
     }
+
+
 }
