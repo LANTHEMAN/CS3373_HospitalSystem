@@ -75,7 +75,7 @@
                     </graphic></JFXButton>
          </children>
       </VBox>
-      <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="210.0" spacing="7.0" style="-fx-background-color: #606060;">
+      <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="210.0" spacing="7.0" style="-fx-background-color: rgba(0,0,0,0);">
          <children>
             <JFXTextField fx:id="loginUsername" promptText="Username" style="-fx-background-color: WHITE;" />
             <JFXPasswordField fx:id="loginPassword" promptText="Password" style="-fx-background-color: WHITE;" />
@@ -84,7 +84,7 @@
             <Insets left="30.0" right="30.0" />
          </padding>
       </VBox>
-      <VBox fx:id="logoutBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="210.0" spacing="7.0" style="-fx-background-color: #606060;">
+      <VBox fx:id="logoutBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="210.0" spacing="7.0" style="-fx-background-color: rgba(0,0,0,0);">
          <padding>
             <Insets left="30.0" right="30.0" />
          </padding>
@@ -274,9 +274,9 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </JFXHamburger>
-            <JFXDrawer fx:id="loginDrawer" defaultDrawerSize="400.0" direction="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="210.0" GridPane.halignment="RIGHT" GridPane.valignment="BASELINE">
+            <JFXDrawer fx:id="loginDrawer" defaultDrawerSize="400.0" direction="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="437.0" style="-fx-background-color: rgba(0,0,0,0);" GridPane.halignment="RIGHT" GridPane.valignment="BASELINE">
                <GridPane.margin>
-                  <Insets right="100.0" top="20.0" />
+                  <Insets right="60.0" top="20.0" />
                </GridPane.margin>
             </JFXDrawer>
             <JFXButton fx:id="loginBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="Login" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
