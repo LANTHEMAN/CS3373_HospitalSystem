@@ -1,5 +1,7 @@
 package edu.wpi.cs3733d18.teamF.controller.page;
 
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
+import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
@@ -372,7 +374,7 @@ public class HomeController implements SwitchableController, Observer {
         drawer.setOverLayVisible(false);
 
 
-        HamburgerBackArrowBasicTransition arrowBasicTransition = new HamburgerBackArrowBasicTransition(hamburger);
+        HamburgerBasicCloseTransition arrowBasicTransition = new HamburgerBasicCloseTransition(hamburger);
         arrowBasicTransition.setRate(-1);
         hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
             arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
