@@ -83,7 +83,7 @@ GREST01203,1628,2052,3,Shapiro,REST,Restroom Node 12 Floor 3,Restroom Shapiro Fl
 GSERV01603,1580,1858,3,Shapiro,SERV,The Porch Node 16 Floor 3,The Porch,Team G,1289,1712
 GSTAI00903,1685,2052,3,Shapiro,STAI,Staircase Node 9 Floor 3,Floor 3 Stairs ,Team G,1295,1845
 GELEV00QL1,1637,2116,L1,Shapiro,ELEV,Elevator Q MapNode 7 Floor L1,Elevator Q L1,Team G,1255,1934
-GEXIT001L1,1702,2260,L1,Shapiro,EXIT,Fenwood Road Exit MapNode 1 Floor L1,Fenwood Road Entrance/Exit L1,Team G,1277,1990
+GEXIT001L1,1702,2260,L1,Shapiro,EXIT,Fenwood Road Exit MapNode 1 Floor L1,Fenwood Road EntranceExit L1,Team G,1277,1990
 GHALL002L1,1702,2167,L1,Shapiro,HALL,Hallway MapNode 2 Floor L1,Hall,Team G,1294,1981
 GHALL003L1,1688,2167,L1,Shapiro,HALL,Hallway MapNode 3 Floor L1,Hall,Team G,1280,1970
 GHALL004L1,1666,2167,L1,Shapiro,HALL,Hallway MapNode 4 Floor L1,Hall,Team G,1262,1967
