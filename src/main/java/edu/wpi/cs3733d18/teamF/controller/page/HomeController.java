@@ -1,5 +1,8 @@
 package edu.wpi.cs3733d18.teamF.controller.page;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
+import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
@@ -153,9 +156,21 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private JFXHamburger hamburger;
     @FXML
-    private JFXDrawer drawer;
+    private JFXDrawer adminDrawer;
     @FXML
-    private VBox box;
+    private JFXDrawer staffDrawer;
+    @FXML
+    private VBox adminBox;
+    @FXML
+    private VBox staffBox;
+    @FXML
+    private JFXDrawer loginDrawer;
+    @FXML
+    private VBox loginBox;
+    @FXML
+    private VBox logoutBox;
+    @FXML
+    private JFXButton loginBtn;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -171,11 +186,13 @@ public class HomeController implements SwitchableController, Observer {
         map = MapSingleton.getInstance().getMap();
         mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
 
+        /*
         //to make initial admin with secure password
         txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
         if (!PermissionSingleton.getInstance().getCurrUser().equals("Guest")) {
             loginPopup.setText("Logout");
         }
+        */
 
         // set default zoom
         gesturePane.zoomTo(2, new Point2D(600, 600));
@@ -367,25 +384,91 @@ public class HomeController implements SwitchableController, Observer {
         cboxAvailableLocations.getItems().addAll(all);
 
         */
+        if(PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")){
+            loginDrawer.setSidePane(loginBox);
+            loginDrawer.setOverLayVisible(false);
+            loginBtn.setText("Login");
 
-        drawer.setSidePane(box);
-        drawer.setOverLayVisible(false);
+            loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+                if(loginDrawer.isShown()){
+                    loginDrawer.close();
+                }else{
+                    loginDrawer.open();
+                }
+            });
+        }else{
+            loginDrawer.setSidePane(logoutBox);
+            loginDrawer.setOverLayVisible(false);
+            loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
+
+            loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+                if(loginDrawer.isShown()){
+                    loginDrawer.close();
+                }else{
+                    loginDrawer.open();
+                }
+            });
+        }
 
 
-        HamburgerBackArrowBasicTransition arrowBasicTransition = new HamburgerBackArrowBasicTransition(hamburger);
-        arrowBasicTransition.setRate(-1);
-        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-            arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
-            arrowBasicTransition.play();
+        if(!PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
+
+            if(PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")){
+                adminBox.setVisible(false);
+                staffBox.setVisible(true);
+                staffDrawer.setSidePane(staffBox);
+                staffDrawer.setOverLayVisible(false);
+
+                HamburgerBasicCloseTransition arrowBasicTransition = new HamburgerBasicCloseTransition(hamburger);
+                arrowBasicTransition.setRate(-1);
+                hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+                    arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
+                    arrowBasicTransition.play();
 
 
-            if (drawer.isShown()) {
-                drawer.close();
-            } else {
-                drawer.open();
+                    if (staffDrawer.isShown()) {
+                        staffDrawer.close();
+                    } else {
+                        staffDrawer.open();
+                    }
+
+                });
+
+            }else if(PermissionSingleton.getInstance().isAdmin()){
+                adminBox.setVisible(true);
+                staffBox.setVisible(false);
+                adminDrawer.setSidePane(adminBox);
+                adminDrawer.setOverLayVisible(false);
+
+                HamburgerBasicCloseTransition arrowBasicTransition = new HamburgerBasicCloseTransition(hamburger);
+                arrowBasicTransition.setRate(-1);
+                hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+                    arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
+                    arrowBasicTransition.play();
+
+
+                    if (adminDrawer.isShown()) {
+                        adminDrawer.close();
+                    } else {
+                        adminDrawer.open();
+                    }
+
+                });
+
+            } else{
+                adminBox.setVisible(false);
+                staffBox.setVisible(false);
+                hamburger.setVisible(false);
             }
 
-        });
+
+
+
+        }else{
+            adminBox.setVisible(false);
+            staffBox.setVisible(false);
+            hamburger.setVisible(false);
+        }
 
 
     }
