@@ -20,8 +20,8 @@ public class PermissionSingleton {
         userPrivilege = Privilege.GUEST;
         currUser = "Guest";
 
-        if (!userExist("Admin")) {
-            addEmployee(new Employee("Admin", "1234", "Admin", "Default", "Admin", "Admin"));
+        if (!userExist("admin")) {
+            addEmployee(new Employee("admin", "admin", "Admin", "Default", "Admin", "Admin"));
             ServiceRequestSingleton.getInstance().addOccupationLanguageInterpreter("Admin");
             ServiceRequestSingleton.getInstance().addOccupationReligiousServices("Admin");
         }
