@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.LinkedList;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public class DatabaseHandlerTest {

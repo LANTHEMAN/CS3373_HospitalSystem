@@ -1,6 +1,7 @@
 package edu.wpi.cs3733d18.teamF.graph;
 
 import javafx.geometry.Point2D;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class TestNode {
@@ -23,6 +24,6 @@ public class TestNode {
 
     @Test
     public void testDisplacementTo() {
-        assertEquals(1.0, node1.displacementTo(node2), 0.001);
+        Assert.assertEquals(1.0, node1.displacementTo(node2), 0.001);
     }
 }
