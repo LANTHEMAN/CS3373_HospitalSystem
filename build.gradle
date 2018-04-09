@@ -33,9 +33,10 @@ dependencies {
             [group: 'net.kurobako.gesturefx', name: 'gesturefx', version: '0.2.0'],
             [group: 'de.jensd', name: 'fontawesomefx', version: '8.9'],
             [group: 'edu.cmu.sphinx', name: 'sphinx4-core', version:'5prealpha-SNAPSHOT'],
-            [group: 'edu.cmu.sphinx', name: 'sphinx4-data', version:'5prealpha-SNAPSHOT']
-    )
+            [group: 'edu.cmu.sphinx', name: 'sphinx4-data', version:'5prealpha-SNAPSHOT'],
+            [group: 'com.google.zxing', name: 'core', version: '3.3.2']
 
+    )
 }
 
 test {
