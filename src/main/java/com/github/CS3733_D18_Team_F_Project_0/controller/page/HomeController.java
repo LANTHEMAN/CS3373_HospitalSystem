@@ -71,7 +71,6 @@ public class HomeController implements SwitchableController, Observer {
                     new Timer(true).schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            System.out.println("command = " + command);
                             canSayCommand[0] = false;
                         }
                     }, 5000);
@@ -86,6 +85,9 @@ public class HomeController implements SwitchableController, Observer {
                     switch (command) {
                         case "HELP":
                             onHelpPopup();
+                            break;
+                        case "ADMIN LOGIN":
+                            onLoginPopup();
                             break;
                         default:
                             break;
@@ -552,14 +554,7 @@ public class HomeController implements SwitchableController, Observer {
 
         if (arg instanceof String) {
             String cmd = (String) arg;
-
-            if (arg.toString().equals("HOSPITAL KIOSK")) {
-                commands.add(cmd);
-            }
-
-            if (arg.toString().equals("HELP")) {
-                commands.add(cmd);
-            }
+            commands.add(cmd);
         }
     }
 }
