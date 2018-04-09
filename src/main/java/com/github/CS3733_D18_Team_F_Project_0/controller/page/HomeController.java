@@ -4,10 +4,6 @@ import com.github.CS3733_D18_Team_F_Project_0.ImageCacheSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.Map;
 import com.github.CS3733_D18_Team_F_Project_0.MapSingleton;
 import com.github.CS3733_D18_Team_F_Project_0.controller.*;
-import com.github.CS3733_D18_Team_F_Project_0.graph.*;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import com.github.CS3733_D18_Team_F_Project_0.gfx.PaneMapController;
 import com.github.CS3733_D18_Team_F_Project_0.gfx.PaneVoiceController;
 import com.github.CS3733_D18_Team_F_Project_0.gfx.impl.UglyMapDrawer;
@@ -15,13 +11,15 @@ import com.github.CS3733_D18_Team_F_Project_0.graph.NewNodeBuilder;
 import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
 import com.github.CS3733_D18_Team_F_Project_0.graph.NodeBuilder;
 import com.github.CS3733_D18_Team_F_Project_0.voice.VoiceLauncher;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -68,6 +66,40 @@ public class HomeController implements SwitchableController, Observer {
     private Node modifyNode = null;
     private boolean ctrlHeld = false;
     private PaneSwitcher switcher;
+    private Map map;
+    private ObservableResourceFactory resFactory = new ObservableResourceFactory();
+    @FXML
+    private ImageView ivMap;
+    @FXML
+    private Pane mapContainer;
+    @FXML
+    private VBox addLocationPopup;
+
+    @FXML
+    private VBox vbxMenu;
+    @FXML
+    private VBox vbxLocation;
+    @FXML
+    private VBox vbxDirections;
+    /**
+     * New node window
+     */
+    @FXML
+    private TextField newNode_x;
+    @FXML
+    private TextField newNode_y;
+    @FXML
+    private TextField newNode_shortName;
+    @FXML
+    private ComboBox<String> newNode_type = new ComboBox<>(FXCollections.observableArrayList(NodeBuilder.getNodeTypes()));
+    @FXML
+    private GesturePane gesturePane;
+    @FXML
+    private Text txtUser;
+    @FXML
+    private Button btnMapDimensions;
+    @FXML
+    private Button loginPopup;
     Timeline commandExecuter = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -104,33 +136,6 @@ public class HomeController implements SwitchableController, Observer {
             }
         }
     }));
-    private Map map;
-    private ObservableResourceFactory resFactory = new ObservableResourceFactory();
-    @FXML
-    private ImageView ivMap;
-    @FXML
-    private Pane mapContainer;
-    @FXML
-    private VBox addLocationPopup;
-    /**
-     * New node window
-     */
-    @FXML
-    private TextField newNode_x;
-    @FXML
-    private TextField newNode_y;
-    @FXML
-    private TextField newNode_shortName;
-    @FXML
-    private ComboBox<String> newNode_type = new ComboBox<>(FXCollections.observableArrayList(NodeBuilder.getNodeTypes()));
-    @FXML
-    private GesturePane gesturePane;
-    @FXML
-    private Text txtUser;
-    @FXML
-    private Button btnMapDimensions;
-    @FXML
-    private Button loginPopup;
     // the modify Node information panel on the left
     @FXML
     private GridPane gpaneNodeInfo;
@@ -382,10 +387,9 @@ public class HomeController implements SwitchableController, Observer {
                 }
 
             });
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
     }
@@ -580,6 +584,18 @@ public class HomeController implements SwitchableController, Observer {
         reloadMap();
         */
     }
+
+    @FXML
+    void onGetDirections() {
+        vbxMenu.setVisible(false);
+        vbxDirections.setVisible(true);
+    }
+
+    public void onFindLocation() {
+        vbxMenu.setVisible(false);
+        vbxLocation.setVisible(true);
+    }
+
 
     private void reloadMap() {
         int index;
