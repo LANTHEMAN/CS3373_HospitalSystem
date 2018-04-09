@@ -23,6 +23,8 @@
 <?import javafx.scene.text.Text?>
 <?import net.kurobako.gesturefx.GesturePane?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import com.jfoenix.controls.JFXButton?>
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.CS3733_D18_Team_F_Project_0.controller.page.HomeController">
     <columnConstraints>
       <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="256.0" />
@@ -34,6 +36,38 @@
         <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
     </rowConstraints>
     <children>
+
+        <VBox fx:id="box" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="298.0" style="-fx-background-color: #616161;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+            <children>
+                <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onGetDirections" prefHeight="400.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Get Directions" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="20.0" />
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
+                    </graphic></JFXButton>
+                <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onFindLocation" prefHeight="400.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Find Location" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="20.0" />
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="FLAG" size="50" />
+                    </graphic></JFXButton>
+                <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefHeight="400.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Service Request" textFill="WHITE">
+                    <VBox.margin>
+                        <Insets bottom="40.0" />
+                    </VBox.margin>
+                    <font>
+                        <Font name="Arial" size="20.0" />
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="TAG" size="50" />
+                    </graphic></JFXButton>
+            </children>
+            <padding>
+                <Insets bottom="-40.0" />
+            </padding>
+        </VBox>
         <GridPane fx:id="gpaneNodeInfo" maxWidth="250.0" prefHeight="601.0" prefWidth="250.0" style="-fx-background-color: rgba(217, 217, 217, 0.9);" visible="false" GridPane.columnSpan="2">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

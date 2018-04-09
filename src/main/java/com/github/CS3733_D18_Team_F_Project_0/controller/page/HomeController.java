@@ -22,7 +22,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -40,7 +39,6 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -156,6 +154,8 @@ public class HomeController implements SwitchableController, Observer {
     private JFXHamburger hamburger;
     @FXML
     private JFXDrawer drawer;
+    @FXML
+    private VBox box;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -367,29 +367,25 @@ public class HomeController implements SwitchableController, Observer {
         cboxAvailableLocations.getItems().addAll(all);
 
         */
-        try {
-            VBox box = FXMLLoader.load(getClass().getResource("../sideMenu.fxml"));
-            drawer.setSidePane(box);
-            drawer.setOverLayVisible(false);
+
+        drawer.setSidePane(box);
+        drawer.setOverLayVisible(false);
 
 
-            HamburgerBackArrowBasicTransition arrowBasicTransition = new HamburgerBackArrowBasicTransition(hamburger);
-            arrowBasicTransition.setRate(-1);
-            hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-                arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
-                arrowBasicTransition.play();
+        HamburgerBackArrowBasicTransition arrowBasicTransition = new HamburgerBackArrowBasicTransition(hamburger);
+        arrowBasicTransition.setRate(-1);
+        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+            arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
+            arrowBasicTransition.play();
 
 
-                if (drawer.isShown()) {
-                    drawer.close();
-                } else {
-                    drawer.open();
-                }
+            if (drawer.isShown()) {
+                drawer.close();
+            } else {
+                drawer.open();
+            }
 
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        });
 
 
     }
