@@ -11,6 +11,7 @@ mainClassName = "com.github.CS3733_D18_Team_F_Project_0.Main"
 repositories {
     mavenCentral()
     jcenter()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
 dependencies {
@@ -31,7 +32,10 @@ dependencies {
             [group: 'org.apache.commons', name: 'commons-csv', version: '1.5'],
             [group: 'net.kurobako.gesturefx', name: 'gesturefx', version: '0.2.0'],
             [group: 'de.jensd', name: 'fontawesomefx', version: '8.9']
+            [group: 'edu.cmu.sphinx', name: 'sphinx4-core', version:'5prealpha-SNAPSHOT'],
+            [group: 'edu.cmu.sphinx', name: 'sphinx4-data', version:'5prealpha-SNAPSHOT']
     )
+
 }
 
 test {

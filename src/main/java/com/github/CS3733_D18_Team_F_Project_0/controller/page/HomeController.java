@@ -8,18 +8,26 @@ import com.github.CS3733_D18_Team_F_Project_0.graph.*;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import com.github.CS3733_D18_Team_F_Project_0.gfx.PaneMapController;
+import com.github.CS3733_D18_Team_F_Project_0.gfx.PaneVoiceController;
+import com.github.CS3733_D18_Team_F_Project_0.gfx.impl.UglyMapDrawer;
+import com.github.CS3733_D18_Team_F_Project_0.graph.NewNodeBuilder;
+import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
+import com.github.CS3733_D18_Team_F_Project_0.graph.NodeBuilder;
+import com.github.CS3733_D18_Team_F_Project_0.voice.VoiceLauncher;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventType;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,22 +38,20 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static com.github.CS3733_D18_Team_F_Project_0.MapSingleton.floor;
-
-
-public class HomeController implements SwitchableController {
+public class HomeController implements SwitchableController, Observer {
 
     private static final int MIN_PIXELS = 200;
-    public static Image maps2D[];
-    public static Image maps3D[];
+    private static Image maps2D[] = ImageCacheSingleton.maps2D;
+    private static Image maps3D[] = ImageCacheSingleton.maps3D;
+    final Boolean canSayCommand[] = {false};
     private final ObservableList<String> patientRooms = FXCollections.observableArrayList(
             "Patient Room 1",
             "Patient Room 2",
@@ -54,20 +60,50 @@ public class HomeController implements SwitchableController {
             "Bathroom 1",
             "Bathroom 2");
     private final ObservableList<String> all = FXCollections.observableArrayList();
-    @FXML
-    public Button DirectionsSwitch;
-    @FXML
-    public ComboBox<String> cboxDestinationType;
-    @FXML
-    public ComboBox<String> cboxAvailableLocations;
-    Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
-    HashMap<Node, Circle> nodeCircleHashMap = new HashMap<>();
-    Node selectedNodeStart = null;
-    Node pathStartNode = null;
-    Node pathEndNode = null;
-    Node modifyNode = null;
-    boolean ctrlHeld = false;
+    ConcurrentLinkedQueue<String> commands = new ConcurrentLinkedQueue<>();
+    PaneVoiceController paneVoiceController;
+    private PaneMapController mapDrawController;
+    private Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
+    private Node selectedNodeStart = null;
+    private Node modifyNode = null;
+    private boolean ctrlHeld = false;
     private PaneSwitcher switcher;
+    Timeline commandExecuter = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            String command = commands.poll();
+            if (command != null) {
+                if (command.equals("HOSPITAL KIOSK")) {
+                    paneVoiceController.setVisibility(true);
+                    canSayCommand[0] = true;
+                    new Timer(true).schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            canSayCommand[0] = false;
+                        }
+                    }, 5000);
+
+                } else {
+                    if (!canSayCommand[0]) {
+                        return;
+                    }
+                    canSayCommand[0] = false;
+                    paneVoiceController.setVisibility(false);
+
+                    switch (command) {
+                        case "HELP":
+                            onHelpPopup();
+                            break;
+                        case "ADMIN LOGIN":
+                            onLoginPopup();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+    }));
     private Map map;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
     @FXML
@@ -75,19 +111,10 @@ public class HomeController implements SwitchableController {
     @FXML
     private Pane mapContainer;
     @FXML
-    private ScrollPane scrollMap;
-    @FXML
-    private Text MainTitle;
-    @FXML
-    private VBox vbxMenu;
-    @FXML
-    private VBox vbxLocation;
-    @FXML
-    private VBox vbxDirections;
-    @FXML
-    private VBox vbxFloor;
-    @FXML
     private VBox addLocationPopup;
+    /**
+     * New node window
+     */
     @FXML
     private TextField newNode_x;
     @FXML
@@ -95,36 +122,15 @@ public class HomeController implements SwitchableController {
     @FXML
     private TextField newNode_shortName;
     @FXML
-    private ComboBox<String> newNode_type;
-    @FXML
-    private VBox findLocationPopup;
-    @FXML
-    private Circle locationCircle;
-    @FXML
-    private Text txtFindLocation;
-    @FXML
-    private Button btnLocationDirections;
+    private ComboBox<String> newNode_type = new ComboBox<>(FXCollections.observableArrayList(NodeBuilder.getNodeTypes()));
     @FXML
     private GesturePane gesturePane;
-    @FXML
-    private Button btnLower2Floor;
-    @FXML
-    private Button btnLower1Floor;
-    @FXML
-    private Button btnGroundFloor;
-    @FXML
-    private Button btnFirstFloor;
-    @FXML
-    private Button btnSecondFloor;
-    @FXML
-    private Button btnThirdFloor;
     @FXML
     private Text txtUser;
     @FXML
     private Button btnMapDimensions;
     @FXML
     private Button loginPopup;
-
     // the modify Node information panel on the left
     @FXML
     private GridPane gpaneNodeInfo;
@@ -133,13 +139,13 @@ public class HomeController implements SwitchableController {
     @FXML
     private TextField modNode_longName;
     @FXML
-    private ComboBox modNode_type;
-    @FXML
-    private ComboBox modNode_building;
-    @FXML
     private TextField modNode_x;
     @FXML
     private TextField modNode_y;
+    @FXML
+    private Pane voicePane;
+    // kiosk location
+    private Point2D startLocation = new Point2D(1875.0, 1025.0);
 
     @FXML
     private JFXHamburger hamburger;
@@ -149,19 +155,28 @@ public class HomeController implements SwitchableController {
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
+        VoiceLauncher.getInstance().addObserver(this);
+
+        paneVoiceController = new PaneVoiceController(voicePane);
+
+        commandExecuter.setCycleCount(Timeline.INDEFINITE);
+        commandExecuter.play();
+
+        // initialize map and map drawer
         map = MapSingleton.getInstance().getMap();
+        mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
+
         //to make initial admin with secure password
         txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
         if (!PermissionSingleton.getInstance().getCurrUser().equals("Guest")) {
             loginPopup.setText("Logout");
         }
 
-        gpaneNodeInfo.setVisible(false);
+        // set default zoom
+        gesturePane.zoomTo(2, new Point2D(600, 600));
 
-        maps2D = ImageCacheSingleton.maps2D;
-        maps3D = ImageCacheSingleton.maps3D;
-
-        if (MapSingleton.is2D) {
+        // dynamically change 2d/3d switcher button text
+        if (map.is2D()) {
             StringBinding mapDim = switcher.resFac.getStringBinding("3DMap");
             btnMapDimensions.setText(mapDim.get());
         } else {
@@ -169,12 +184,17 @@ public class HomeController implements SwitchableController {
             btnMapDimensions.setText(mapDim.get());
         }
 
-        gesturePane.zoomTo(2, new Point2D(600, 600));
-
+        // set up new node panel
         newNode_type.getItems().addAll(NodeBuilder.getNodeTypes());
         newNode_type.getSelectionModel().selectFirst();
 
-        reloadMap();
+        if (PermissionSingleton.getInstance().isAdmin()) {
+            mapDrawController.showNodes();
+            mapDrawController.showEdges();
+        }
+
+
+        // react to key presses and mouse clicks
         switcher.getScene().setOnKeyPressed(ke -> {
             if (ke.isControlDown()) {
                 gesturePane.setGestureEnabled(false);
@@ -188,9 +208,8 @@ public class HomeController implements SwitchableController {
                 ctrlHeld = false;
             }
         });
-
         mapContainer.setOnMouseReleased(e -> {
-            if (selectedNodeStart == null || !MapSingleton.is2D) {
+            if (selectedNodeStart == null || !map.is2D()) {
                 return;
             }
 
@@ -200,10 +219,8 @@ public class HomeController implements SwitchableController {
 
             double map_x = 5000;
             double map_y = 3400;
-            double map3D_x = 5000;
             double map3D_y = 2772;
-            if (!MapSingleton.is2D) {
-                map_x = map3D_x;
+            if (!map.is2D()) {
                 map_y = map3D_y;
             }
 
@@ -216,13 +233,10 @@ public class HomeController implements SwitchableController {
 
             if (nodes.size() > 0) {
                 // TODO get closest node
-                clearNodes();
-                reloadMap();
                 Node node = nodes.iterator().next();
-                nodeCircleHashMap.get(node).setFill(Color.BLUE);
+                mapDrawController.selectNode(node);
 
                 if (node == selectedNodeStart) {
-                    selectedNodeStart = null;
                     selectedNodeStart = null;
                     return;
                 }
@@ -235,45 +249,47 @@ public class HomeController implements SwitchableController {
                     map.removeEdge(node, selectedNodeStart);
                 }
                 selectedNodeStart = null;
-                clearNodes();
-                reloadMap();
             } else {
                 selectedNodeStart = null;
             }
 
         });
-
         mapContainer.setOnMouseClicked(e -> {
             double map_x = 5000;
             double map_y = 3400;
-            double map3D_x = 5000;
             double map3D_y = 2772;
-            if (!MapSingleton.is2D) {
-                map_x = map3D_x;
+            if (!map.is2D()) {
                 map_y = map3D_y;
             }
 
             Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
-            HashSet<Node> nodes;
-            if (MapSingleton.is2D) {
-                nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
-                        , node.getPosition().getY()).distance(mapPos) < 8);
-            } else {
-                nodes = map.getNodes(node -> new Point2D(node.getWireframePosition().getX()
-                        , node.getWireframePosition().getY()).distance(mapPos) < 8);
+            mapDrawController.showPath(map.getPath
+                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), map.is2D())
+                            , map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D())));
+
+            // if editing maps
+            HashSet<Node> nodes = new HashSet<>();
+            if (PermissionSingleton.getInstance().isAdmin()) {
+                if (map.is2D()) {
+                    nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
+                            , node.getPosition().getY()).distance(mapPos) < 8);
+                } else {
+                    nodes = map.getNodes(node -> new Point2D(node.getWireframePosition().getX()
+                            , node.getWireframePosition().getY()).distance(mapPos) < 8);
+                }
+            }
+            // not editing map
+            else {
+                nodes.add(map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D()));
             }
 
 
             if (nodes.size() > 0) {
-                // TODO get closest node
-                clearNodes();
-                reloadMap();
-                Node node = nodes.iterator().next();
-                nodeCircleHashMap.get(node).setFill(Color.BLUE);
+                Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D());
+                mapDrawController.selectNode(node);
                 selectedNodeStart = node;
-                // TODO set modification fields to the appropriate values****
 
                 if (PermissionSingleton.getInstance().isAdmin()) {
                     gpaneNodeInfo.setVisible(true);
@@ -287,15 +303,6 @@ public class HomeController implements SwitchableController {
 
                 modifyNode = node;
 
-
-                if (vbxDirections.isVisible()) {
-                    if (pathStartNode == null) {
-                        pathStartNode = selectedNodeStart;
-                    } else if (selectedNodeStart != pathStartNode) {
-                        pathEndNode = selectedNodeStart;
-                    }
-                }
-
             } else {
                 selectedNodeStart = null;
             }
@@ -307,21 +314,19 @@ public class HomeController implements SwitchableController {
 
             // remove a node
             if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 2) {
-                if (!MapSingleton.is2D) {
+                if (!map.is2D()) {
                     return;
                 }
                 if (nodes.size() > 0) {
                     // TODO get closest node
                     map.removeNode(selectedNodeStart);
                     selectedNodeStart = null;
-                    clearNodes();
-                    reloadMap();
                 }
                 selectedNodeStart = null;
             }
             // create a new node
             if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
-                if (!MapSingleton.is2D) {
+                if (!map.is2D()) {
                     return;
                 }
                 addLocationPopup.setTranslateX(e.getSceneX() - 90);
@@ -399,124 +404,12 @@ public class HomeController implements SwitchableController {
         switcher.popup(Screens.Login);
     }
 
-    @FXML
-    void onDrawPath() {
-        if (pathStartNode != null && pathEndNode != null) {
-            Path path = MapSingleton.getInstance().getMap().getPath(pathStartNode, pathEndNode);
-            ArrayList<Node> nodes = path.getNodes();
-            ArrayList<Edge> edges = path.getEdges();
-
-            if (MapSingleton.is2D) {
-                for (Edge edge : edges) {
-                    Line line = new Line();
-                    line.setEndX(edge.getNode1().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                    line.setEndY(edge.getNode1().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-                    line.setStartX(edge.getNode2().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                    line.setStartY(edge.getNode2().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-                    line.setFill(Color.BLUE);
-                    mapContainer.getChildren().add(line);
-                }
-                for (Node node : nodes) {
-                    Circle circle = new Circle(1.5, Color.RED);
-                    circle.setCenterX(node.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                    circle.setCenterY(node.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-                    circle.setFill(Color.PURPLE);
-                    mapContainer.getChildren().add(circle);
-                }
-
-                Text startText = new Text(pathStartNode.getShortName());
-                Text endText = new Text(pathEndNode.getShortName());
-
-                startText.setX(pathStartNode.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                startText.setY(pathStartNode.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-                startText.setFont(Font.font("Verdana", 5));
-                endText.setX(pathEndNode.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                endText.setY(pathEndNode.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-                endText.setFont(Font.font("Verdana", 5));
-
-                mapContainer.getChildren().addAll(startText, endText);
-            } else {
-                for (Edge edge : edges) {
-                    Line line = new Line();
-                    line.setEndX(edge.getNode1().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                    line.setEndY(edge.getNode1().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
-                    line.setStartX(edge.getNode2().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                    line.setStartY(edge.getNode2().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
-                    line.setFill(Color.BLUE);
-                    mapContainer.getChildren().add(line);
-                }
-                for (Node node : nodes) {
-                    Circle circle = new Circle(1.5, Color.RED);
-                    circle.setCenterX(node.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                    circle.setCenterY(node.getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
-                    circle.setFill(Color.PURPLE);
-                    mapContainer.getChildren().add(circle);
-                }
-                Text startText = new Text(pathStartNode.getShortName());
-                Text endText = new Text(pathEndNode.getShortName());
-
-                startText.setX(pathStartNode.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                startText.setY(pathStartNode.getWireframePosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-                startText.setFont(Font.font("Verdana", 5));
-                endText.setX(pathEndNode.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-                endText.setY(pathEndNode.getWireframePosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-                endText.setFont(Font.font("Verdana", 5));
-
-                mapContainer.getChildren().addAll(startText, endText);
-            }
-        } else {
-            System.out.println("Invalid nodes");
-        }
-    }
-
 
     // Popup upon help request
 
     @FXML
     void onHelpPopup() {
         switcher.popup(Screens.Help);
-    }
-
-
-    // Menus on right
-    public void onFindLocation() {
-        vbxMenu.setVisible(false);
-        vbxLocation.setVisible(true);
-    }
-
-    public void onLocationCancel() {
-        vbxLocation.setVisible(false);
-        vbxMenu.setVisible(true);
-    }
-
-    @FXML
-    void onGetDirections() {
-        vbxMenu.setVisible(false);
-        vbxDirections.setVisible(true);
-    }
-
-    @FXML
-    void onDirectionsCancel() {
-        vbxDirections.setVisible(false);
-        vbxMenu.setVisible(true);
-
-        clearNodes();
-        reloadMap();
-
-        pathEndNode = null;
-        pathStartNode = null;
-    }
-
-    @FXML
-    void onSwitchFloor() {
-        vbxMenu.setVisible(false);
-        vbxFloor.setVisible(true);
-    }
-
-    @FXML
-    void onFloorCancel() {
-        vbxFloor.setVisible(false);
-        vbxMenu.setVisible(true);
     }
 
 
@@ -557,21 +450,17 @@ public class HomeController implements SwitchableController {
     @FXML
     void onMapDimensions() {
         StringBinding mapDim;
-        if (MapSingleton.is2D) {
+        if (map.is2D()) {
             mapDim = switcher.resFac.getStringBinding("2DMap");
             btnMapDimensions.setText(mapDim.get());
-            MapSingleton.is2D = false;
+            map.setIs2D(false);
             reloadMap();
         } else {
             mapDim = switcher.resFac.getStringBinding("3DMap");
             btnMapDimensions.setText(mapDim.get());
-            MapSingleton.is2D = true;
+            map.setIs2D(true);
             reloadMap();
         }
-        // make the map full sized when changed over
-        double width = ivMap.getImage().getWidth();
-        double height = ivMap.getImage().getHeight();
-        reset(ivMap, width, height);
     }
 
 
@@ -586,7 +475,7 @@ public class HomeController implements SwitchableController {
         Node newNode = new NewNodeBuilder()
                 .setNodeType(type)
                 .setNumNodeType(map)
-                .setFloor(floor)
+                .setFloor(map.getFloor())
                 .setBuilding("New Building")    // TODO set building
                 .setShortName(newNode_shortName.getText())
                 .setLongName(newNode_shortName.getText()) // TODO get long name
@@ -619,14 +508,12 @@ public class HomeController implements SwitchableController {
                 , Double.parseDouble(modNode_y.getText())));
         modifyNode.setShortName(modNode_shortName.getText());
         modifyNode.setLongName(modNode_longName.getText());
-
-        clearNodes();
-        reloadMap();
     }
 
     // Find Location
     @FXML
     void onDestinationType() {
+        /*
         // create an object with a translation string and a database string name/id?
         if (cboxDestinationType.getSelectionModel().getSelectedItem().equals("Patient Room")) {
             cboxAvailableLocations.setItems(patientRooms);
@@ -636,10 +523,12 @@ public class HomeController implements SwitchableController {
             // default to displaying all types?
             cboxAvailableLocations.setItems(all);
         }
+        */
     }
 
     @FXML
     void onAvailableLocations() {
+        /*
         // TODO get the actual x, y, and name
         // need that database package object as above^
         // get id from object, get x and y from database
@@ -650,161 +539,81 @@ public class HomeController implements SwitchableController {
         findLocationPopup.setTranslateY(100);
         txtFindLocation.setText("" + cboxAvailableLocations.getSelectionModel().getSelectedItem());
         findLocationPopup.setVisible(true);
+        */
     }
 
     @FXML
     void onLocationDirections() {
+        /*
         // hide location selection
         findLocationPopup.setVisible(false);
         vbxLocation.setVisible(false);
         // find directions with this location
         // TODO need to set field of txtfield first!!!!! (like putting in register before pass)
         onGetDirections();
+        */
     }
 
 
     @FXML
     void changeFloorMap(ActionEvent e) {
+        /*
         if (e.getSource().equals(btnLower2Floor)) {
-            floor = "L2";
+            map.setFloor("L2");
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 2");
         } else if (e.getSource().equals(btnLower1Floor)) {
-            floor = "L1";
+            map.setFloor("L1");
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 1");
         } else if (e.getSource().equals(btnGroundFloor)) {
-            floor = "0G";
+            map.setFloor("0G");
             MainTitle.setText("Brigham and Women's Hospital: Ground Floor");
         } else if (e.getSource().equals(btnFirstFloor)) {
-            floor = "01";
+            map.setFloor("01");
             MainTitle.setText("Brigham and Women's Hospital: Level 1");
         } else if (e.getSource().equals(btnSecondFloor)) {
-            floor = "02";
+            map.setFloor("02");
             MainTitle.setText("Brigham and Women's Hospital: Level 2");
         } else if (e.getSource().equals(btnThirdFloor)) {
-            floor = "03";
+            map.setFloor("03");
             MainTitle.setText("Brigham and Women's Hospital: Level 3");
         }
         reloadMap();
+        */
     }
 
     private void reloadMap() {
         int index;
-        if (floor.equals("L2")) {
+        if (map.getFloor().equals("L2")) {
             index = 0;
-        } else if (floor.equals("L1")) {
+        } else if (map.getFloor().equals("L1")) {
             index = 1;
-        } else if (floor.equals("0G")) {
+        } else if (map.getFloor().equals("0G")) {
             index = 2;
-        } else if (floor.equals("01")) {
+        } else if (map.getFloor().equals("01")) {
             index = 3;
-        } else if (floor.equals("02")) {
+        } else if (map.getFloor().equals("02")) {
             index = 4;
         } else {
             index = 5;
         }
 
-        if (!MapSingleton.is2D) {
+        if (!map.is2D()) {
             ivMap.setImage(maps3D[index]);
-            clearNodes();
-            draw3DNodes(floor);
+
         } else {
             ivMap.setImage(maps2D[index]);
-            clearNodes();
-            draw2DNodes(floor);
         }
     }
 
-    // Image movement helper functions
-
-    // reset to the top left:
-    private void reset(ImageView imageView, double width, double height) {
-        imageView.setViewport(new Rectangle2D(0, 0, width, height));
-    }
-
-    // shift the viewport of the imageView by the specified delta, clamping so
-    // the viewport does not move off the actual image:
-    private void shift(ImageView imageView, Point2D delta) {
-        Rectangle2D viewport = imageView.getViewport();
-
-        double width = imageView.getImage().getWidth();
-        double height = imageView.getImage().getHeight();
-
-        double maxX = width - viewport.getWidth();
-        double maxY = height - viewport.getHeight();
-
-        double minX = clamp(viewport.getMinX() - delta.getX(), 0, maxX);
-        double minY = clamp(viewport.getMinY() - delta.getY(), 0, maxY);
-
-        imageView.setViewport(new Rectangle2D(minX, minY, viewport.getWidth(), viewport.getHeight()));
-    }
-
-    private double clamp(double value, double min, double max) {
-
-        if (value < min)
-            return min;
-        if (value > max)
-            return max;
-        return value;
-    }
-
-    // convert mouse coordinates in the imageView to coordinates in the actual image:
-    private Point2D imageViewToImage(ImageView imageView, Point2D imageViewCoordinates) {
-        double xProportion = imageViewCoordinates.getX() / imageView.getBoundsInLocal().getWidth();
-        double yProportion = imageViewCoordinates.getY() / imageView.getBoundsInLocal().getHeight();
-
-        Rectangle2D viewport = imageView.getViewport();
-        return new Point2D(
-                viewport.getMinX() + xProportion * viewport.getWidth(),
-                viewport.getMinY() + yProportion * viewport.getHeight());
-    }
-
-    private void draw2DNodes(String newLevel) {
-        nodeCircleHashMap.clear();
-        map = MapSingleton.getInstance().getMap();
-        for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))) {
-            Line line = new Line();
-            line.setEndX(edge.getNode1().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            line.setEndY(edge.getNode1().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-            line.setStartX(edge.getNode2().getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            line.setStartY(edge.getNode2().getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-            mapContainer.getChildren().add(line);
-        }
-        for (Node node : map.getNodes(node -> node.getFloor().equals(newLevel))) {
-            Circle circle = new Circle(1.5, Color.RED);
-            circle.setCenterX(node.getPosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            circle.setCenterY(node.getPosition().getY() * mapContainer.getMaxHeight() / 3400.f);
-            mapContainer.getChildren().add(circle);
-            nodeCircleHashMap.put(node, circle);
+    @Override
+    public void update(Observable o, Object arg) {
+        if (!(o instanceof VoiceLauncher)) {
+            return;
         }
 
-        mapContainer.getChildren().add(newNodeCircle);
-        newNodeCircle.setVisible(false);
-    }
-
-    private void draw3DNodes(String newLevel) {
-        nodeCircleHashMap.clear();
-        map = MapSingleton.getInstance().getMap();
-        for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(newLevel))) {
-            Line line = new Line();
-            line.setEndX(edge.getNode1().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            line.setEndY(edge.getNode1().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
-            line.setStartX(edge.getNode2().getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            line.setStartY(edge.getNode2().getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
-            mapContainer.getChildren().add(line);
-        }
-        for (Node node : map.getNodes(node -> node.getFloor().equals(newLevel))) {
-            Circle circle = new Circle(1.5, Color.RED);
-            circle.setCenterX(node.getWireframePosition().getX() * mapContainer.getMaxWidth() / 5000.f);
-            circle.setCenterY(node.getWireframePosition().getY() * mapContainer.getMaxHeight() / 2772.f);
-            mapContainer.getChildren().add(circle);
-            nodeCircleHashMap.put(node, circle);
+        if (arg instanceof String) {
+            String cmd = (String) arg;
+            commands.add(cmd);
         }
     }
-
-    private void clearNodes() {
-        mapContainer.getChildren().clear();
-        mapContainer.getChildren().add(ivMap);
-    }
-
-
 }

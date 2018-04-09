@@ -7,8 +7,6 @@ public class MapSingleton {
 
     DatabaseHandler dbHandler;
     Map map;
-    public static String floor = "02";
-    public static boolean is2D = true;
 
     private MapSingleton() {
         this.dbHandler = DatabaseSingleton.getInstance().getDbHandler();

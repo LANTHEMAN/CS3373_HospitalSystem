@@ -2,21 +2,26 @@ package com.github.CS3733_D18_Team_F_Project_0;
 
 import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
 import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
+import com.github.CS3733_D18_Team_F_Project_0.controller.page.HomeController;
+import com.github.CS3733_D18_Team_F_Project_0.voice.VoiceLauncher;
+import edu.cmu.sphinx.api.Configuration;
+import edu.cmu.sphinx.api.LiveSpeechRecognizer;
+import edu.cmu.sphinx.api.SpeechResult;
+import edu.cmu.sphinx.api.StreamSpeechRecognizer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 
 public class Main extends Application {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
         long fileSize = 0;
         // get rid of the database folder if its empty
         try {
@@ -34,8 +39,16 @@ public class Main extends Application {
             }
         } catch (IOException e) {
         }
-        
+
+        System.out.println("Initializing voice command");
+
+        Thread t = new Thread(VoiceLauncher.getInstance());
+        t.start();
+
         launch(args);
+
+        VoiceLauncher.getInstance().terminate();
+        t.join();
     }
 
     @Override

@@ -80,16 +80,19 @@
             </rowConstraints>
             <children>
                 <GesturePane fx:id="gesturePane" HBarEnabled="false" VBarEnabled="false" fitMode="COVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minScale="2.3" minWidth="-Infinity" scrollMode="ZOOM" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-                    <Pane fx:id="mapContainer" maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0">
+                    <Pane maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0">
                         <children>
                             <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="false" preserveRatio="false">
                                 <image>
                                     <Image url="@BW2D%20Maps/02_thesecondfloor.png" />
                                 </image>
                             </ImageView>
+                            <Pane fx:id="mapContainer" maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0">
+                            </Pane>
                         </children>
                     </Pane>
                 </GesturePane>
+            <Pane fx:id="voicePane" pickOnBounds="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
 
 
                 <ImageView fitHeight="29.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
