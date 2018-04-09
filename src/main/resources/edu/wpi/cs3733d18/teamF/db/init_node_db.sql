@@ -5,8 +5,8 @@ Create Table Node (
   floor     char(2),
   building  varchar(30),
   nodeType  char(4),
-  longName  varchar(50),
-  shortName varchar(40),
+  longName  varchar(60),
+  shortName varchar(50),
   teamName  varchar(30),
   xcoord3d  REAL not NULL,
   ycoord3d  REAL not NULL
