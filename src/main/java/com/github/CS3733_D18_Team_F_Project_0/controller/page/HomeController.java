@@ -362,6 +362,7 @@ public class HomeController implements SwitchableController {
             drawer.setSidePane(box);
             drawer.setOverLayVisible(false);
 
+
             for(javafx.scene.Node node : box.getChildren()){
                 if(node.getAccessibleText() != null){
                     node.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -379,6 +380,7 @@ public class HomeController implements SwitchableController {
                     });
                 }
             }
+
 
             HamburgerBackArrowBasicTransition arrowBasicTransition = new HamburgerBackArrowBasicTransition(hamburger);
             arrowBasicTransition.setRate(-1);

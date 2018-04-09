@@ -4,17 +4,13 @@ import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
 import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
 import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
 import javafx.fxml.FXML;
+import javafx.scene.layout.VBox;
 
 public class SideMenuController implements SwitchableController {
     private PaneSwitcher switcher;
 
-    public void initialize(PaneSwitcher switchera) {
-        this.switcher = switchera;
-    }
-
-    @FXML
-    public void onGetDirections(){
-
+    public void initialize(PaneSwitcher switcher) {
+        this.switcher = switcher;
     }
 
     @FXML
@@ -22,6 +18,13 @@ public class SideMenuController implements SwitchableController {
         switcher.switchTo(Screens.ServiceRequest);
     }
 
+    @FXML
+    public void onFindLocation(){
+    }
 
+    @FXML
+    public void onGetDirections(){
+
+    }
 
 }
