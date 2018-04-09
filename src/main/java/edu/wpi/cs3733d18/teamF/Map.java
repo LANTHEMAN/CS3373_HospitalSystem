@@ -1,9 +1,9 @@
-package com.github.CS3733_D18_Team_F_Project_0;
+package edu.wpi.cs3733d18.teamF;
 
-import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseHandler;
-import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseItem;
-import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseSingleton;
-import com.github.CS3733_D18_Team_F_Project_0.graph.*;
+import edu.wpi.cs3733d18.teamF.db.DatabaseHandler;
+import edu.wpi.cs3733d18.teamF.db.DatabaseItem;
+import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
+import edu.wpi.cs3733d18.teamF.graph.*;
 import javafx.geometry.Point2D;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -211,7 +211,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
         return graph.edgeExists(node1, node2);
     }
 
-    public com.github.CS3733_D18_Team_F_Project_0.graph.Path getPath(Node node1, Node node2) {
+    public edu.wpi.cs3733d18.teamF.graph.Path getPath(Node node1, Node node2) {
         return AStar.getPath(graph, node1, node2);
     }
 

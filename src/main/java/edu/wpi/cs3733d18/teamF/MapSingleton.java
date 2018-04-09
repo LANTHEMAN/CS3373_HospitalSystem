@@ -1,7 +1,7 @@
-package com.github.CS3733_D18_Team_F_Project_0;
+package edu.wpi.cs3733d18.teamF;
 
-import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseHandler;
-import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseSingleton;
+import edu.wpi.cs3733d18.teamF.db.DatabaseHandler;
+import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 
 public class MapSingleton {
 

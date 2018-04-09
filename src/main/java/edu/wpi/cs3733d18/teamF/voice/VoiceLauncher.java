@@ -1,4 +1,4 @@
-package com.github.CS3733_D18_Team_F_Project_0.voice;
+package edu.wpi.cs3733d18.teamF.voice;
 
 import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;

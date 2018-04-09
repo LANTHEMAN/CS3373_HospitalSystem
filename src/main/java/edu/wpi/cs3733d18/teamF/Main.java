@@ -1,8 +1,8 @@
-package com.github.CS3733_D18_Team_F_Project_0;
+package edu.wpi.cs3733d18.teamF;
 
-import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
-import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
-import com.github.CS3733_D18_Team_F_Project_0.voice.VoiceLauncher;
+import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
+import edu.wpi.cs3733d18.teamF.controller.Screens;
+import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;

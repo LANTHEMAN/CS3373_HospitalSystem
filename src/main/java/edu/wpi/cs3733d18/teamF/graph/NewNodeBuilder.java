@@ -1,6 +1,6 @@
-package com.github.CS3733_D18_Team_F_Project_0.graph;
+package edu.wpi.cs3733d18.teamF.graph;
 
-import com.github.CS3733_D18_Team_F_Project_0.Map;
+import edu.wpi.cs3733d18.teamF.Map;
 import javafx.geometry.Point2D;
 
 import static java.lang.Math.cos;

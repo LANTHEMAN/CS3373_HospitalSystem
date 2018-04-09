@@ -1,4 +1,4 @@
-package com.github.CS3733_D18_Team_F_Project_0.db;
+package edu.wpi.cs3733d18.teamF.db;
 
 import javafx.util.Pair;
 import org.apache.commons.csv.CSVFormat;

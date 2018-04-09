@@ -1,7 +1,7 @@
-package com.github.CS3733_D18_Team_F_Project_0.controller;
+package edu.wpi.cs3733d18.teamF.controller;
 
-import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseHandler;
-import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseItem;
+import edu.wpi.cs3733d18.teamF.db.DatabaseHandler;
+import edu.wpi.cs3733d18.teamF.db.DatabaseItem;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

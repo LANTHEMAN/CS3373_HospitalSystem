@@ -1,10 +1,10 @@
-package com.github.CS3733_D18_Team_F_Project_0.controller.page;
+package edu.wpi.cs3733d18.teamF.controller.page;
 
-import com.github.CS3733_D18_Team_F_Project_0.controller.PaneSwitcher;
-import com.github.CS3733_D18_Team_F_Project_0.controller.Screens;
-import com.github.CS3733_D18_Team_F_Project_0.controller.SwitchableController;
-import com.github.CS3733_D18_Team_F_Project_0.sr.ServiceRequest;
-import com.github.CS3733_D18_Team_F_Project_0.sr.ServiceRequestSingleton;
+import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
+import edu.wpi.cs3733d18.teamF.controller.Screens;
+import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
+import edu.wpi.cs3733d18.teamF.sr.ServiceRequest;
+import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

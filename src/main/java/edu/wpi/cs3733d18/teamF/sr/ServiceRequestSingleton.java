@@ -1,8 +1,8 @@
-package com.github.CS3733_D18_Team_F_Project_0.sr;
+package edu.wpi.cs3733d18.teamF.sr;
 
-import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseHandler;
-import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseItem;
-import com.github.CS3733_D18_Team_F_Project_0.db.DatabaseSingleton;
+import edu.wpi.cs3733d18.teamF.db.DatabaseHandler;
+import edu.wpi.cs3733d18.teamF.db.DatabaseItem;
+import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

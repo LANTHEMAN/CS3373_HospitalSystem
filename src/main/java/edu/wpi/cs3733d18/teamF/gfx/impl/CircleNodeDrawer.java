@@ -1,8 +1,8 @@
-package com.github.CS3733_D18_Team_F_Project_0.gfx.impl;
+package edu.wpi.cs3733d18.teamF.gfx.impl;
 
-import com.github.CS3733_D18_Team_F_Project_0.MapSingleton;
-import com.github.CS3733_D18_Team_F_Project_0.gfx.NodeDrawable;
-import com.github.CS3733_D18_Team_F_Project_0.graph.Node;
+import edu.wpi.cs3733d18.teamF.MapSingleton;
+import edu.wpi.cs3733d18.teamF.gfx.NodeDrawable;
+import edu.wpi.cs3733d18.teamF.graph.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;

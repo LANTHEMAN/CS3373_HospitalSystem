@@ -1,6 +1,6 @@
-package com.github.CS3733_D18_Team_F_Project_0.gfx;
+package edu.wpi.cs3733d18.teamF.gfx;
 
-import com.github.CS3733_D18_Team_F_Project_0.graph.Edge;
+import edu.wpi.cs3733d18.teamF.graph.Edge;
 
 public abstract class EdgeDrawable implements Drawable{
     protected Edge edge = null;

@@ -1,4 +1,4 @@
-package com.github.CS3733_D18_Team_F_Project_0.qr;
+package edu.wpi.cs3733d18.teamF.qr;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;

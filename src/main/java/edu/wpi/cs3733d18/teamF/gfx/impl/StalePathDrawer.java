@@ -1,8 +1,8 @@
-package com.github.CS3733_D18_Team_F_Project_0.gfx.impl;
+package edu.wpi.cs3733d18.teamF.gfx.impl;
 
-import com.github.CS3733_D18_Team_F_Project_0.gfx.EdgeDrawable;
-import com.github.CS3733_D18_Team_F_Project_0.gfx.PathDrawable;
-import com.github.CS3733_D18_Team_F_Project_0.graph.Edge;
+import edu.wpi.cs3733d18.teamF.gfx.EdgeDrawable;
+import edu.wpi.cs3733d18.teamF.gfx.PathDrawable;
+import edu.wpi.cs3733d18.teamF.graph.Edge;
 import javafx.scene.layout.Pane;
 
 public class StalePathDrawer extends PathDrawable {

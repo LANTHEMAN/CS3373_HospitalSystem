@@ -1,6 +1,6 @@
-package com.github.CS3733_D18_Team_F_Project_0.gfx;
+package edu.wpi.cs3733d18.teamF.gfx;
 
-import com.github.CS3733_D18_Team_F_Project_0.graph.Path;
+import edu.wpi.cs3733d18.teamF.graph.Path;
 
 public abstract class PathDrawable implements Drawable {
     protected Path path;

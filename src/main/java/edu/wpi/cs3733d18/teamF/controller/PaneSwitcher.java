@@ -1,4 +1,4 @@
-package com.github.CS3733_D18_Team_F_Project_0.controller;
+package edu.wpi.cs3733d18.teamF.controller;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
