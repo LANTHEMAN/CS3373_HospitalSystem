@@ -12,7 +12,7 @@ public class DepthSearch {
      * @param destination The destination node in the graph
      * @return An array of Nodes that represent a path through the graph
      */
-    public Path getPathDepth(Graph graph, Node source, Node destination) {
+    public static Path getPathDepth(Graph graph, Node source, Node destination) {
         // see if the destination exists or if src equals dst
         if (destination == null || source == null) {
             throw new AssertionError();
@@ -40,12 +40,14 @@ public class DepthSearch {
 
 
             if (CurrentNode == destination){
+                System.out.println("sldmdmdfgfuisaio;efwnufew");
+                System.out.println(VisitedNode.get(CurrentNode));
                 return new Path(VisitedNode.get(CurrentNode), graph);
             }
 
             else {
                 for (Node neighbor : graph.getNeighbors(CurrentNode)) {
-                    if (!VisitedNode.containsKey(CurrentNode)) {
+                    if (!VisitedNode.containsKey(neighbor)) {
                         OpenSet.add(neighbor);
                         VisitedNode.put(neighbor,new ArrayList<Node>());
                         VisitedNode.get(neighbor).addAll(VisitedNode.get(CurrentNode));

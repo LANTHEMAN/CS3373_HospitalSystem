@@ -15,7 +15,7 @@ public class BreathSearch {
      * @param destination The destination node in the graph
      * @return An array of Nodes that represent a path through the graph
      */
-    public Path getPathDepth(Graph graph, Node source, Node destination) {
+    public static Path getPathBreath(Graph graph, Node source, Node destination) {
         // see if the destination exists or if src equals dst
         if (destination == null || source == null) {
             throw new AssertionError();
@@ -42,15 +42,16 @@ public class BreathSearch {
             Node CurrentNode = OpenSet.get(0);
             OpenSet.remove(0);
 
-
             if (CurrentNode == destination){
                 return new Path(VisitedNode.get(CurrentNode), graph);
             }
 
             else {
                 for (Node neighbor : graph.getNeighbors(CurrentNode)) {
-                    if (!VisitedNode.containsKey(CurrentNode)) {
+                    System.out.println(neighbor);
+                    if (!VisitedNode.containsKey(neighbor)) {
                         OpenSet.add(neighbor);
+                        System.out.println("");
                         VisitedNode.put(neighbor,new ArrayList<Node>());
                         VisitedNode.get(neighbor).addAll(VisitedNode.get(CurrentNode));
                         VisitedNode.get(neighbor).add(neighbor);
@@ -58,11 +59,9 @@ public class BreathSearch {
                 }
             }
 
-
-
         }
 
-
+        System.out.println("No path found");
         return new Path(new ArrayList<>(), graph);
     }
 
