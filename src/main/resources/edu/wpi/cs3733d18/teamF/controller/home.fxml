@@ -36,6 +36,47 @@
         <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
     </rowConstraints>
     <children>
+
+        <VBox fx:id="adminBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="369.0" prefWidth="401.0" style="-fx-background-color: #616161;">
+            <children>
+                <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onGetDirections" prefHeight="120.0" prefWidth="400.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Map Editor" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="20.0" />
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
+                    </graphic></JFXButton>
+            <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefHeight="120.0" prefWidth="400.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Service Request" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="TAG" size="50" />
+               </graphic>
+            </JFXButton>
+                <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onFindLocation" prefHeight="120.0" prefWidth="400.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Edit Users" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="20.0" />
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="USER" glyphStyle="USER" size="50" />
+                    </graphic></JFXButton>
+            </children>
+        </VBox>
+      <VBox fx:id="staffBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="329.0" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+         <children>
+                <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefHeight="203.0" prefWidth="329.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Service Request" textFill="WHITE">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                    <font>
+                        <Font name="Arial" size="20.0" />
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="TAG" size="50" />
+                    </graphic></JFXButton>
+         </children>
+      </VBox>
         <GridPane fx:id="gpaneNodeInfo" maxWidth="250.0" prefHeight="601.0" prefWidth="250.0" style="-fx-background-color: rgba(217, 217, 217, 0.9);" visible="false" GridPane.columnSpan="2">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -78,6 +119,7 @@
             <rowConstraints>
                 <RowConstraints maxHeight="260.0" minHeight="10.0" prefHeight="62.57142639160156" vgrow="NEVER" />
                 <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="632.3370742797852" vgrow="ALWAYS" />
+            <RowConstraints />
             </rowConstraints>
             <children>
                 <GesturePane fx:id="gesturePane" HBarEnabled="false" VBarEnabled="false" fitMode="COVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minScale="2.3" minWidth="-Infinity" scrollMode="ZOOM" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
@@ -280,7 +322,8 @@
                     </font>
                 </Text>
                 <Button mnemonicParsing="false" onAction="#onHelpPopup" text="Help" translateX="-80.0" translateY="-30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-            <JFXDrawer fx:id="drawer" alignment="BOTTOM_LEFT" defaultDrawerSize="400.0" direction="BOTTOM" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" overLayVisible="false" prefHeight="358.0" prefWidth="387.0" GridPane.halignment="LEFT" GridPane.rowSpan="3" GridPane.valignment="BOTTOM" />
+            <JFXDrawer fx:id="adminDrawer" alignment="BOTTOM_LEFT" defaultDrawerSize="400.0" direction="BOTTOM" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" overLayVisible="false" prefHeight="369.0" prefWidth="382.0" GridPane.halignment="LEFT" GridPane.rowSpan="3" GridPane.valignment="BOTTOM" />
+            <JFXDrawer fx:id="staffDrawer" defaultDrawerSize="300.0" direction="BOTTOM" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="329.0" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
             <JFXHamburger fx:id="hamburger" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="49.0" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets left="10.0" />
@@ -288,49 +331,5 @@
             </JFXHamburger>
             </children>
         </GridPane>
-
-        <VBox fx:id="adminBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="369.0" prefWidth="401.0" style="-fx-background-color: #616161;">
-            <children>
-                <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onGetDirections" prefHeight="120.0" prefWidth="400.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Map Editor" textFill="WHITE">
-                    <font>
-                        <Font name="Arial" size="20.0" />
-                    </font>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
-                    </graphic></JFXButton>
-            <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefHeight="120.0" prefWidth="400.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Service Request" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="20.0" />
-               </font>
-               <graphic>
-                  <FontAwesomeIconView glyphName="TAG" size="50" />
-               </graphic>
-            </JFXButton>
-                <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onFindLocation" prefHeight="120.0" prefWidth="400.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Edit Users" textFill="WHITE">
-                    <font>
-                        <Font name="Arial" size="20.0" />
-                    </font>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="USER" glyphStyle="USER" size="50" />
-                    </graphic></JFXButton>
-            </children>
-            <padding>
-                <Insets bottom="-40.0" />
-            </padding>
-        </VBox>
-      <VBox prefHeight="200.0" prefWidth="100.0">
-         <children>
-                <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefHeight="120.0" prefWidth="400.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Service Request" textFill="WHITE">
-                    <VBox.margin>
-                        <Insets bottom="40.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font name="Arial" size="20.0" />
-                    </font>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="TAG" size="50" />
-                    </graphic></JFXButton>
-         </children>
-      </VBox>
     </children>
 </GridPane>

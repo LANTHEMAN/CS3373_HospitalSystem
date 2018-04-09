@@ -26,8 +26,8 @@ public class PermissionSingleton {
             ServiceRequestSingleton.getInstance().addOccupationReligiousServices("Admin");
         }
 
-        if (!userExist("SysAdmin")) {
-            addEmployee(new Employee("SysAdmin", "1234", "System Admin", "Sys", "Admin", "System Admin"));
+        if (!userExist("staff")) {
+            addEmployee(new Employee("staff", "1234", "Staff", "Staff", "Member", "Nurse"));
             ServiceRequestSingleton.getInstance().addOccupationLanguageInterpreter("System Admin");
             ServiceRequestSingleton.getInstance().addOccupationReligiousServices("System Admin");
         }
@@ -138,4 +138,7 @@ public class PermissionSingleton {
         public static final String STAFF = "Staff";
     }
 
+    public String getUserPrivilege() {
+        return userPrivilege;
+    }
 }

@@ -155,9 +155,13 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private JFXHamburger hamburger;
     @FXML
-    private JFXDrawer drawer;
+    private JFXDrawer adminDrawer;
     @FXML
-    private VBox box;
+    private JFXDrawer staffDrawer;
+    @FXML
+    private VBox adminBox;
+    @FXML
+    private VBox staffBox;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -369,25 +373,64 @@ public class HomeController implements SwitchableController, Observer {
         cboxAvailableLocations.getItems().addAll(all);
 
         */
+        if(!PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
 
-        drawer.setSidePane(box);
-        drawer.setOverLayVisible(false);
+            if(PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")){
+                adminBox.setVisible(false);
+                staffBox.setVisible(true);
+                staffDrawer.setSidePane(staffBox);
+                staffDrawer.setOverLayVisible(false);
+
+                HamburgerBasicCloseTransition arrowBasicTransition = new HamburgerBasicCloseTransition(hamburger);
+                arrowBasicTransition.setRate(-1);
+                hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+                    arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
+                    arrowBasicTransition.play();
 
 
-        HamburgerBasicCloseTransition arrowBasicTransition = new HamburgerBasicCloseTransition(hamburger);
-        arrowBasicTransition.setRate(-1);
-        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-            arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
-            arrowBasicTransition.play();
+                    if (staffDrawer.isShown()) {
+                        staffDrawer.close();
+                    } else {
+                        staffDrawer.open();
+                    }
+
+                });
+
+            }else if(PermissionSingleton.getInstance().isAdmin()){
+                adminBox.setVisible(true);
+                staffBox.setVisible(false);
+                adminDrawer.setSidePane(adminBox);
+                adminDrawer.setOverLayVisible(false);
+
+                HamburgerBasicCloseTransition arrowBasicTransition = new HamburgerBasicCloseTransition(hamburger);
+                arrowBasicTransition.setRate(-1);
+                hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+                    arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
+                    arrowBasicTransition.play();
 
 
-            if (drawer.isShown()) {
-                drawer.close();
-            } else {
-                drawer.open();
+                    if (adminDrawer.isShown()) {
+                        adminDrawer.close();
+                    } else {
+                        adminDrawer.open();
+                    }
+
+                });
+
+            } else{
+                adminBox.setVisible(false);
+                staffBox.setVisible(false);
+                hamburger.setVisible(false);
             }
 
-        });
+
+
+
+        }else{
+            adminBox.setVisible(false);
+            staffBox.setVisible(false);
+            hamburger.setVisible(false);
+        }
 
 
     }
