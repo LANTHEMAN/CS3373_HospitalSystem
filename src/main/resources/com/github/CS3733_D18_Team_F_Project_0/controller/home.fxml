@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Slider?>
@@ -360,12 +361,19 @@
                 </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                <children>
+                  <Label text="Translate X" />
                   <Slider fx:id="tf_transx" />
+                  <Label text="Translate Y" />
                   <Slider fx:id="tf_transy" />
+                  <Label text="Scale X" />
                   <Slider fx:id="tf_scalex" />
+                  <Label text="Scale Y" />
                   <Slider fx:id="tf_scaley" />
+                  <Label text="Rotate Clockwise" />
                   <Slider fx:id="tf_rotate" />
+                  <Label text="Shear X" />
                   <Slider fx:id="tf_transxp" />
+                  <Label text="Shear Y" />
                   <Slider fx:id="tf_transyp" />
                </children>
             </VBox>
