@@ -1,5 +1,6 @@
 package edu.wpi.cs3733d18.teamF.controller.page;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
@@ -162,6 +163,14 @@ public class HomeController implements SwitchableController, Observer {
     private VBox adminBox;
     @FXML
     private VBox staffBox;
+    @FXML
+    private JFXDrawer loginDrawer;
+    @FXML
+    private VBox loginBox;
+    @FXML
+    private VBox logoutBox;
+    @FXML
+    private JFXButton loginBtn;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -177,11 +186,13 @@ public class HomeController implements SwitchableController, Observer {
         map = MapSingleton.getInstance().getMap();
         mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
 
+        /*
         //to make initial admin with secure password
         txtUser.setText(PermissionSingleton.getInstance().getCurrUser());
         if (!PermissionSingleton.getInstance().getCurrUser().equals("Guest")) {
             loginPopup.setText("Logout");
         }
+        */
 
         // set default zoom
         gesturePane.zoomTo(2, new Point2D(600, 600));
@@ -373,6 +384,33 @@ public class HomeController implements SwitchableController, Observer {
         cboxAvailableLocations.getItems().addAll(all);
 
         */
+        if(PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")){
+            loginDrawer.setSidePane(loginBox);
+            loginDrawer.setOverLayVisible(false);
+            loginBtn.setText("Login");
+
+            loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+                if(loginDrawer.isShown()){
+                    loginDrawer.close();
+                }else{
+                    loginDrawer.open();
+                }
+            });
+        }else{
+            loginDrawer.setSidePane(logoutBox);
+            loginDrawer.setOverLayVisible(false);
+            loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
+
+            loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+                if(loginDrawer.isShown()){
+                    loginDrawer.close();
+                }else{
+                    loginDrawer.open();
+                }
+            });
+        }
+
+
         if(!PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
 
             if(PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")){
