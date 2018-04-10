@@ -245,7 +245,45 @@ public class Map extends Observable implements DatabaseItem, Observer {
         return closestNode;
     }
 
+    public void disableStairs(){
+        HashSet<Node> Nodes = graph.getNodes();
 
+        for(Node n : Nodes){
+            if(n.getNodeType().equals("STAI")){
+                n.setAdditionalWeight(n.getAdditionalWeight() + 1000000);
+            }
+        }
+    }
+
+    public void enableStairs(){
+        HashSet<Node> Nodes = graph.getNodes();
+
+        for(Node n : Nodes){
+            if(n.getNodeType().equals("STAI")){
+                n.setAdditionalWeight(n.getAdditionalWeight() - 1000000);
+            }
+        }
+    }
+
+    public void disableElevators(){
+        HashSet<Node> Nodes = graph.getNodes();
+
+        for(Node n : Nodes){
+            if(n.getNodeType().equals("ELEV")){
+                n.setAdditionalWeight(n.getAdditionalWeight() + 1000000);
+            }
+        }
+    }
+
+    public void enableElevators(){
+        HashSet<Node> Nodes = graph.getNodes();
+
+        for(Node n : Nodes){
+            if(n.getNodeType().equals("ELEV")){
+                n.setAdditionalWeight(n.getAdditionalWeight() - 1000000);
+            }
+        }
+    }
 
     @Override
     public void update(Observable o, Object arg) {
