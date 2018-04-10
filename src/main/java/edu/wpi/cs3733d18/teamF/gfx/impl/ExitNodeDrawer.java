@@ -38,13 +38,13 @@ public class ExitNodeDrawer extends NodeDrawable {
         double posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
 
         if(!isSelected){
-            Rectangle rectangle = new Rectangle(2,2,Color.DARKRED);
+            Rectangle rectangle = new Rectangle(3,3,Color.DARKRED);
             rectangle.setX((posX * pane.getMaxWidth() / imageWidth)-(rectangle.getWidth()/2.f));
             rectangle.setY((posY * pane.getMaxHeight() / imageHeight)-(rectangle.getHeight()/2.f));
             pane.getChildren().add(rectangle);
         }
         else{
-            Rectangle rectangle = new Rectangle(2.8,2.8,Color.RED);
+            Rectangle rectangle = new Rectangle(4,4,Color.RED);
             rectangle.setX((posX * pane.getMaxWidth() / imageWidth)-(rectangle.getWidth()/2.f));
             rectangle.setY((posY * pane.getMaxHeight() / imageHeight)-(rectangle.getHeight()/2.f));
             pane.getChildren().add(rectangle);

@@ -83,6 +83,9 @@ public class UglyMapDrawer extends MapDrawable {
 
         if (showEdges) {
             for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(map.getFloor()))) {
+                if(edge.getNode1().getNodeType().equals("ELEV")&&edge.getNode2().getNodeType().equals("ELEV")){
+                    continue;
+                }
                 edgeDrawer.update(edge);
                 edgeDrawer.draw(pane);
             }
