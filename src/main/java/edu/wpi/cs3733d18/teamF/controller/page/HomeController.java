@@ -3,6 +3,7 @@ package edu.wpi.cs3733d18.teamF.controller.page;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
@@ -177,8 +178,6 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private JFXButton loginBtn;
     @FXML
-    private JFXButton loginCancel;
-    @FXML
     private JFXButton logoutBtn;
     @FXML
     private JFXTextField loginUsername;
@@ -200,6 +199,10 @@ public class HomeController implements SwitchableController, Observer {
     private JFXButton floor2;
     @FXML
     private JFXButton floor3;
+    @FXML
+    private FontAwesomeIconView loginCancel;
+    @FXML
+    private FontAwesomeIconView logoutCancel;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -526,11 +529,17 @@ public class HomeController implements SwitchableController, Observer {
             }
         });
 
-        /*loginCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+        loginCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             if (loginDrawer.isShown()) {
                 loginDrawer.close();
             }
-        });*/
+        });
+
+        logoutCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            if (loginDrawer.isShown()) {
+                loginDrawer.close();
+            }
+        });
 
         // logout
         logoutBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {

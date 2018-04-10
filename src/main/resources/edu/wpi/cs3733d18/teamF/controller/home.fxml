@@ -87,7 +87,7 @@
          <children>
             <Pane prefHeight="87.0" prefWidth="250.0">
                <children>
-                  <FontAwesomeIconView fx:id="loginCancel" glyphName="TIMES" layoutX="6.0" layoutY="20.0" onMouseClicked="#onCancelLogin" size="20" />
+                  <FontAwesomeIconView fx:id="logoutCancel" glyphName="TIMES" layoutX="6.0" layoutY="20.0" size="20" />
                   <JFXButton fx:id="logoutBtn" buttonType="RAISED" layoutX="69.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="112.0" style="-fx-background-color: WHITE;" text="Logout" />
                </children>
             </Pane>
@@ -99,7 +99,7 @@
                <children>
                   <JFXTextField fx:id="loginUsername" layoutX="58.0" layoutY="13.0" promptText="Username" style="-fx-background-color: WHITE;" />
                   <JFXPasswordField fx:id="loginPassword" layoutX="58.0" layoutY="45.0" promptText="Password" style="-fx-background-color: WHITE;" />
-                  <FontAwesomeIconView fx:id="loginCancel" glyphName="TIMES" layoutX="6.0" layoutY="20.0" onMouseClicked="#onCancelLogin" size="20" />
+                  <FontAwesomeIconView fx:id="loginCancel" glyphName="TIMES" layoutX="6.0" layoutY="20.0" size="20" />
                </children>
             </Pane>
          </children>
@@ -291,7 +291,7 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </JFXHamburger>
-            <JFXDrawer fx:id="loginDrawer" defaultDrawerSize="400.0" direction="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="437.0" style="-fx-background-color: rgba(0,0,0,0);" GridPane.halignment="RIGHT" GridPane.valignment="BASELINE">
+            <JFXDrawer fx:id="loginDrawer" defaultDrawerSize="400.0" direction="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" style="-fx-background-color: rgba(0,0,0,0);" GridPane.halignment="RIGHT" GridPane.valignment="BASELINE">
                <GridPane.margin>
                   <Insets right="60.0" top="20.0" />
                </GridPane.margin>
