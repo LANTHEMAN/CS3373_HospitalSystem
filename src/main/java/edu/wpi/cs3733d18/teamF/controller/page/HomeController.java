@@ -190,57 +190,57 @@ public class HomeController implements SwitchableController, Observer {
                     canSayCommand[0] = false;
                     paneVoiceController.setVisibility(false);
 
-                    if(command.equals("HELP")) {
+                    if (command.equals("HELP")) {
                         onHelpPopup();
                         voice.speak("Here is the help menu");
-                    }else if(command.contains("DIRECTIONS")) {
-                        if(command.contains("BATHROOM")) {
+                    } else if (command.contains("DIRECTIONS")) {
+                        if (command.contains("BATHROOM")) {
                             mapDrawController.showPath(map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("REST"))));
                             voice.speak("Here is the route to the nearest bathroom");
-                        }else if(command.contains("EXIT")) {
+                        } else if (command.contains("EXIT")) {
                             mapDrawController.showPath(map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("EXIT"))));
                             voice.speak("Here is the route to the nearest exit");
-                        }else if(command.contains("NEUROSCIENCE")) {
+                        } else if (command.contains("NEUROSCIENCE")) {
                             mapDrawController.showPath(map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Neuroscience"))));
                             voice.speak("Here is the route to neuroscience");
-                        }else if(command.contains("ORTHOPEDICS") || command.contains("RHEMUTOLOGY")) {
+                        } else if (command.contains("ORTHOPEDICS") || command.contains("RHEMUTOLOGY")) {
                             mapDrawController.showPath(map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Orthopedics"))));
                             voice.speak("Here is the route to Orthopedics and Rhemutology");
-                        }else if(command.contains("PARKING") && command.contains("GARAGE")) {
+                        } else if (command.contains("PARKING") && command.contains("GARAGE")) {
                             mapDrawController.showPath(map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Parking") &&
                                                     node.getLongName().contains("Garage"))));
                             voice.speak("Here is the route to the parking garage");
-                        }else if(command.contains("ELEVATOR")) {
+                        } else if (command.contains("ELEVATOR")) {
                             mapDrawController.showPath(map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("ELEV"))));
                             voice.speak("Here is the route to the nearest elevator");
-                        }else if(command.contains("DENTIST") || command.contains("DENTISTRY") || command.contains("ORAL")) {
+                        } else if (command.contains("DENTIST") || command.contains("DENTISTRY") || command.contains("ORAL")) {
                             mapDrawController.showPath(map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Dentistry"))));
                             voice.speak("Here is the route to Dentistry and Oral Medicine");
-                        }else if(command.contains("PLASTIC SURGERY")) {
+                        } else if (command.contains("PLASTIC SURGERY")) {
                             mapDrawController.showPath(map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Plastic Surgery"))));
                             voice.speak("Here is the route to Plastic Surgery");
-                        }else if(command.contains("RADIOLOGY")) {
+                        } else if (command.contains("RADIOLOGY")) {
                             mapDrawController.showPath(map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Radiation"))));
                             voice.speak("Here is the route to Radiology");
-                        }else if(command.contains("NUCLEAR")) {
+                        } else if (command.contains("NUCLEAR")) {
                             mapDrawController.showPath(map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Nuclear"))));
@@ -401,7 +401,7 @@ public class HomeController implements SwitchableController, Observer {
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
             HashSet<Node> nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
-                    , node.getPosition().getY()).distance(mapPos) < 8
+                    , node.getPosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor())
             );
 
             if (nodes.size() > 0) {
@@ -438,19 +438,21 @@ public class HomeController implements SwitchableController, Observer {
             Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
-            mapDrawController.showPath(map.getPath
-                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
-                            , map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), true)));
+            if (!PermissionSingleton.getInstance().isAdmin()) {
+                mapDrawController.showPath(map.getPath
+                        (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                , map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), true)));
+            }
 
             // if editing maps
             HashSet<Node> nodes = new HashSet<>();
             if (PermissionSingleton.getInstance().isAdmin()) {
                 if (map.is2D()) {
                     nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
-                            , node.getPosition().getY()).distance(mapPos) < 8);
+                            , node.getPosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor()));
                 } else {
                     nodes = map.getNodes(node -> new Point2D(node.getWireframePosition().getX()
-                            , node.getWireframePosition().getY()).distance(mapPos) < 8);
+                            , node.getWireframePosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor()));
                 }
             }
             // not editing map
@@ -625,6 +627,7 @@ public class HomeController implements SwitchableController, Observer {
                         setAdminMenu();
                         mapDrawController.showNodes();
                         mapDrawController.showEdges();
+                        mapDrawController.unshowPath();
                     } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
                         setStaffMenu();
                     }
@@ -873,23 +876,48 @@ public class HomeController implements SwitchableController, Observer {
         String type = newNode_type.getSelectionModel().getSelectedItem();
         // TODO move into NodeBuilder
 
+        if (!(type.equals("ELEV") || type.equals("STAI"))) {
+            Node newNode = new NewNodeBuilder()
+                    .setNodeType(type)
+                    .setNumNodeType(map)
+                    .setFloor(map.getFloor())
+                    .setBuilding("New Building") // TODO set building
+                    .setShortName(newNode_shortName.getText())
+                    .setLongName(newNode_shortName.getText())
+                    .setPosition(new Point2D(Double.parseDouble(newNode_x.getText()), Double.parseDouble(newNode_y.getText())))
+                    .build();
+            map.createNode(newNode);
 
-        Node newNode = new NewNodeBuilder()
-                .setNodeType(type)
-                .setNumNodeType(map)
-                .setFloor(map.getFloor())
-                .setBuilding("New Building")    // TODO set building
-                .setShortName(newNode_shortName.getText())
-                .setLongName(newNode_shortName.getText()) // TODO get long name
-                .setPosition(new Point2D(Double.parseDouble(newNode_x.getText()), Double.parseDouble(newNode_y.getText())))
-                .build();
-        map.createNode(newNode);
+        } else {
+            if (newNode_shortName.getText().length() != 1
+                    || !Character.isLetter(newNode_shortName.getText().charAt(0))
+                    || map.getNodes(node -> node.getNodeID().contains(type + "00" + newNode_shortName.getText().charAt(0) + map.getFloor())).size() == 1) {
+                addLocationPopup.setVisible(false);
+                newNode_shortName.setText("");
+                newNodeCircle.setVisible(false);
+            }
+
+            Node newNode = new NewNodeBuilder()
+                    .setNodeType(type)
+                    .setLinkChar(newNode_shortName.getText().charAt(0))
+                    .setFloor(map.getFloor())
+                    .setBuilding("New Building") // TODO set building
+                    .setShortName(newNode_shortName.getText())
+                    .setLongName(newNode_shortName.getText())
+                    .setPosition(new Point2D(Double.parseDouble(newNode_x.getText()), Double.parseDouble(newNode_y.getText())))
+                    .build();
+            map.createNode(newNode);
+            for(Node node : map.getNodes(node -> node.getNodeID().contains(type + "00" + newNode_shortName.getText().charAt(0)))){
+                if(node == newNode){
+                    continue;
+                }
+                map.addEdge(node, newNode);
+            }
+        }
 
         addLocationPopup.setVisible(false);
         newNode_shortName.setText("");
         newNodeCircle.setVisible(false);
-
-        reloadMap();
     }
 
     @FXML

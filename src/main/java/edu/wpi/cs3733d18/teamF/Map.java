@@ -222,7 +222,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
 
     //Note: This function gets you the closest node on the specified floor. Don't use this if you don't know what floor you're looking for!
     public Node findNodeClosestTo(double x1, double y1, boolean is2D) {
-        return findNodeClosestTo(x1, y1, is2D, node -> node != null);
+        return findNodeClosestTo(x1, y1, is2D, Objects::nonNull);
     }
 
     //Note: This function gets you the closest node on the specified floor. Don't use this if you don't know what floor you're looking for!
