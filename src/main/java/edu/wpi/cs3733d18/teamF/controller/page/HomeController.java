@@ -478,10 +478,12 @@ public class HomeController implements SwitchableController, Observer {
         // login
         loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             if (PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
+                loginBox.setVisible(true);
                 loginDrawer.setSidePane(loginBox);
                 loginDrawer.setOverLayVisible(false);
                 loginBtn.setText("Login");
             } else {
+                logoutBox.setVisible(true);
                 loginDrawer.setSidePane(logoutBox);
                 loginDrawer.setOverLayVisible(false);
                 loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
