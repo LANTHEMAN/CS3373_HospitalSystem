@@ -21,7 +21,6 @@ import static java.lang.Math.ceil;
 
 public class DynamicPathDrawer extends PathDrawable {
 
-    double divDist = 100;
     private ArrayList<Arrow> arrows = new ArrayList<>();
 
     public DynamicPathDrawer() {
@@ -52,11 +51,11 @@ public class DynamicPathDrawer extends PathDrawable {
         }
 
         double len = path.getLength();
+        double divDist = 100;
         int divs = (int) ceil(len / divDist);
 
         for (int i = 0; i < divs; i++) {
-            arrows.add(new Arrow(divs * divDist));
-            System.out.println("i = " + i);
+            arrows.add(new Arrow(i * divDist));
         }
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> {
@@ -82,15 +81,9 @@ public class DynamicPathDrawer extends PathDrawable {
 
                 double angle = Math.atan2(dst.getPosition().getY() - src.getPosition().getY()
                         , dst.getPosition().getX() - src.getPosition().getX());
-                if (angle < 0) {
-                    angle = angle * -1;
-                } else {
-                    angle = angle - (2.F * Math.PI);
-                    angle = angle * -1;
-                }
-                arrow.view.setRotate(angle);
-                arrow.view.setX(posX1 * pane.getMaxWidth() / imageWidth);
-                arrow.view.setY(posY1 * pane.getMaxHeight() / imageHeight);
+                arrow.view.setRotate(Math.toDegrees(angle) + 90);
+                arrow.view.setX((posX1 + ((posX2 - posX1) * (distAlongPath/src.displacementTo(dst))) - 35)  * pane.getMaxWidth() / imageWidth);
+                arrow.view.setY((posY1 + ((posY2 - posY1) * (distAlongPath/src.displacementTo(dst))) + 28) * pane.getMaxHeight() / imageHeight);
             }
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -108,6 +101,8 @@ public class DynamicPathDrawer extends PathDrawable {
         public Arrow(double progress) {
             this.progress = progress;
             view.setFill(Color.BLACK);
+            view.setScaleX(0.3);
+            view.setScaleY(0.3);
         }
     }
 
