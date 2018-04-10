@@ -1,5 +1,7 @@
 package edu.wpi.cs3733d18.teamF.controller.page;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextArea;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.Screens;
 import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
@@ -8,11 +10,11 @@ import edu.wpi.cs3733d18.teamF.sr.ServiceRequest;
 import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-
-public class LanguageInterpreterController implements SwitchableController {
+public class SecurityRequestController implements SwitchableController {
     private PaneSwitcher switcher;
 
 
@@ -21,32 +23,39 @@ public class LanguageInterpreterController implements SwitchableController {
     }
 
     @FXML
-    TextField language;
+    RadioButton one;
 
     @FXML
-    TextField firstName;
+    RadioButton two;
 
     @FXML
-    TextField lastName;
+    RadioButton three;
 
     @FXML
-    TextField destination;
+    RadioButton four;
 
     @FXML
-    TextArea instructions;
+    RadioButton five;
 
     @FXML
-    Label languageRequired;
+    RadioButton six;
 
     @FXML
-    Label firstNameRequired;
+    RadioButton seven;
 
     @FXML
-    Label lastNameRequired;
+    JFXTextArea location;
 
     @FXML
-    Label locationRequired;
+    JFXTextArea specialInstructions;
 
+    @FXML
+    JFXButton cancel;
+
+    @FXML
+    JFXButton submitRequest;
+
+/*
 
     @FXML
     void onCancel() {
@@ -55,6 +64,7 @@ public class LanguageInterpreterController implements SwitchableController {
 
     @FXML
     void onSubmit() {
+        //TODO: create form from text fields and send to database
         int requiredFieldsEmpty = 0;
         String l;
         String first_name;
@@ -96,8 +106,5 @@ public class LanguageInterpreterController implements SwitchableController {
         ServiceRequestSingleton.getInstance().sendServiceRequest(request);
         ServiceRequestSingleton.getInstance().addServiceRequest(request);
         switcher.switchTo(Screens.ServiceRequest);
-
-    }
+        */
 }
-
-

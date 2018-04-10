@@ -40,5 +40,7 @@ public class ServiceRequestController implements SwitchableController {
     void onSearchButtonSwitch(){
         switcher.switchTo(Screens.SearchServiceRequests);
     }
+    @FXML
+    void onSecurityButtonSwitch() { switcher.switchTo(Screens.SecurityRequest);}
 }
 

@@ -19,4 +19,6 @@ public class ImageCacheSingleton {
             new Image("edu/wpi/cs3733d18/teamF/controller/Wireframes/2-ICONS.png"),
             new Image("edu/wpi/cs3733d18/teamF/controller/Wireframes/3-ICONS.png")
     };
+
+    
 }

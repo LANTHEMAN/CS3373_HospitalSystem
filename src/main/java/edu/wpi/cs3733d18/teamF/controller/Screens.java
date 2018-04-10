@@ -12,6 +12,7 @@ public class Screens {
     public static final Screen LanguageInterpreter = new Screen("languageInterpreter.fxml", LanguageInterpreterController.class);
     public static final Screen SearchServiceRequests = new Screen("searchServiceRequests.fxml", SearchServiceRequestsController.class);
     public static final Screen ServiceRequestPopUp = new Screen("serviceRequestPopUp.fxml", ServiceRequestPopUpController.class);
+    public static final Screen SecurityRequest = new Screen("security.fxml", SecurityRequestController.class);
 
     static class Screen {
         public final String fxmlFile;
