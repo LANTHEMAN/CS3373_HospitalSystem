@@ -25,6 +25,7 @@ public class UglyMapDrawer extends MapDrawable {
     private PathDrawable pathDrawer = new DynamicPathDrawer();
     private NodeDrawable elevatorDrawer = new ElevatorNodeDrawer();
     private NodeDrawable exitDrawer = new ExitNodeDrawer();
+    private NodeDrawable stairDrawer = new StairNodeDrawer();
     private NodeDrawable currNodeDrawable = nodeDrawer;
 
     public UglyMapDrawer(Map map) {
@@ -105,8 +106,10 @@ public class UglyMapDrawer extends MapDrawable {
                 case "EXIT":    //exits or entrances
                     currNodeDrawable = exitDrawer;
                     break;
-                case "REST":    //restroom
                 case "STAI":    //stairs
+                    currNodeDrawable = stairDrawer;
+                    break;
+                case "REST":    //restroom
                 case "DEPT":    //medical departments, clinics, and waiting room areas
                 case "LABS":    //labs, imaging centers, and medical testing areas
                 case "INFO":    //information desks, security desks, lost and found
