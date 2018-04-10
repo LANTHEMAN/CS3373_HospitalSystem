@@ -87,18 +87,35 @@ public class DepthSearchTest {
                 .addEdge(nodeQ, nodeR)
                 .addEdge(nodeR, nodeF);
 
-        ArrayList<Node> path = new ArrayList<>();
-        path.add(nodeS);
-        path.add(nodeA);
-        path.add(nodeB);
-        path.add(nodeC);
-        path.add(nodeD);
-        path.add(nodeE);
-        path.add(nodeF);
+        ArrayList<Node> path1 = new ArrayList<>();
+        path1.add(nodeS);
+        path1.add(nodeA);
+        path1.add(nodeB);
+        path1.add(nodeC);
+        path1.add(nodeD);
+        path1.add(nodeE);
+        path1.add(nodeF);
+
+        ArrayList<Node> path2 = new ArrayList<>();
+        path2.add(nodeS);
+        path2.add(nodeQ);
+        path2.add(nodeR);
+        path2.add(nodeF);
+
+
+        Path actualPath = DepthSearch.getPathDepth(graph, nodeS, nodeF);
+        boolean pathChecker;
+        if(actualPath.equals(new Path(path1,graph))|| actualPath.equals(new Path(path2,graph))){
+             pathChecker = true;
+        }
+        else
+        {
+             pathChecker = false;
+        }
 
 
         // TODO @LAN, fix this
-        //assertEquals(new Path(path, graph), DepthSearch.getPathDepth(graph, nodeS, nodeF));
+        assertEquals(true, pathChecker);
     }
 
 
