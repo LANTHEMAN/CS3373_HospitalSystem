@@ -21,6 +21,8 @@ public class UglyMapDrawer extends MapDrawable {
 
     private EdgeDrawable edgeDrawer = new LineEdgeDrawer();
     private NodeDrawable nodeDrawer = new CircleNodeDrawer();
+    private NodeDrawable elevatorDrawer = new ElevatorNodeDrawer();
+    private NodeDrawable currNodeDrawable = nodeDrawer;
     private PathDrawable pathDrawer = new StalePathDrawer(new LineEdgeDrawer(Color.DEEPPINK));
 
     public UglyMapDrawer(Map map) {
@@ -89,21 +91,26 @@ public class UglyMapDrawer extends MapDrawable {
             pathDrawer.update(path);
             pathDrawer.draw(pane);
         }
-
-        if (showNodes) {
-            for (Node node : map.getNodes(node -> node.getFloor().equals(map.getFloor()))) {
-                nodeDrawer.update(node);
-                if (selectedNode == node) {
-                    continue;
-                }
-                nodeDrawer.draw(pane);
+        for (Node node : map.getNodes(node -> node.getFloor().equals(map.getFloor()))) {
+            switch (node.getNodeType()) {
+                case "ELEV":
+                    currNodeDrawable = elevatorDrawer;
+                    break;
+                default:
+                    currNodeDrawable = nodeDrawer;
+                    break;
             }
-        }
-        if (selectedNode != null) {
-            nodeDrawer.update(selectedNode);
-            nodeDrawer.selectNode();
-            nodeDrawer.draw(pane);
-            nodeDrawer.unselectNode();
+            currNodeDrawable.update(node);
+            if (selectedNode == node) {
+                currNodeDrawable.selectNode();
+            } else if (!showNodes) {
+                continue;
+            }
+            currNodeDrawable.draw(pane);
+            if (selectedNode == node) {
+                currNodeDrawable.unselectNode();
+
+            }
         }
     }
 }
