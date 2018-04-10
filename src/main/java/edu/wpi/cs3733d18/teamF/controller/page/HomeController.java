@@ -499,6 +499,8 @@ public class HomeController implements SwitchableController, Observer {
 
                     if (PermissionSingleton.getInstance().isAdmin()) {
                         setAdminMenu();
+                        mapDrawController.showNodes();
+                        mapDrawController.showEdges();
                     } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
                         setStaffMenu();
                     }
@@ -506,6 +508,7 @@ public class HomeController implements SwitchableController, Observer {
                     //loginUsername.setFocusColor(Color.rgb(64, 89, 169));
                     loginUsername.setText("");
                     loginPassword.setText("");
+
                 } else {
                     //loginPassword.setFocusColor(Color.rgb(255, 0, 0));
                     loginPassword.setText("");
@@ -550,6 +553,8 @@ public class HomeController implements SwitchableController, Observer {
             adminBox.setVisible(false);
             staffBox.setVisible(false);
             hamburger.setVisible(false);
+            mapDrawController.unshowNodes();
+            mapDrawController.unshowEdges();
             loginBtn.setText("Login");
         });
 
