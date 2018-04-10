@@ -104,7 +104,7 @@ public class HomeController implements SwitchableController, Observer {
         public void handle(ActionEvent event) {
             String command = commands.poll();
             if (command != null) {
-                if (command.equals("HOSPITAL KIOSK")) {
+                if (command.equals("HEY KIOSK")) {
                     paneVoiceController.setVisibility(true);
                     canSayCommand[0] = true;
                     new Timer(true).schedule(new TimerTask() {
