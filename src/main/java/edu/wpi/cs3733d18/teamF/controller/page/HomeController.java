@@ -302,9 +302,8 @@ public class HomeController implements SwitchableController, Observer {
                         voice.speak("Here is the help menu");
                     } else if (command.contains("DIRECTIONS")) {
                         if (command.contains("BATHROOM")) {
-                            Node src = map.findNodeClosestTo(startLocation.getX(), startLocation.getY());
-                            mapDrawController.showPath(map.getPath
-                                    (src, map.findNodeClosestTo(src, node -> node.getNodeType().equals("REST"))));
+                            Node src = map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
+                            mapDrawController.showPath(map.getPath(src, map.findNodeClosestTo(src, node -> node.getNodeType().equals("REST"))));
                             voice.speak("Here is the route to the nearest bathroom");
                         } else if (command.contains("EXIT")) {
                             mapDrawController.showPath(map.getPath
@@ -516,7 +515,7 @@ public class HomeController implements SwitchableController, Observer {
             if (!PermissionSingleton.getInstance().isAdmin()) {
                 mapDrawController.showPath(map.getPath
                         (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
-                                , map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), true)));
+                                , map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), true, node -> node.getFloor().equals(map.getFloor()))));
             }
 
             // if editing maps

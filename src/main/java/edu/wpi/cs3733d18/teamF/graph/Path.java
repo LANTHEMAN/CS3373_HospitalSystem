@@ -32,7 +32,8 @@ public class Path {
 
     public double getLength() {
         return edges.stream()
-                .mapToDouble(Edge::getDistance)
+                .map(node -> node.getDistance() + node.getNode1().getAdditionalWeight() + node.getNode2().getAdditionalWeight())
+                .mapToDouble(value -> value)
                 .sum();
     }
 

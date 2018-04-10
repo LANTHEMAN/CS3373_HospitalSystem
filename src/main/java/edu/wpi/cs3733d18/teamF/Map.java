@@ -230,8 +230,6 @@ public class Map extends Observable implements DatabaseItem, Observer {
             if (len < closestDistance) {
                 closestDistance = len;
                 closestNode = n;
-
-                System.out.println("len = " + len);
             }
         }
         return closestNode;
@@ -276,7 +274,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
 
             for (Node n : Nodes) {
                 if (n.getNodeType().equals("STAI")) {
-                    n.setAdditionalWeight(n.getAdditionalWeight() + 1000000000);
+                    n.setAdditionalWeight(n.getAdditionalWeight() + 10000000);
                 }
             }
         }
@@ -290,7 +288,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
 
             for (Node n : nodes) {
                 if (n.getNodeType().equals("STAI")) {
-                    n.setAdditionalWeight(n.getAdditionalWeight() - 1000000000);
+                    n.setAdditionalWeight(n.getAdditionalWeight() - 10000000);
                 }
             }
         }
@@ -304,7 +302,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
 
             for (Node n : nodes) {
                 if (n.getNodeType().equals("ELEV")) {
-                    n.setAdditionalWeight(n.getAdditionalWeight() + 1000000000);
+                    n.setAdditionalWeight(n.getAdditionalWeight() + 10000000);
                 }
             }
         }
@@ -318,7 +316,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
 
             for (Node n : nodes) {
                 if (n.getNodeType().equals("ELEV")) {
-                    n.setAdditionalWeight(n.getAdditionalWeight() - 1000000000);
+                    n.setAdditionalWeight(n.getAdditionalWeight() - 10000000);
                 }
             }
         }
