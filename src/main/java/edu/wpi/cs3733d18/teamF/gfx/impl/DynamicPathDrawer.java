@@ -2,6 +2,7 @@ package edu.wpi.cs3733d18.teamF.gfx.impl;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.PathDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Edge;
@@ -16,6 +17,7 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 
 import static java.lang.Math.ceil;
+import static java.lang.Math.nextAfter;
 
 public class DynamicPathDrawer extends PathDrawable {
 
@@ -52,6 +54,7 @@ public class DynamicPathDrawer extends PathDrawable {
         double len = path.getLength();
         double divDist = 120;
         int divs = (int) ceil(len / divDist);
+        divDist = len / divs;
 
         for (int i = 0; i < divs; i++) {
             arrows.add(new Arrow(i * divDist));
@@ -71,8 +74,20 @@ public class DynamicPathDrawer extends PathDrawable {
                 Pair<Pair<Node, Node>, Double> pathPos = getPathPos(arrow.progress);
                 if (pathPos == null) {
                     arrow.progress -= path.getLength();
+                    arrow.view.setVisible(false);
+                    arrow.prevX = null;
+                    arrow.prevY = null;
                     continue;
                 }
+
+                if(!MapSingleton.getInstance().getMap().getFloor().equals(pathPos.getKey().getKey().getFloor())){
+                    arrow.view.setVisible(false);
+                    arrow.prevX = null;
+                    arrow.prevY = null;
+                    continue;
+                }
+
+                arrow.view.setVisible(true);
 
                 Node src = pathPos.getKey().getKey();
                 Node dst = pathPos.getKey().getValue();
@@ -110,7 +125,7 @@ public class DynamicPathDrawer extends PathDrawable {
                 translateTransition.setCycleCount(1);
                 translateTransition.play();
 
-                if(arrow.prevAngle - angle > 180){
+                if (arrow.prevAngle - angle > 180) {
                     angle += 360;
                 }
 
@@ -119,7 +134,6 @@ public class DynamicPathDrawer extends PathDrawable {
                 rotateTransition.setFromAngle(arrow.prevAngle);
                 rotateTransition.setToAngle(angle);
                 rotateTransition.play();
-
             }
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
