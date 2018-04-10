@@ -13,31 +13,28 @@ import java.util.Scanner;
 
 public class VoiceLauncher extends Observable implements Runnable {
 
-    private boolean terminate = false;
     Configuration configuration = new Configuration();
-
     HashSet<String> commandStrings = new HashSet<>();
+    private boolean terminate = false;
 
-    public static VoiceLauncher getInstance(){ return LazyInitializer.INSTANCE; }
-
-    private VoiceLauncher(){
+    private VoiceLauncher() {
         Scanner scanner = null;
         try {
             scanner = new Scanner(new File("Corpus.txt"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        while(scanner.hasNextLine()){
+        while (scanner.hasNextLine()) {
             commandStrings.add(scanner.nextLine().toUpperCase());
         }
 
         configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
-        configuration.setDictionaryPath("7755.dic");
-        configuration.setLanguageModelPath("7755.lm");
+        configuration.setDictionaryPath("1192.dic");
+        configuration.setLanguageModelPath("1192.lm");
     }
 
-    private static class LazyInitializer {
-        static final VoiceLauncher INSTANCE = new VoiceLauncher();
+    public static VoiceLauncher getInstance() {
+        return LazyInitializer.INSTANCE;
     }
 
     public void run() {
@@ -55,9 +52,9 @@ public class VoiceLauncher extends Observable implements Runnable {
                 //Get the recognize speech
                 command = result.getHypothesis();
 
-                if(isValid(command)) {
-                    signalClassChanged(command);
-                }
+                System.out.println("command = " + command);
+                signalClassChanged(command);
+
             }
             recognize.stopRecognition();
 
@@ -71,12 +68,16 @@ public class VoiceLauncher extends Observable implements Runnable {
         this.notifyObservers(args);
     }
 
-    private boolean isValid(String command){
+    private boolean isValid(String command) {
         return commandStrings.contains(command);
     }
 
-    public void terminate(){
+    public void terminate() {
         terminate = true;
+    }
+
+    private static class LazyInitializer {
+        static final VoiceLauncher INSTANCE = new VoiceLauncher();
     }
 }
 

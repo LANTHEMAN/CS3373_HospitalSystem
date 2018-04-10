@@ -1,6 +1,12 @@
 package edu.wpi.cs3733d18.teamF.controller.page;
 
+import com.github.fedy2.weather.YahooWeatherService;
+import com.github.fedy2.weather.data.Channel;
+import com.github.fedy2.weather.data.unit.DegreeUnit;
 import com.jfoenix.controls.*;
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
+import com.sun.speech.freetts.Voice;
+import com.sun.speech.freetts.VoiceManager;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
@@ -33,7 +39,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -41,6 +50,8 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -118,6 +129,8 @@ public class HomeController implements SwitchableController, Observer {
     public Label usernameLabel;
     ConcurrentLinkedQueue<String> commands = new ConcurrentLinkedQueue<>();
     PaneVoiceController paneVoiceController;
+    Voice voice;
+    VoiceManager voiceManager = VoiceManager.getInstance();
     ////////////////////////////////////////////////////
     //                                                //
     //           Search Service Request Variables     //
@@ -137,12 +150,14 @@ public class HomeController implements SwitchableController, Observer {
     private PaneSwitcher switcher;
     private Map map;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
+
     @FXML
     private ImageView ivMap;
     @FXML
     private Pane mapContainer;
     @FXML
     private VBox addLocationPopup;
+
     @FXML
     private VBox vbxMenu;
     @FXML
@@ -183,6 +198,117 @@ public class HomeController implements SwitchableController, Observer {
     private Pane voicePane;
     // kiosk location
     private Point2D startLocation = new Point2D(1875.0, 1025.0);
+    Timeline commandExecuter = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            String command = commands.poll();
+            if (command != null) {
+                if (command.equals("HEY KIOSK") || command.equals("HELLO KIOSK")) {
+                    paneVoiceController.setVisibility(true);
+                    canSayCommand[0] = true;
+                    new Timer(true).schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            canSayCommand[0] = false;
+                        }
+                    }, 5000);
+                } else {
+                    if (!canSayCommand[0]) {
+                        return;
+                    }
+                    canSayCommand[0] = false;
+                    paneVoiceController.setVisibility(false);
+
+                    if(command.equals("HELP")) {
+                        onHelpPopup();
+                        voice.speak("Here is the help menu");
+                    }else if(command.contains("DIRECTIONS")) {
+                        if(command.contains("BATHROOM")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("REST"))));
+                            voice.speak("Here is the route to the nearest bathroom");
+                        }else if(command.contains("EXIT")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("EXIT"))));
+                            voice.speak("Here is the route to the nearest exit");
+                        }else if(command.contains("NEUROSCIENCE")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Neuroscience"))));
+                            voice.speak("Here is the route to neuroscience");
+                        }else if(command.contains("ORTHOPEDICS") || command.contains("RHEMUTOLOGY")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Orthopedics"))));
+                            voice.speak("Here is the route to Orthopedics and Rhemutology");
+                        }else if(command.contains("PARKING") && command.contains("GARAGE")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Parking") &&
+                                                    node.getLongName().contains("Garage"))));
+                            voice.speak("Here is the route to the parking garage");
+                        }else if(command.contains("ELEVATOR")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("ELEV"))));
+                            voice.speak("Here is the route to the nearest elevator");
+                        }else if(command.contains("DENTIST") || command.contains("DENTISTRY") || command.contains("ORAL")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Dentistry"))));
+                            voice.speak("Here is the route to Dentistry and Oral Medicine");
+                        }else if(command.contains("PLASTIC SURGERY")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Plastic Surgery"))));
+                            voice.speak("Here is the route to Plastic Surgery");
+                        }else if(command.contains("RADIOLOGY")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Radiation"))));
+                            voice.speak("Here is the route to Radiology");
+                        }else if(command.contains("NUCLEAR")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Nuclear"))));
+                            voice.speak("Here is the route to Nuclear Medicine");
+                        }
+                    }else if(command.contains("STAIRS") && command.contains("DISABLE")) {
+                        map.disableStairs();
+                        voice.speak("Stairs are now disabled for path finding");
+                    }else if(command.contains("STAIRS") && command.contains("ENABLE")) {
+                        map.enableStairs();
+                        voice.speak("Stairs are now enabled for path finding");
+                    }else if(command.contains("ELEVATOR") && command.contains("DISABLE")) {
+                        map.disableElevators();
+                        voice.speak("Elevators are now disabled for path finding");
+                    }else if(command.contains("ELEVATOR") && command.contains("ENABLE")) {
+                        map.enableElevators();
+                        voice.speak("Elevators are now enabled for path finding");
+                    }else if(command.contains("WEATHER") && command.contains("TODAY")){
+                        YahooWeatherService service = null;
+                        try {
+                            service = new YahooWeatherService();
+                        } catch (JAXBException e) {
+                            e.printStackTrace();
+                        }
+                        Channel channel = null;
+                        try {
+                            channel = service.getForecast("2523945", DegreeUnit.FAHRENHEIT);
+                        } catch (JAXBException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        voice.speak(String.format("The temperature is %d degrees fahrenheit", channel.getItem().getCondition().getTemp()));
+                        voice.speak(channel.getAtmosphere().toString());
+                    }
+                }
+            }
+        }
+    }));
     // menu in bottom left corner
     @FXML
     private JFXHamburger hamburger;
@@ -321,6 +447,9 @@ public class HomeController implements SwitchableController, Observer {
         this.switcher = switcher;
         VoiceLauncher.getInstance().addObserver(this);
 
+        voice = voiceManager.getVoice("kevin16");
+        voice.allocate();
+
         paneVoiceController = new PaneVoiceController(voicePane);
 
         commandExecuter.setCycleCount(Timeline.INDEFINITE);
@@ -428,8 +557,8 @@ public class HomeController implements SwitchableController, Observer {
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
             mapDrawController.showPath(map.getPath
-                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), map.is2D())
-                            , map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D())));
+                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                            , map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), true)));
 
             // if editing maps
             HashSet<Node> nodes = new HashSet<>();
@@ -837,7 +966,7 @@ public class HomeController implements SwitchableController, Observer {
     }
 
     @FXML
-    private void onSearchServiceRequest() {
+    private void onSearchServiceRequest(){
         filter = "none";
         searchType = "none";
 
@@ -845,7 +974,7 @@ public class HomeController implements SwitchableController, Observer {
 
         String lastSearch = ServiceRequestSingleton.getInstance().getLastSearch();
         String lastFilter = ServiceRequestSingleton.getInstance().getLastFilter();
-        if (lastSearch != null && lastFilter != null) {
+        if(lastSearch != null && lastFilter != null){
             searchType = lastSearch;
             filter = lastFilter;
         }
@@ -1116,7 +1245,7 @@ public class HomeController implements SwitchableController, Observer {
 
         try {
             searchResultTable.getItems().clear();
-        } catch (NullPointerException e) {
+        }catch(NullPointerException e){
             e.printStackTrace();
         }
 
@@ -1134,7 +1263,7 @@ public class HomeController implements SwitchableController, Observer {
         requestTypeCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("type"));
         firstNameCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("firstName"));
         lastNameCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("lastName"));
-        destinationCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("location"));
+        destinationCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String >("location"));
         requestPriorityCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, Integer>("priority"));
         theStatusCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("status"));
         btnsCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
@@ -1176,7 +1305,7 @@ public class HomeController implements SwitchableController, Observer {
     }
 
     @FXML
-    public void onSelect(ServiceRequest s) {
+    public void onSelect(ServiceRequest s){
         ServiceRequestSingleton.getInstance().setPopUpRequest(s);
         serviceRequestPopUp = ServiceRequestSingleton.getInstance().getPopUpRequest();
         typeLabel.setText("Type: " + serviceRequestPopUp.getType());
@@ -1210,7 +1339,7 @@ public class HomeController implements SwitchableController, Observer {
         filter = "none";
         try {
             searchResultTable.getItems().clear();
-        } catch (NullPointerException e) {
+        }catch(NullPointerException e){
             e.printStackTrace();
         }
         ServiceRequestSingleton.getInstance().setSearchNull();
