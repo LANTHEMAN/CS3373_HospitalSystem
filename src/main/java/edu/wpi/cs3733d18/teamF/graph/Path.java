@@ -60,5 +60,55 @@ public class Path {
         return this.nodes.equals(path.nodes);
     }
 
+    public ArrayList<String> makeTextDirections() {
+        ArrayList<String> directions = new ArrayList<>();
 
+        double dist = 0;
+
+        for (int nodeIndex = 1; nodeIndex < this.nodes.size() - 1; nodeIndex++) {
+
+            Node previousNode = this.getNodes().get(nodeIndex - 1);
+            Node currentNode = this.getNodes().get(nodeIndex);
+            Node nextNode = this.getNodes().get(nodeIndex + 1);
+
+            double angle = getAngle(previousNode, currentNode, nextNode);
+
+            dist += previousNode.displacementTo(currentNode);
+
+            if (angle < -30) {
+                directions.add(String.format("Walk straight for %.0f feet", dist));
+                if(currentNode.getNodeType().equals("HALL"))
+                    directions.add("Turn Left");
+                else
+                    directions.add("Turn Left at " + currentNode.getShortName());
+                dist = 0;
+            } else if (angle > 30) {
+                directions.add(String.format("Walk straight for %.0f feet", dist));
+                if(currentNode.getNodeType().equals("HALL"))
+                    directions.add("Turn Right");
+                else
+                    directions.add("Turn Right at " + currentNode.getShortName());
+                dist = 0;
+            }
+        }
+
+        directions.add(String.format("Walk straight for %.0f feet", nodes.get(nodes.size()-2).displacementTo(nodes.get(nodes.size()-1)) + dist));
+        directions.add("Arrive at " + nodes.get(nodes.size()-1).getShortName());
+
+        return directions;
+    }
+
+    public double getAngle(Node previousNode, Node currentNode, Node nextNode) {
+
+        double v1X = currentNode.getPosition().getX() - previousNode.getPosition().getX();
+        double v1Y = currentNode.getPosition().getY() - previousNode.getPosition().getY();
+
+        double v2X = nextNode.getPosition().getX() - currentNode.getPosition().getX();
+        double v2Y = nextNode.getPosition().getY() - currentNode.getPosition().getY();
+
+        double dot = v1X * v2X + v1Y * v2Y;
+        double det = v1X * v2Y - v1Y * v2X;
+
+        return Math.toDegrees(Math.atan2(det, dot));
+    }
 }

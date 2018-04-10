@@ -10,7 +10,7 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
     // keeps track of the number of nodes of this node type
     private int numNodeType = -1;
     // elevator character
-    private char elevatorChar;
+    private char linkChar;
     // the type of location this node is at
     private String nodeType = null;
 
@@ -31,16 +31,16 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
         if (nodeType.length() != 4) {
             throw new AssertionError("Node type must be 4 characters long.");
         }
-        if (numNodeType == -1) {
+        if (numNodeType == -1 && !(nodeType.equals("ELEV") || nodeType.equals("STAI"))) {
             throw new AssertionError("When creating a new node, you must set the number of " +
                     "nodes of that type.");
         }
         String numNodeTypeStr;
-        if (nodeType.equals("ELEV")) {
-            if (elevatorChar == '\0') {
-                throw new AssertionError("When creating an elevator assign the elevator name.");
+        if (nodeType.equals("ELEV") || nodeType.equals("STAI")) {
+            if (linkChar == '\0') {
+                throw new AssertionError("When creating an stair/elevator assign the Character.");
             }
-            numNodeTypeStr = "00" + elevatorChar;
+            numNodeTypeStr = "00" + linkChar;
         } else {
             numNodeTypeStr = String.format("%03d", numNodeType);
         }
@@ -104,8 +104,8 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
             throw new AssertionError("Set node type before assigning a number");
         }
 
-        if (nodeType.equals("ELEV")) {
-            throw new AssertionError("You must assign a elevatorChar to an elevator, not a numNodeType");
+        if (nodeType.equals("ELEV") || nodeType.equals("STAI")) {
+            throw new AssertionError("You must assign a linkChar to an elevator, not a numNodeType");
         }
 
         int typeCount = 0;
@@ -126,15 +126,15 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
     }
 
     /**
-     * @param elevatorChar the elevator letter, only if this is an elevator
+     * @param linkChar the elevator letter, only if this is an elevator
      * @return this to allow chained builder calls
      */
-    public NewNodeBuilder setElevatorChar(char elevatorChar) {
-        if (!(Character.isLetter(elevatorChar))) {
+    public NewNodeBuilder setLinkChar(char linkChar) {
+        if (!(Character.isLetter(linkChar))) {
             throw new AssertionError("You must assign a valid elevator character!");
         }
 
-        this.elevatorChar = elevatorChar;
+        this.linkChar = linkChar;
         return this;
     }
 
