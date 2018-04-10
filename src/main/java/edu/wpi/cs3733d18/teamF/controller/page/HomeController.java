@@ -213,15 +213,7 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private JFXTextField sourceLocation;
     @FXML
-    private VBox sourceList;
-    @FXML
-    private JFXTextField sourceEntry1;
-    @FXML
-    private JFXTextField sourceEntry2;
-    @FXML
-    private JFXTextField sourceEntry3;
-    @FXML
-    private JFXTextField sourceEntry4;
+    private JFXListView searchList;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -598,37 +590,21 @@ public class HomeController implements SwitchableController, Observer {
                 }
                 try {
                     if (autoCompleteStrings.size() > 0) {
-                        sourceEntry1.setText(autoCompleteStrings.get(0));
-                        sourceEntry1.setVisible(true);
+                        ObservableList<String> list =FXCollections.observableArrayList (autoCompleteStrings);
+                        searchList.setItems(list);
+                        searchList.setVisible(true);
                     } else {
-                        sourceEntry1.setVisible(false);
+                        searchList.setVisible(false);
                     }
-                    if (autoCompleteStrings.size() > 1) {
-                        sourceEntry2.setText(autoCompleteStrings.get(1));
-                        sourceEntry2.setVisible(true);
-                    } else {
-                        sourceEntry2.setVisible(false);
-                    }
-                    if (autoCompleteStrings.size() > 2) {
-                        sourceEntry3.setText(autoCompleteStrings.get(2));
-                        sourceEntry3.setVisible(true);
-                    } else {
-                        sourceEntry3.setVisible(false);
-                    }
-                    if (autoCompleteStrings.size() > 3) {
-                        sourceEntry4.setText(autoCompleteStrings.get(3));
-                        sourceEntry4.setVisible(true);
-                    } else {
-                        sourceEntry4.setVisible(false);
-                    }
-                    sourceList.setVisible(true);
                 } catch (Exception anyE) {
                     anyE.printStackTrace();
                 }
             } else {
-                sourceList.setVisible(false);
+                //sourceList.setVisible(false);
+                searchList.setVisible(false);
             }
         });
+
     }
 
 
@@ -675,6 +651,12 @@ public class HomeController implements SwitchableController, Observer {
         adminDrawer.setOverLayVisible(false);
     }
 
+
+    @FXML
+    void setSourceSearch() {
+        sourceLocation.setText(searchList.getSelectionModel().getSelectedItem().toString());
+        searchList.setVisible(false);
+    }
 
     // Popup upon help request
 

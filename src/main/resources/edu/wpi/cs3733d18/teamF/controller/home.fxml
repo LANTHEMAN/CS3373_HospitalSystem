@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXNodesList?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -19,7 +20,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import net.kurobako.gesturefx.GesturePane?>
@@ -271,13 +271,6 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
                 </VBox>
-                <VBox fx:id="findLocationPopup" alignment="CENTER" maxHeight="160.0" maxWidth="120.0" prefHeight="160.0" prefWidth="120.0" visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
-                    <children>
-                        <Circle fx:id="locationCircle" fill="#1f93ff00" radius="43.0" stroke="RED" strokeType="INSIDE" strokeWidth="5.0" />
-                        <Text fx:id="txtFindLocation" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="%FindLocation" />
-                        <Button fx:id="btnLocationDirections" alignment="CENTER" mnemonicParsing="false" onAction="#onLocationDirections" text="%GetDirections" textFill="RED" />
-                    </children>
-                </VBox>
                 <Text fx:id="txtAdminHelp" strokeType="OUTSIDE" strokeWidth="0.0" translateX="-70.0" translateY="-20.0" visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                     <font>
                         <Font size="15.0" />
@@ -304,14 +297,7 @@
                   <FontAwesomeIconView glyphName="USER" size="20" />
                </graphic>
             </JFXButton>
-            <VBox fx:id="sourceList" maxHeight="200.0" maxWidth="300.0" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1" GridPane.valignment="TOP">
-               <children>
-                  <JFXTextField fx:id="sourceEntry1" />
-                  <JFXTextField fx:id="sourceEntry2" layoutX="10.0" layoutY="10.0" />
-                  <JFXTextField fx:id="sourceEntry3" layoutX="10.0" layoutY="37.0" />
-                  <JFXTextField fx:id="sourceEntry4" layoutX="10.0" layoutY="64.0" />
-               </children>
-            </VBox>
+            <JFXListView fx:id="searchList" maxHeight="200.0" maxWidth="300.0" onMouseClicked="#setSourceSearch" visible="false" GridPane.rowIndex="1" GridPane.valignment="TOP" />
             </children>
         </GridPane>
     </children>
