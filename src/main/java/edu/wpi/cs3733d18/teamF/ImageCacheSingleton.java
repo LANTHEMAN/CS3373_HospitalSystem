@@ -2,6 +2,8 @@ package edu.wpi.cs3733d18.teamF;
 
 import javafx.scene.image.Image;
 
+import java.util.HashMap;
+
 public class ImageCacheSingleton {
     public static Image maps2D[] = {
             new Image("edu/wpi/cs3733d18/teamF/controller/BW2D Maps/00_thelowerlevel2.png"),
@@ -20,5 +22,25 @@ public class ImageCacheSingleton {
             new Image("edu/wpi/cs3733d18/teamF/controller/Wireframes/3-ICONS.png")
     };
 
-    
+    private HashMap<String, Image> stringImageHashMap = new HashMap<>();
+
+    private ImageCacheSingleton() {
+
+    }
+
+    public Image getImage(String fileName) {
+        if (stringImageHashMap.containsKey(fileName)) {
+            return stringImageHashMap.get(fileName);
+        }
+        stringImageHashMap.put(fileName, new Image(fileName));
+        return stringImageHashMap.get(fileName);
+    }
+
+    public ImageCacheSingleton getInstance() {
+        return LazyInitializer.INSTANCE;
+    }
+
+    private static class LazyInitializer {
+        static final ImageCacheSingleton INSTANCE = new ImageCacheSingleton();
+    }
 }
