@@ -637,21 +637,21 @@ public class HomeController implements SwitchableController, Observer {
         sourceLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = sourceLocation.getText();
             input = input.concat("" + e.getCharacter());
-            autoComplete(input, searchList);
+            autoComplete(input, searchList, "Node", "longName");
         });
 
         usernameSearch.setOnKeyTyped((KeyEvent e) -> {
             String input = usernameSearch.getText();
             input = input.concat("" + e.getCharacter());
-            autoComplete(input, usernameList);
+            autoComplete(input, usernameList, "HUser", "username");
         });
 
     }
 
     // will filter the given ListView for the given input String
-    private void autoComplete(String input, ListView listView) {
+    private void autoComplete(String input, ListView listView, String table, String field) {
         if (input.length() > 0) {
-            String sql = "SELECT username FROM HUser";
+            String sql = "SELECT " + field + " FROM " + table;
             ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
             ArrayList<String> autoCompleteStrings = new ArrayList<>();
 
