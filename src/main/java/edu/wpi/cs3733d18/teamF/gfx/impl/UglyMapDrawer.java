@@ -88,17 +88,29 @@ public class UglyMapDrawer extends MapDrawable {
                 if(edge.getNode1().getNodeType().equals("ELEV")&&edge.getNode2().getNodeType().equals("ELEV")){
                     continue;
                 }
+                else if(edge.getNode1().getNodeType().equals("STAI")&&edge.getNode2().getNodeType().equals("STAI")){
+                    continue;
+                }
                 edgeDrawer.update(edge);
                 edgeDrawer.draw(pane);
             }
         }
 
         if (path != null) {
-            for(Node node : path.getNodes()){
-                if((!(node.getNodeType().equals("HALL")))&& node.getFloor().equals(map.getFloor())){
-                    currNodeDrawable = getDrawable(node.getNodeType());
-                    currNodeDrawable.update(node);
-                    currNodeDrawable.draw(pane);
+            for(Edge edge : path.getEdges()){
+                if(!(edge.getNode1().getFloor().equals(edge.getNode2().getFloor()))){
+                    if(edge.getNode1().getFloor().equals(map.getFloor())){
+                        Node node = edge.getNode1();
+                        currNodeDrawable = getDrawable(node.getNodeType());
+                        currNodeDrawable.update(node);
+                        currNodeDrawable.draw(pane);
+                    }
+                    else if(edge.getNode2().getFloor().equals(map.getFloor())){
+                        Node node = edge.getNode2();
+                        currNodeDrawable = getDrawable(node.getNodeType());
+                        currNodeDrawable.update(node);
+                        currNodeDrawable.draw(pane);
+                    }
                 }
             }
             pathDrawer.update(path);
