@@ -6,6 +6,7 @@ import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.PathDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Edge;
 import edu.wpi.cs3733d18.teamF.graph.Node;
+import edu.wpi.cs3733d18.teamF.graph.Path;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -22,6 +23,7 @@ import static java.lang.Math.ceil;
 public class DynamicPathDrawer extends PathDrawable {
 
     private ArrayList<Arrow> arrows = new ArrayList<>();
+    Timeline timeline = null;
 
     public DynamicPathDrawer() {
         super();
@@ -51,19 +53,19 @@ public class DynamicPathDrawer extends PathDrawable {
         }
 
         double len = path.getLength();
-        double divDist = 100;
+        double divDist = 120;
         int divs = (int) ceil(len / divDist);
 
         for (int i = 0; i < divs; i++) {
             arrows.add(new Arrow(i * divDist));
         }
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> {
+        timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> {
             for (Arrow arrow : arrows) {
-                arrow.progress += 0.5;
+                arrow.progress += .8;
                 Pair<Pair<Node, Node>, Double> pathPos = getPathPos(arrow.progress);
                 if (pathPos == null) {
-                    arrow.progress = 0;
+                    arrow.progress -= path.getLength();
                     continue;
                 }
 
@@ -106,4 +108,11 @@ public class DynamicPathDrawer extends PathDrawable {
         }
     }
 
+    @Override
+    public void update(Path path){
+        this.path = path;
+        if(timeline != null){
+            timeline.stop();
+        }
+    }
 }
