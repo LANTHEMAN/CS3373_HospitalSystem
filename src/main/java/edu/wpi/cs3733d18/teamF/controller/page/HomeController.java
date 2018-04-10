@@ -214,6 +214,18 @@ public class HomeController implements SwitchableController, Observer {
     private JFXTextField sourceLocation;
     @FXML
     private JFXListView searchList;
+    @FXML
+    private VBox directionsBox;
+    @FXML
+    private FontAwesomeIconView directionsArrow;
+    @FXML
+    private FontAwesomeIconView cancelDirections;
+    @FXML
+    private JFXTextField destinationLocation;
+    @FXML
+    private JFXDrawer directionsDrawer;
+    @FXML
+    private JFXHamburger hamburgerD;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -471,7 +483,7 @@ public class HomeController implements SwitchableController, Observer {
 
 
 
-        // set the hamburger menu on bottom left accordingly
+        // set the hamburger menu on top left accordingly
         if (PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
             setGuestMenu();
             loginBtn.setText("Login");
@@ -487,7 +499,12 @@ public class HomeController implements SwitchableController, Observer {
         }
 
 
-        setHamburgerEvent();
+        setHamburgerEvent(hamburger);
+        setHamburgerEvent(hamburgerD);
+
+        setArrowEvent();
+
+        setCancelDirectionsEvent();
 
         // login
         loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -608,23 +625,34 @@ public class HomeController implements SwitchableController, Observer {
     }
 
 
-    private void setHamburgerEvent() {
+    private void setHamburgerEvent(JFXHamburger hamburger) {
         HamburgerBasicCloseTransition arrowBasicTransition = new HamburgerBasicCloseTransition(hamburger);
         arrowBasicTransition.setRate(-1);
         hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
             arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
             arrowBasicTransition.play();
 
-            if (staffDrawer.isShown()) {
-                staffDrawer.close();
-            } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
-                staffDrawer.open();
-            }
-
             if (adminDrawer.isShown()) {
                 adminDrawer.close();
             } else if (PermissionSingleton.getInstance().isAdmin()){
                 adminDrawer.open();
+            }
+        });
+    }
+
+    private void setArrowEvent(){
+        directionsDrawer.setSidePane(directionsBox);
+        directionsArrow.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            if (directionsDrawer.isHidden()){
+                directionsDrawer.open();
+            }
+        });
+    }
+
+    private void setCancelDirectionsEvent(){
+        cancelDirections.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            if (directionsDrawer.isShown()){
+                directionsDrawer.close();
             }
         });
     }
@@ -639,8 +667,8 @@ public class HomeController implements SwitchableController, Observer {
         hamburger.setVisible(true);
         adminBox.setVisible(false);
         staffBox.setVisible(true);
-        staffDrawer.setSidePane(staffBox);
-        staffDrawer.setOverLayVisible(false);
+        adminDrawer.setSidePane(staffBox);
+        adminDrawer.setOverLayVisible(false);
     }
 
     private void setAdminMenu() {
