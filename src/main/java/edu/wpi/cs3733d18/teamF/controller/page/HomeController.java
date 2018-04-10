@@ -226,6 +226,8 @@ public class HomeController implements SwitchableController, Observer {
     private JFXDrawer directionsDrawer;
     @FXML
     private JFXHamburger hamburgerD;
+    @FXML
+    private FontAwesomeIconView cancelMenu;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -505,6 +507,7 @@ public class HomeController implements SwitchableController, Observer {
         setArrowEvent();
 
         setCancelDirectionsEvent();
+        setCancelMenuEvent();
 
         // login
         loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -653,6 +656,14 @@ public class HomeController implements SwitchableController, Observer {
         cancelDirections.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             if (directionsDrawer.isShown()){
                 directionsDrawer.close();
+            }
+        });
+    }
+
+    private void setCancelMenuEvent(){
+        cancelMenu.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            if (adminDrawer.isShown()){
+                adminDrawer.close();
             }
         });
     }

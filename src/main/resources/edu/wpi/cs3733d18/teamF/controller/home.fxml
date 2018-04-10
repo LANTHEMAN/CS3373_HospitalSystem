@@ -12,6 +12,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -51,7 +52,7 @@
          <children>
             <Pane prefHeight="287.0" prefWidth="300.0" style="-fx-background-color: #606060;">
                <children>
-                  <JFXHamburger fx:id="hamburger" alignment="CENTER" fillWidth="false" layoutX="14.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="34.0" />
+                  <JFXHamburger fx:id="hamburgerD" alignment="CENTER" fillWidth="false" layoutX="14.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="34.0" />
                   <FontAwesomeIconView fx:id="cancelDirections" glyphName="TIMES" layoutX="263.0" layoutY="34.0" size="30" wrappingWidth="22.14285659790039" />
                   <JFXTextField fx:id="sourceLocation" alignment="BOTTOM_LEFT" layoutX="54.0" layoutY="103.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Choose Starting point, or click on the map" />
                   <JFXTextField fx:id="destinationLocation" alignment="BOTTOM_LEFT" layoutX="54.0" layoutY="169.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Choose Destination" />
@@ -80,33 +81,6 @@
             </Pane>
          </children>
       </VBox>
-
-        <VBox fx:id="adminBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" style="-fx-background-color: #616161;">
-            <children>
-                <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onGetDirections" prefHeight="272.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Map Editor" textFill="WHITE">
-                    <font>
-                        <Font name="Arial" size="20.0" />
-                    </font>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
-                    </graphic></JFXButton>
-            <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefHeight="120.0" prefWidth="400.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Service Request" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="20.0" />
-               </font>
-               <graphic>
-                  <FontAwesomeIconView glyphName="TAG" size="50" />
-               </graphic>
-            </JFXButton>
-                <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onFindLocation" prefHeight="120.0" prefWidth="400.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Edit Users" textFill="WHITE">
-                    <font>
-                        <Font name="Arial" size="20.0" />
-                    </font>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="USER" glyphStyle="USER" size="50" />
-                    </graphic></JFXButton>
-            </children>
-        </VBox>
       <VBox fx:id="staffBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
          <children>
                 <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefHeight="203.0" prefWidth="329.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Service Request" textFill="WHITE">
@@ -339,5 +313,50 @@
             <JFXListView fx:id="searchList" maxHeight="200.0" maxWidth="300.0" onMouseClicked="#setSourceSearch" visible="false" GridPane.rowIndex="1" GridPane.valignment="TOP" />
             </children>
         </GridPane>
+
+        <VBox fx:id="adminBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" style="-fx-background-color: #616161;">
+            <children>
+            <Pane prefHeight="86.0" prefWidth="300.0">
+               <children>
+                  <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" layoutX="251.0" layoutY="53.0" size="40" wrappingWidth="22.142844200134277" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="24.0" prefHeight="38.0" prefWidth="112.0" text="MENU">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefHeight="163.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="New Service Request" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="CLIPBOARD" size="50" />
+               </graphic>
+            </JFXButton>
+            <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefHeight="152.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Search Service Request" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="SEARCH" size="50" />
+               </graphic>
+            </JFXButton>
+                <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onGetDirections" prefHeight="145.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Map Editor" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="20.0" />
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
+                    </graphic></JFXButton>
+                <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onFindLocation" prefHeight="143.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Edit Users" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="20.0" />
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="USER" glyphStyle="USER" size="50" />
+                    </graphic></JFXButton>
+            </children>
+        </VBox>
     </children>
 </GridPane>
