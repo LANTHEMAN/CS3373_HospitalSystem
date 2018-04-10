@@ -359,6 +359,10 @@ public class Map extends Observable implements DatabaseItem, Observer {
                         int x = (int) Double.parseDouble(record.get(1));
                         int y = (int) Double.parseDouble(record.get(2));
                         String floor = record.get(3);
+                        floor = floor.replace(" ", "");
+                        if(!floor.contains("L") && !floor.contains("G")){
+                            floor = String.format("%02d", Integer.parseInt(floor));
+                        }
                         String building = record.get(4);
                         String nodeType = record.get(5);
                         String longName = record.get(6);
@@ -518,11 +522,17 @@ public class Map extends Observable implements DatabaseItem, Observer {
                             , "shortName", "teamAssigned", "xcoord3d", "ycoord3d"));
             ResultSet nodeSet = dbHandler.runQuery("SELECT * FROM NODE");
             while (nodeSet.next()) {
+                String floor = nodeSet.getString(4);
+                floor = floor.replace(" ", "");
+                if(!floor.contains("L") && !floor.contains("G")){
+                    floor = String.format("%02d", Integer.parseInt(floor));
+                }
+
                 csvPrinterNodes.printRecord(
                         nodeSet.getString(1)
                         , nodeSet.getString(2)
                         , nodeSet.getString(3)
-                        , nodeSet.getString(4)
+                        , floor
                         , nodeSet.getString(5)
                         , nodeSet.getString(6)
                         , nodeSet.getString(7)
