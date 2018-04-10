@@ -725,8 +725,9 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private void onHamburgerMenu() {
         if (adminDrawer.isHidden()) {
-            adminDrawer.toFront();
             adminDrawer.open();
+            adminDrawer.toFront();
+
         }
     }
 
@@ -745,8 +746,8 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private void onArrowEvent() {
         if (directionsDrawer.isHidden()) {
-            directionsDrawer.toFront();
             directionsDrawer.open();
+            directionsDrawer.toFront();
         }
 
     }
@@ -872,9 +873,8 @@ public class HomeController implements SwitchableController, Observer {
             filter = lastFilter;
         }
         onSearch();
-        searchPane.setVisible(true);
         adminDrawer.close();
-        adminDrawer.setVisible(false);
+        adminDrawer.toBack();
     }
 
 
@@ -1018,12 +1018,13 @@ public class HomeController implements SwitchableController, Observer {
             nodesShown = true;
         }
         adminDrawer.close();
-        adminDrawer.setVisible(false);
+        adminDrawer.toBack();
     }
 
     @FXML
     public void onEditUsers() {
-
+        adminDrawer.close();
+        adminDrawer.toBack();
     }
 
 
