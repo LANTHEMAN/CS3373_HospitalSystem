@@ -128,7 +128,6 @@ public class Map extends Observable implements DatabaseItem, Observer {
         notifyObservers();
     }
 
-    // TODO implement
     public void addEdge(Node node1, Node node2) {
         // make sure that the nodes exist
         if (graph.getNodes(graphNode -> graphNode == node1 || graphNode == node2).size() != 2) {
@@ -218,6 +217,27 @@ public class Map extends Observable implements DatabaseItem, Observer {
         return AStar.getPath(graph, node1, node2);
     }
 
+
+    public Node findNodeClosestTo(Node node, Predicate<Node> destFilter) {
+        double closestDistance = Double.MAX_VALUE;
+        Node closestNode = null;
+        for (Node n : getNodes(destFilter)) {
+            Path path = getPath(node, n);
+            if (path.getNodes().size() == 0) {
+                continue;
+            }
+            double len = path.getLength();
+            if (len < closestDistance) {
+                closestDistance = len;
+                closestNode = n;
+
+                System.out.println("len = " + len);
+            }
+        }
+        return closestNode;
+    }
+
+
     //Note: This function gets you the closest node on the specified floor. Don't use this if you don't know what floor you're looking for!
     public Node findNodeClosestTo(double x1, double y1) {
         return findNodeClosestTo(x1, y1, true);
@@ -235,7 +255,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
         for (Node n : getNodes(destFilter)) {
             double x2 = n.getPosition().getX();
             double y2 = n.getPosition().getY();
-            if(!is2D){
+            if (!is2D) {
                 x2 = n.getWireframePosition().getX();
                 y2 = n.getWireframePosition().getY();
             }
@@ -248,57 +268,57 @@ public class Map extends Observable implements DatabaseItem, Observer {
         return closestNode;
     }
 
-    public void disableStairs(){
+    public void disableStairs() {
 
-        if(!stairsDisabled) {
+        if (!stairsDisabled) {
             HashSet<Node> Nodes = graph.getNodes();
             stairsDisabled = true;
 
             for (Node n : Nodes) {
                 if (n.getNodeType().equals("STAI")) {
-                    n.setAdditionalWeight(n.getAdditionalWeight() + 1000000);
+                    n.setAdditionalWeight(n.getAdditionalWeight() + 1000000000);
                 }
             }
         }
     }
 
-    public void enableStairs(){
+    public void enableStairs() {
 
-        if(stairsDisabled) {
-            HashSet<Node> Nodes = graph.getNodes();
+        if (stairsDisabled) {
+            HashSet<Node> nodes = graph.getNodes();
             stairsDisabled = false;
 
-            for (Node n : Nodes) {
+            for (Node n : nodes) {
                 if (n.getNodeType().equals("STAI")) {
-                    n.setAdditionalWeight(n.getAdditionalWeight() - 1000000);
+                    n.setAdditionalWeight(n.getAdditionalWeight() - 1000000000);
                 }
             }
         }
     }
 
-    public void disableElevators(){
+    public void disableElevators() {
 
-        if(!elevatorsDisabled) {
-            HashSet<Node> Nodes = graph.getNodes();
+        if (!elevatorsDisabled) {
+            HashSet<Node> nodes = graph.getNodes();
             elevatorsDisabled = true;
 
-            for (Node n : Nodes) {
+            for (Node n : nodes) {
                 if (n.getNodeType().equals("ELEV")) {
-                    n.setAdditionalWeight(n.getAdditionalWeight() + 1000000);
+                    n.setAdditionalWeight(n.getAdditionalWeight() + 1000000000);
                 }
             }
         }
     }
 
-    public void enableElevators(){
+    public void enableElevators() {
 
-        if(elevatorsDisabled) {
-            HashSet<Node> Nodes = graph.getNodes();
+        if (elevatorsDisabled) {
+            HashSet<Node> nodes = graph.getNodes();
             elevatorsDisabled = false;
 
-            for (Node n : Nodes) {
+            for (Node n : nodes) {
                 if (n.getNodeType().equals("ELEV")) {
-                    n.setAdditionalWeight(n.getAdditionalWeight() - 1000000);
+                    n.setAdditionalWeight(n.getAdditionalWeight() - 1000000000);
                 }
             }
         }
@@ -419,7 +439,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
                         int y = (int) Double.parseDouble(record.get(2));
                         String floor = record.get(3);
                         floor = floor.replace(" ", "");
-                        if(!floor.contains("L") && !floor.contains("G")){
+                        if (!floor.contains("L") && !floor.contains("G")) {
                             floor = String.format("%02d", Integer.parseInt(floor));
                         }
                         String building = record.get(4);
@@ -583,7 +603,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
             while (nodeSet.next()) {
                 String floor = nodeSet.getString(4);
                 floor = floor.replace(" ", "");
-                if(!floor.contains("L") && !floor.contains("G")){
+                if (!floor.contains("L") && !floor.contains("G")) {
                     floor = String.format("%02d", Integer.parseInt(floor));
                 }
 
