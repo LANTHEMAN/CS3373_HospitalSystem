@@ -39,6 +39,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
+import org.apache.commons.math3.analysis.function.Floor;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -180,6 +181,22 @@ public class HomeController implements SwitchableController, Observer {
     private JFXTextField loginUsername;
     @FXML
     private JFXPasswordField loginPassword;
+    @FXML
+    private JFXNodesList floorNode;
+    @FXML
+    private JFXButton floorBtn;
+    @FXML
+    private JFXButton l2;
+    @FXML
+    private JFXButton l1;
+    @FXML
+    private JFXButton groundFloor;
+    @FXML
+    private JFXButton floor1;
+    @FXML
+    private JFXButton floor2;
+    @FXML
+    private JFXButton floor3;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -393,6 +410,48 @@ public class HomeController implements SwitchableController, Observer {
         cboxAvailableLocations.getItems().addAll(all);
 
         */
+
+        floorBtn.setText("2");
+        l2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            map.setFloor("L2");
+            floorBtn.setText("L2");
+            reloadMap();
+        });
+        l1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            map.setFloor("L1");
+            floorBtn.setText("L1");
+            reloadMap();
+        });
+        groundFloor.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            map.setFloor("0G");
+            floorBtn.setText("G");
+            reloadMap();
+        });
+        floor1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            map.setFloor("01");
+            floorBtn.setText("1");
+            reloadMap();
+        });
+        floor2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            map.setFloor("02");
+            floorBtn.setText("2");
+            reloadMap();
+        });
+        floor3.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            map.setFloor("03");
+            floorBtn.setText("3");
+            reloadMap();
+        });
+
+
+        floorNode.addAnimatedNode(floorBtn);
+        floorNode.addAnimatedNode(l2);
+        floorNode.addAnimatedNode(l1);
+        floorNode.addAnimatedNode(groundFloor);
+        floorNode.addAnimatedNode(floor1);
+        floorNode.addAnimatedNode(floor2);
+        floorNode.addAnimatedNode(floor3);
+
 
 
         // set the hamburger menu on bottom left accordingly
