@@ -8,6 +8,8 @@ import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.controller.*;
+import edu.wpi.cs3733d18.teamF.db.DatabaseHandler;
+import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.PaneMapController;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
 import edu.wpi.cs3733d18.teamF.gfx.impl.UglyMapDrawer;
@@ -29,6 +31,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
@@ -42,6 +45,8 @@ import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 import org.apache.commons.math3.analysis.function.Floor;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -203,6 +208,20 @@ public class HomeController implements SwitchableController, Observer {
     private FontAwesomeIconView loginCancel;
     @FXML
     private FontAwesomeIconView logoutCancel;
+
+    // searching for a location
+    @FXML
+    private JFXTextField sourceLocation;
+    @FXML
+    private VBox sourceList;
+    @FXML
+    private JFXTextField sourceEntry1;
+    @FXML
+    private JFXTextField sourceEntry2;
+    @FXML
+    private JFXTextField sourceEntry3;
+    @FXML
+    private JFXTextField sourceEntry4;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -558,7 +577,58 @@ public class HomeController implements SwitchableController, Observer {
             loginBtn.setText("Login");
         });
 
+        sourceLocation.setOnKeyTyped((KeyEvent e) -> {
+            String input = sourceLocation.getText();
+            input = input.concat("" + e.getCharacter());
 
+            if (input.length() > 0) {
+                String sql = "SELECT longName FROM Node";
+                ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
+                ArrayList<String> autoCompleteStrings = new ArrayList<>();
+
+                try {
+                    while (resultSet.next()) {
+                        String longName = resultSet.getString(1);
+                        if (longName.toLowerCase().contains(input.toLowerCase())) {
+                            autoCompleteStrings.add(longName);
+                        }
+                    }
+                } catch (SQLException sqlException) {
+                    sqlException.printStackTrace();
+                }
+                try {
+                    if (autoCompleteStrings.size() > 0) {
+                        sourceEntry1.setText(autoCompleteStrings.get(0));
+                        sourceEntry1.setVisible(true);
+                    } else {
+                        sourceEntry1.setVisible(false);
+                    }
+                    if (autoCompleteStrings.size() > 1) {
+                        sourceEntry2.setText(autoCompleteStrings.get(1));
+                        sourceEntry2.setVisible(true);
+                    } else {
+                        sourceEntry2.setVisible(false);
+                    }
+                    if (autoCompleteStrings.size() > 2) {
+                        sourceEntry3.setText(autoCompleteStrings.get(2));
+                        sourceEntry3.setVisible(true);
+                    } else {
+                        sourceEntry3.setVisible(false);
+                    }
+                    if (autoCompleteStrings.size() > 3) {
+                        sourceEntry4.setText(autoCompleteStrings.get(3));
+                        sourceEntry4.setVisible(true);
+                    } else {
+                        sourceEntry4.setVisible(false);
+                    }
+                    sourceList.setVisible(true);
+                } catch (Exception anyE) {
+                    anyE.printStackTrace();
+                }
+            } else {
+                sourceList.setVisible(false);
+            }
+        });
     }
 
 

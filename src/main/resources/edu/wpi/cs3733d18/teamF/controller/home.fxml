@@ -178,7 +178,7 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </FontAwesomeIconView>
-            <JFXTextField alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="272.0">
+            <JFXTextField fx:id="sourceLocation" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="272.0">
                <GridPane.margin>
                   <Insets left="30.0" />
                </GridPane.margin>
@@ -304,6 +304,14 @@
                   <FontAwesomeIconView glyphName="USER" size="20" />
                </graphic>
             </JFXButton>
+            <VBox fx:id="sourceList" maxHeight="200.0" maxWidth="300.0" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <children>
+                  <JFXTextField fx:id="sourceEntry1" />
+                  <JFXTextField fx:id="sourceEntry2" layoutX="10.0" layoutY="10.0" />
+                  <JFXTextField fx:id="sourceEntry3" layoutX="10.0" layoutY="37.0" />
+                  <JFXTextField fx:id="sourceEntry4" layoutX="10.0" layoutY="64.0" />
+               </children>
+            </VBox>
             </children>
         </GridPane>
     </children>
