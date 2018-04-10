@@ -7,23 +7,20 @@ import edu.wpi.cs3733d18.teamF.gfx.PathDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Edge;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import static java.lang.Math.ceil;
 
 public class DynamicPathDrawer extends PathDrawable {
 
-    private ArrayList<Arrow> arrows = new ArrayList<>();
     Timeline timeline = null;
+    private ArrayList<Arrow> arrows = new ArrayList<>();
 
     public DynamicPathDrawer() {
         super();
@@ -60,9 +57,17 @@ public class DynamicPathDrawer extends PathDrawable {
             arrows.add(new Arrow(i * divDist));
         }
 
-        timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> {
+        int timestep = 300;
+        for (Arrow arrow : arrows) {
+            pane.getChildren().add(arrow.view);
+            arrow.prevX = pane.getMaxWidth() / 2;
+            arrow.prevY = pane.getMaxHeight() / 2;
+        }
+
+        timeline = new Timeline(new KeyFrame(Duration.millis(timestep), event -> {
             for (Arrow arrow : arrows) {
-                arrow.progress += .8;
+                //arrow.progress += .8;
+                arrow.progress += timestep / 10;
                 Pair<Pair<Node, Node>, Double> pathPos = getPathPos(arrow.progress);
                 if (pathPos == null) {
                     arrow.progress -= path.getLength();
@@ -81,38 +86,62 @@ public class DynamicPathDrawer extends PathDrawable {
                 double posX2 = is2D ? dst.getPosition().getX() : dst.getWireframePosition().getX();
                 double posY2 = is2D ? dst.getPosition().getY() : dst.getWireframePosition().getY();
 
-                double angle = Math.atan2(dst.getPosition().getY() - src.getPosition().getY()
-                        , dst.getPosition().getX() - src.getPosition().getX());
-                arrow.view.setRotate(Math.toDegrees(angle) + 90);
-                arrow.view.setX((posX1 + ((posX2 - posX1) * (distAlongPath/src.displacementTo(dst))) - 35)  * pane.getMaxWidth() / imageWidth);
-                arrow.view.setY((posY1 + ((posY2 - posY1) * (distAlongPath/src.displacementTo(dst))) + 28) * pane.getMaxHeight() / imageHeight);
+                double angle = Math.toDegrees(Math.atan2(dst.getPosition().getY() - src.getPosition().getY()
+                        , dst.getPosition().getX() - src.getPosition().getX())) + 90;
+
+                if (arrow.prevX == null && arrow.prevY == null) {
+                    arrow.prevX = (posX1 + ((posX2 - posX1) * (distAlongPath / src.displacementTo(dst))) - 35) * pane.getMaxWidth() / imageWidth;
+                    arrow.prevY = (posY1 + ((posY2 - posY1) * (distAlongPath / src.displacementTo(dst))) + 28) * pane.getMaxHeight() / imageHeight;
+                    arrow.view.setTranslateX(arrow.prevX);
+                    arrow.view.setTranslateY(arrow.prevY);
+                    arrow.view.setRotate(angle);
+                } else {
+                    arrow.prevX = arrow.view.getTranslateX();
+                    arrow.prevY = arrow.view.getTranslateY();
+                }
+
+                arrow.prevAngle = arrow.view.getRotate();
+
+                TranslateTransition translateTransition =
+                        new TranslateTransition(Duration.millis(timestep + 10), arrow.view);
+                translateTransition.setFromX(arrow.prevX);
+                translateTransition.setToX((posX1 + ((posX2 - posX1) * (distAlongPath / src.displacementTo(dst))) - 35) * pane.getMaxWidth() / imageWidth);
+                translateTransition.setFromY(arrow.prevY);
+                translateTransition.setToY((posY1 + ((posY2 - posY1) * (distAlongPath / src.displacementTo(dst))) + 28) * pane.getMaxHeight() / imageHeight);
+                translateTransition.setCycleCount(1);
+                translateTransition.play();
+
+                RotateTransition rotateTransition =
+                        new RotateTransition(Duration.millis(timestep), arrow.view);
+                rotateTransition.setFromAngle(arrow.prevAngle);
+                rotateTransition.setToAngle(angle);
+                rotateTransition.play();
             }
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
-
-        for(Arrow arrow : arrows){
-            pane.getChildren().add(arrow.view);
-        }
         timeline.play();
+    }
+
+    @Override
+    public void update(Path path) {
+        this.path = path;
+        if (timeline != null) {
+            timeline.stop();
+        }
     }
 
     private static class Arrow {
         public FontAwesomeIconView view = new FontAwesomeIconView(FontAwesomeIcon.CHEVRON_UP);
         public double progress;
+        Double prevX = null;
+        Double prevY = null;
+        double prevAngle = 0;
 
         public Arrow(double progress) {
             this.progress = progress;
             view.setFill(Color.BLACK);
             view.setScaleX(0.3);
             view.setScaleY(0.3);
-        }
-    }
-
-    @Override
-    public void update(Path path){
-        this.path = path;
-        if(timeline != null){
-            timeline.stop();
         }
     }
 }
