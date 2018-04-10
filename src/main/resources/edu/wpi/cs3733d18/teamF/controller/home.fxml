@@ -26,6 +26,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.RadialGradient?>
 <?import javafx.scene.paint.Stop?>
@@ -46,6 +47,87 @@
         <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
     </rowConstraints>
     <children>
+      <VBox fx:id="directionsBox" alignment="TOP_CENTER" fillWidth="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" snapToPixel="false" style="-fx-background-color: #606060;">
+         <children>
+            <Pane prefHeight="287.0" prefWidth="300.0" style="-fx-background-color: #606060;">
+               <children>
+                  <JFXHamburger fx:id="hamburgerD" alignment="CENTER" fillWidth="false" layoutX="14.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
+                  <FontAwesomeIconView fx:id="cancelDirections" glyphName="TIMES" layoutX="263.0" layoutY="34.0" onMouseClicked="#onCancelDirectionsEvent" onMousePressed="#onCancelDirectionsEvent" size="30" wrappingWidth="22.14285659790039" />
+                  <JFXTextField fx:id="sourceLocation" alignment="BOTTOM_LEFT" layoutX="54.0" layoutY="103.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Choose Starting point, or click on the map" />
+                  <JFXTextField fx:id="destinationLocation" alignment="BOTTOM_LEFT" layoutX="54.0" layoutY="169.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Choose Destination" />
+                  <FontAwesomeIconView glyphName="ARROW_UP" layoutX="258.0" layoutY="170.0" size="30" wrappingWidth="22.142860293388367" />
+                  <FontAwesomeIconView glyphName="ARROW_DOWN" layoutX="268.0" layoutY="190.0" size="30" wrappingWidth="22.142860293388367" />
+                  <FontAwesomeIconView glyphName="MAP_MARKER" layoutX="23.0" layoutY="204.0" size="30" wrappingWidth="22.14285659790039" />
+                  <Circle layoutX="31.0" layoutY="129.0" radius="7.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND">
+                     <fill>
+                        <RadialGradient centerX="0.5055555555555555" centerY="0.5" radius="0.47674418604651164">
+                           <stops>
+                              <Stop color="WHITE" />
+                              <Stop color="BLACK" offset="1.0" />
+                           </stops>
+                        </RadialGradient>
+                     </fill>
+                  </Circle>
+                  <Circle layoutX="31.0" layoutY="159.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle layoutX="31.0" layoutY="143.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle layoutX="31.0" layoutY="174.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" />
+               </children>
+            </Pane>
+            <Pane prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: WHITE;">
+               <children>
+                  <JFXListView fx:id="searchList" prefHeight="189.0" prefWidth="300.0" visible="false" />
+                  <JFXTextArea editable="false" layoutY="182.0" prefHeight="293.0" prefWidth="300.0" />
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+
+                    <VBox fx:id="adminBox" alignment="TOP_CENTER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" style="-fx-background-color: #616161;" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647">
+            <children>
+            <Pane prefHeight="86.0" prefWidth="300.0">
+               <children>
+                  <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" layoutX="251.0" layoutY="53.0" onMouseClicked="#setCancelMenuEvent" onMousePressed="#setCancelMenuEvent" size="40" wrappingWidth="22.142844200134277" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="24.0" prefHeight="38.0" prefWidth="112.0" text="MENU">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefHeight="163.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="New Service Request" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="CLIPBOARD" size="50" />
+               </graphic>
+            </JFXButton>
+            <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onSearchServiceRequest" prefHeight="152.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Search Service Request" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="SEARCH" size="50" />
+               </graphic>
+            </JFXButton>
+                <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onMapEditor" prefHeight="145.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Map Editor" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="20.0" />
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
+                    </graphic>
+            </JFXButton>
+                <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onEditUsers" prefHeight="143.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Edit Users" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="20.0" />
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="USER" glyphStyle="USER" size="50" />
+                    </graphic>
+            </JFXButton>
+            </children>
+        </VBox>
       <JFXButton fx:id="floorBtn" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="Floor Number" />
       <JFXButton fx:id="l2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="L2" />
       <JFXButton fx:id="l1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="L1" />
@@ -53,26 +135,12 @@
       <JFXButton fx:id="floor1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="1" />
       <JFXButton fx:id="floor2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="2" />
       <JFXButton fx:id="floor3" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="3" />
-      <VBox fx:id="staffBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
-         <children>
-                <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefHeight="203.0" prefWidth="329.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Service Request" textFill="WHITE">
-                    <VBox.margin>
-                        <Insets />
-                    </VBox.margin>
-                    <font>
-                        <Font name="Arial" size="20.0" />
-                    </font>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="TAG" size="50" />
-                    </graphic></JFXButton>
-         </children>
-      </VBox>
       <VBox fx:id="logoutBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0" style="-fx-background-color: #606060;" visible="false">
          <children>
             <Pane prefHeight="87.0" prefWidth="250.0">
                <children>
                   <FontAwesomeIconView fx:id="logoutCancel" glyphName="TIMES" layoutX="6.0" layoutY="20.0" size="20" />
-                  <JFXButton fx:id="logoutBtn" buttonType="RAISED" layoutX="69.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="112.0" style="-fx-background-color: WHITE;" text="Logout" />
+                  <JFXButton fx:id="logoutBtn" buttonType="RAISED" layoutX="69.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onLogOutBtn" prefHeight="25.0" prefWidth="112.0" style="-fx-background-color: WHITE;" text="Logout" />
                </children>
             </Pane>
          </children>
@@ -157,22 +225,6 @@
                   <Insets right="20.0" top="50.0" />
                </GridPane.margin>
             </JFXNodesList>
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="300.0" spacing="5.0" style="-fx-background-color: WHITE;" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
-               <children>
-                  <JFXHamburger fx:id="hamburger" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="34.0" />
-                  <JFXTextField fx:id="sourceLocation" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="161.0" promptText="Choose Starting point, or click on the map" />
-                  <FontAwesomeIconView glyphName="SEARCH" size="20" />
-                  <Line startY="-50.0">
-                     <HBox.margin>
-                        <Insets left="7.5" right="7.5" />
-                     </HBox.margin>
-                  </Line>
-                  <FontAwesomeIconView fx:id="directionsArrow" glyphName="ARROW_RIGHT" size="25" wrappingWidth="22.14285659790039" />
-               </children>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </HBox>
 
                 <Button fx:id="btnMapDimensions" mnemonicParsing="false" onAction="#onMapDimensions" text="3D Map" translateX="-80.0" translateY="-65.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                 <VBox fx:id="addLocationPopup" alignment="CENTER" maxHeight="235.0" maxWidth="178.0" prefHeight="235.0" prefWidth="177.0" spacing="10.0" style="-fx-background-color: rgba(217, 217, 217, 0.9); -fx-border-style: solid; -fx-border-color: grey;" visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
@@ -267,8 +319,25 @@
                     </font>
                 </Text>
                 <Button mnemonicParsing="false" onAction="#onHelpPopup" text="Help" translateX="-80.0" translateY="-30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-            <JFXDrawer fx:id="directionsDrawer" alignment="CENTER_LEFT" defaultDrawerSize="400.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" overLayVisible="false" prefHeight="720.0" prefWidth="300.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER" />
-            <JFXDrawer fx:id="adminDrawer" alignment="CENTER_LEFT" defaultDrawerSize="400.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" overLayVisible="false" prefHeight="720.0" prefWidth="300.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowSpan="2147483647" GridPane.valignment="BOTTOM" />
+            <StackPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowSpan="2147483647" GridPane.valignment="TOP">
+               <children>
+                  <JFXDrawer fx:id="directionsDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefWidth="300.0" resizeContent="true" StackPane.alignment="TOP_CENTER" />
+                  <JFXDrawer fx:id="adminDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefWidth="300.0" resizeContent="true" StackPane.alignment="TOP_CENTER" />
+                  <HBox fx:id="searchBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="300.0" spacing="5.0" style="-fx-background-color: WHITE;" StackPane.alignment="TOP_CENTER">
+                     <children>
+                        <JFXHamburger fx:id="hamburger" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" onMousePressed="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
+                        <JFXTextField fx:id="sourceLocation" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="161.0" promptText="Choose Starting point, or click on the map" />
+                        <FontAwesomeIconView glyphName="SEARCH" size="20" />
+                        <Line startY="-50.0">
+                           <HBox.margin>
+                              <Insets left="7.5" right="7.5" />
+                           </HBox.margin>
+                        </Line>
+                        <FontAwesomeIconView fx:id="directionsArrow" glyphName="ARROW_RIGHT" onMouseClicked="#onArrowEvent" onMousePressed="#onArrowEvent" size="25" wrappingWidth="22.14285659790039" />
+                     </children>
+                  </HBox>
+               </children>
+            </StackPane>
             <JFXDrawer fx:id="loginDrawer" defaultDrawerSize="400.0" direction="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" style="-fx-background-color: rgba(0,0,0,0);" GridPane.halignment="RIGHT" GridPane.valignment="BASELINE">
                <GridPane.margin>
                   <Insets right="60.0" top="20.0" />
@@ -285,51 +354,6 @@
             <JFXListView fx:id="searchList" maxHeight="200.0" maxWidth="300.0" onMouseClicked="#setSourceSearch" visible="false" GridPane.rowIndex="1" GridPane.valignment="TOP" />
             </children>
         </GridPane>
-
-        <VBox fx:id="adminBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" style="-fx-background-color: #616161;">
-            <children>
-            <Pane prefHeight="86.0" prefWidth="300.0">
-               <children>
-                  <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" layoutX="251.0" layoutY="53.0" size="40" wrappingWidth="22.142844200134277" />
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="24.0" prefHeight="38.0" prefWidth="112.0" text="MENU">
-                     <font>
-                        <Font name="System Bold" size="25.0" />
-                     </font>
-                  </Label>
-               </children>
-            </Pane>
-            <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefHeight="163.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="New Service Request" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="20.0" />
-               </font>
-               <graphic>
-                  <FontAwesomeIconView glyphName="CLIPBOARD" size="50" />
-               </graphic>
-            </JFXButton>
-            <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onSearchServiceRequest" prefHeight="152.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Search Service Request" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="20.0" />
-               </font>
-               <graphic>
-                  <FontAwesomeIconView glyphName="SEARCH" size="50" />
-               </graphic>
-            </JFXButton>
-                <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onGetDirections" prefHeight="145.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Map Editor" textFill="WHITE">
-                    <font>
-                        <Font name="Arial" size="20.0" />
-                    </font>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
-                    </graphic></JFXButton>
-                <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onFindLocation" prefHeight="143.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Edit Users" textFill="WHITE">
-                    <font>
-                        <Font name="Arial" size="20.0" />
-                    </font>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="USER" glyphStyle="USER" size="50" />
-                    </graphic></JFXButton>
-            </children>
-        </VBox>
       <Pane fx:id="helpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="565.0" style="-fx-background-color: WHITE;" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <children>
             <GridPane prefHeight="400.0" prefWidth="565.0">
@@ -479,7 +503,7 @@
             </HBox>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="editRequestPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="529.0" prefWidth="730.0" style="-fx-background-color: WHITE;" visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
+      <AnchorPane fx:id="editRequestPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="540.0" prefWidth="900.0" style="-fx-background-color: WHITE;" visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
          <children>
             <GridPane layoutX="-86.0" layoutY="-85.0" prefHeight="485.0" prefWidth="686.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columnConstraints>
@@ -581,39 +605,5 @@
             </GridPane>
          </children>
       </AnchorPane>
-      <VBox fx:id="directionsBox" alignment="TOP_CENTER" fillWidth="false" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" snapToPixel="false" style="-fx-background-color: #606060;">
-         <children>
-            <Pane prefHeight="287.0" prefWidth="300.0" style="-fx-background-color: #606060;">
-               <children>
-                  <JFXHamburger fx:id="hamburgerD" alignment="CENTER" fillWidth="false" layoutX="14.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="34.0" />
-                  <FontAwesomeIconView fx:id="cancelDirections" glyphName="TIMES" layoutX="263.0" layoutY="34.0" size="30" wrappingWidth="22.14285659790039" />
-                  <JFXTextField fx:id="sourceLocation" alignment="BOTTOM_LEFT" layoutX="54.0" layoutY="103.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Choose Starting point, or click on the map" />
-                  <JFXTextField fx:id="destinationLocation" alignment="BOTTOM_LEFT" layoutX="54.0" layoutY="169.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Choose Destination" />
-                  <FontAwesomeIconView glyphName="ARROW_UP" layoutX="258.0" layoutY="170.0" size="30" wrappingWidth="22.142860293388367" />
-                  <FontAwesomeIconView glyphName="ARROW_DOWN" layoutX="268.0" layoutY="190.0" size="30" wrappingWidth="22.142860293388367" />
-                  <FontAwesomeIconView glyphName="MAP_MARKER" layoutX="23.0" layoutY="204.0" size="30" wrappingWidth="22.14285659790039" />
-                  <Circle layoutX="31.0" layoutY="129.0" radius="7.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND">
-                     <fill>
-                        <RadialGradient centerX="0.5055555555555555" centerY="0.5" radius="0.47674418604651164">
-                           <stops>
-                              <Stop color="WHITE" />
-                              <Stop color="BLACK" offset="1.0" />
-                           </stops>
-                        </RadialGradient>
-                     </fill>
-                  </Circle>
-                  <Circle layoutX="31.0" layoutY="159.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle layoutX="31.0" layoutY="143.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle layoutX="31.0" layoutY="174.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" />
-               </children>
-            </Pane>
-            <Pane prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: WHITE;">
-               <children>
-                  <JFXListView fx:id="searchList" prefHeight="189.0" prefWidth="300.0" visible="false" />
-                  <JFXTextArea editable="false" layoutY="182.0" prefHeight="293.0" prefWidth="300.0" />
-               </children>
-            </Pane>
-         </children>
-      </VBox>
     </children>
 </GridPane>

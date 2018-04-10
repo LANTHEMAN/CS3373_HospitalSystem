@@ -1,14 +1,11 @@
 package edu.wpi.cs3733d18.teamF.controller.page;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
-import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.controller.*;
-import edu.wpi.cs3733d18.teamF.db.DatabaseHandler;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.PaneMapController;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
@@ -19,8 +16,9 @@ import edu.wpi.cs3733d18.teamF.graph.NodeBuilder;
 import edu.wpi.cs3733d18.teamF.sr.ServiceRequest;
 import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
-import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import javafx.animation.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,7 +40,6 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
-import org.apache.commons.math3.analysis.function.Floor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,8 +60,75 @@ public class HomeController implements SwitchableController, Observer {
             "Bathroom 1",
             "Bathroom 2");
     private final ObservableList<String> all = FXCollections.observableArrayList();
+    private final ObservableList<String> priority = FXCollections.observableArrayList(
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5");
+    private final ObservableList<String> status = FXCollections.observableArrayList(
+            "Incomplete",
+            "In Progress",
+            "Complete");
+    private final ObservableList<String> type = FXCollections.observableArrayList(
+            "Language Interpreter",
+            "Religious Services");
+    @FXML
+    public ComboBox filterType;
+    @FXML
+    public ComboBox availableTypes;
+    @FXML
+    public TableView<ServiceRequest> searchResultTable;
+    @FXML
+    public TableColumn btnsCol;
+    @FXML
+    public TableColumn<ServiceRequest, Integer> idNumberCol;
+    @FXML
+    public TableColumn<ServiceRequest, String> requestTypeCol;
+    @FXML
+    public TableColumn<ServiceRequest, String> firstNameCol;
+    @FXML
+    public TableColumn<ServiceRequest, String> lastNameCol;
+    @FXML
+    public TableColumn<ServiceRequest, String> destinationCol;
+    @FXML
+    public TableColumn<ServiceRequest, Integer> requestPriorityCol;
+    @FXML
+    public TableColumn<ServiceRequest, String> theStatusCol;
+    @FXML
+    public Label typeLabel;
+    @FXML
+    public Label idLabel;
+    @FXML
+    public Label firstNameLabel;
+    @FXML
+    public Label lastNameLabel;
+    @FXML
+    public Label locationLabel;
+    @FXML
+    public Label statusLabel;
+    @FXML
+    public TextArea instructionsTextArea;
+    @FXML
+    public ComboBox statusBox;
+    @FXML
+    public Label completedByLabel;
+    @FXML
+    public Label usernameLabel;
     ConcurrentLinkedQueue<String> commands = new ConcurrentLinkedQueue<>();
     PaneVoiceController paneVoiceController;
+    ////////////////////////////////////////////////////
+    //                                                //
+    //           Search Service Request Variables     //
+    //                                                //
+    ////////////////////////////////////////////////////
+    String searchType;
+    String filter;
+    ServiceRequest serviceRequestPopUp;
+    boolean statusChange;
+    String newStatus;
+    boolean nodesShown = false;
     private PaneMapController mapDrawController;
     private Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
     private Node selectedNodeStart = null;
@@ -73,14 +137,12 @@ public class HomeController implements SwitchableController, Observer {
     private PaneSwitcher switcher;
     private Map map;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
-
     @FXML
     private ImageView ivMap;
     @FXML
     private Pane mapContainer;
     @FXML
     private VBox addLocationPopup;
-
     @FXML
     private VBox vbxMenu;
     @FXML
@@ -106,6 +168,103 @@ public class HomeController implements SwitchableController, Observer {
     private Button btnMapDimensions;
     @FXML
     private Button loginPopup;
+    // the modify Node information panel on the left
+    @FXML
+    private GridPane gpaneNodeInfo;
+    @FXML
+    private TextField modNode_shortName;
+    @FXML
+    private TextField modNode_longName;
+    @FXML
+    private TextField modNode_x;
+    @FXML
+    private TextField modNode_y;
+    @FXML
+    private Pane voicePane;
+    // kiosk location
+    private Point2D startLocation = new Point2D(1875.0, 1025.0);
+    // menu in bottom left corner
+    @FXML
+    private JFXHamburger hamburger;
+    @FXML
+    private JFXDrawer adminDrawer;
+    @FXML
+    private VBox adminBox;
+    // login elements
+    @FXML
+    private JFXDrawer loginDrawer;
+    @FXML
+    private VBox loginBox;
+    @FXML
+    private VBox logoutBox;
+    @FXML
+    private JFXButton loginBtn;
+    @FXML
+    private JFXButton logoutBtn;
+    @FXML
+    private JFXTextField loginUsername;
+    @FXML
+    private JFXPasswordField loginPassword;
+    @FXML
+    private JFXNodesList floorNode;
+    @FXML
+    private JFXButton floorBtn;
+    @FXML
+    private JFXButton l2;
+    @FXML
+    private JFXButton l1;
+    @FXML
+    private JFXButton groundFloor;
+    @FXML
+    private JFXButton floor1;
+    @FXML
+    private JFXButton floor2;
+    @FXML
+    private JFXButton floor3;
+    @FXML
+    private FontAwesomeIconView loginCancel;
+    @FXML
+    private HBox searchBar;
+    ////////////////////////////////////////
+    //                                    //
+    //       Edit Service Request         //
+    //                                    //
+    ////////////////////////////////////////
+    @FXML
+    private FontAwesomeIconView logoutCancel;
+    // searching for a location
+    @FXML
+    private JFXTextField sourceLocation;
+    @FXML
+    private JFXListView searchList;
+    @FXML
+    private VBox directionsBox;
+    @FXML
+    private FontAwesomeIconView directionsArrow;
+    @FXML
+    private FontAwesomeIconView cancelDirections;
+    @FXML
+    private JFXTextField destinationLocation;
+    @FXML
+    private JFXDrawer directionsDrawer;
+    @FXML
+    private JFXHamburger hamburgerD;
+    @FXML
+    private FontAwesomeIconView cancelMenu;
+    @FXML
+    private AnchorPane searchPane;
+    private ObservableList<ServiceRequest> listRequests;
+    ////////////////////////////////////////
+    //                                    //
+    //           Help Screen              //
+    //                                    //
+    ////////////////////////////////////////
+    @FXML
+    private Pane helpPane;
+    @FXML
+    private GridPane userInstructions;
+    @FXML
+    private GridPane adminInstructions;
     Timeline commandExecuter = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -143,198 +302,19 @@ public class HomeController implements SwitchableController, Observer {
             }
         }
     }));
-    // the modify Node information panel on the left
-    @FXML
-    private GridPane gpaneNodeInfo;
-    @FXML
-    private TextField modNode_shortName;
-    @FXML
-    private TextField modNode_longName;
-    @FXML
-    private TextField modNode_x;
-    @FXML
-    private TextField modNode_y;
-    @FXML
-    private Pane voicePane;
-
-    // kiosk location
-    private Point2D startLocation = new Point2D(1875.0, 1025.0);
-
-    // menu in bottom left corner
-    @FXML
-    private JFXHamburger hamburger;
-    @FXML
-    private JFXDrawer adminDrawer;
-    @FXML
-    private JFXDrawer staffDrawer;
-    @FXML
-    private VBox adminBox;
-    @FXML
-    private VBox staffBox;
-
-    // login elements
-    @FXML
-    private JFXDrawer loginDrawer;
-    @FXML
-    private VBox loginBox;
-    @FXML
-    private VBox logoutBox;
-    @FXML
-    private JFXButton loginBtn;
-    @FXML
-    private JFXButton logoutBtn;
-    @FXML
-    private JFXTextField loginUsername;
-    @FXML
-    private JFXPasswordField loginPassword;
-    @FXML
-    private JFXNodesList floorNode;
-    @FXML
-    private JFXButton floorBtn;
-    @FXML
-    private JFXButton l2;
-    @FXML
-    private JFXButton l1;
-    @FXML
-    private JFXButton groundFloor;
-    @FXML
-    private JFXButton floor1;
-    @FXML
-    private JFXButton floor2;
-    @FXML
-    private JFXButton floor3;
-    @FXML
-    private FontAwesomeIconView loginCancel;
-    @FXML
-    private FontAwesomeIconView logoutCancel;
-
-    // searching for a location
-    @FXML
-    private JFXTextField sourceLocation;
-    @FXML
-    private JFXListView searchList;
-    @FXML
-    private VBox directionsBox;
-    @FXML
-    private FontAwesomeIconView directionsArrow;
-    @FXML
-    private FontAwesomeIconView cancelDirections;
-    @FXML
-    private JFXTextField destinationLocation;
-    @FXML
-    private JFXDrawer directionsDrawer;
-    @FXML
-    private JFXHamburger hamburgerD;
-    @FXML
-    private FontAwesomeIconView cancelMenu;
-    @FXML
-    private AnchorPane searchPane;
-
-    ////////////////////////////////////////////////////
-    //                                                //
-    //           Search Service Request Variables     //
-    //                                                //
-    ////////////////////////////////////////////////////
-    String searchType;
-    String filter;
-    private ObservableList<ServiceRequest> listRequests;
-
-
-    @FXML
-    public ComboBox filterType;
-    @FXML
-    public ComboBox availableTypes;
-
-    @FXML
-    public TableView<ServiceRequest> searchResultTable;
-    @FXML
-    public TableColumn btnsCol;
-    @FXML
-    public TableColumn<ServiceRequest, Integer> idNumberCol;
-    @FXML
-    public TableColumn<ServiceRequest, String> requestTypeCol;
-    @FXML
-    public TableColumn<ServiceRequest, String> firstNameCol;
-    @FXML
-    public TableColumn<ServiceRequest, String> lastNameCol;
-    @FXML
-    public TableColumn<ServiceRequest, String> destinationCol;
-    @FXML
-    public TableColumn<ServiceRequest, Integer> requestPriorityCol;
-    @FXML
-    public TableColumn<ServiceRequest, String> theStatusCol;
-
-
-    ////////////////////////////////////////
-    //                                    //
-    //           Help Screen              //
-    //                                    //
-    ////////////////////////////////////////
-    @FXML
-    private Pane helpPane;
-    @FXML
-    private GridPane userInstructions;
-    @FXML
-    private GridPane adminInstructions;
-
-    ////////////////////////////////////////
-    //                                    //
-    //       Edit Service Request         //
-    //                                    //
-    ////////////////////////////////////////
-
-    ServiceRequest serviceRequestPopUp;
-    boolean statusChange;
-    String newStatus;
-
-
-    @FXML
-    public Label typeLabel;
-    @FXML
-    public Label idLabel;
-    @FXML
-    public Label firstNameLabel;
-    @FXML
-    public Label lastNameLabel;
-    @FXML
-    public Label locationLabel;
-    @FXML
-    public Label statusLabel;
-    @FXML
-    public TextArea instructionsTextArea;
-    @FXML
-    public ComboBox statusBox;
-    @FXML
-    public Label completedByLabel;
-    @FXML
-    public Label usernameLabel;
     @FXML
     private JFXTextField usernameSearch;
     @FXML
     private JFXListView usernameList;
+
+
+    ////////////////////////////////////////
+    //                                    //
+    //           Edit Nodes               //
+    //                                    //
+    ////////////////////////////////////////
     @FXML
     private AnchorPane editRequestPane;
-
-
-
-
-    private final ObservableList<String> priority = FXCollections.observableArrayList(
-            "0",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5");
-    private final ObservableList<String> status = FXCollections.observableArrayList(
-            "Incomplete",
-            "In Progress",
-            "Complete");
-    private final ObservableList<String> type = FXCollections.observableArrayList(
-            "Language Interpreter",
-            "Religious Services");
-
-
-
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -373,11 +353,6 @@ public class HomeController implements SwitchableController, Observer {
         // set up new node panel
         newNode_type.getItems().addAll(NodeBuilder.getNodeTypes());
         newNode_type.getSelectionModel().selectFirst();
-
-        if (PermissionSingleton.getInstance().isAdmin()) {
-            mapDrawController.showNodes();
-            mapDrawController.showEdges();
-        }
 
 
         // react to key presses and mouse clicks
@@ -440,6 +415,7 @@ public class HomeController implements SwitchableController, Observer {
             }
 
         });
+
         mapContainer.setOnMouseClicked(e -> {
             double map_x = 5000;
             double map_y = 3400;
@@ -591,13 +567,12 @@ public class HomeController implements SwitchableController, Observer {
         floorNode.addAnimatedNode(floor3);
 
 
-
         // set the hamburger menu on top left accordingly
         if (PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
             setGuestMenu();
             loginBtn.setText("Login");
-        } else if(PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
-            setStaffMenu();
+        } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
+            setAdminMenu();
             loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
         } else if (PermissionSingleton.getInstance().isAdmin()) {
             setAdminMenu();
@@ -608,13 +583,8 @@ public class HomeController implements SwitchableController, Observer {
         }
 
 
-        setHamburgerEvent(hamburger);
-        setHamburgerEvent(hamburgerD);
-
-        setArrowEvent();
-
-        setCancelDirectionsEvent();
-        setCancelMenuEvent();
+        directionsDrawer.setSidePane(directionsBox);
+        adminDrawer.setSidePane(adminBox);
 
         // login
         loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -634,13 +604,12 @@ public class HomeController implements SwitchableController, Observer {
                 // login in the user and close the drawer
                 if (PermissionSingleton.getInstance().login(loginUsername.getText(), loginPassword.getText())) {
                     loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
-
                     if (PermissionSingleton.getInstance().isAdmin()) {
                         setAdminMenu();
-                        mapDrawController.showNodes();
-                        mapDrawController.showEdges();
                     } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
-                        setStaffMenu();
+                        setAdminMenu();
+                    } else {
+                        setGuestMenu();
                     }
                     loginDrawer.close();
                     //loginUsername.setFocusColor(Color.rgb(64, 89, 169));
@@ -650,13 +619,13 @@ public class HomeController implements SwitchableController, Observer {
                 } else {
                     //loginPassword.setFocusColor(Color.rgb(255, 0, 0));
                     loginPassword.setText("");
-                    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1),loginPassword);
+                    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), loginPassword);
                     translateTransition.setFromX(7);
                     translateTransition.setToX(-7);
                     translateTransition.setCycleCount(4);
                     translateTransition.setAutoReverse(true);
                     translateTransition.setOnFinished((translateEvent) -> {
-                        TranslateTransition tt = new TranslateTransition(Duration.seconds(0.05),loginPassword);
+                        TranslateTransition tt = new TranslateTransition(Duration.seconds(0.05), loginPassword);
                         tt.setFromX(7);
                         tt.setToX(0);
                         tt.setCycleCount(0);
@@ -671,30 +640,13 @@ public class HomeController implements SwitchableController, Observer {
         });
 
         loginCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if (loginDrawer.isShown()) {
-                loginDrawer.close();
-            }
+            loginDrawer.close();
         });
 
         logoutCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if (loginDrawer.isShown()) {
-                loginDrawer.close();
-            }
+            loginDrawer.close();
         });
 
-        // logout
-        logoutBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            PermissionSingleton.getInstance().logout();
-            loginDrawer.close();
-            staffDrawer.close();
-            adminDrawer.close();
-            adminBox.setVisible(false);
-            staffBox.setVisible(false);
-            hamburger.setVisible(false);
-            mapDrawController.unshowNodes();
-            mapDrawController.unshowEdges();
-            loginBtn.setText("Login");
-        });
 
         sourceLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = sourceLocation.getText();
@@ -717,7 +669,7 @@ public class HomeController implements SwitchableController, Observer {
                 }
                 try {
                     if (autoCompleteStrings.size() > 0) {
-                        ObservableList<String> list =FXCollections.observableArrayList (autoCompleteStrings);
+                        ObservableList<String> list = FXCollections.observableArrayList(autoCompleteStrings);
                         searchList.setItems(list);
                         searchList.setVisible(true);
                     } else {
@@ -753,7 +705,7 @@ public class HomeController implements SwitchableController, Observer {
                 }
                 try {
                     if (autoCompleteStrings.size() > 0) {
-                        ObservableList<String> list =FXCollections.observableArrayList (autoCompleteStrings);
+                        ObservableList<String> list = FXCollections.observableArrayList(autoCompleteStrings);
                         usernameList.setItems(list);
                         usernameList.setVisible(true);
                     } else {
@@ -770,67 +722,62 @@ public class HomeController implements SwitchableController, Observer {
 
     }
 
-
-    private void setHamburgerEvent(JFXHamburger hamburger) {
-        HamburgerBasicCloseTransition arrowBasicTransition = new HamburgerBasicCloseTransition(hamburger);
-        arrowBasicTransition.setRate(-1);
-        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-            arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
-            arrowBasicTransition.play();
-
-            if (adminDrawer.isShown()) {
-                adminDrawer.close();
-            } else if (PermissionSingleton.getInstance().isAdmin()){
-                adminDrawer.open();
-            }
-        });
+    @FXML
+    private void onHamburgerMenu() {
+        if (adminDrawer.isHidden()) {
+            adminDrawer.toFront();
+            adminDrawer.open();
+        }
     }
 
-    private void setArrowEvent(){
-        directionsDrawer.setSidePane(directionsBox);
-        directionsArrow.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if (directionsDrawer.isHidden()){
-                directionsDrawer.open();
-            }
-        });
+    @FXML
+    private void onLogOutBtn() {
+        PermissionSingleton.getInstance().logout();
+        loginDrawer.close();
+        adminDrawer.close();
+        hamburger.setVisible(false);
+        hamburgerD.setVisible(false);
+        mapDrawController.unshowNodes();
+        mapDrawController.unshowEdges();
+        loginBtn.setText("Login");
     }
 
-    private void setCancelDirectionsEvent(){
-        cancelDirections.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if (directionsDrawer.isShown()){
-                directionsDrawer.close();
-            }
-        });
+    @FXML
+    private void onArrowEvent() {
+        if (directionsDrawer.isHidden()) {
+            directionsDrawer.toFront();
+            directionsDrawer.open();
+        }
+
     }
 
-    private void setCancelMenuEvent(){
-        cancelMenu.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if (adminDrawer.isShown()){
-                adminDrawer.close();
-            }
-        });
+    @FXML
+    private void onCancelDirectionsEvent() {
+        if (directionsDrawer.isShown()) {
+            directionsDrawer.close();
+            directionsDrawer.toBack();
+        }
+
+
+    }
+
+    @FXML
+    private void setCancelMenuEvent() {
+        if (adminDrawer.isShown()) {
+            adminDrawer.close();
+            adminDrawer.toBack();
+        }
+
     }
 
     private void setGuestMenu() {
-        adminBox.setVisible(false);
-        staffBox.setVisible(false);
         hamburger.setVisible(false);
-    }
-
-    private void setStaffMenu() {
-        hamburger.setVisible(true);
-        adminBox.setVisible(false);
-        staffBox.setVisible(true);
-        adminDrawer.setSidePane(staffBox);
-        adminDrawer.setOverLayVisible(false);
+        hamburgerD.setVisible(false);
     }
 
     private void setAdminMenu() {
         hamburger.setVisible(true);
-        adminBox.setVisible(true);
-        staffBox.setVisible(false);
-        adminDrawer.setSidePane(adminBox);
-        adminDrawer.setOverLayVisible(false);
+        hamburgerD.setVisible(true);
     }
 
 
@@ -888,7 +835,8 @@ public class HomeController implements SwitchableController, Observer {
 
     @FXML
     void onServiceRequest() {
-        switcher.switchTo(Screens.ServiceRequest);
+        adminDrawer.close();
+        adminDrawer.setVisible(false);
     }
 
 
@@ -911,7 +859,7 @@ public class HomeController implements SwitchableController, Observer {
     }
 
     @FXML
-    private void onSearchServiceRequest(){
+    private void onSearchServiceRequest() {
         filter = "none";
         searchType = "none";
 
@@ -919,12 +867,14 @@ public class HomeController implements SwitchableController, Observer {
 
         String lastSearch = ServiceRequestSingleton.getInstance().getLastSearch();
         String lastFilter = ServiceRequestSingleton.getInstance().getLastFilter();
-        if(lastSearch != null && lastFilter != null){
+        if (lastSearch != null && lastFilter != null) {
             searchType = lastSearch;
             filter = lastFilter;
         }
         onSearch();
         searchPane.setVisible(true);
+        adminDrawer.close();
+        adminDrawer.setVisible(false);
     }
 
 
@@ -1056,6 +1006,26 @@ public class HomeController implements SwitchableController, Observer {
         vbxLocation.setVisible(true);
     }
 
+    @FXML
+    public void onMapEditor() {
+        if (nodesShown) {
+            mapDrawController.unshowNodes();
+            mapDrawController.unshowEdges();
+            nodesShown = false;
+        } else {
+            mapDrawController.showNodes();
+            mapDrawController.showEdges();
+            nodesShown = true;
+        }
+        adminDrawer.close();
+        adminDrawer.setVisible(false);
+    }
+
+    @FXML
+    public void onEditUsers() {
+
+    }
+
 
     private void reloadMap() {
         int index;
@@ -1094,13 +1064,11 @@ public class HomeController implements SwitchableController, Observer {
     }
 
 
-
     ////////////////////////////////////////////////////
     //                                                //
     //           Search Service Request Functions     //
     //                                                //
     ////////////////////////////////////////////////////
-
 
 
     @FXML
@@ -1170,7 +1138,7 @@ public class HomeController implements SwitchableController, Observer {
 
         try {
             searchResultTable.getItems().clear();
-        }catch(NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
@@ -1188,7 +1156,7 @@ public class HomeController implements SwitchableController, Observer {
         requestTypeCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("type"));
         firstNameCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("firstName"));
         lastNameCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("lastName"));
-        destinationCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String >("location"));
+        destinationCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("location"));
         requestPriorityCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, Integer>("priority"));
         theStatusCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("status"));
         btnsCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
@@ -1230,13 +1198,13 @@ public class HomeController implements SwitchableController, Observer {
     }
 
     @FXML
-    public void onSelect(ServiceRequest s){
+    public void onSelect(ServiceRequest s) {
         ServiceRequestSingleton.getInstance().setPopUpRequest(s);
         serviceRequestPopUp = ServiceRequestSingleton.getInstance().getPopUpRequest();
-        typeLabel.setText("Type: "+serviceRequestPopUp.getType());
-        idLabel.setText("Service Request #"+serviceRequestPopUp.getId());
-        firstNameLabel.setText("First Name: "+serviceRequestPopUp.getFirstName());
-        lastNameLabel.setText("Last Name: "+serviceRequestPopUp.getLastName());
+        typeLabel.setText("Type: " + serviceRequestPopUp.getType());
+        idLabel.setText("Service Request #" + serviceRequestPopUp.getId());
+        firstNameLabel.setText("First Name: " + serviceRequestPopUp.getFirstName());
+        lastNameLabel.setText("Last Name: " + serviceRequestPopUp.getLastName());
         locationLabel.setText(serviceRequestPopUp.getLocation());
         statusLabel.setText(serviceRequestPopUp.getStatus());
         instructionsTextArea.setText(serviceRequestPopUp.getDescription());
@@ -1246,7 +1214,7 @@ public class HomeController implements SwitchableController, Observer {
 
         statusBox.getItems().addAll("Incomplete", "In Progress", "Complete");
 
-        if(serviceRequestPopUp.getStatus().equals("Complete")){
+        if (serviceRequestPopUp.getStatus().equals("Complete")) {
             completedByLabel.setVisible(true);
             usernameLabel.setVisible(true);
             usernameLabel.setText(serviceRequestPopUp.getCompletedBy());
@@ -1264,7 +1232,7 @@ public class HomeController implements SwitchableController, Observer {
         filter = "none";
         try {
             searchResultTable.getItems().clear();
-        }catch(NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
         ServiceRequestSingleton.getInstance().setSearchNull();
@@ -1282,7 +1250,7 @@ public class HomeController implements SwitchableController, Observer {
     //                                    //
     ////////////////////////////////////////
 
-    public void onStatusBox(){
+    public void onStatusBox() {
         try {
             if (statusBox.getSelectionModel().getSelectedItem().equals("Incomplete")) {
                 newStatus = "Incomplete";
@@ -1299,15 +1267,15 @@ public class HomeController implements SwitchableController, Observer {
         }
     }
 
-    public void onCancelEdit(){
+    public void onCancelEdit() {
         editRequestPane.setVisible(false);
         searchPane.setVisible(true);
     }
 
-    public void onSubmitEdit(){
-        if(statusChange && newStatus.compareTo(serviceRequestPopUp.getStatus()) != 0){
+    public void onSubmitEdit() {
+        if (statusChange && newStatus.compareTo(serviceRequestPopUp.getStatus()) != 0) {
             serviceRequestPopUp.setStatus(newStatus);
-            if(newStatus.equals("Complete")){
+            if (newStatus.equals("Complete")) {
                 serviceRequestPopUp.setCompletedBy(PermissionSingleton.getInstance().getCurrUser());
                 ServiceRequestSingleton.getInstance().updateCompletedBy(serviceRequestPopUp);
             }
