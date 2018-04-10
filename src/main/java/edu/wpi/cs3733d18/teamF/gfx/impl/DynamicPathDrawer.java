@@ -86,8 +86,7 @@ public class DynamicPathDrawer extends PathDrawable {
                 double posX2 = is2D ? dst.getPosition().getX() : dst.getWireframePosition().getX();
                 double posY2 = is2D ? dst.getPosition().getY() : dst.getWireframePosition().getY();
 
-                double angle = Math.toDegrees(Math.atan2(dst.getPosition().getY() - src.getPosition().getY()
-                        , dst.getPosition().getX() - src.getPosition().getX())) + 90;
+                double angle = Math.toDegrees(Math.atan2(posY2 - posY1, posX2 - posX1)) + 90;
 
                 if (arrow.prevX == null && arrow.prevY == null) {
                     arrow.prevX = (posX1 + ((posX2 - posX1) * (distAlongPath / src.displacementTo(dst))) - 35) * pane.getMaxWidth() / imageWidth;
@@ -111,16 +110,29 @@ public class DynamicPathDrawer extends PathDrawable {
                 translateTransition.setCycleCount(1);
                 translateTransition.play();
 
+                /*
                 RotateTransition rotateTransition =
                         new RotateTransition(Duration.millis(timestep), arrow.view);
                 rotateTransition.setFromAngle(arrow.prevAngle);
-                rotateTransition.setToAngle(angle);
+                rotateTransition.setToAngle(arrow.prevAngle + (angle - arrow.prevAngle));
                 rotateTransition.play();
+                */
+                arrow.view.setRotate(angle);
+
             }
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
+
+    private int distance(double alpha, double beta) {
+        int d = (int)Math.abs(alpha - beta) % 360;
+        int r = d > 180 ? 360 - d : d;
+        int sign = (alpha - beta >= 0 && alpha - beta <= 180) || (alpha - beta <=-180 && alpha- beta>= -360) ? 1 : -1;
+        r *= sign;
+        return r;
+    }
+
 
     @Override
     public void update(Path path) {
