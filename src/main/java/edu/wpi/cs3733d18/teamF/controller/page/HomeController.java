@@ -385,6 +385,88 @@ public class HomeController implements SwitchableController, Observer {
         }
     }));
     @FXML
+    private JFXHamburger hamburger;
+    @FXML
+    private JFXDrawer adminDrawer;
+    @FXML
+    private VBox adminBox;
+    // login elements
+    @FXML
+    private JFXDrawer loginDrawer;
+    @FXML
+    private VBox loginBox;
+    @FXML
+    private VBox logoutBox;
+    @FXML
+    private JFXButton loginBtn;
+    @FXML
+    private JFXButton logoutBtn;
+    @FXML
+    private JFXTextField loginUsername;
+    @FXML
+    private JFXPasswordField loginPassword;
+    @FXML
+    private JFXNodesList floorNode;
+    @FXML
+    private JFXButton floorBtn;
+    @FXML
+    private JFXButton l2;
+    @FXML
+    private JFXButton l1;
+    @FXML
+    private JFXButton groundFloor;
+    @FXML
+    private JFXButton floor1;
+    @FXML
+    private JFXButton floor2;
+    @FXML
+    private JFXButton floor3;
+    @FXML
+    private FontAwesomeIconView loginCancel;
+    @FXML
+    private HBox searchBar;
+    ////////////////////////////////////////
+    //                                    //
+    //       Edit Service Request         //
+    //                                    //
+    ////////////////////////////////////////
+    @FXML
+    private FontAwesomeIconView logoutCancel;
+    // searching for a location
+    @FXML
+    private JFXTextField sourceLocation;
+    @FXML
+    private JFXListView searchList;
+    @FXML
+    private VBox directionsBox;
+    @FXML
+    private FontAwesomeIconView directionsArrow;
+    @FXML
+    private FontAwesomeIconView cancelDirections;
+    @FXML
+    private JFXTextField destinationLocation;
+    @FXML
+    private JFXDrawer directionsDrawer;
+    @FXML
+    private JFXHamburger hamburgerD;
+    @FXML
+    private FontAwesomeIconView cancelMenu;
+    @FXML
+    private AnchorPane searchPane;
+    private ObservableList<ServiceRequest> listRequests;
+    ////////////////////////////////////////
+    //                                    //
+    //           Help Screen              //
+    //                                    //
+    ////////////////////////////////////////
+    @FXML
+    private Pane helpPane;
+    @FXML
+    private GridPane userInstructions;
+    @FXML
+    private GridPane adminInstructions;
+
+    @FXML
     private JFXTextField usernameSearch;
     @FXML
     private JFXListView usernameList;
@@ -556,10 +638,6 @@ public class HomeController implements SwitchableController, Observer {
                 selectedNodeStart = null;
             }
 
-            if (!PermissionSingleton.getInstance().isAdmin()) {
-                return;
-            }
-
 
             // remove a node
             if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 2) {
@@ -693,8 +771,6 @@ public class HomeController implements SwitchableController, Observer {
                     loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
                     if (PermissionSingleton.getInstance().isAdmin()) {
                         setAdminMenu();
-                        mapDrawController.showNodes();
-                        mapDrawController.showEdges();
                         mapDrawController.unshowPath();
                     } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
                         setAdminMenu();
@@ -940,6 +1016,7 @@ public class HomeController implements SwitchableController, Observer {
             filter = lastFilter;
         }
         onSearch();
+        searchPane.setVisible(true);
         adminDrawer.close();
         adminDrawer.toBack();
     }
