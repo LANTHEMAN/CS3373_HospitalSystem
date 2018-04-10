@@ -110,27 +110,20 @@ public class DynamicPathDrawer extends PathDrawable {
                 translateTransition.setCycleCount(1);
                 translateTransition.play();
 
-                /*
+                if(arrow.prevAngle - angle > 180){
+                    angle += 360;
+                }
+
                 RotateTransition rotateTransition =
                         new RotateTransition(Duration.millis(timestep), arrow.view);
                 rotateTransition.setFromAngle(arrow.prevAngle);
-                rotateTransition.setToAngle(arrow.prevAngle + (angle - arrow.prevAngle));
+                rotateTransition.setToAngle(angle);
                 rotateTransition.play();
-                */
-                arrow.view.setRotate(angle);
 
             }
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-    }
-
-    private int distance(double alpha, double beta) {
-        int d = (int)Math.abs(alpha - beta) % 360;
-        int r = d > 180 ? 360 - d : d;
-        int sign = (alpha - beta >= 0 && alpha - beta <= 180) || (alpha - beta <=-180 && alpha- beta>= -360) ? 1 : -1;
-        r *= sign;
-        return r;
     }
 
 
