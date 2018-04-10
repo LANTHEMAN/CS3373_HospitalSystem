@@ -612,26 +612,12 @@ public class HomeController implements SwitchableController, Observer {
                         setGuestMenu();
                     }
                     loginDrawer.close();
-                    //loginUsername.setFocusColor(Color.rgb(64, 89, 169));
                     loginUsername.setText("");
                     loginPassword.setText("");
 
                 } else {
-                    //loginPassword.setFocusColor(Color.rgb(255, 0, 0));
                     loginPassword.setText("");
-                    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), loginPassword);
-                    translateTransition.setFromX(7);
-                    translateTransition.setToX(-7);
-                    translateTransition.setCycleCount(4);
-                    translateTransition.setAutoReverse(true);
-                    translateTransition.setOnFinished((translateEvent) -> {
-                        TranslateTransition tt = new TranslateTransition(Duration.seconds(0.05), loginPassword);
-                        tt.setFromX(7);
-                        tt.setToX(0);
-                        tt.setCycleCount(0);
-                        tt.play();
-                    });
-                    translateTransition.play();
+                    shakePasswordField(loginPassword);
                 }
 
             } else {
@@ -651,83 +637,74 @@ public class HomeController implements SwitchableController, Observer {
         sourceLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = sourceLocation.getText();
             input = input.concat("" + e.getCharacter());
-
-            if (input.length() > 0) {
-                String sql = "SELECT longName FROM Node";
-                ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
-                ArrayList<String> autoCompleteStrings = new ArrayList<>();
-
-                try {
-                    while (resultSet.next()) {
-                        String longName = resultSet.getString(1);
-                        if (longName.toLowerCase().contains(input.toLowerCase())) {
-                            autoCompleteStrings.add(longName);
-                        }
-                    }
-                } catch (SQLException sqlException) {
-                    sqlException.printStackTrace();
-                }
-                try {
-                    if (autoCompleteStrings.size() > 0) {
-                        ObservableList<String> list = FXCollections.observableArrayList(autoCompleteStrings);
-                        searchList.setItems(list);
-                        searchList.setVisible(true);
-                    } else {
-                        searchList.setVisible(false);
-                    }
-                } catch (Exception anyE) {
-                    anyE.printStackTrace();
-                }
-            } else {
-                //sourceList.setVisible(false);
-                searchList.setVisible(false);
-            }
+            autoComplete(input, searchList);
         });
 
         usernameSearch.setOnKeyTyped((KeyEvent e) -> {
             String input = usernameSearch.getText();
             input = input.concat("" + e.getCharacter());
-
-            if (input.length() > 0) {
-                String sql = "SELECT username FROM HUser";
-                ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
-                ArrayList<String> autoCompleteStrings = new ArrayList<>();
-
-                try {
-                    while (resultSet.next()) {
-                        String username = resultSet.getString(1);
-                        if (username.toLowerCase().contains(input.toLowerCase())) {
-                            autoCompleteStrings.add(username);
-                        }
-                    }
-                } catch (SQLException sqlException) {
-                    sqlException.printStackTrace();
-                }
-                try {
-                    if (autoCompleteStrings.size() > 0) {
-                        ObservableList<String> list = FXCollections.observableArrayList(autoCompleteStrings);
-                        usernameList.setItems(list);
-                        usernameList.setVisible(true);
-                    } else {
-                        usernameList.setVisible(false);
-                    }
-                } catch (Exception anyE) {
-                    anyE.printStackTrace();
-                }
-            } else {
-                //sourceList.setVisible(false);
-                usernameList.setVisible(false);
-            }
+            autoComplete(input, usernameList);
         });
 
     }
+
+    // will filter the given ListView for the given input String
+    private void autoComplete(String input, ListView listView) {
+        if (input.length() > 0) {
+            String sql = "SELECT username FROM HUser";
+            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
+            ArrayList<String> autoCompleteStrings = new ArrayList<>();
+
+            try {
+                while (resultSet.next()) {
+                    String username = resultSet.getString(1);
+                    if (username.toLowerCase().contains(input.toLowerCase())) {
+                        autoCompleteStrings.add(username);
+                    }
+                }
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+            try {
+                if (autoCompleteStrings.size() > 0) {
+                    ObservableList<String> list = FXCollections.observableArrayList(autoCompleteStrings);
+                    listView.setItems(list);
+                    listView.setVisible(true);
+                } else {
+                    listView.setVisible(false);
+                }
+            } catch (Exception anyE) {
+                anyE.printStackTrace();
+            }
+        } else {
+            listView.setVisible(false);
+        }
+    }
+
+
+    // will shake the password field back and forth
+    private void shakePasswordField(JFXPasswordField passwordField) {
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), passwordField);
+        translateTransition.setFromX(7);
+        translateTransition.setToX(-7);
+        translateTransition.setCycleCount(4);
+        translateTransition.setAutoReverse(true);
+        translateTransition.setOnFinished((translateEvent) -> {
+            TranslateTransition tt = new TranslateTransition(Duration.seconds(0.05), passwordField);
+            tt.setFromX(7);
+            tt.setToX(0);
+            tt.setCycleCount(0);
+            tt.play();
+        });
+        translateTransition.play();
+    }
+
 
     @FXML
     private void onHamburgerMenu() {
         if (adminDrawer.isHidden()) {
             adminDrawer.open();
             adminDrawer.toFront();
-
         }
     }
 
