@@ -174,10 +174,9 @@ public class HomeController implements SwitchableController, Observer {
         public void handle(ActionEvent event) {
             String command = commands.poll();
             if (command != null) {
-                if (command.equals("HEY KIOSK")) {
+                if (command.equals("HEY KIOSK") || command.equals("HELLO KIOSK")) {
                     paneVoiceController.setVisibility(true);
                     canSayCommand[0] = true;
-                    //voice.speak("What can I help you with?");
                     new Timer(true).schedule(new TimerTask() {
                         @Override
                         public void run() {
@@ -215,10 +214,11 @@ public class HomeController implements SwitchableController, Observer {
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Orthopedics"))));
                             voice.speak("Here is the route to Orthopedics and Rhemutology");
-                        }else if(command.contains("PARKING") || command.contains("GARAGE")) {
+                        }else if(command.contains("PARKING") && command.contains("GARAGE")) {
                             mapDrawController.showPath(map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
-                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Parking"))));
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Parking") &&
+                                                    node.getLongName().contains("Garage"))));
                             voice.speak("Here is the route to the parking garage");
                         }else if(command.contains("ELEVATOR")) {
                             mapDrawController.showPath(map.getPath
