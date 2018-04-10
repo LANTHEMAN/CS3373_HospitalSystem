@@ -47,18 +47,24 @@
         <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
     </rowConstraints>
     <children>
-      <VBox fx:id="directionsBox" alignment="TOP_CENTER" fillWidth="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" snapToPixel="false" style="-fx-background-color: #606060;">
+      <VBox fx:id="directionsBox" alignment="TOP_CENTER" fillWidth="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" snapToPixel="false" style="-fx-background-color: #042E58;">
          <children>
-            <Pane prefHeight="287.0" prefWidth="300.0" style="-fx-background-color: #606060;">
+            <Pane prefHeight="287.0" prefWidth="300.0" style="-fx-background-color: #042E58;">
                <children>
                   <JFXHamburger fx:id="hamburgerD" alignment="CENTER" fillWidth="false" layoutX="14.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
-                  <FontAwesomeIconView fx:id="cancelDirections" glyphName="TIMES" layoutX="263.0" layoutY="34.0" onMouseClicked="#onCancelDirectionsEvent" size="30" wrappingWidth="22.14285659790039" />
-                  <JFXTextField fx:id="sourceLocation" alignment="BOTTOM_LEFT" layoutX="54.0" layoutY="103.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Choose Starting point, or click on the map" />
-                  <JFXTextField fx:id="destinationLocation" alignment="BOTTOM_LEFT" layoutX="54.0" layoutY="169.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Choose Destination" />
-                  <FontAwesomeIconView glyphName="ARROW_UP" layoutX="258.0" layoutY="170.0" size="30" wrappingWidth="22.142860293388367" />
-                  <FontAwesomeIconView glyphName="ARROW_DOWN" layoutX="268.0" layoutY="190.0" size="30" wrappingWidth="22.142860293388367" />
-                  <FontAwesomeIconView glyphName="MAP_MARKER" layoutX="23.0" layoutY="204.0" size="30" wrappingWidth="22.14285659790039" />
-                  <Circle layoutX="31.0" layoutY="129.0" radius="7.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND">
+                  <FontAwesomeIconView fx:id="cancelDirections" fill="#f2f5f7" glyphName="TIMES" layoutX="263.0" layoutY="34.0" onMouseClicked="#onCancelDirectionsEvent" size="30" wrappingWidth="22.14285659790039" />
+                  <JFXTextField fx:id="sourceLocation" layoutX="54.0" layoutY="103.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Select Start" style="-fx-background-color: #f2f5f7;">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font></JFXTextField>
+                  <JFXTextField fx:id="destinationLocation" layoutX="54.0" layoutY="169.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Choose Destination" style="-fx-background-color: #f2f5f7;">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font></JFXTextField>
+                  <FontAwesomeIconView fill="WHITE" glyphName="ARROW_UP" layoutX="258.0" layoutY="170.0" size="30" wrappingWidth="22.142860293388367" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="ARROW_DOWN" layoutX="268.0" layoutY="190.0" size="30" wrappingWidth="22.142860293388367" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="MAP_MARKER" layoutX="23.0" layoutY="204.0" size="30" wrappingWidth="22.14285659790039" />
+                  <Circle layoutX="31.0" layoutY="129.0" radius="7.0" stroke="#f2f5f7" strokeLineCap="ROUND" strokeLineJoin="ROUND">
                      <fill>
                         <RadialGradient centerX="0.5055555555555555" centerY="0.5" radius="0.47674418604651164">
                            <stops>
@@ -68,9 +74,9 @@
                         </RadialGradient>
                      </fill>
                   </Circle>
-                  <Circle layoutX="31.0" layoutY="159.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle layoutX="31.0" layoutY="143.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle layoutX="31.0" layoutY="174.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fill="WHITE" layoutX="31.0" layoutY="159.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
+                  <Circle fill="WHITE" layoutX="31.0" layoutY="143.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
+                  <Circle fill="WHITE" layoutX="31.0" layoutY="174.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
                </children>
             </Pane>
             <Pane prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: WHITE;">
@@ -128,30 +134,60 @@
             </JFXButton>
             </children>
         </VBox>
-      <JFXButton fx:id="floorBtn" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="Floor Number" />
-      <JFXButton fx:id="l2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="L2" />
-      <JFXButton fx:id="l1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="L1" />
-      <JFXButton fx:id="groundFloor" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="G" />
-      <JFXButton fx:id="floor1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="1" />
-      <JFXButton fx:id="floor2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="2" />
-      <JFXButton fx:id="floor3" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="3" />
-      <VBox fx:id="logoutBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0" style="-fx-background-color: #606060;" visible="false">
+      <JFXButton fx:id="floorBtn" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="Floor Number" textFill="#f2f5f7" textOverrun="CLIP">
+         <font>
+            <Font name="Arial Bold" size="28.0" />
+         </font></JFXButton>
+      <JFXButton fx:id="l2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="L2" textFill="#f2f5f7" textOverrun="CLIP">
+         <font>
+            <Font name="Arial Bold" size="28.0" />
+         </font></JFXButton>
+      <JFXButton fx:id="l1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="L1" textFill="#f2f5f7" textOverrun="CLIP">
+         <font>
+            <Font name="Arial Bold" size="28.0" />
+         </font></JFXButton>
+      <JFXButton fx:id="groundFloor" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="G" textFill="#f2f5f7" textOverrun="CLIP">
+         <font>
+            <Font name="Arial Bold" size="28.0" />
+         </font></JFXButton>
+      <JFXButton fx:id="floor1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="1" textFill="#f2f5f7" textOverrun="CLIP">
+         <font>
+            <Font name="Arial Bold" size="28.0" />
+         </font></JFXButton>
+      <JFXButton fx:id="floor2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="2" textFill="#f2f5f7" textOverrun="CLIP">
+         <font>
+            <Font name="Arial Bold" size="28.0" />
+         </font></JFXButton>
+      <JFXButton fx:id="floor3" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="3" textFill="#f2f5f7" textOverrun="CLIP">
+         <font>
+            <Font name="Arial Bold" size="28.0" />
+         </font></JFXButton>
+      <VBox fx:id="logoutBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0" style="-fx-background-color: #042E58;" visible="false">
          <children>
             <Pane prefHeight="87.0" prefWidth="250.0">
                <children>
-                  <FontAwesomeIconView fx:id="logoutCancel" glyphName="TIMES" layoutX="6.0" layoutY="20.0" size="20" />
-                  <JFXButton fx:id="logoutBtn" buttonType="RAISED" layoutX="69.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onLogOutBtn" prefHeight="25.0" prefWidth="112.0" style="-fx-background-color: WHITE;" text="Logout" />
+                  <FontAwesomeIconView fx:id="logoutCancel" fill="#f2f5f7" glyphName="TIMES" layoutX="6.0" layoutY="20.0" size="20" />
+                  <JFXButton fx:id="logoutBtn" buttonType="RAISED" layoutX="69.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onLogOutBtn" prefHeight="28.0" prefWidth="112.0" style="-fx-background-color: #f2f5f7;" text="Logout">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font></JFXButton>
                </children>
             </Pane>
          </children>
       </VBox>
-      <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0" style="-fx-background-color: #606060;" visible="false">
+      <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0" style="-fx-background-color: #042E58;" visible="false">
          <children>
             <Pane prefHeight="80.0" prefWidth="233.0">
                <children>
-                  <JFXTextField fx:id="loginUsername" layoutX="58.0" layoutY="13.0" promptText="Username" style="-fx-background-color: WHITE;" />
-                  <JFXPasswordField fx:id="loginPassword" layoutX="58.0" layoutY="45.0" promptText="Password" style="-fx-background-color: WHITE;" />
-                  <FontAwesomeIconView fx:id="loginCancel" glyphName="TIMES" layoutX="6.0" layoutY="20.0" size="20" />
+                  <JFXTextField fx:id="loginUsername" layoutX="58.0" layoutY="13.0" promptText="Username" style="-fx-background-color: WHITE;">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font></JFXTextField>
+                  <JFXPasswordField fx:id="loginPassword" layoutX="58.0" layoutY="45.0" promptText="Password" style="-fx-background-color: WHITE;">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font></JFXPasswordField>
+                  <FontAwesomeIconView fx:id="loginCancel" fill="#f2f5f7" glyphName="TIMES" layoutX="6.0" layoutY="20.0" size="20" />
                </children>
             </Pane>
          </children>
@@ -215,9 +251,9 @@
                     </Pane>
                 </GesturePane>
             <Pane fx:id="voicePane" pickOnBounds="false" prefHeight="148.0" prefWidth="1280.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
-                <Text fx:id="MainTitle" fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="%BrighamTitleSecondFloor" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <Text fx:id="MainTitle" fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%BrighamTitleSecondFloor" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <font>
-                        <Font size="22.0" />
+                        <Font name="Arial Bold" size="28.0" />
                     </font>
                 </Text>
             <JFXNodesList fx:id="floorNode" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" spacing="10.0" style="-fx-background-radius: 100;" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
@@ -323,33 +359,39 @@
                <children>
                   <JFXDrawer fx:id="directionsDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefHeight="720.0" prefWidth="300.0" resizeContent="true" StackPane.alignment="TOP_LEFT" />
                   <JFXDrawer fx:id="adminDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefWidth="300.0" resizeContent="true" StackPane.alignment="TOP_CENTER" />
-                  <HBox fx:id="searchBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="300.0" spacing="5.0" style="-fx-background-color: WHITE;" StackPane.alignment="TOP_CENTER">
+                  <HBox fx:id="searchBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="300.0" spacing="5.0" style="-fx-background-color: #042E58;" StackPane.alignment="TOP_CENTER">
                      <children>
                         <JFXHamburger fx:id="hamburger" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
-                        <JFXTextField fx:id="sourceLocation" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="161.0" promptText="Choose Starting point, or click on the map" />
-                        <FontAwesomeIconView glyphName="SEARCH" size="20" />
-                        <Line startY="-50.0">
+                        <JFXTextField fx:id="sourceLocation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="161.0" promptText="Type or click map" style="-fx-background-color: #f2f5f7;">
+                           <font>
+                              <Font name="Arial Bold" size="15.0" />
+                           </font></JFXTextField>
+                        <FontAwesomeIconView fill="#f2f5f7" glyphName="SEARCH" size="20" />
+                        <Line startY="-50.0" stroke="#f2f5f7">
                            <HBox.margin>
                               <Insets left="7.5" right="7.5" />
                            </HBox.margin>
                         </Line>
-                        <FontAwesomeIconView fx:id="directionsArrow" glyphName="ARROW_RIGHT" onMouseClicked="#onArrowEvent" size="25" wrappingWidth="22.14285659790039" />
+                        <FontAwesomeIconView fx:id="directionsArrow" fill="#f2f5f7" glyphName="ARROW_RIGHT" onMouseClicked="#onArrowEvent" size="25" wrappingWidth="22.14285659790039" />
                      </children>
                   </HBox>
                </children>
             </StackPane>
-            <JFXDrawer fx:id="loginDrawer" defaultDrawerSize="400.0" direction="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" style="-fx-background-color: rgba(0,0,0,0);" GridPane.halignment="RIGHT" GridPane.valignment="BASELINE">
+            <JFXDrawer fx:id="loginDrawer" defaultDrawerSize="400.0" direction="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" style="-fx-background-color: rgba(0, 0, 0, 0);" GridPane.halignment="RIGHT" GridPane.valignment="BASELINE">
                <GridPane.margin>
                   <Insets right="60.0" top="20.0" />
                </GridPane.margin>
             </JFXDrawer>
-            <JFXButton fx:id="loginBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="Login" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+            <JFXButton fx:id="loginBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="Login" textFill="#f2f5f7" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets right="20.0" top="20.0" />
                </GridPane.margin>
                <graphic>
-                  <FontAwesomeIconView glyphName="USER" size="20" />
+                  <FontAwesomeIconView fill="#f2f5f7" glyphName="USER" size="20" />
                </graphic>
+               <font>
+                  <Font name="Arial Bold" size="15.0" />
+               </font>
             </JFXButton>
             <JFXListView fx:id="searchList" maxHeight="200.0" maxWidth="300.0" onMouseClicked="#setSourceSearch" visible="false" GridPane.rowIndex="1" GridPane.valignment="TOP" />
             </children>
