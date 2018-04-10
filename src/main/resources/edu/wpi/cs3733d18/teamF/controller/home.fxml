@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXNodesList?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
@@ -34,6 +35,13 @@
         <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
     </rowConstraints>
     <children>
+      <JFXButton fx:id="floorBtn" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="Floor Number" />
+      <JFXButton fx:id="l2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="L2" />
+      <JFXButton fx:id="l1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="L1" />
+      <JFXButton fx:id="groundFloor" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="G" />
+      <JFXButton fx:id="floor1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="1" />
+      <JFXButton fx:id="floor2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="2" />
+      <JFXButton fx:id="floor3" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="3" />
 
         <VBox fx:id="adminBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="369.0" prefWidth="401.0" style="-fx-background-color: #616161;">
             <children>
@@ -75,21 +83,25 @@
                     </graphic></JFXButton>
          </children>
       </VBox>
-      <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="210.0" spacing="7.0" style="-fx-background-color: #606060;">
+      <VBox fx:id="logoutBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0" style="-fx-background-color: #606060;" visible="false">
          <children>
-            <JFXTextField fx:id="loginUsername" promptText="Username" style="-fx-background-color: WHITE;" />
-            <JFXPasswordField fx:id="loginPassword" promptText="Password" style="-fx-background-color: WHITE;" />
+            <Pane prefHeight="87.0" prefWidth="250.0">
+               <children>
+                  <FontAwesomeIconView fx:id="logoutCancel" glyphName="TIMES" layoutX="6.0" layoutY="20.0" size="20" />
+                  <JFXButton fx:id="logoutBtn" buttonType="RAISED" layoutX="69.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="112.0" style="-fx-background-color: WHITE;" text="Logout" />
+               </children>
+            </Pane>
          </children>
-         <padding>
-            <Insets left="30.0" right="30.0" />
-         </padding>
       </VBox>
-      <VBox fx:id="logoutBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="210.0" spacing="7.0" style="-fx-background-color: #606060;">
-         <padding>
-            <Insets left="30.0" right="30.0" />
-         </padding>
+      <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0" style="-fx-background-color: #606060;" visible="false">
          <children>
-            <JFXButton fx:id="logoutBtn" buttonType="RAISED" prefHeight="25.0" prefWidth="112.0" style="-fx-background-color: WHITE;" text="Logout" />
+            <Pane prefHeight="80.0" prefWidth="233.0">
+               <children>
+                  <JFXTextField fx:id="loginUsername" layoutX="58.0" layoutY="13.0" promptText="Username" style="-fx-background-color: WHITE;" />
+                  <JFXPasswordField fx:id="loginPassword" layoutX="58.0" layoutY="45.0" promptText="Password" style="-fx-background-color: WHITE;" />
+                  <FontAwesomeIconView fx:id="loginCancel" glyphName="TIMES" layoutX="6.0" layoutY="20.0" size="20" />
+               </children>
+            </Pane>
          </children>
       </VBox>
         <GridPane fx:id="gpaneNodeInfo" maxWidth="250.0" prefHeight="601.0" prefWidth="250.0" style="-fx-background-color: rgba(217, 217, 217, 0.9);" visible="false" GridPane.columnSpan="2">
@@ -150,12 +162,17 @@
                         </children>
                     </Pane>
                 </GesturePane>
-            <Pane fx:id="voicePane" prefHeight="148.0" prefWidth="1280.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
+            <Pane fx:id="voicePane" pickOnBounds="false" prefHeight="148.0" prefWidth="1280.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
                 <Text fx:id="MainTitle" fill="#1a1a1a" strokeType="OUTSIDE" strokeWidth="0.0" text="%BrighamTitleSecondFloor" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <font>
                         <Font size="22.0" />
                     </font>
                 </Text>
+            <JFXNodesList fx:id="floorNode" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" spacing="10.0" style="-fx-background-radius: 100;" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <GridPane.margin>
+                  <Insets right="20.0" top="50.0" />
+               </GridPane.margin>
+            </JFXNodesList>
             <FontAwesomeIconView glyphName="SEARCH" size="20">
                <GridPane.margin>
                   <Insets left="10.0" />
@@ -274,9 +291,9 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </JFXHamburger>
-            <JFXDrawer fx:id="loginDrawer" defaultDrawerSize="400.0" direction="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="210.0" GridPane.halignment="RIGHT" GridPane.valignment="BASELINE">
+            <JFXDrawer fx:id="loginDrawer" defaultDrawerSize="400.0" direction="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" style="-fx-background-color: rgba(0,0,0,0);" GridPane.halignment="RIGHT" GridPane.valignment="BASELINE">
                <GridPane.margin>
-                  <Insets right="100.0" top="20.0" />
+                  <Insets right="60.0" top="20.0" />
                </GridPane.margin>
             </JFXDrawer>
             <JFXButton fx:id="loginBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #606060; -fx-background-radius: 100;" text="Login" GridPane.halignment="RIGHT" GridPane.valignment="TOP">

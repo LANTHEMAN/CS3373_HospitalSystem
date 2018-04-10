@@ -4,6 +4,8 @@ import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
+import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
@@ -15,6 +17,8 @@ import edu.wpi.cs3733d18.teamF.graph.NewNodeBuilder;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.NodeBuilder;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
+import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import javafx.animation.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.binding.StringBinding;
@@ -31,6 +35,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -39,6 +44,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
+import org.apache.commons.math3.analysis.function.Floor;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -111,6 +117,7 @@ public class HomeController implements SwitchableController, Observer {
     private PaneSwitcher switcher;
     private Map map;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
+
     @FXML
     private ImageView ivMap;
     @FXML
@@ -186,6 +193,26 @@ public class HomeController implements SwitchableController, Observer {
     private JFXTextField loginUsername;
     @FXML
     private JFXPasswordField loginPassword;
+    @FXML
+    private JFXNodesList floorNode;
+    @FXML
+    private JFXButton floorBtn;
+    @FXML
+    private JFXButton l2;
+    @FXML
+    private JFXButton l1;
+    @FXML
+    private JFXButton groundFloor;
+    @FXML
+    private JFXButton floor1;
+    @FXML
+    private JFXButton floor2;
+    @FXML
+    private JFXButton floor3;
+    @FXML
+    private FontAwesomeIconView loginCancel;
+    @FXML
+    private FontAwesomeIconView logoutCancel;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -400,6 +427,48 @@ public class HomeController implements SwitchableController, Observer {
 
         */
 
+        floorBtn.setText("2");
+        l2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            map.setFloor("L2");
+            floorBtn.setText("L2");
+            reloadMap();
+        });
+        l1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            map.setFloor("L1");
+            floorBtn.setText("L1");
+            reloadMap();
+        });
+        groundFloor.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            map.setFloor("0G");
+            floorBtn.setText("G");
+            reloadMap();
+        });
+        floor1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            map.setFloor("01");
+            floorBtn.setText("1");
+            reloadMap();
+        });
+        floor2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            map.setFloor("02");
+            floorBtn.setText("2");
+            reloadMap();
+        });
+        floor3.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            map.setFloor("03");
+            floorBtn.setText("3");
+            reloadMap();
+        });
+
+
+        floorNode.addAnimatedNode(floorBtn);
+        floorNode.addAnimatedNode(l2);
+        floorNode.addAnimatedNode(l1);
+        floorNode.addAnimatedNode(groundFloor);
+        floorNode.addAnimatedNode(floor1);
+        floorNode.addAnimatedNode(floor2);
+        floorNode.addAnimatedNode(floor3);
+
+
 
         // set the hamburger menu on bottom left accordingly
         if (PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
@@ -422,10 +491,12 @@ public class HomeController implements SwitchableController, Observer {
         // login
         loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             if (PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
+                loginBox.setVisible(true);
                 loginDrawer.setSidePane(loginBox);
                 loginDrawer.setOverLayVisible(false);
                 loginBtn.setText("Login");
             } else {
+                logoutBox.setVisible(true);
                 loginDrawer.setSidePane(logoutBox);
                 loginDrawer.setOverLayVisible(false);
                 loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
@@ -438,15 +509,48 @@ public class HomeController implements SwitchableController, Observer {
 
                     if (PermissionSingleton.getInstance().isAdmin()) {
                         setAdminMenu();
+                        mapDrawController.showNodes();
+                        mapDrawController.showEdges();
                     } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
                         setStaffMenu();
                     }
+                    loginDrawer.close();
+                    //loginUsername.setFocusColor(Color.rgb(64, 89, 169));
+                    loginUsername.setText("");
+                    loginPassword.setText("");
+
+                } else {
+                    //loginPassword.setFocusColor(Color.rgb(255, 0, 0));
+                    loginPassword.setText("");
+                    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1),loginPassword);
+                    translateTransition.setFromX(7);
+                    translateTransition.setToX(-7);
+                    translateTransition.setCycleCount(4);
+                    translateTransition.setAutoReverse(true);
+                    translateTransition.setOnFinished((translateEvent) -> {
+                        TranslateTransition tt = new TranslateTransition(Duration.seconds(0.05),loginPassword);
+                        tt.setFromX(7);
+                        tt.setToX(0);
+                        tt.setCycleCount(0);
+                        tt.play();
+                    });
+                    translateTransition.play();
                 }
-                loginUsername.setText("");
-                loginPassword.setText("");
-                loginDrawer.close();
+
             } else {
                 loginDrawer.open();
+            }
+        });
+
+        loginCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            if (loginDrawer.isShown()) {
+                loginDrawer.close();
+            }
+        });
+
+        logoutCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            if (loginDrawer.isShown()) {
+                loginDrawer.close();
             }
         });
 
@@ -459,8 +563,11 @@ public class HomeController implements SwitchableController, Observer {
             adminBox.setVisible(false);
             staffBox.setVisible(false);
             hamburger.setVisible(false);
+            mapDrawController.unshowNodes();
+            mapDrawController.unshowEdges();
             loginBtn.setText("Login");
         });
+
 
     }
 

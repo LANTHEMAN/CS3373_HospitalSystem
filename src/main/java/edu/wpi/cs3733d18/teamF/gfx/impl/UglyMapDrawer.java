@@ -23,6 +23,9 @@ public class UglyMapDrawer extends MapDrawable {
     private NodeDrawable nodeDrawer = new CircleNodeDrawer();
    // private PathDrawable pathDrawer = new StalePathDrawer(new LineEdgeDrawer(Color.DEEPPINK));
     private PathDrawable pathDrawer = new DynamicPathDrawer();
+    private NodeDrawable elevatorDrawer = new ElevatorNodeDrawer();
+    private NodeDrawable exitDrawer = new ExitNodeDrawer();
+    private NodeDrawable currNodeDrawable = nodeDrawer;
 
     public UglyMapDrawer(Map map) {
         super(map);
@@ -90,21 +93,38 @@ public class UglyMapDrawer extends MapDrawable {
             pathDrawer.update(path);
             pathDrawer.draw(pane);
         }
-
-        if (showNodes) {
-            for (Node node : map.getNodes(node -> node.getFloor().equals(map.getFloor()))) {
-                nodeDrawer.update(node);
-                if (selectedNode == node) {
-                    continue;
-                }
-                nodeDrawer.draw(pane);
+        for (Node node : map.getNodes(node -> node.getFloor().equals(map.getFloor()))) {
+            //TODO: Implement drawing for all node types
+            switch (node.getNodeType()) {
+                case "ELEV":
+                    currNodeDrawable = elevatorDrawer;
+                    break;
+                case "EXIT":    //exits or entrances
+                    currNodeDrawable = exitDrawer;
+                    break;
+                case "REST":    //restroom
+                case "STAI":    //stairs
+                case "DEPT":    //medical departments, clinics, and waiting room areas
+                case "LABS":    //labs, imaging centers, and medical testing areas
+                case "INFO":    //information desks, security desks, lost and found
+                case "CONF":    //conference room
+                case "RETL":    //shops, food, pay phone, areas that provide non-medical services for immediate payment
+                case "SERV":    //hospital non-medical services, interpreters, shuttles, spiritual, library, patient financial, etc.
+                default:    //will be hallways and anything not implemented
+                    currNodeDrawable = nodeDrawer;
+                    break;
             }
-        }
-        if (selectedNode != null) {
-            nodeDrawer.update(selectedNode);
-            nodeDrawer.selectNode();
-            nodeDrawer.draw(pane);
-            nodeDrawer.unselectNode();
+            currNodeDrawable.update(node);
+            if (selectedNode == node) {
+                currNodeDrawable.selectNode();
+            } else if (!showNodes) {
+                continue;
+            }
+            currNodeDrawable.draw(pane);
+            if (selectedNode == node) {
+                currNodeDrawable.unselectNode();
+
+            }
         }
     }
 }
