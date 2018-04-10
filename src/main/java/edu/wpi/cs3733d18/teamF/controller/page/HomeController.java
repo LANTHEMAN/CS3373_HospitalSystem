@@ -15,8 +15,7 @@ import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.NodeBuilder;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,6 +30,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -68,6 +68,7 @@ public class HomeController implements SwitchableController, Observer {
     private PaneSwitcher switcher;
     private Map map;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
+
     @FXML
     private ImageView ivMap;
     @FXML
@@ -175,6 +176,8 @@ public class HomeController implements SwitchableController, Observer {
     private VBox logoutBox;
     @FXML
     private JFXButton loginBtn;
+    @FXML
+    private JFXButton loginCancel;
     @FXML
     private JFXButton logoutBtn;
     @FXML
@@ -494,14 +497,38 @@ public class HomeController implements SwitchableController, Observer {
                     } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
                         setStaffMenu();
                     }
+                    loginDrawer.close();
+                    //loginUsername.setFocusColor(Color.rgb(64, 89, 169));
+                    loginUsername.setText("");
+                    loginPassword.setText("");
+                } else {
+                    //loginPassword.setFocusColor(Color.rgb(255, 0, 0));
+                    loginPassword.setText("");
+                    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1),loginPassword);
+                    translateTransition.setFromX(7);
+                    translateTransition.setToX(-7);
+                    translateTransition.setCycleCount(4);
+                    translateTransition.setAutoReverse(true);
+                    translateTransition.setOnFinished((translateEvent) -> {
+                        TranslateTransition tt = new TranslateTransition(Duration.seconds(0.05),loginPassword);
+                        tt.setFromX(7);
+                        tt.setToX(0);
+                        tt.setCycleCount(0);
+                        tt.play();
+                    });
+                    translateTransition.play();
                 }
-                loginUsername.setText("");
-                loginPassword.setText("");
-                loginDrawer.close();
+
             } else {
                 loginDrawer.open();
             }
         });
+
+        /*loginCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            if (loginDrawer.isShown()) {
+                loginDrawer.close();
+            }
+        });*/
 
         // logout
         logoutBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -514,6 +541,7 @@ public class HomeController implements SwitchableController, Observer {
             hamburger.setVisible(false);
             loginBtn.setText("Login");
         });
+
 
     }
 
