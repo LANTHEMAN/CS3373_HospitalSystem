@@ -39,10 +39,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -697,8 +694,6 @@ public class HomeController implements SwitchableController, Observer {
                     loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
                     if (PermissionSingleton.getInstance().isAdmin()) {
                         setAdminMenu();
-                        mapDrawController.showNodes();
-                        mapDrawController.showEdges();
                         mapDrawController.unshowPath();
                     } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
                         setAdminMenu();
