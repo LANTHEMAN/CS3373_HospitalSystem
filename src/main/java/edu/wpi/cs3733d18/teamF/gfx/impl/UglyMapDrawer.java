@@ -25,6 +25,7 @@ public class UglyMapDrawer extends MapDrawable {
     private PathDrawable pathDrawer = new DynamicPathDrawer();
     private NodeDrawable elevatorDrawer = new ElevatorNodeDrawer();
     private NodeDrawable exitDrawer = new ExitNodeDrawer();
+    private NodeDrawable stairDrawer = new StairNodeDrawer();
     private NodeDrawable currNodeDrawable = nodeDrawer;
 
     public UglyMapDrawer(Map map) {
@@ -84,36 +85,27 @@ public class UglyMapDrawer extends MapDrawable {
 
         if (showEdges) {
             for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(map.getFloor()))) {
+                if(edge.getNode1().getNodeType().equals("ELEV")&&edge.getNode2().getNodeType().equals("ELEV")){
+                    continue;
+                }
                 edgeDrawer.update(edge);
                 edgeDrawer.draw(pane);
             }
         }
 
         if (path != null) {
+            for(Node node : path.getNodes()){
+                if((!(node.getNodeType().equals("HALL")))&& node.getFloor().equals(map.getFloor())){
+                    currNodeDrawable = getDrawable(node.getNodeType());
+                    currNodeDrawable.update(node);
+                    currNodeDrawable.draw(pane);
+                }
+            }
             pathDrawer.update(path);
             pathDrawer.draw(pane);
         }
         for (Node node : map.getNodes(node -> node.getFloor().equals(map.getFloor()))) {
-            //TODO: Implement drawing for all node types
-            switch (node.getNodeType()) {
-                case "ELEV":
-                    currNodeDrawable = elevatorDrawer;
-                    break;
-                case "EXIT":    //exits or entrances
-                    currNodeDrawable = exitDrawer;
-                    break;
-                case "REST":    //restroom
-                case "STAI":    //stairs
-                case "DEPT":    //medical departments, clinics, and waiting room areas
-                case "LABS":    //labs, imaging centers, and medical testing areas
-                case "INFO":    //information desks, security desks, lost and found
-                case "CONF":    //conference room
-                case "RETL":    //shops, food, pay phone, areas that provide non-medical services for immediate payment
-                case "SERV":    //hospital non-medical services, interpreters, shuttles, spiritual, library, patient financial, etc.
-                default:    //will be hallways and anything not implemented
-                    currNodeDrawable = nodeDrawer;
-                    break;
-            }
+            currNodeDrawable = getDrawable(node.getNodeType());
             currNodeDrawable.update(node);
             if (selectedNode == node) {
                 currNodeDrawable.selectNode();
@@ -125,6 +117,26 @@ public class UglyMapDrawer extends MapDrawable {
                 currNodeDrawable.unselectNode();
 
             }
+        }
+    }
+    //TODO: Implement drawing for all node types
+    private NodeDrawable getDrawable(String type){
+        switch (type) {
+            case "ELEV":
+                return elevatorDrawer;
+            case "EXIT":    //exits or entrances
+                return exitDrawer;
+            case "STAI":    //stairs
+                return stairDrawer;
+            case "REST":    //restroom
+            case "DEPT":    //medical departments, clinics, and waiting room areas
+            case "LABS":    //labs, imaging centers, and medical testing areas
+            case "INFO":    //information desks, security desks, lost and found
+            case "CONF":    //conference room
+            case "RETL":    //shops, food, pay phone, areas that provide non-medical services for immediate payment
+            case "SERV":    //hospital non-medical services, interpreters, shuttles, spiritual, library, patient financial, etc.
+            default:    //will be hallways and anything not implemented
+                return nodeDrawer;
         }
     }
 }

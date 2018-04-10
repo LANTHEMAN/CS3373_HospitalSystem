@@ -174,7 +174,7 @@ public class Node extends Observable {
      */
     public void setNodeType(String nodeType, int nodeTypeCount) {
         if (!(NodeBuilder.getNodeTypes().contains(nodeType))
-                || nodeType.equals("ELEV")) {
+                || nodeType.equals("ELEV") || nodeType.equals("STAI")) {
             throw new AssertionError("The nodeType was invalid.");
         }
         if (nodeTypeCount > 999 || nodeTypeCount < 0) {
@@ -189,18 +189,18 @@ public class Node extends Observable {
         setNodeID(newNodeID);
     }
 
-    public void setNodeType(String nodeType, char elevatorChar) {
-        if (!(nodeType.equals("ELEV"))) {
+    public void setNodeType(String nodeType, char linkChar) {
+        if (!(nodeType.equals("ELEV") || nodeType.equals("STAI"))) {
             throw new AssertionError("The nodeType was invalid.");
         }
-        if (!(Character.isLetter(elevatorChar))) {
-            throw new AssertionError("You must assign a valid elevator character!");
+        if (!(Character.isLetter(linkChar))) {
+            throw new AssertionError("You must assign a valid link character!");
         }
 
         // notify the change in nodeID
         String newNodeID = nodeID.substring(0, 1)
                 + nodeType
-                + "00" + elevatorChar
+                + "00" + linkChar
                 + nodeID.substring(8);
         setNodeID(newNodeID);
     }

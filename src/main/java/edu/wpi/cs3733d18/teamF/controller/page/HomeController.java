@@ -1,26 +1,29 @@
 package edu.wpi.cs3733d18.teamF.controller.page;
 
+import com.github.fedy2.weather.YahooWeatherService;
+import com.github.fedy2.weather.data.Channel;
+import com.github.fedy2.weather.data.unit.DegreeUnit;
 import com.jfoenix.controls.*;
-import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
-import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.controller.*;
+import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.PaneMapController;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
 import edu.wpi.cs3733d18.teamF.gfx.impl.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.NewNodeBuilder;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.NodeBuilder;
+import edu.wpi.cs3733d18.teamF.sr.ServiceRequest;
+import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
-import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import javafx.animation.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,24 +31,25 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
-import org.apache.commons.math3.analysis.function.Floor;
 
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -63,52 +67,101 @@ public class HomeController implements SwitchableController, Observer {
             "Bathroom 1",
             "Bathroom 2");
     private final ObservableList<String> all = FXCollections.observableArrayList();
+    private final ObservableList<String> priority = FXCollections.observableArrayList(
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5");
+    private final ObservableList<String> status = FXCollections.observableArrayList(
+            "Incomplete",
+            "In Progress",
+            "Complete");
+    private final ObservableList<String> type = FXCollections.observableArrayList(
+            "Language Interpreter",
+            "Religious Services");
+    @FXML
+    public ComboBox filterType;
+    @FXML
+    public ComboBox availableTypes;
+    @FXML
+    public TableView<ServiceRequest> searchResultTable;
+    @FXML
+    public TableColumn btnsCol;
+    @FXML
+    public TableColumn<ServiceRequest, Integer> idNumberCol;
+    @FXML
+    public TableColumn<ServiceRequest, String> requestTypeCol;
+    @FXML
+    public TableColumn<ServiceRequest, String> firstNameCol;
+    @FXML
+    public TableColumn<ServiceRequest, String> lastNameCol;
+    @FXML
+    public TableColumn<ServiceRequest, String> destinationCol;
+    @FXML
+    public TableColumn<ServiceRequest, Integer> requestPriorityCol;
+    @FXML
+    public TableColumn<ServiceRequest, String> theStatusCol;
+    @FXML
+    public Label typeLabel;
+    @FXML
+    public Label idLabel;
+    @FXML
+    public Label firstNameLabel;
+    @FXML
+    public Label lastNameLabel;
+    @FXML
+    public Label locationLabel;
+    @FXML
+    public Label statusLabel;
+    @FXML
+    public TextArea instructionsTextArea;
+    @FXML
+    public ComboBox statusBox;
+    @FXML
+    public Label completedByLabel;
+    @FXML
+    public Label usernameLabel;
     ConcurrentLinkedQueue<String> commands = new ConcurrentLinkedQueue<>();
     PaneVoiceController paneVoiceController;
-    Timeline commandExecuter = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            String command = commands.poll();
-            if (command != null) {
-                if (command.equals("HEY KIOSK")) {
-                    paneVoiceController.setVisibility(true);
-                    canSayCommand[0] = true;
-                    new Timer(true).schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            canSayCommand[0] = false;
-                        }
-                    }, 5000);
+    Voice voice;
+    VoiceManager voiceManager = VoiceManager.getInstance();
+    ////////////////////////////////////////////////////
+    //                                                //
+    //           Search Service Request Variables     //
+    //                                                //
+    ////////////////////////////////////////////////////
+    String searchType;
+    String filter;
+    ServiceRequest serviceRequestPopUp;
+    boolean statusChange;
+    String newStatus;
+    boolean nodesShown = false;
+    ////////////////////////////////////////////////////
+    //                                                //
+    //           Edit User Variables                  //
+    //                                                //
+    ////////////////////////////////////////////////////
+    @FXML
+    private AnchorPane editUserPane;
+    @FXML
+    private JFXTextField userTextField;
+    @FXML
+    private TableView<User> searchUserResultTable;
+    @FXML
+    public TableColumn chooseCol;
+    @FXML
+    public TableColumn<User, Integer> usernameCol;
+    @FXML
+    public TableColumn<User, String> firstNameUserCol;
+    @FXML
+    public TableColumn<User, String> lastNameUserCol;
+    @FXML
+    public TableColumn<User, String> privilegeCol;
+    @FXML
+    public TableColumn<User, String> occupationCol;
 
-                } else {
-                    if (!canSayCommand[0]) {
-                        return;
-                    }
-                    canSayCommand[0] = false;
-                    paneVoiceController.setVisibility(false);
-
-                    switch (command) {
-                        case "HELP": {
-                            Voice voice;
-                            VoiceManager voiceManager = VoiceManager.getInstance();
-                            voice = voiceManager.getVoice("kevin");
-                            voice.allocate();
-                            voice.speak("What can I help you with?");
-                            onHelpPopup();
-                        }
-
-                        break;
-                        case "ADMIN LOGIN":
-                            //onLoginPopup();
-                            //TODO
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-        }
-    }));
     private PaneMapController mapDrawController;
     private Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
     private Node selectedNodeStart = null;
@@ -124,6 +177,7 @@ public class HomeController implements SwitchableController, Observer {
     private Pane mapContainer;
     @FXML
     private VBox addLocationPopup;
+
     @FXML
     private VBox vbxMenu;
     @FXML
@@ -162,22 +216,15 @@ public class HomeController implements SwitchableController, Observer {
     private TextField modNode_y;
     @FXML
     private Pane voicePane;
-
     // kiosk location
     private Point2D startLocation = new Point2D(1875.0, 1025.0);
-
     // menu in bottom left corner
     @FXML
     private JFXHamburger hamburger;
     @FXML
     private JFXDrawer adminDrawer;
     @FXML
-    private JFXDrawer staffDrawer;
-    @FXML
     private VBox adminBox;
-    @FXML
-    private VBox staffBox;
-
     // login elements
     @FXML
     private JFXDrawer loginDrawer;
@@ -212,12 +259,179 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private FontAwesomeIconView loginCancel;
     @FXML
+    private HBox searchBar;
+    ////////////////////////////////////////
+    //                                    //
+    //       Edit Service Request         //
+    //                                    //
+    ////////////////////////////////////////
+    @FXML
     private FontAwesomeIconView logoutCancel;
+    // searching for a location
+    @FXML
+    private JFXTextField sourceLocation;
+    @FXML
+    private JFXListView searchList;
+    @FXML
+    private VBox directionsBox;
+    @FXML
+    private FontAwesomeIconView directionsArrow;
+    @FXML
+    private FontAwesomeIconView cancelDirections;
+    @FXML
+    private JFXTextField destinationLocation;
+    @FXML
+    private JFXDrawer directionsDrawer;
+    @FXML
+    private JFXHamburger hamburgerD;
+    @FXML
+    private FontAwesomeIconView cancelMenu;
+    @FXML
+    private AnchorPane searchPane;
+    private ObservableList<ServiceRequest> listRequests;
+    ////////////////////////////////////////
+    //                                    //
+    //           Help Screen              //
+    //                                    //
+    ////////////////////////////////////////
+    @FXML
+    private Pane helpPane;
+    @FXML
+    private GridPane userInstructions;
+    @FXML
+    private GridPane adminInstructions;
+    Timeline commandExecuter = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            String command = commands.poll();
+            if (command != null) {
+                if (command.equals("HEY KIOSK") || command.equals("HELLO KIOSK")) {
+                    paneVoiceController.setVisibility(true);
+                    canSayCommand[0] = true;
+                    new Timer(true).schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            canSayCommand[0] = false;
+                        }
+                    }, 5000);
+                } else {
+                    if (!canSayCommand[0]) {
+                        return;
+                    }
+                    canSayCommand[0] = false;
+                    paneVoiceController.setVisibility(false);
+
+                    if (command.equals("HELP")) {
+                        onHelpPopup();
+                        voice.speak("Here is the help menu");
+                    } else if (command.contains("DIRECTIONS")) {
+                        if (command.contains("BATHROOM")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("REST"))));
+                            voice.speak("Here is the route to the nearest bathroom");
+                        } else if (command.contains("EXIT")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("EXIT"))));
+                            voice.speak("Here is the route to the nearest exit");
+                        } else if (command.contains("NEUROSCIENCE")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Neuroscience"))));
+                            voice.speak("Here is the route to neuroscience");
+                        } else if (command.contains("ORTHOPEDICS") || command.contains("RHEMUTOLOGY")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Orthopedics"))));
+                            voice.speak("Here is the route to Orthopedics and Rhemutology");
+                        } else if (command.contains("PARKING") && command.contains("GARAGE")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Parking") &&
+                                                    node.getLongName().contains("Garage"))));
+                            voice.speak("Here is the route to the parking garage");
+                        } else if (command.contains("ELEVATOR")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("ELEV"))));
+                            voice.speak("Here is the route to the nearest elevator");
+                        } else if (command.contains("DENTIST") || command.contains("DENTISTRY") || command.contains("ORAL")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Dentistry"))));
+                            voice.speak("Here is the route to Dentistry and Oral Medicine");
+                        } else if (command.contains("PLASTIC SURGERY")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Plastic Surgery"))));
+                            voice.speak("Here is the route to Plastic Surgery");
+                        } else if (command.contains("RADIOLOGY")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Radiation"))));
+                            voice.speak("Here is the route to Radiology");
+                        } else if (command.contains("NUCLEAR")) {
+                            mapDrawController.showPath(map.getPath
+                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Nuclear"))));
+                            voice.speak("Here is the route to Nuclear Medicine");
+                        }
+                    } else if (command.contains("STAIRS") && command.contains("DISABLE")) {
+                        map.disableStairs();
+                        voice.speak("Stairs are now disabled for path finding");
+                    } else if (command.contains("STAIRS") && command.contains("ENABLE")) {
+                        map.enableStairs();
+                        voice.speak("Stairs are now enabled for path finding");
+                    } else if (command.contains("ELEVATOR") && command.contains("DISABLE")) {
+                        map.disableElevators();
+                        voice.speak("Elevators are now disabled for path finding");
+                    } else if (command.contains("ELEVATOR") && command.contains("ENABLE")) {
+                        map.enableElevators();
+                        voice.speak("Elevators are now enabled for path finding");
+                    } else if (command.contains("WEATHER") && command.contains("TODAY")) {
+                        YahooWeatherService service = null;
+                        try {
+                            service = new YahooWeatherService();
+                        } catch (JAXBException e) {
+                            e.printStackTrace();
+                        }
+                        Channel channel = null;
+                        try {
+                            channel = service.getForecast("2523945", DegreeUnit.FAHRENHEIT);
+                        } catch (JAXBException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        voice.speak(String.format("The temperature is %d degrees fahrenheit", channel.getItem().getCondition().getTemp()));
+                        voice.speak(channel.getAtmosphere().toString());
+                    }
+                }
+            }
+        }
+    }));
+    @FXML
+    private JFXTextField usernameSearch;
+    @FXML
+    private JFXListView usernameList;
+
+
+    ////////////////////////////////////////
+    //                                    //
+    //           Edit Nodes               //
+    //                                    //
+    ////////////////////////////////////////
+    @FXML
+    private AnchorPane editRequestPane;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
         VoiceLauncher.getInstance().addObserver(this);
+
+        voice = voiceManager.getVoice("kevin16");
+        voice.allocate();
 
         paneVoiceController = new PaneVoiceController(voicePane);
 
@@ -251,11 +465,6 @@ public class HomeController implements SwitchableController, Observer {
         // set up new node panel
         newNode_type.getItems().addAll(NodeBuilder.getNodeTypes());
         newNode_type.getSelectionModel().selectFirst();
-
-        if (PermissionSingleton.getInstance().isAdmin()) {
-            mapDrawController.showNodes();
-            mapDrawController.showEdges();
-        }
 
 
         // react to key presses and mouse clicks
@@ -292,7 +501,7 @@ public class HomeController implements SwitchableController, Observer {
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
             HashSet<Node> nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
-                    , node.getPosition().getY()).distance(mapPos) < 8
+                    , node.getPosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor())
             );
 
             if (nodes.size() > 0) {
@@ -318,6 +527,7 @@ public class HomeController implements SwitchableController, Observer {
             }
 
         });
+
         mapContainer.setOnMouseClicked(e -> {
             double map_x = 5000;
             double map_y = 3400;
@@ -329,19 +539,21 @@ public class HomeController implements SwitchableController, Observer {
             Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
-            mapDrawController.showPath(map.getPath
-                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), map.is2D())
-                            , map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D())));
+            if (!PermissionSingleton.getInstance().isAdmin()) {
+                mapDrawController.showPath(map.getPath
+                        (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
+                                , map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), true)));
+            }
 
             // if editing maps
             HashSet<Node> nodes = new HashSet<>();
             if (PermissionSingleton.getInstance().isAdmin()) {
                 if (map.is2D()) {
                     nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
-                            , node.getPosition().getY()).distance(mapPos) < 8);
+                            , node.getPosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor()));
                 } else {
                     nodes = map.getNodes(node -> new Point2D(node.getWireframePosition().getX()
-                            , node.getWireframePosition().getY()).distance(mapPos) < 8);
+                            , node.getWireframePosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor()));
                 }
             }
             // not editing map
@@ -369,10 +581,6 @@ public class HomeController implements SwitchableController, Observer {
 
             } else {
                 selectedNodeStart = null;
-            }
-
-            if (!PermissionSingleton.getInstance().isAdmin()) {
-                return;
             }
 
 
@@ -469,13 +677,12 @@ public class HomeController implements SwitchableController, Observer {
         floorNode.addAnimatedNode(floor3);
 
 
-
-        // set the hamburger menu on bottom left accordingly
+        // set the hamburger menu on top left accordingly
         if (PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
             setGuestMenu();
             loginBtn.setText("Login");
         } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
-            setStaffMenu();
+            setAdminMenu();
             loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
         } else if (PermissionSingleton.getInstance().isAdmin()) {
             setAdminMenu();
@@ -486,7 +693,8 @@ public class HomeController implements SwitchableController, Observer {
         }
 
 
-        setHamburgerEvent();
+        directionsDrawer.setSidePane(directionsBox);
+        adminDrawer.setSidePane(adminBox);
 
         // login
         loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -506,35 +714,20 @@ public class HomeController implements SwitchableController, Observer {
                 // login in the user and close the drawer
                 if (PermissionSingleton.getInstance().login(loginUsername.getText(), loginPassword.getText())) {
                     loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
-
                     if (PermissionSingleton.getInstance().isAdmin()) {
                         setAdminMenu();
-                        mapDrawController.showNodes();
-                        mapDrawController.showEdges();
                     } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
-                        setStaffMenu();
+                        setAdminMenu();
+                    } else {
+                        setGuestMenu();
                     }
                     loginDrawer.close();
-                    //loginUsername.setFocusColor(Color.rgb(64, 89, 169));
                     loginUsername.setText("");
                     loginPassword.setText("");
 
                 } else {
-                    //loginPassword.setFocusColor(Color.rgb(255, 0, 0));
                     loginPassword.setText("");
-                    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1),loginPassword);
-                    translateTransition.setFromX(7);
-                    translateTransition.setToX(-7);
-                    translateTransition.setCycleCount(4);
-                    translateTransition.setAutoReverse(true);
-                    translateTransition.setOnFinished((translateEvent) -> {
-                        TranslateTransition tt = new TranslateTransition(Duration.seconds(0.05),loginPassword);
-                        tt.setFromX(7);
-                        tt.setToX(0);
-                        tt.setCycleCount(0);
-                        tt.play();
-                    });
-                    translateTransition.play();
+                    shakePasswordField(loginPassword);
                 }
 
             } else {
@@ -543,85 +736,228 @@ public class HomeController implements SwitchableController, Observer {
         });
 
         loginCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if (loginDrawer.isShown()) {
-                loginDrawer.close();
-            }
+            loginDrawer.close();
         });
 
         logoutCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if (loginDrawer.isShown()) {
-                loginDrawer.close();
-            }
+            loginDrawer.close();
         });
 
-        // logout
-        logoutBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            PermissionSingleton.getInstance().logout();
-            loginDrawer.close();
-            staffDrawer.close();
-            adminDrawer.close();
-            adminBox.setVisible(false);
-            staffBox.setVisible(false);
-            hamburger.setVisible(false);
-            mapDrawController.unshowNodes();
-            mapDrawController.unshowEdges();
-            loginBtn.setText("Login");
+
+        sourceLocation.setOnKeyTyped((KeyEvent e) -> {
+            String input = sourceLocation.getText();
+            input = input.concat("" + e.getCharacter());
+            autoComplete(input, searchList, "Node", "longName");
         });
+
+        usernameSearch.setOnKeyTyped((KeyEvent e) -> {
+            String input = usernameSearch.getText();
+            input = input.concat("" + e.getCharacter());
+            autoComplete(input, usernameList, "HUser", "username");
+        });
+
+        userTextField.setOnKeyTyped((KeyEvent e) -> {
+            String input = userTextField.getText();
+            input = input.concat("" + e.getCharacter());
+            autoCompleteUserSearch(input);
+        });
+
+    }
+
+    // will filter the given ListView for the given input String
+    private void autoComplete(String input, ListView listView, String table, String field) {
+        if (input.length() > 0) {
+            String sql = "SELECT " + field + " FROM " + table;
+            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
+            ArrayList<String> autoCompleteStrings = new ArrayList<>();
+
+            try {
+                while (resultSet.next()) {
+                    String username = resultSet.getString(1);
+                    if (username.toLowerCase().contains(input.toLowerCase())) {
+                        autoCompleteStrings.add(username);
+                    }
+                }
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+            try {
+                if (autoCompleteStrings.size() > 0) {
+                    ObservableList<String> list = FXCollections.observableArrayList(autoCompleteStrings);
+                    listView.setItems(list);
+                    listView.setVisible(true);
+                } else {
+                    listView.setVisible(false);
+                }
+            } catch (Exception anyE) {
+                anyE.printStackTrace();
+            }
+        } else {
+            listView.setVisible(false);
+        }
+    }
+
+
+    // will shake the password field back and forth
+    private void shakePasswordField(JFXPasswordField passwordField) {
+        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.1), passwordField);
+        translateTransition.setFromX(7);
+        translateTransition.setToX(-7);
+        translateTransition.setCycleCount(4);
+        translateTransition.setAutoReverse(true);
+        translateTransition.setOnFinished((translateEvent) -> {
+            TranslateTransition tt = new TranslateTransition(Duration.seconds(0.05), passwordField);
+            tt.setFromX(7);
+            tt.setToX(0);
+            tt.setCycleCount(0);
+            tt.play();
+        });
+        translateTransition.play();
+    }
+
+
+    @FXML
+    private void onHamburgerMenu() {
+        if (adminDrawer.isHidden()) {
+            adminDrawer.open();
+            adminDrawer.toFront();
+        }
+    }
+
+    @FXML
+    private void onLogOutBtn() {
+        PermissionSingleton.getInstance().logout();
+        loginDrawer.close();
+        adminDrawer.close();
+        hamburger.setVisible(false);
+        hamburgerD.setVisible(false);
+        mapDrawController.unshowNodes();
+        mapDrawController.unshowEdges();
+        loginBtn.setText("Login");
+    }
+
+    @FXML
+    private void onArrowEvent() {
+        if (directionsDrawer.isHidden()) {
+            directionsDrawer.open();
+            directionsDrawer.toFront();
+        }
+
+    }
+
+    @FXML
+    private void onCancelDirectionsEvent() {
+        if (directionsDrawer.isShown()) {
+            directionsDrawer.close();
+            directionsDrawer.toBack();
+        }
 
 
     }
 
+    @FXML
+    private void setCancelMenuEvent() {
+        if (adminDrawer.isShown()) {
+            adminDrawer.close();
+            adminDrawer.toBack();
+        }
 
-    private void setHamburgerEvent() {
-        HamburgerBasicCloseTransition arrowBasicTransition = new HamburgerBasicCloseTransition(hamburger);
-        arrowBasicTransition.setRate(-1);
-        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-            arrowBasicTransition.setRate(arrowBasicTransition.getRate() * -1);
-            arrowBasicTransition.play();
-
-            if (staffDrawer.isShown()) {
-                staffDrawer.close();
-            } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
-                staffDrawer.open();
-            }
-
-            if (adminDrawer.isShown()) {
-                adminDrawer.close();
-            } else if (PermissionSingleton.getInstance().isAdmin()) {
-                adminDrawer.open();
-            }
-        });
     }
 
     private void setGuestMenu() {
-        adminBox.setVisible(false);
-        staffBox.setVisible(false);
         hamburger.setVisible(false);
-    }
-
-    private void setStaffMenu() {
-        hamburger.setVisible(true);
-        adminBox.setVisible(false);
-        staffBox.setVisible(true);
-        staffDrawer.setSidePane(staffBox);
-        staffDrawer.setOverLayVisible(false);
+        hamburgerD.setVisible(false);
     }
 
     private void setAdminMenu() {
         hamburger.setVisible(true);
-        adminBox.setVisible(true);
-        staffBox.setVisible(false);
-        adminDrawer.setSidePane(adminBox);
-        adminDrawer.setOverLayVisible(false);
+        hamburgerD.setVisible(true);
     }
 
+
+    @FXML
+    void setSourceSearch() {
+        sourceLocation.setText(searchList.getSelectionModel().getSelectedItem().toString());
+        searchList.setVisible(false);
+    }
 
     // Popup upon help request
 
     @FXML
     void onHelpPopup() {
-        switcher.popup(Screens.Help);
+        if (PermissionSingleton.getInstance().isAdmin()) {
+            userInstructions.setVisible(false);
+            adminInstructions.setVisible(true);
+        } else {
+            adminInstructions.setVisible(false);
+            userInstructions.setVisible(true);
+        }
+        helpPane.setVisible(true);
     }
+
+    @FXML
+    void onCancelClose() {
+        helpPane.setVisible(false);
+    }
+
+    //////////////////////////////
+    //                          //
+    //        Edit User         //
+    //                          //
+    //////////////////////////////
+
+    @FXML
+    private void onCancelEditUser(){
+        editUserPane.setVisible(false);
+        try {
+            searchUserResultTable.getItems().clear();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onNewUserEvent(){
+
+    }
+
+    @FXML
+    private void autoCompleteUserSearch(String input) {
+        if (input.length() > 0) {
+            String sql = "SELECT * FROM HUser";
+            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
+            ArrayList<User> autoCompleteUser = new ArrayList<>();
+
+            try {
+                while (resultSet.next()) {
+                    User temp = new User("username","pword","type");
+                    String username = resultSet.getString(1);
+                    if (username.toLowerCase().contains(input.toLowerCase())) {
+                        autoCompleteUser.add(temp);
+                    }
+                }
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+            try {
+                if (autoCompleteUser.size() > 0) {
+                    ObservableList<User> list = FXCollections.observableArrayList(autoCompleteUser);
+                    //listView.setItems(list);
+                    //listView.setVisible(true);
+                } else {
+                    //listView.setVisible(false);
+                }
+            } catch (Exception anyE) {
+                anyE.printStackTrace();
+            }
+        } else {
+            //listView.setVisible(false);
+        }
+    }
+
+
+
+
 
 
     // Language
@@ -652,7 +988,8 @@ public class HomeController implements SwitchableController, Observer {
 
     @FXML
     void onServiceRequest() {
-        switcher.switchTo(Screens.ServiceRequest);
+        adminDrawer.close();
+        adminDrawer.toBack();
     }
 
 
@@ -674,6 +1011,25 @@ public class HomeController implements SwitchableController, Observer {
         }
     }
 
+    @FXML
+    private void onSearchServiceRequest() {
+        filter = "none";
+        searchType = "none";
+
+        filterType.getItems().addAll("Priority", "Status", "Type");
+
+        String lastSearch = ServiceRequestSingleton.getInstance().getLastSearch();
+        String lastFilter = ServiceRequestSingleton.getInstance().getLastFilter();
+        if (lastSearch != null && lastFilter != null) {
+            searchType = lastSearch;
+            filter = lastFilter;
+        }
+        onSearch();
+        searchPane.setVisible(true);
+        adminDrawer.close();
+        adminDrawer.toBack();
+    }
+
 
     // Add location on map
 
@@ -682,23 +1038,48 @@ public class HomeController implements SwitchableController, Observer {
         String type = newNode_type.getSelectionModel().getSelectedItem();
         // TODO move into NodeBuilder
 
+        if (!(type.equals("ELEV") || type.equals("STAI"))) {
+            Node newNode = new NewNodeBuilder()
+                    .setNodeType(type)
+                    .setNumNodeType(map)
+                    .setFloor(map.getFloor())
+                    .setBuilding("New Building") // TODO set building
+                    .setShortName(newNode_shortName.getText())
+                    .setLongName(newNode_shortName.getText())
+                    .setPosition(new Point2D(Double.parseDouble(newNode_x.getText()), Double.parseDouble(newNode_y.getText())))
+                    .build();
+            map.createNode(newNode);
 
-        Node newNode = new NewNodeBuilder()
-                .setNodeType(type)
-                .setNumNodeType(map)
-                .setFloor(map.getFloor())
-                .setBuilding("New Building")    // TODO set building
-                .setShortName(newNode_shortName.getText())
-                .setLongName(newNode_shortName.getText()) // TODO get long name
-                .setPosition(new Point2D(Double.parseDouble(newNode_x.getText()), Double.parseDouble(newNode_y.getText())))
-                .build();
-        map.createNode(newNode);
+        } else {
+            if (newNode_shortName.getText().length() != 1
+                    || !Character.isLetter(newNode_shortName.getText().charAt(0))
+                    || map.getNodes(node -> node.getNodeID().contains(type + "00" + newNode_shortName.getText().charAt(0) + map.getFloor())).size() == 1) {
+                addLocationPopup.setVisible(false);
+                newNode_shortName.setText("");
+                newNodeCircle.setVisible(false);
+            }
+
+            Node newNode = new NewNodeBuilder()
+                    .setNodeType(type)
+                    .setLinkChar(newNode_shortName.getText().charAt(0))
+                    .setFloor(map.getFloor())
+                    .setBuilding("New Building") // TODO set building
+                    .setShortName(newNode_shortName.getText())
+                    .setLongName(newNode_shortName.getText())
+                    .setPosition(new Point2D(Double.parseDouble(newNode_x.getText()), Double.parseDouble(newNode_y.getText())))
+                    .build();
+            map.createNode(newNode);
+            for (Node node : map.getNodes(node -> node.getNodeID().contains(type + "00" + newNode_shortName.getText().charAt(0)))) {
+                if (node == newNode) {
+                    continue;
+                }
+                map.addEdge(node, newNode);
+            }
+        }
 
         addLocationPopup.setVisible(false);
         newNode_shortName.setText("");
         newNodeCircle.setVisible(false);
-
-        reloadMap();
     }
 
     @FXML
@@ -803,6 +1184,28 @@ public class HomeController implements SwitchableController, Observer {
         vbxLocation.setVisible(true);
     }
 
+    @FXML
+    public void onMapEditor() {
+        if (nodesShown) {
+            mapDrawController.unshowNodes();
+            mapDrawController.unshowEdges();
+            nodesShown = false;
+        } else {
+            mapDrawController.showNodes();
+            mapDrawController.showEdges();
+            nodesShown = true;
+        }
+        adminDrawer.close();
+        adminDrawer.toBack();
+    }
+
+    @FXML
+    public void onEditUsers() {
+        adminDrawer.close();
+        adminDrawer.toBack();
+        editUserPane.setVisible(true);
+    }
+
 
     private void reloadMap() {
         int index;
@@ -838,5 +1241,228 @@ public class HomeController implements SwitchableController, Observer {
             String cmd = (String) arg;
             commands.add(cmd);
         }
+    }
+
+
+    ////////////////////////////////////////////////////
+    //                                                //
+    //           Search Service Request Functions     //
+    //                                                //
+    ////////////////////////////////////////////////////
+
+
+    @FXML
+    void onFilterType() {
+        searchType = "none";
+        filter = "none";
+        try {
+            if (filterType.getSelectionModel().getSelectedItem().equals("Priority")) {
+                searchType = "Priority";
+                availableTypes.setItems(priority);
+                availableTypes.setVisible(true);
+            } else if (filterType.getSelectionModel().getSelectedItem().equals("Status")) {
+                searchType = "Status";
+                availableTypes.setItems(status);
+                availableTypes.setVisible(true);
+            } else if (filterType.getSelectionModel().getSelectedItem().equals("Type")) {
+                searchType = "Type";
+                availableTypes.setItems(type);
+                availableTypes.setVisible(true);
+            }
+        } catch (NullPointerException e) {
+            searchType = "none";
+        }
+    }
+
+    @FXML
+    void onAvailableTypes() {
+        try {
+            filter = availableTypes.getSelectionModel().getSelectedItem().toString();
+        } catch (NullPointerException e) {
+            filter = "none";
+        }
+    }
+
+    @FXML
+    void onSearch() {
+        ArrayList<ServiceRequest> requests = new ArrayList<>();
+        try {
+            if (filter.equalsIgnoreCase("none")) {
+                ResultSet all = ServiceRequestSingleton.getInstance().getRequests();
+                requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(all);
+                all.close();
+            } else {
+                switch (searchType) {
+                    case "Priority":
+                        ResultSet rp = ServiceRequestSingleton.getInstance().getRequestsOfPriority(Integer.parseInt(filter));
+                        requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(rp);
+                        rp.close();
+                        break;
+
+                    case "Status":
+                        ResultSet rs = ServiceRequestSingleton.getInstance().getRequestsOfStatus(filter);
+                        requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(rs);
+                        rs.close();
+                        break;
+
+                    case "Type":
+                        ResultSet rt = ServiceRequestSingleton.getInstance().getRequestsOfType(filter);
+                        requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(rt);
+                        rt.close();
+                        break;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            searchResultTable.getItems().clear();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        //TODO: put result of search into table
+        if (requests.size() < 1) {
+            //TODO: indicate to user that there are no results
+            return;
+        } else {
+            listRequests = FXCollections.observableArrayList(requests);
+        }
+
+        searchResultTable.setEditable(false);
+
+        idNumberCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, Integer>("id"));
+        requestTypeCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("type"));
+        firstNameCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("firstName"));
+        lastNameCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("lastName"));
+        destinationCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("location"));
+        requestPriorityCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, Integer>("priority"));
+        theStatusCol.setCellValueFactory(new PropertyValueFactory<ServiceRequest, String>("status"));
+        btnsCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
+
+        Callback<TableColumn<ServiceRequest, String>, TableCell<ServiceRequest, String>> cellFactory
+                = //
+                new Callback<TableColumn<ServiceRequest, String>, TableCell<ServiceRequest, String>>() {
+                    @Override
+                    public TableCell call(final TableColumn<ServiceRequest, String> param) {
+                        final TableCell<ServiceRequest, String> cell = new TableCell<ServiceRequest, String>() {
+
+                            JFXButton btn = new JFXButton("Select");
+
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    btn.setOnAction(event -> {
+                                        ServiceRequest s = getTableView().getItems().get(getIndex());
+                                        onSelect(s);
+                                    });
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        btnsCol.setCellFactory(cellFactory);
+
+        searchResultTable.setItems(listRequests);
+
+        ServiceRequestSingleton.getInstance().setSearch(filter, searchType);
+    }
+
+    @FXML
+    public void onSelect(ServiceRequest s) {
+        ServiceRequestSingleton.getInstance().setPopUpRequest(s);
+        serviceRequestPopUp = ServiceRequestSingleton.getInstance().getPopUpRequest();
+        typeLabel.setText("Type: " + serviceRequestPopUp.getType());
+        idLabel.setText("Service Request #" + serviceRequestPopUp.getId());
+        firstNameLabel.setText("First Name: " + serviceRequestPopUp.getFirstName());
+        lastNameLabel.setText("Last Name: " + serviceRequestPopUp.getLastName());
+        locationLabel.setText(serviceRequestPopUp.getLocation());
+        statusLabel.setText(serviceRequestPopUp.getStatus());
+        instructionsTextArea.setText(serviceRequestPopUp.getDescription());
+        statusChange = false;
+        newStatus = "no";
+        instructionsTextArea.setEditable(false);
+
+        statusBox.getItems().addAll("Incomplete", "In Progress", "Complete");
+
+        if (serviceRequestPopUp.getStatus().equals("Complete")) {
+            completedByLabel.setVisible(true);
+            usernameLabel.setVisible(true);
+            usernameLabel.setText(serviceRequestPopUp.getCompletedBy());
+        }
+        searchPane.setVisible(false);
+        editRequestPane.setVisible(true);
+    }
+
+    @FXML
+    void onClear() {
+        availableTypes.setVisible(false);
+        availableTypes.valueProperty().set(null);
+        filterType.valueProperty().set(null);
+        searchType = "none";
+        filter = "none";
+        try {
+            searchResultTable.getItems().clear();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        ServiceRequestSingleton.getInstance().setSearchNull();
+    }
+
+    @FXML
+    void onCancelSearch() {
+        searchPane.setVisible(false);
+    }
+
+
+    ////////////////////////////////////////
+    //                                    //
+    //       Edit Service Request         //
+    //                                    //
+    ////////////////////////////////////////
+
+    public void onStatusBox() {
+        try {
+            if (statusBox.getSelectionModel().getSelectedItem().equals("Incomplete")) {
+                newStatus = "Incomplete";
+                statusChange = true;
+            } else if (statusBox.getSelectionModel().getSelectedItem().equals("In Progress")) {
+                newStatus = "In Progress";
+                statusChange = true;
+            } else if (statusBox.getSelectionModel().getSelectedItem().equals("Complete")) {
+                newStatus = "Complete";
+                statusChange = true;
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onCancelEdit() {
+        editRequestPane.setVisible(false);
+        searchPane.setVisible(true);
+    }
+
+    public void onSubmitEdit() {
+        if (statusChange && newStatus.compareTo(serviceRequestPopUp.getStatus()) != 0) {
+            serviceRequestPopUp.setStatus(newStatus);
+            if (newStatus.equals("Complete")) {
+                serviceRequestPopUp.setCompletedBy(PermissionSingleton.getInstance().getCurrUser());
+                ServiceRequestSingleton.getInstance().updateCompletedBy(serviceRequestPopUp);
+            }
+            ServiceRequestSingleton.getInstance().updateStatus(serviceRequestPopUp);
+
+        }
+        editRequestPane.setVisible(false);
+        searchPane.setVisible(true);
     }
 }

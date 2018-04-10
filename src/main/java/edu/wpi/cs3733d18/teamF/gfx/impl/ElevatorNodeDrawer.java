@@ -28,7 +28,7 @@ public class ElevatorNodeDrawer extends NodeDrawable {
         double posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
 
         if(!isSelected){
-            Rectangle rectangle = new Rectangle(2.8,2.8,Color.GREEN);
+            Rectangle rectangle = new Rectangle(3,3,Color.GREEN);
             rectangle.setX((posX * pane.getMaxWidth() / imageWidth)-(rectangle.getWidth()/2.f));
             rectangle.setY((posY * pane.getMaxHeight() / imageHeight)-(rectangle.getHeight()/2.f));
             pane.getChildren().add(rectangle);
