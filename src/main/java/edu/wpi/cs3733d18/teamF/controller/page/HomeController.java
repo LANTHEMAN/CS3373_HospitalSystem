@@ -85,9 +85,9 @@ public class HomeController implements SwitchableController, Observer {
                         case "HELP": {
                             Voice voice;
                             VoiceManager voiceManager = VoiceManager.getInstance();
-                            voice = voiceManager.getVoice("kevin16");
+                            voice = voiceManager.getVoice("kevin");
                             voice.allocate();
-                            voice.speak("Fuck you");
+                            voice.speak("What can I help you with?");
                             onHelpPopup();
                         }
 
