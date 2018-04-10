@@ -2,6 +2,8 @@ package edu.wpi.cs3733d18.teamF.controller.page;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
+import com.sun.speech.freetts.Voice;
+import com.sun.speech.freetts.VoiceManager;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
@@ -17,6 +19,8 @@ import edu.wpi.cs3733d18.teamF.graph.NodeBuilder;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.animation.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -61,6 +65,50 @@ public class HomeController implements SwitchableController, Observer {
     private final ObservableList<String> all = FXCollections.observableArrayList();
     ConcurrentLinkedQueue<String> commands = new ConcurrentLinkedQueue<>();
     PaneVoiceController paneVoiceController;
+    Timeline commandExecuter = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            String command = commands.poll();
+            if (command != null) {
+                if (command.equals("HEY KIOSK")) {
+                    paneVoiceController.setVisibility(true);
+                    canSayCommand[0] = true;
+                    new Timer(true).schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            canSayCommand[0] = false;
+                        }
+                    }, 5000);
+
+                } else {
+                    if (!canSayCommand[0]) {
+                        return;
+                    }
+                    canSayCommand[0] = false;
+                    paneVoiceController.setVisibility(false);
+
+                    switch (command) {
+                        case "HELP": {
+                            Voice voice;
+                            VoiceManager voiceManager = VoiceManager.getInstance();
+                            voice = voiceManager.getVoice("kevin");
+                            voice.allocate();
+                            voice.speak("What can I help you with?");
+                            onHelpPopup();
+                        }
+
+                        break;
+                        case "ADMIN LOGIN":
+                            //onLoginPopup();
+                            //TODO
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+    }));
     private PaneMapController mapDrawController;
     private Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
     private Node selectedNodeStart = null;
@@ -76,7 +124,6 @@ public class HomeController implements SwitchableController, Observer {
     private Pane mapContainer;
     @FXML
     private VBox addLocationPopup;
-
     @FXML
     private VBox vbxMenu;
     @FXML
@@ -102,43 +149,6 @@ public class HomeController implements SwitchableController, Observer {
     private Button btnMapDimensions;
     @FXML
     private Button loginPopup;
-    Timeline commandExecuter = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            String command = commands.poll();
-            if (command != null) {
-                if (command.equals("HOSPITAL KIOSK")) {
-                    paneVoiceController.setVisibility(true);
-                    canSayCommand[0] = true;
-                    new Timer(true).schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            canSayCommand[0] = false;
-                        }
-                    }, 5000);
-
-                } else {
-                    if (!canSayCommand[0]) {
-                        return;
-                    }
-                    canSayCommand[0] = false;
-                    paneVoiceController.setVisibility(false);
-
-                    switch (command) {
-                        case "HELP":
-                            onHelpPopup();
-                            break;
-                        case "ADMIN LOGIN":
-                            //onLoginPopup();
-                            //TODO
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-        }
-    }));
     // the modify Node information panel on the left
     @FXML
     private GridPane gpaneNodeInfo;
@@ -464,7 +474,7 @@ public class HomeController implements SwitchableController, Observer {
         if (PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
             setGuestMenu();
             loginBtn.setText("Login");
-        } else if(PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
+        } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
             setStaffMenu();
             loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
         } else if (PermissionSingleton.getInstance().isAdmin()) {
@@ -577,7 +587,7 @@ public class HomeController implements SwitchableController, Observer {
 
             if (adminDrawer.isShown()) {
                 adminDrawer.close();
-            } else if (PermissionSingleton.getInstance().isAdmin()){
+            } else if (PermissionSingleton.getInstance().isAdmin()) {
                 adminDrawer.open();
             }
         });

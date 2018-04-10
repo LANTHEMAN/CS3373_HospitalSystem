@@ -21,10 +21,11 @@ public class UglyMapDrawer extends MapDrawable {
 
     private EdgeDrawable edgeDrawer = new LineEdgeDrawer();
     private NodeDrawable nodeDrawer = new CircleNodeDrawer();
+    //private PathDrawable pathDrawer = new StalePathDrawer(new LineEdgeDrawer(Color.DEEPPINK));
+    private PathDrawable pathDrawer = new DynamicPathDrawer();
     private NodeDrawable elevatorDrawer = new ElevatorNodeDrawer();
     private NodeDrawable exitDrawer = new ExitNodeDrawer();
     private NodeDrawable currNodeDrawable = nodeDrawer;
-    private PathDrawable pathDrawer = new StalePathDrawer(new LineEdgeDrawer(Color.DEEPPINK));
 
     public UglyMapDrawer(Map map) {
         super(map);

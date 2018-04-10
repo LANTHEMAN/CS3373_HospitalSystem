@@ -5,4 +5,4 @@ Switch Floor
 Request a Service
 Help
 Select Language
-Hospital Kiosk
+Hey Kiosk

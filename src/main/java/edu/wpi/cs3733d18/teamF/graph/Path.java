@@ -30,6 +30,13 @@ public class Path {
         //}
     }
 
+    public double getLength() {
+        return edges.stream()
+                .mapToDouble(Edge::getDistance)
+                .sum();
+    }
+
+
     /**
      * @return the nodes of this path
      */
@@ -52,4 +59,6 @@ public class Path {
         Path path = (Path) obj;
         return this.nodes.equals(path.nodes);
     }
+
+
 }

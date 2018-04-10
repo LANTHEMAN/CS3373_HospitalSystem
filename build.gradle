@@ -12,6 +12,7 @@ repositories {
     mavenCentral()
     jcenter()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url "http://repository.jboss.org/nexus/content/groups/public"}
 }
 
 dependencies {
@@ -34,8 +35,15 @@ dependencies {
             [group: 'de.jensd', name: 'fontawesomefx', version: '8.9'],
             [group: 'edu.cmu.sphinx', name: 'sphinx4-core', version:'5prealpha-SNAPSHOT'],
             [group: 'edu.cmu.sphinx', name: 'sphinx4-data', version:'5prealpha-SNAPSHOT'],
-            [group: 'com.google.zxing', name: 'core', version: '3.3.2']
+            [group: 'com.google.zxing', name: 'core', version: '3.3.2'],
 
+            [group: 'org.mobicents.external.freetts', name: 'freetts', version: '1.2.2'],
+            [group: 'org.mobicents.external.freetts', name: 'en_us', version: '1.2.2'],
+            [group: 'org.mobicents.external.freetts', name: 'cmu_us_kal', version: '1.2.2'],
+            [group: 'org.mobicents.external.freetts', name: 'cmu_time_awb', version: '1.2.2'],
+            [group: 'org.mobicents.external.freetts', name: 'cmulex', version: '1.2.2'],
+            [group: 'org.mobicents.external.freetts', name: 'cmutimelex', version: '1.2.2'],
+            [group: 'org.mobicents.external.freetts', name: 'cmudict04', version: '1.2.2']
     )
 }
 
