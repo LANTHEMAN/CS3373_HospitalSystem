@@ -814,7 +814,7 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     void onServiceRequest() {
         adminDrawer.close();
-        adminDrawer.setVisible(false);
+        adminDrawer.toBack();
     }
 
 

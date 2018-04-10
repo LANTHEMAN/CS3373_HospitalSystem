@@ -52,7 +52,7 @@
             <Pane prefHeight="287.0" prefWidth="300.0" style="-fx-background-color: #606060;">
                <children>
                   <JFXHamburger fx:id="hamburgerD" alignment="CENTER" fillWidth="false" layoutX="14.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
-                  <FontAwesomeIconView fx:id="cancelDirections" glyphName="TIMES" layoutX="263.0" layoutY="34.0" onMouseClicked="#onCancelDirectionsEvent" onMousePressed="#onCancelDirectionsEvent" size="30" wrappingWidth="22.14285659790039" />
+                  <FontAwesomeIconView fx:id="cancelDirections" glyphName="TIMES" layoutX="263.0" layoutY="34.0" onMouseClicked="#onCancelDirectionsEvent" size="30" wrappingWidth="22.14285659790039" />
                   <JFXTextField fx:id="sourceLocation" alignment="BOTTOM_LEFT" layoutX="54.0" layoutY="103.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Choose Starting point, or click on the map" />
                   <JFXTextField fx:id="destinationLocation" alignment="BOTTOM_LEFT" layoutX="54.0" layoutY="169.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Choose Destination" />
                   <FontAwesomeIconView glyphName="ARROW_UP" layoutX="258.0" layoutY="170.0" size="30" wrappingWidth="22.142860293388367" />
@@ -86,7 +86,7 @@
             <children>
             <Pane prefHeight="86.0" prefWidth="300.0">
                <children>
-                  <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" layoutX="251.0" layoutY="53.0" onMouseClicked="#setCancelMenuEvent" onMousePressed="#setCancelMenuEvent" size="40" wrappingWidth="22.142844200134277" />
+                  <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" layoutX="251.0" layoutY="53.0" onMouseClicked="#setCancelMenuEvent" size="40" wrappingWidth="22.142844200134277" />
                   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="24.0" prefHeight="38.0" prefWidth="112.0" text="MENU">
                      <font>
                         <Font name="System Bold" size="25.0" />
@@ -319,13 +319,13 @@
                     </font>
                 </Text>
                 <Button mnemonicParsing="false" onAction="#onHelpPopup" text="Help" translateX="-80.0" translateY="-30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-            <StackPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowSpan="2147483647" GridPane.valignment="TOP">
+            <StackPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
                <children>
-                  <JFXDrawer fx:id="directionsDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefWidth="300.0" resizeContent="true" StackPane.alignment="TOP_CENTER" />
+                  <JFXDrawer fx:id="directionsDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefHeight="720.0" prefWidth="300.0" resizeContent="true" StackPane.alignment="TOP_LEFT" />
                   <JFXDrawer fx:id="adminDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefWidth="300.0" resizeContent="true" StackPane.alignment="TOP_CENTER" />
                   <HBox fx:id="searchBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="300.0" spacing="5.0" style="-fx-background-color: WHITE;" StackPane.alignment="TOP_CENTER">
                      <children>
-                        <JFXHamburger fx:id="hamburger" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" onMousePressed="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
+                        <JFXHamburger fx:id="hamburger" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
                         <JFXTextField fx:id="sourceLocation" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="161.0" promptText="Choose Starting point, or click on the map" />
                         <FontAwesomeIconView glyphName="SEARCH" size="20" />
                         <Line startY="-50.0">
@@ -333,7 +333,7 @@
                               <Insets left="7.5" right="7.5" />
                            </HBox.margin>
                         </Line>
-                        <FontAwesomeIconView fx:id="directionsArrow" glyphName="ARROW_RIGHT" onMouseClicked="#onArrowEvent" onMousePressed="#onArrowEvent" size="25" wrappingWidth="22.14285659790039" />
+                        <FontAwesomeIconView fx:id="directionsArrow" glyphName="ARROW_RIGHT" onMouseClicked="#onArrowEvent" size="25" wrappingWidth="22.14285659790039" />
                      </children>
                   </HBox>
                </children>
