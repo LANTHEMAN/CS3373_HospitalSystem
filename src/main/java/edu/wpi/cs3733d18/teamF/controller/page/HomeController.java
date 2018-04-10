@@ -39,10 +39,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -391,43 +388,7 @@ public class HomeController implements SwitchableController, Observer {
     private GridPane userInstructions;
     @FXML
     private GridPane adminInstructions;
-    Timeline commandExecuter = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            String command = commands.poll();
-            if (command != null) {
-                if (command.equals("HOSPITAL KIOSK")) {
-                    paneVoiceController.setVisibility(true);
-                    canSayCommand[0] = true;
-                    new Timer(true).schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            canSayCommand[0] = false;
-                        }
-                    }, 5000);
 
-                } else {
-                    if (!canSayCommand[0]) {
-                        return;
-                    }
-                    canSayCommand[0] = false;
-                    paneVoiceController.setVisibility(false);
-
-                    switch (command) {
-                        case "HELP":
-                            onHelpPopup();
-                            break;
-                        case "ADMIN LOGIN":
-                            //onLoginPopup();
-                            //TODO
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-        }
-    }));
     @FXML
     private JFXTextField usernameSearch;
     @FXML
@@ -598,10 +559,6 @@ public class HomeController implements SwitchableController, Observer {
 
             } else {
                 selectedNodeStart = null;
-            }
-
-            if (!PermissionSingleton.getInstance().isAdmin()) {
-                return;
             }
 
 
@@ -984,6 +941,7 @@ public class HomeController implements SwitchableController, Observer {
             filter = lastFilter;
         }
         onSearch();
+        searchPane.setVisible(true);
         adminDrawer.close();
         adminDrawer.toBack();
     }
