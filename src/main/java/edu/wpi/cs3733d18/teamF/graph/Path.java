@@ -1,7 +1,5 @@
 package edu.wpi.cs3733d18.teamF.graph;
 
-import javafx.geometry.Point2D;
-
 import java.util.ArrayList;
 
 public class Path {
@@ -55,41 +53,55 @@ public class Path {
         return this.nodes.equals(path.nodes);
     }
 
-    public ArrayList<String> makeTextDirections(){
-        ArrayList<String> directions = new ArrayList<String>();
+    public ArrayList<String> makeTextDirections() {
+        ArrayList<String> directions = new ArrayList<>();
 
-        for(int nodeIndex = 1; nodeIndex < this.nodes.size()-1;nodeIndex++){
-            Node previousNode = this.getNodes().get(nodeIndex-1);
+        double dist = 0;
+
+        for (int nodeIndex = 1; nodeIndex < this.nodes.size() - 1; nodeIndex++) {
+
+            Node previousNode = this.getNodes().get(nodeIndex - 1);
             Node currentNode = this.getNodes().get(nodeIndex);
             Node nextNode = this.getNodes().get(nodeIndex + 1);
-            double angle = getAngle(null, currentNode,nextNode);
-            if(angle < 90 && angle > 20){
-                directions.add("Turn right at node " + nodeIndex);
-            } else if (angle < 340 && angle > 270) {
-                directions.add("Turn left at node " + nodeIndex);
+
+            double angle = getAngle(previousNode, currentNode, nextNode);
+
+            dist += previousNode.displacementTo(currentNode);
+
+            if (angle < -30) {
+                directions.add(String.format("Walk straight for %.0f feet", dist));
+                if(currentNode.getNodeType().equals("HALL"))
+                    directions.add("Turn Left");
+                else
+                    directions.add("Turn Left at " + currentNode.getShortName());
+                dist = 0;
+            } else if (angle > 30) {
+                directions.add(String.format("Walk straight for %.0f feet", dist));
+                if(currentNode.getNodeType().equals("HALL"))
+                    directions.add("Turn Right");
+                else
+                    directions.add("Turn Right at " + currentNode.getShortName());
+                dist = 0;
             }
         }
+
+        directions.add(String.format("Walk straight for %.0f feet", nodes.get(nodes.size()-2).displacementTo(nodes.get(nodes.size()-1)) + dist));
+        directions.add("Arrive at " + nodes.get(nodes.size()-1).getShortName());
+
         return directions;
     }
 
-    public double getAngle(Node previousNode, Node currentNode, Node nextNode){
-        //Case for the first node
-        if(previousNode == null){
-            Node n = new NewNodeBuilder().build();
-            //Make a node with a position creating a right triangle, to find the angle between the points.
-            n.setPosition(new Point2D(currentNode.getPosition().getX(),nextNode.getPosition().getY()));
-            previousNode = n;
-        }
-        double previousToCurrent = previousNode.displacementTo(currentNode);
-        double currentToNext = currentNode.displacementTo(nextNode);
-        double previousToNext = previousNode.displacementTo(nextNode);
-        //Law of cosines: csquared = asquared + bsquared - 2ab Cos(C) rearranged to solve for Cos(C)
-        double cosine = (Math.pow(previousToNext,2) - Math.pow(previousToCurrent,2) - Math.pow(currentToNext,2)) / (-1 * (2 * previousToCurrent * currentToNext));
+    public double getAngle(Node previousNode, Node currentNode, Node nextNode) {
 
-        return Math.toDegrees(Math.acos(cosine));
+        double v1X = currentNode.getPosition().getX() - previousNode.getPosition().getX();
+        double v1Y = currentNode.getPosition().getY() - previousNode.getPosition().getY();
 
+        double v2X = nextNode.getPosition().getX() - currentNode.getPosition().getX();
+        double v2Y = nextNode.getPosition().getY() - currentNode.getPosition().getY();
 
+        double dot = v1X * v2X + v1Y * v2Y;
+        double det = v1X * v2Y - v1Y * v2X;
 
-
+        return Math.toDegrees(Math.atan2(det, dot));
     }
 }
