@@ -1,5 +1,8 @@
 package edu.wpi.cs3733d18.teamF.controller.page;
 
+import com.github.fedy2.weather.YahooWeatherService;
+import com.github.fedy2.weather.data.Channel;
+import com.github.fedy2.weather.data.unit.DegreeUnit;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import com.sun.speech.freetts.Voice;
@@ -47,6 +50,8 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -246,6 +251,35 @@ public class HomeController implements SwitchableController, Observer {
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Nuclear"))));
                             voice.speak("Here is the route to Nuclear Medicine");
                         }
+                    }else if(command.contains("STAIRS") && command.contains("DISABLE")) {
+                        map.disableStairs();
+                        voice.speak("Stairs are now disabled for path finding");
+                    }else if(command.contains("STAIRS") && command.contains("ENABLE")) {
+                        map.enableStairs();
+                        voice.speak("Stairs are now enabled for path finding");
+                    }else if(command.contains("ELEVATOR") && command.contains("DISABLE")) {
+                        map.disableElevators();
+                        voice.speak("Elevators are now disabled for path finding");
+                    }else if(command.contains("ELEVATOR") && command.contains("ENABLE")) {
+                        map.enableElevators();
+                        voice.speak("Elevators are now enabled for path finding");
+                    }else if(command.contains("WEATHER") && command.contains("TODAY")){
+                        YahooWeatherService service = null;
+                        try {
+                            service = new YahooWeatherService();
+                        } catch (JAXBException e) {
+                            e.printStackTrace();
+                        }
+                        Channel channel = null;
+                        try {
+                            channel = service.getForecast("2523945", DegreeUnit.FAHRENHEIT);
+                        } catch (JAXBException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        voice.speak(String.format("The temperature is %d degrees fahrenheit", channel.getItem().getCondition().getTemp()));
+                        voice.speak(channel.getAtmosphere().toString());
                     }
                 }
             }

@@ -29,6 +29,9 @@ public class Map extends Observable implements DatabaseItem, Observer {
     // TODO change to enumeration
     private boolean is2D = true;
 
+    private boolean stairsDisabled = false;
+    private boolean elevatorsDisabled = false;
+
     public Map() {
         graph = new Graph();
         dbHandler = DatabaseSingleton.getInstance().getDbHandler();
@@ -246,41 +249,57 @@ public class Map extends Observable implements DatabaseItem, Observer {
     }
 
     public void disableStairs(){
-        HashSet<Node> Nodes = graph.getNodes();
 
-        for(Node n : Nodes){
-            if(n.getNodeType().equals("STAI")){
-                n.setAdditionalWeight(n.getAdditionalWeight() + 1000000);
+        if(!stairsDisabled) {
+            HashSet<Node> Nodes = graph.getNodes();
+            stairsDisabled = true;
+
+            for (Node n : Nodes) {
+                if (n.getNodeType().equals("STAI")) {
+                    n.setAdditionalWeight(n.getAdditionalWeight() + 1000000);
+                }
             }
         }
     }
 
     public void enableStairs(){
-        HashSet<Node> Nodes = graph.getNodes();
 
-        for(Node n : Nodes){
-            if(n.getNodeType().equals("STAI")){
-                n.setAdditionalWeight(n.getAdditionalWeight() - 1000000);
+        if(stairsDisabled) {
+            HashSet<Node> Nodes = graph.getNodes();
+            stairsDisabled = false;
+
+            for (Node n : Nodes) {
+                if (n.getNodeType().equals("STAI")) {
+                    n.setAdditionalWeight(n.getAdditionalWeight() - 1000000);
+                }
             }
         }
     }
 
     public void disableElevators(){
-        HashSet<Node> Nodes = graph.getNodes();
 
-        for(Node n : Nodes){
-            if(n.getNodeType().equals("ELEV")){
-                n.setAdditionalWeight(n.getAdditionalWeight() + 1000000);
+        if(!elevatorsDisabled) {
+            HashSet<Node> Nodes = graph.getNodes();
+            elevatorsDisabled = true;
+
+            for (Node n : Nodes) {
+                if (n.getNodeType().equals("ELEV")) {
+                    n.setAdditionalWeight(n.getAdditionalWeight() + 1000000);
+                }
             }
         }
     }
 
     public void enableElevators(){
-        HashSet<Node> Nodes = graph.getNodes();
 
-        for(Node n : Nodes){
-            if(n.getNodeType().equals("ELEV")){
-                n.setAdditionalWeight(n.getAdditionalWeight() - 1000000);
+        if(elevatorsDisabled) {
+            HashSet<Node> Nodes = graph.getNodes();
+            elevatorsDisabled = false;
+
+            for (Node n : Nodes) {
+                if (n.getNodeType().equals("ELEV")) {
+                    n.setAdditionalWeight(n.getAdditionalWeight() - 1000000);
+                }
             }
         }
     }

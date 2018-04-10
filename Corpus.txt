@@ -20,3 +20,7 @@ Plastic Surgery
 Radiology
 Nuclear Medicine
 Hello
+Stairs
+Enable
+Disable
+Weather Today
