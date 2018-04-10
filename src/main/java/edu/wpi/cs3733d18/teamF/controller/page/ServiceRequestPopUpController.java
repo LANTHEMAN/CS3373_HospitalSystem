@@ -13,7 +13,7 @@ import javafx.scene.control.TextArea;
 
 public class ServiceRequestPopUpController implements SwitchableController {
     private PaneSwitcher switcher;
-    ServiceRequest s;
+    ServiceRequest serviceRequestPopUp;
     boolean statusChange;
     String newStatus;
 
@@ -41,24 +41,24 @@ public class ServiceRequestPopUpController implements SwitchableController {
 
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
-        s = ServiceRequestSingleton.getInstance().getPopUpRequest();
-        typeLabel.setText("Type: "+s.getType());
-        idLabel.setText("Service Request #"+s.getId());
-        firstNameLabel.setText("First Name: "+s.getFirstName());
-        lastNameLabel.setText("Last Name: "+s.getLastName());
-        locationLabel.setText(s.getLocation());
-        statusLabel.setText(s.getStatus());
-        instructionsTextArea.setText(s.getDescription());
+        serviceRequestPopUp = ServiceRequestSingleton.getInstance().getPopUpRequest();
+        typeLabel.setText("Type: "+serviceRequestPopUp.getType());
+        idLabel.setText("Service Request #"+serviceRequestPopUp.getId());
+        firstNameLabel.setText("First Name: "+serviceRequestPopUp.getFirstName());
+        lastNameLabel.setText("Last Name: "+serviceRequestPopUp.getLastName());
+        locationLabel.setText(serviceRequestPopUp.getLocation());
+        statusLabel.setText(serviceRequestPopUp.getStatus());
+        instructionsTextArea.setText(serviceRequestPopUp.getDescription());
         statusChange = false;
         newStatus = "no";
         instructionsTextArea.setEditable(false);
 
         statusBox.getItems().addAll("Incomplete", "In Progress", "Complete");
 
-        if(s.getStatus().equals("Complete")){
+        if(serviceRequestPopUp.getStatus().equals("Complete")){
             completedByLabel.setVisible(true);
             usernameLabel.setVisible(true);
-            usernameLabel.setText(s.getCompletedBy());
+            usernameLabel.setText(serviceRequestPopUp.getCompletedBy());
         }
     }
 
@@ -79,18 +79,18 @@ public class ServiceRequestPopUpController implements SwitchableController {
         }
     }
 
-    public void onCancel(){
+    public void onCancelEdit(){
         switcher.closePopup(Screens.SearchServiceRequests);
     }
 
-    public void onSubmit(){
-        if(statusChange && newStatus.compareTo(s.getStatus()) != 0){
-            s.setStatus(newStatus);
+    public void onSubmitEdit(){
+        if(statusChange && newStatus.compareTo(serviceRequestPopUp.getStatus()) != 0){
+            serviceRequestPopUp.setStatus(newStatus);
             if(newStatus.equals("Complete")){
-                s.setCompletedBy(PermissionSingleton.getInstance().getCurrUser());
-                ServiceRequestSingleton.getInstance().updateCompletedBy(s);
+                serviceRequestPopUp.setCompletedBy(PermissionSingleton.getInstance().getCurrUser());
+                ServiceRequestSingleton.getInstance().updateCompletedBy(serviceRequestPopUp);
             }
-            ServiceRequestSingleton.getInstance().updateStatus(s);
+            ServiceRequestSingleton.getInstance().updateStatus(serviceRequestPopUp);
 
         }
         switcher.closePopup(Screens.SearchServiceRequests);

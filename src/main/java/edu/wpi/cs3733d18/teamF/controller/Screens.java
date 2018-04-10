@@ -5,8 +5,8 @@ import edu.wpi.cs3733d18.teamF.controller.page.*;
 public class Screens {
 
     public static final Screen Home = new Screen("home.fxml", HomeController.class);
-    public static final Screen Login = new Screen("login.fxml", LoginController.class);
-    public static final Screen Help = new Screen("help.fxml", HelpController.class);
+    //public static final Screen Login = new Screen("login.fxml", LoginController.class);
+    //public static final Screen Help = new Screen("help.fxml", HelpController.class);
     public static final Screen ServiceRequest = new Screen("serviceRequest.fxml", ServiceRequestController.class);
     public static final Screen ReligiousServices = new Screen("religiousServices.fxml", ReligiousServicesController.class);
     public static final Screen LanguageInterpreter = new Screen("languageInterpreter.fxml", LanguageInterpreterController.class);

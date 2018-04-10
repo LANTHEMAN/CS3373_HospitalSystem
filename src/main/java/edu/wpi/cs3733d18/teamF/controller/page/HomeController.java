@@ -264,6 +264,60 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     public TableColumn<ServiceRequest, String> theStatusCol;
 
+
+    ////////////////////////////////////////
+    //                                    //
+    //           Help Screen              //
+    //                                    //
+    ////////////////////////////////////////
+    @FXML
+    private Pane helpPane;
+    @FXML
+    private GridPane userInstructions;
+    @FXML
+    private GridPane adminInstructions;
+
+    ////////////////////////////////////////
+    //                                    //
+    //       Edit Service Request         //
+    //                                    //
+    ////////////////////////////////////////
+
+    ServiceRequest serviceRequestPopUp;
+    boolean statusChange;
+    String newStatus;
+
+
+    @FXML
+    public Label typeLabel;
+    @FXML
+    public Label idLabel;
+    @FXML
+    public Label firstNameLabel;
+    @FXML
+    public Label lastNameLabel;
+    @FXML
+    public Label locationLabel;
+    @FXML
+    public Label statusLabel;
+    @FXML
+    public TextArea instructionsTextArea;
+    @FXML
+    public ComboBox statusBox;
+    @FXML
+    public Label completedByLabel;
+    @FXML
+    public Label usernameLabel;
+    @FXML
+    private JFXTextField usernameSearch;
+    @FXML
+    private JFXListView usernameList;
+    @FXML
+    private AnchorPane editRequestPane;
+
+
+
+
     private final ObservableList<String> priority = FXCollections.observableArrayList(
             "0",
             "1",
@@ -678,6 +732,42 @@ public class HomeController implements SwitchableController, Observer {
             }
         });
 
+        usernameSearch.setOnKeyTyped((KeyEvent e) -> {
+            String input = usernameSearch.getText();
+            input = input.concat("" + e.getCharacter());
+
+            if (input.length() > 0) {
+                String sql = "SELECT username FROM HUser";
+                ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
+                ArrayList<String> autoCompleteStrings = new ArrayList<>();
+
+                try {
+                    while (resultSet.next()) {
+                        String username = resultSet.getString(1);
+                        if (username.toLowerCase().contains(input.toLowerCase())) {
+                            autoCompleteStrings.add(username);
+                        }
+                    }
+                } catch (SQLException sqlException) {
+                    sqlException.printStackTrace();
+                }
+                try {
+                    if (autoCompleteStrings.size() > 0) {
+                        ObservableList<String> list =FXCollections.observableArrayList (autoCompleteStrings);
+                        usernameList.setItems(list);
+                        usernameList.setVisible(true);
+                    } else {
+                        usernameList.setVisible(false);
+                    }
+                } catch (Exception anyE) {
+                    anyE.printStackTrace();
+                }
+            } else {
+                //sourceList.setVisible(false);
+                usernameList.setVisible(false);
+            }
+        });
+
     }
 
 
@@ -754,7 +844,19 @@ public class HomeController implements SwitchableController, Observer {
 
     @FXML
     void onHelpPopup() {
-        switcher.popup(Screens.Help);
+        if (PermissionSingleton.getInstance().isAdmin()) {
+            userInstructions.setVisible(false);
+            adminInstructions.setVisible(true);
+        } else {
+            adminInstructions.setVisible(false);
+            userInstructions.setVisible(true);
+        }
+        helpPane.setVisible(true);
+    }
+
+    @FXML
+    void onCancelClose() {
+        helpPane.setVisible(false);
     }
 
 
@@ -1130,7 +1232,27 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     public void onSelect(ServiceRequest s){
         ServiceRequestSingleton.getInstance().setPopUpRequest(s);
-        switcher.popup(Screens.ServiceRequestPopUp);
+        serviceRequestPopUp = ServiceRequestSingleton.getInstance().getPopUpRequest();
+        typeLabel.setText("Type: "+serviceRequestPopUp.getType());
+        idLabel.setText("Service Request #"+serviceRequestPopUp.getId());
+        firstNameLabel.setText("First Name: "+serviceRequestPopUp.getFirstName());
+        lastNameLabel.setText("Last Name: "+serviceRequestPopUp.getLastName());
+        locationLabel.setText(serviceRequestPopUp.getLocation());
+        statusLabel.setText(serviceRequestPopUp.getStatus());
+        instructionsTextArea.setText(serviceRequestPopUp.getDescription());
+        statusChange = false;
+        newStatus = "no";
+        instructionsTextArea.setEditable(false);
+
+        statusBox.getItems().addAll("Incomplete", "In Progress", "Complete");
+
+        if(serviceRequestPopUp.getStatus().equals("Complete")){
+            completedByLabel.setVisible(true);
+            usernameLabel.setVisible(true);
+            usernameLabel.setText(serviceRequestPopUp.getCompletedBy());
+        }
+        searchPane.setVisible(false);
+        editRequestPane.setVisible(true);
     }
 
     @FXML
@@ -1149,8 +1271,50 @@ public class HomeController implements SwitchableController, Observer {
     }
 
     @FXML
-    void onCancel() {
-        ServiceRequestSingleton.getInstance().setSearchNull();
-        switcher.switchTo(Screens.ServiceRequest);
+    void onCancelSearch() {
+        searchPane.setVisible(false);
+    }
+
+
+    ////////////////////////////////////////
+    //                                    //
+    //       Edit Service Request         //
+    //                                    //
+    ////////////////////////////////////////
+
+    public void onStatusBox(){
+        try {
+            if (statusBox.getSelectionModel().getSelectedItem().equals("Incomplete")) {
+                newStatus = "Incomplete";
+                statusChange = true;
+            } else if (statusBox.getSelectionModel().getSelectedItem().equals("In Progress")) {
+                newStatus = "In Progress";
+                statusChange = true;
+            } else if (statusBox.getSelectionModel().getSelectedItem().equals("Complete")) {
+                newStatus = "Complete";
+                statusChange = true;
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onCancelEdit(){
+        editRequestPane.setVisible(false);
+        searchPane.setVisible(true);
+    }
+
+    public void onSubmitEdit(){
+        if(statusChange && newStatus.compareTo(serviceRequestPopUp.getStatus()) != 0){
+            serviceRequestPopUp.setStatus(newStatus);
+            if(newStatus.equals("Complete")){
+                serviceRequestPopUp.setCompletedBy(PermissionSingleton.getInstance().getCurrUser());
+                ServiceRequestSingleton.getInstance().updateCompletedBy(serviceRequestPopUp);
+            }
+            ServiceRequestSingleton.getInstance().updateStatus(serviceRequestPopUp);
+
+        }
+        editRequestPane.setVisible(false);
+        searchPane.setVisible(true);
     }
 }
