@@ -385,7 +385,7 @@ public class HomeController implements SwitchableController, Observer {
             }
         }
     }));
-
+    
     @FXML
     private JFXTextField usernameSearch;
     @FXML
