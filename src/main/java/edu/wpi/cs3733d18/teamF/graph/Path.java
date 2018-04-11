@@ -76,6 +76,14 @@ public class Path {
 
             dist += previousNode.displacementTo(currentNode);
 
+            if(currentNode.getNodeType().equals("ELEV") && nextNode.getNodeType().equals("ELEV")){
+                directions.add("Take Elevator to floor: " + nextNode.getFloor());
+                continue;
+            }else if(currentNode.getNodeType().equals("STAI") && nextNode.getNodeType().equals("ELEV")){
+                directions.add("Take Stairs to floor: " + nextNode.getFloor());
+                continue;
+            }
+
             if (angle < -30) {
                 directions.add(String.format("Walk straight for %.0f feet", dist));
                 if(currentNode.getNodeType().equals("HALL"))
