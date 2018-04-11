@@ -2,7 +2,6 @@ package edu.wpi.cs3733d18.teamF.gfx.impl;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.PathDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Edge;
@@ -17,7 +16,6 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 
 import static java.lang.Math.ceil;
-import static java.lang.Math.nextAfter;
 
 public class DynamicPathDrawer extends PathDrawable {
 
@@ -79,8 +77,8 @@ public class DynamicPathDrawer extends PathDrawable {
                     arrow.prevY = null;
                     continue;
                 }
-
-                if(!MapSingleton.getInstance().getMap().getFloor().equals(pathPos.getKey().getKey().getFloor())){
+                if (!MapSingleton.getInstance().getMap().getFloor().equals(pathPos.getKey().getValue().getFloor())
+                        || !MapSingleton.getInstance().getMap().getFloor().equals(pathPos.getKey().getKey().getFloor())) {
                     arrow.view.setVisible(false);
                     arrow.prevX = null;
                     arrow.prevY = null;
