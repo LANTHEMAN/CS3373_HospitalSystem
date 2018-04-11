@@ -412,7 +412,7 @@ public class HomeController implements SwitchableController, Observer {
             }
         }
     }));
-    
+
     @FXML
     private JFXTextField usernameSearch;
     @FXML
@@ -541,7 +541,7 @@ public class HomeController implements SwitchableController, Observer {
             Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
-            if (!PermissionSingleton.getInstance().isAdmin()) {
+            if (!nodesShown) {
                 Node src = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
                 if(mapPos.distance(src.getPosition()) < 100) {
                     Path path = map.getPath(map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true), src);
@@ -1205,6 +1205,7 @@ public class HomeController implements SwitchableController, Observer {
         } else {
             mapDrawController.showNodes();
             mapDrawController.showEdges();
+            mapDrawController.unshowPath();
             nodesShown = true;
         }
         adminDrawer.close();
