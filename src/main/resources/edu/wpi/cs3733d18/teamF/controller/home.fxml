@@ -530,9 +530,9 @@
                 </GridPane>
             </children>
         </Pane>
-        <AnchorPane fx:id="searchPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="900.0" style="-fx-background-color: WHITE;" visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
+        <AnchorPane fx:id="searchPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="983.0" style="-fx-background-color: WHITE;" visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
             <children>
-                <HBox alignment="CENTER" prefHeight="900.0" prefWidth="1563.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <HBox alignment="CENTER" prefHeight="900.0" prefWidth="953.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
                         <VBox alignment="CENTER" prefHeight="900.0" prefWidth="333.0" spacing="40.0">
                             <children>
@@ -553,7 +553,7 @@
                                 <JFXButton buttonType="RAISED" onAction="#onCancelSearch" prefHeight="60.0" prefWidth="119.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Cancel" textFill="WHITE" />
                             </children>
                         </VBox>
-                        <TableView fx:id="searchResultTable" prefHeight="900.0" prefWidth="701.0">
+                        <TableView fx:id="searchResultTable" prefHeight="540.0" prefWidth="755.0">
                             <columns>
                                 <TableColumn fx:id="btnsCol" editable="false" minWidth="0.0" prefWidth="64.0" resizable="false" text="Choose" />
                                 <TableColumn fx:id="idNumberCol" editable="false" minWidth="0.0" prefWidth="38.0" resizable="false" text="ID" />

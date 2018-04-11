@@ -937,6 +937,8 @@ public class HomeController implements SwitchableController, Observer {
             displayInUserTable(list);
         });
 
+        serviceRequestList.addAnimatedNode(newServiceRequest);
+
     }
 
     // will filter the given ListView for the given input String
@@ -1023,9 +1025,8 @@ public class HomeController implements SwitchableController, Observer {
         onCancelDirectionsEvent();
         setCancelMenuEvent();
         serviceRequestList.animateList(false);
-        serviceRequestList.getChildren().clear();
-        hamburger.setVisible(false);
-        hamburgerD.setVisible(false);
+        serviceRequestList.animateList(false);
+        setGuestMenu();
         mapDrawController.unshowNodes();
         mapDrawController.unshowEdges();
         loginBtn.setText("Login");
@@ -1073,6 +1074,8 @@ public class HomeController implements SwitchableController, Observer {
     private void setGuestMenu() {
         hamburger.setVisible(false);
         hamburgerD.setVisible(false);
+        //serviceRequestList.getChildren().clear();
+        serviceRequestList.setRotate(0);
     }
 
     private void setAdminMenu() {
@@ -1080,8 +1083,17 @@ public class HomeController implements SwitchableController, Observer {
         hamburgerD.setVisible(true);
         mapEditorBtn.setVisible(true);
         editUsersBtn.setVisible(true);
-        serviceRequestList.getChildren().clear();
-        serviceRequestList.addAnimatedNode(newServiceRequest);
+        //serviceRequestList.getChildren().clear();
+        //serviceRequestList.addAnimatedNode(newServiceRequest);
+        if(serviceRequestList.getChildren().contains(LI)){
+            serviceRequestList.getChildren().remove(LI);
+        }
+        if(serviceRequestList.getChildren().contains(RS)){
+            serviceRequestList.getChildren().remove(RS);
+        }
+        if(serviceRequestList.getChildren().contains(SR)){
+            serviceRequestList.getChildren().remove(SR);
+        }
         serviceRequestList.addAnimatedNode(LI);
         serviceRequestList.addAnimatedNode(RS);
         serviceRequestList.addAnimatedNode(SR);
@@ -1093,8 +1105,16 @@ public class HomeController implements SwitchableController, Observer {
         hamburgerD.setVisible(true);
         mapEditorBtn.setVisible(false);
         editUsersBtn.setVisible(false);
-        serviceRequestList.getChildren().clear();
-        serviceRequestList.addAnimatedNode(newServiceRequest);
+        //serviceRequestList.getChildren().clear();
+        if(serviceRequestList.getChildren().contains(LI)){
+            serviceRequestList.getChildren().remove(LI);
+        }
+        if(serviceRequestList.getChildren().contains(RS)){
+            serviceRequestList.getChildren().remove(RS);
+        }
+        if(serviceRequestList.getChildren().contains(SR)){
+            serviceRequestList.getChildren().remove(SR);
+        }
         if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "LanguageInterpreter")){
             serviceRequestList.addAnimatedNode(LI);
         }
