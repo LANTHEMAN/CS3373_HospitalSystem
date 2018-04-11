@@ -32,7 +32,8 @@ public class Path {
 
     public double getLength() {
         return edges.stream()
-                .mapToDouble(Edge::getDistance)
+                .map(node -> node.getDistance() + node.getNode1().getAdditionalWeight() + node.getNode2().getAdditionalWeight())
+                .mapToDouble(value -> value)
                 .sum();
     }
 
@@ -75,6 +76,14 @@ public class Path {
 
             dist += previousNode.displacementTo(currentNode);
 
+            if(currentNode.getNodeType().equals("ELEV") && nextNode.getNodeType().equals("ELEV")){
+                directions.add("Take Elevator to floor: " + nextNode.getFloor());
+                continue;
+            }else if(currentNode.getNodeType().equals("STAI") && nextNode.getNodeType().equals("ELEV")){
+                directions.add("Take Stairs to floor: " + nextNode.getFloor());
+                continue;
+            }
+
             if (angle < -30) {
                 directions.add(String.format("Walk straight for %.0f feet", dist));
                 if(currentNode.getNodeType().equals("HALL"))
@@ -110,5 +119,12 @@ public class Path {
         double det = v1X * v2Y - v1Y * v2X;
 
         return Math.toDegrees(Math.atan2(det, dot));
+    }
+
+    public double getUnweightedLength(){
+        return edges.stream()
+                .map(Edge::getDistance)
+                .mapToDouble(value -> value)
+                .sum();
     }
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
-public class DepthSearch {
+public class DepthSearch implements PathFindingAlgorithm{
     /**
      * Static function to determine the best route from one node to another
      * given a graph
@@ -14,7 +14,7 @@ public class DepthSearch {
      * @param destination The destination node in the graph
      * @return An array of Nodes that represent a path through the graph
      */
-    public static Path getPathDepth(Graph graph, Node source, Node destination) {
+    public Path getPath(Graph graph, Node source, Node destination) {
         // see if the destination exists or if src equals dst
         if (destination == null || source == null) {
             throw new AssertionError();

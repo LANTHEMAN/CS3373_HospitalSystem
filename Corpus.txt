@@ -24,3 +24,5 @@ Stairs
 Enable
 Disable
 Weather Today
+Where
+Rap

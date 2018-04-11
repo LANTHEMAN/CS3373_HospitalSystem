@@ -102,8 +102,8 @@ public class DepthSearchTest {
         path2.add(nodeR);
         path2.add(nodeF);
 
-
-        Path actualPath = DepthSearch.getPathDepth(graph, nodeS, nodeF);
+        PathFindingAlgorithm D = new BreathSearch();
+        Path actualPath = D.getPath(graph, nodeS, nodeF);
         boolean pathChecker;
         if(actualPath.equals(new Path(path1,graph))|| actualPath.equals(new Path(path2,graph))){
              pathChecker = true;
@@ -167,11 +167,11 @@ public class DepthSearchTest {
         path2Arr.add(nodeC);
         path2Arr.add(nodeD);
         Path path2 = new Path(path2Arr, graph);
-
-        assertEquals(path1, DepthSearch.getPathDepth(graph, nodeA, nodeC));
+        PathFindingAlgorithm D = new BreathSearch();
+        assertEquals(path1, D.getPath(graph, nodeA, nodeC));
 
         graph.removeEdge(nodeA, nodeB);
-        assertEquals(path2, DepthSearch.getPathDepth(graph, nodeA, nodeD));
+        assertEquals(path2, D.getPath(graph, nodeA, nodeD));
 
     }
 }

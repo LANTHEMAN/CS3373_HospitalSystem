@@ -17,7 +17,7 @@ public class Node extends Observable {
     // position of the node on the wireframe map
     private Point2D wireframePosition;
     // extra weight to cause A* to more likely avoid this node
-    private double additionalWeight = 0;
+    private double additionalWeight;
     // the name of the building this node is located in
     private String building;
     // an abbreviation of the name of this node

@@ -18,6 +18,7 @@ import edu.wpi.cs3733d18.teamF.gfx.impl.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.NewNodeBuilder;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.NodeBuilder;
+import edu.wpi.cs3733d18.teamF.graph.Path;
 import edu.wpi.cs3733d18.teamF.sr.ServiceRequest;
 import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
@@ -301,7 +302,7 @@ public class HomeController implements SwitchableController, Observer {
         public void handle(ActionEvent event) {
             String command = commands.poll();
             if (command != null) {
-                if (command.equals("HEY KIOSK") || command.equals("HELLO KIOSK")) {
+                if (command.contains("HEY KIOSK") || command.contains("HELLO KIOSK")) {
                     paneVoiceController.setVisibility(true);
                     canSayCommand[0] = true;
                     new Timer(true).schedule(new TimerTask() {
@@ -320,11 +321,10 @@ public class HomeController implements SwitchableController, Observer {
                     if (command.equals("HELP")) {
                         onHelpPopup();
                         voice.speak("Here is the help menu");
-                    } else if (command.contains("DIRECTIONS")) {
+                    } else if (command.contains("DIRECTIONS") || command.contains("WHERE")) {
                         if (command.contains("BATHROOM")) {
-                            mapDrawController.showPath(map.getPath
-                                    (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
-                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("REST"))));
+                            Node src = map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
+                            mapDrawController.showPath(map.getPath(src, map.findNodeClosestTo(src, node -> node.getNodeType().equals("REST"))));
                             voice.speak("Here is the route to the nearest bathroom");
                         } else if (command.contains("EXIT")) {
                             mapDrawController.showPath(map.getPath
@@ -342,15 +342,20 @@ public class HomeController implements SwitchableController, Observer {
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Orthopedics"))));
                             voice.speak("Here is the route to Orthopedics and Rhemutology");
                         } else if (command.contains("PARKING") && command.contains("GARAGE")) {
-                            mapDrawController.showPath(map.getPath
+                            Path path = map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Parking") &&
-                                                    node.getLongName().contains("Garage"))));
+                                                    node.getLongName().contains("Garage")));
+                            mapDrawController.showPath(path);
+                            for(Node n : path.getNodes()){
+                                System.out.println("n.getPosition() = " + n.getPosition());
+                            }
                             voice.speak("Here is the route to the parking garage");
                         } else if (command.contains("ELEVATOR")) {
-                            mapDrawController.showPath(map.getPath
+                            Path path = map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
-                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("ELEV"))));
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("ELEV")));
+                            mapDrawController.showPath(path);
                             voice.speak("Here is the route to the nearest elevator");
                         } else if (command.contains("DENTIST") || command.contains("DENTISTRY") || command.contains("ORAL")) {
                             mapDrawController.showPath(map.getPath
@@ -385,7 +390,7 @@ public class HomeController implements SwitchableController, Observer {
                     } else if (command.contains("ELEVATOR") && command.contains("ENABLE")) {
                         map.enableElevators();
                         voice.speak("Elevators are now enabled for path finding");
-                    } else if (command.contains("WEATHER") && command.contains("TODAY")) {
+                    } else if (command.contains("WEATHER")) {
                         YahooWeatherService service = null;
                         try {
                             service = new YahooWeatherService();
@@ -395,18 +400,20 @@ public class HomeController implements SwitchableController, Observer {
                         Channel channel = null;
                         try {
                             channel = service.getForecast("2523945", DegreeUnit.FAHRENHEIT);
-                        } catch (JAXBException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
+                        } catch (JAXBException | IOException e) {
                             e.printStackTrace();
                         }
                         voice.speak(String.format("The temperature is %d degrees fahrenheit", channel.getItem().getCondition().getTemp()));
                         voice.speak(channel.getAtmosphere().toString());
+                    } else if (command.contains("RAP")) {
+                        voice.speak("Boots and Cats and Boots and Cats and Boots and Cats and Boots and Cats and Boots" +
+                                "and Cats and Boots and Cats and Boots and Cats and Boots and Cats and Boots and Cats and Boots");
                     }
                 }
             }
         }
     }));
+
     @FXML
     private JFXTextField usernameSearch;
     @FXML
@@ -528,10 +535,14 @@ public class HomeController implements SwitchableController, Observer {
             Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
-            if (!PermissionSingleton.getInstance().isAdmin()) {
-                mapDrawController.showPath(map.getPath
-                        (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
-                                , map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), true)));
+            if (!nodesShown) {
+                Node src = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
+                if (mapPos.distance(src.getPosition()) < 100) {
+                    Path path = map.getPath(map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true), src);
+                    mapDrawController.showPath(path);
+                } else {
+                    return;
+                }
             }
 
             // if editing maps
@@ -552,12 +563,12 @@ public class HomeController implements SwitchableController, Observer {
 
 
             if (nodes.size() > 0) {
-                Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D());
+                Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node1 -> node1.getFloor().equals(map.getFloor()));
                 mapDrawController.selectNode(node);
                 selectedNodeStart = node;
 
                 if (PermissionSingleton.getInstance().isAdmin()) {
-                    gpaneNodeInfo.setVisible(true);
+                    mapContainer.getChildren().add(gpaneNodeInfo);
                 }
 
                 modNode_x.setText(String.valueOf(node.getPosition().getX()));
@@ -1288,6 +1299,7 @@ public class HomeController implements SwitchableController, Observer {
         } else {
             mapDrawController.showNodes();
             mapDrawController.showEdges();
+            mapDrawController.unshowPath();
             nodesShown = true;
         }
         adminDrawer.close();
