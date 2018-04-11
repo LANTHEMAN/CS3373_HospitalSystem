@@ -92,6 +92,7 @@
                <children>
                   <JFXListView fx:id="searchList" prefHeight="189.0" prefWidth="300.0" visible="false" />
                   <JFXTextArea editable="false" layoutY="182.0" prefHeight="293.0" prefWidth="300.0" />
+                  <JFXListView fx:id="directionsList" onMouseClicked="#setDirectionLocation" prefHeight="189.0" prefWidth="300.0" visible="false" />
                </children>
             </Pane>
          </children>

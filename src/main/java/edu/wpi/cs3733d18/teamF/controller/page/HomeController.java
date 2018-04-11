@@ -268,6 +268,9 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private JFXListView searchList;
     @FXML
+    private JFXListView directionsList;
+    private boolean sourceLocationActive = false;
+    @FXML
     private VBox directionsBox;
     @FXML
     private FontAwesomeIconView directionsArrow;
@@ -736,9 +739,23 @@ public class HomeController implements SwitchableController, Observer {
 
 
         searchLocation.setOnKeyTyped((KeyEvent e) -> {
-            String input = sourceLocation.getText();
+            String input = searchLocation.getText();
             input = input.concat("" + e.getCharacter());
             autoComplete(input, searchList, "Node", "longName");
+        });
+
+        sourceLocation.setOnKeyTyped((KeyEvent e) -> {
+            String input = sourceLocation.getText();
+            input = input.concat("" + e.getCharacter());
+            autoComplete(input, directionsList, "Node", "longName");
+            sourceLocationActive = true;
+        });
+
+        destinationLocation.setOnKeyTyped((KeyEvent e) -> {
+            String input = destinationLocation.getText();
+            input = input.concat("" + e.getCharacter());
+            autoComplete(input, directionsList, "Node", "longName");
+            sourceLocationActive = false;
         });
 
         usernameSearch.setOnKeyTyped((KeyEvent e) -> {
@@ -872,6 +889,17 @@ public class HomeController implements SwitchableController, Observer {
     void setSourceSearch() {
         searchLocation.setText(searchList.getSelectionModel().getSelectedItem().toString());
         searchList.setVisible(false);
+    }
+
+    @FXML
+    void setDirectionLocation() {
+        String selection = directionsList.getSelectionModel().getSelectedItem().toString();
+        if (sourceLocationActive) {
+            sourceLocation.setText(selection);
+        } else {
+            destinationLocation.setText(selection);
+        }
+        directionsList.setVisible(false);
     }
 
     // Popup upon help request
