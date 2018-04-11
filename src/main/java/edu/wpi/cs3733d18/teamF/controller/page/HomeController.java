@@ -572,6 +572,8 @@ public class HomeController implements SwitchableController, Observer {
                 return;
             }
 
+            draggingNode = false;
+
             double map_x = 5000;
             double map_y = 3400;
             double map3D_y = 2772;
@@ -759,18 +761,18 @@ public class HomeController implements SwitchableController, Observer {
             Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
-            if (PermissionSingleton.getInstance().isAdmin()) {
+            if (PermissionSingleton.getInstance().isAdmin() && nodesShown) {
                 if (draggingNode) {
                     heldNode.setPosition(mapPos);
-                    System.out.println("Holding Node");
+                    //System.out.println("Holding Node");
                 }
             }
         });
 
-        mapContainer.setOnMouseReleased(e -> {
+        /*mapContainer.setOnMouseReleased(e -> {
             draggingNode = false;
-            System.out.println("Dropped Node");
-        });
+            //System.out.println("Dropped Node");
+        });*/
 
         /*
 
