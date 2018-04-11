@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="newUserPane" prefHeight="463.0" prefWidth="638.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
+   <children>
+      <Label fx:id="userLabel" alignment="CENTER" layoutX="292.0" layoutY="27.0" text="User" textAlignment="CENTER">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Line endX="500.0" layoutX="119.0" layoutY="322.0" startX="-100.0" />
+      <Label layoutX="20.0" layoutY="338.0" text="Service Requests">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <JFXCheckBox fx:id="languageCheck" layoutX="70.0" layoutY="380.0" text="Language Interpreter" />
+      <JFXCheckBox fx:id="religiousCheck" layoutX="280.0" layoutY="380.0" text="Religious Services" />
+      <JFXCheckBox fx:id="securityCheck" layoutX="490.0" layoutY="380.0" text="Security Request" />
+      <JFXButton buttonType="RAISED" layoutX="568.0" layoutY="424.0" onAction="#onSubmitUser" style="-fx-background-color: #042E58;" text="Submit" textFill="WHITE" />
+      <JFXButton buttonType="RAISED" layoutX="20.0" layoutY="424.0" onAction="#onCancelUser" style="-fx-background-color: #042E58;" text="Cancel" textFill="WHITE" />
+      <Label layoutX="32.0" layoutY="120.0" text="Username:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="32.0" layoutY="180.0" text="First Name:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="32.0" layoutY="240.0" text="Last Name:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="340.0" layoutY="180.0" text="Occupation:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="340.0" layoutY="240.0" text="Privilege:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <JFXTextField fx:id="usernameField" alignment="BOTTOM_LEFT" editable="false" layoutX="101.0" layoutY="118.0" />
+      <JFXTextField fx:id="fnameField" alignment="BOTTOM_LEFT" layoutX="101.0" layoutY="178.0" />
+      <JFXTextField fx:id="lnameField" alignment="BOTTOM_LEFT" layoutX="101.0" layoutY="238.0" />
+      <JFXTextField fx:id="occupationField" alignment="BOTTOM_LEFT" layoutX="415.0" layoutY="180.0" />
+      <JFXComboBox fx:id="privilegeCombo" layoutX="399.0" layoutY="240.0" onAction="#onPrivilegeBox" prefHeight="25.0" prefWidth="126.0" />
+      <Label layoutX="340.0" layoutY="120.0" text="Password:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <JFXTextField fx:id="passwordField" alignment="BOTTOM_LEFT" editable="false" layoutX="402.0" layoutY="118.0" />
+   </children>
+</AnchorPane>

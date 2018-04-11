@@ -571,7 +571,9 @@ public class HomeController implements SwitchableController, Observer {
                 destinationLocation.setText(node.getLongName());
 
                 if (PermissionSingleton.getInstance().isAdmin()) {
-                    mapContainer.getChildren().add(gpaneNodeInfo);
+                    gpaneNodeInfo.setVisible(true);
+                }else{
+                    gpaneNodeInfo.setVisible(false);
                 }
 
                 modNode_x.setText(String.valueOf(node.getPosition().getX()));
