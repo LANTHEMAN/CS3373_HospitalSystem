@@ -335,23 +335,55 @@ public class ServiceRequestSingleton implements DatabaseItem {
         this.lastSearch = null;
     }
 
-    public void addOccupationLanguageInterpreter(String occupation){
-        String sql = "INSERT INTO LanguageInterpreter"+" VALUES ('"+occupation+"')";
+    public void addUsernameLanguageInterpreter(String username){
+        String sql = "INSERT INTO LanguageInterpreter"+" VALUES ('"+username+"')";
         dbHandler.runAction(sql);
     }
 
-    public void addOccupationReligiousServices(String occupation){
-        String sql = "INSERT INTO ReligiousServices"+" VALUES ('"+occupation+"')";
+    public void addUsernameReligiousServices(String username){
+        String sql = "INSERT INTO ReligiousServices"+" VALUES ('"+username+"')";
         dbHandler.runAction(sql);
     }
 
-    public void removeOccupationLanguageInterpreter(String occupation){
-        String sql = "DELETE FROM LanguageInterpreter WHERE occupation = '"+occupation+"'";
+    public void addUsernameSecurityRequest(String username){
+        String sql = "INSERT INTO SecurityRequest"+" VALUES ('"+username+"')";
         dbHandler.runAction(sql);
     }
 
-    public void removeOccupationReligiousServices(String occupation){
-        String sql = "DELETE FROM ReligiousServices WHERE occupation = '"+occupation+"'";
+    public void removeUsernameLanguageInterpreter(String username){
+        String sql = "DELETE FROM LanguageInterpreter WHERE username = '"+username+"'";
         dbHandler.runAction(sql);
+    }
+
+    public void removeUsernameReligiousServices(String username){
+        String sql = "DELETE FROM ReligiousServices WHERE occupation = '"+username+"'";
+        dbHandler.runAction(sql);
+    }
+
+    public void removeUsernameSecurityRequest(String username){
+        String sql = "DELETE FROM SecurityRequest WHERE username = '"+username+"'";
+        dbHandler.runAction(sql);
+    }
+
+
+    public boolean isInTable(String username, String table){
+        ResultSet rs;
+        String sql = "SELECT * FROM '" + table + "' WHERE username = '" + username + "'";
+        try {
+            rs = dbHandler.runQuery(sql);
+
+            if (!rs.next()) {
+                rs.close();
+                return false;
+            } else {
+                rs.close();
+                return true;
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
