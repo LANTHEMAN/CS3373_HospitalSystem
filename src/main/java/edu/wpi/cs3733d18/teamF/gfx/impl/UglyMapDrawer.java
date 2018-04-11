@@ -100,7 +100,7 @@ public class UglyMapDrawer extends MapDrawable {
             }
         }
 
-        if (path != null) {
+        if (path != null && path.getNodes().size() > 0) {
             for(Edge edge : path.getEdges()){
                 if(!(edge.getNode1().getFloor().equals(edge.getNode2().getFloor()))){
                     if(edge.getNode1().getFloor().equals(map.getFloor())){

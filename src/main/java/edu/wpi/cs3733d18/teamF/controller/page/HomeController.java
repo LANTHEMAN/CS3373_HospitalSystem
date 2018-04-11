@@ -549,13 +549,13 @@ public class HomeController implements SwitchableController, Observer {
             }
             // not editing map
             else {
-                nodes.add(map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D()));
+                nodes.add(map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor())));
             }
             if (nodes.size() > 0 && e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 1) {
                 if (!nodesShown) {
 
                     Node src = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
-                    if (mapPos.distance(src.getPosition()) < 200) {
+                    if ((map.is2D() ? mapPos.distance(src.getPosition()) : mapPos.distance(src.getWireframePosition())) < 200) {
                         Path path = map.getPath(map.findNodeClosestTo(selectedNodeStart.getPosition().getX(), selectedNodeStart.getPosition().getY(), true), src);
                         mapDrawController.showPath(path);
                     } else {
@@ -587,9 +587,14 @@ public class HomeController implements SwitchableController, Observer {
             }
 
             if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 1) {
-                if (nodes.size() > 0) {
+                if (nodes.size() > 0 && !nodesShown) {
                     selectedNodeStart = nodes.iterator().next();
                     Path path = map.getPath(selectedNodeStart, selectedNodeEnd);
+                    if(path.getNodes().size() < 2){
+                        if(map.getNeighbors(selectedNodeStart).size() > 0){
+                            path = map.getPath(selectedNodeStart, map.getNeighbors(selectedNodeStart).iterator().next());
+                        }
+                    }
                     mapDrawController.showPath(path);
 
                     sourceLocation.setText(selectedNodeStart.getLongName());
@@ -603,6 +608,9 @@ public class HomeController implements SwitchableController, Observer {
                 }
                 if (nodes.size() > 0) {
                     // TODO get closest node
+                    //selectedNodeStart = map.findNodeClosestTo(1850, 1035, true, node -> node.getFloor().equals(map.getFloor()));
+                    //sourceLocation.setText(selectedNodeStart.getLongName());
+                    mapDrawController.unshowPath();
                     map.removeNode(selectedNodeEnd);
                     selectedNodeEnd = null;
                 }
@@ -610,7 +618,7 @@ public class HomeController implements SwitchableController, Observer {
             }
             // create a new node
             if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
-                if (!map.is2D()) {
+                if (!map.is2D() || !PermissionSingleton.getInstance().isAdmin()) {
                     return;
                 }
                 addLocationPopup.setTranslateX(e.getSceneX() - 90);
