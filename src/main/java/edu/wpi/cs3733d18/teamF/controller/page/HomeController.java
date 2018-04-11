@@ -15,10 +15,7 @@ import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.PaneMapController;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
 import edu.wpi.cs3733d18.teamF.gfx.impl.UglyMapDrawer;
-import edu.wpi.cs3733d18.teamF.graph.NewNodeBuilder;
-import edu.wpi.cs3733d18.teamF.graph.Node;
-import edu.wpi.cs3733d18.teamF.graph.NodeBuilder;
-import edu.wpi.cs3733d18.teamF.graph.Path;
+import edu.wpi.cs3733d18.teamF.graph.*;
 import edu.wpi.cs3733d18.teamF.qr.qrConverter;
 import edu.wpi.cs3733d18.teamF.sr.*;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
@@ -135,6 +132,14 @@ public class HomeController implements SwitchableController, Observer {
     private PaneVoiceController paneVoiceController;
     private Voice voice;
     private VoiceManager voiceManager = VoiceManager.getInstance();
+    @FXML
+    private HBox algorithmsBox;
+    @FXML
+    private JFXButton aStar;
+    @FXML
+    private JFXButton depthFirst;
+    @FXML
+    private JFXButton breathFirst;
     ////////////////////////////////////////////////////
     //                                                //
     //           Search Service Request Variables     //
@@ -1027,9 +1032,13 @@ public class HomeController implements SwitchableController, Observer {
         serviceRequestList.animateList(false);
         serviceRequestList.animateList(false);
         setGuestMenu();
+        if (algorithmsBox.isVisible()){
+            algorithmsBox.setVisible(false);
+        }
         mapDrawController.unshowNodes();
         mapDrawController.unshowEdges();
         loginBtn.setText("Login");
+
     }
 
     @FXML
@@ -1083,8 +1092,7 @@ public class HomeController implements SwitchableController, Observer {
         hamburgerD.setVisible(true);
         mapEditorBtn.setVisible(true);
         editUsersBtn.setVisible(true);
-        //serviceRequestList.getChildren().clear();
-        //serviceRequestList.addAnimatedNode(newServiceRequest);
+        algorithmsBox.setVisible(true);
         if(serviceRequestList.getChildren().contains(LI)){
             serviceRequestList.getChildren().remove(LI);
         }
@@ -1105,7 +1113,6 @@ public class HomeController implements SwitchableController, Observer {
         hamburgerD.setVisible(true);
         mapEditorBtn.setVisible(false);
         editUsersBtn.setVisible(false);
-        //serviceRequestList.getChildren().clear();
         if(serviceRequestList.getChildren().contains(LI)){
             serviceRequestList.getChildren().remove(LI);
         }
@@ -1126,6 +1133,32 @@ public class HomeController implements SwitchableController, Observer {
         }
         serviceRequestList.setRotate(-90);
     }
+
+    @FXML
+    private void onAStar(){
+        MapSingleton.getInstance().getMap().setPathSelector(new AStar());
+        aStar.setStyle("-fx-background-color: #303030");
+        breathFirst.setStyle("-fx-background-color: #616161");
+        depthFirst.setStyle("-fx-background-color: #616161");
+    }
+
+    @FXML
+    private void onBreathFirst(){
+        MapSingleton.getInstance().getMap().setPathSelector(new BreathSearch());
+        aStar.setStyle("-fx-background-color: #616161");
+        breathFirst.setStyle("-fx-background-color: #303030");
+        depthFirst.setStyle("-fx-background-color: #616161");
+    }
+
+    @FXML
+    private void onDepthFirst(){
+        MapSingleton.getInstance().getMap().setPathSelector(new DepthSearch());
+        aStar.setStyle("-fx-background-color: #616161");
+        breathFirst.setStyle("-fx-background-color: #616161");
+        depthFirst.setStyle("-fx-background-color: #303030");
+    }
+
+
 
 
     @FXML
