@@ -1,710 +1,981 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
-<?import com.jfoenix.controls.JFXListView?>
-<?import com.jfoenix.controls.JFXNodesList?>
-<?import com.jfoenix.controls.JFXPasswordField?>
-<?import com.jfoenix.controls.JFXTextArea?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
+
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.RadialGradient?>
 <?import javafx.scene.paint.Stop?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import net.kurobako.gesturefx.GesturePane?>
-
-<GridPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
+<GridPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="720.0" prefWidth="1280.0"
+          style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141"
+          fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
     <columnConstraints>
-      <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="256.0" />
-      <ColumnConstraints />
+        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0"
+                           prefWidth="256.0"/>
+        <ColumnConstraints/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-        <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
-        <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
+        <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0"/>
+        <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0"/>
     </rowConstraints>
     <children>
-      <VBox fx:id="directionsBox" alignment="TOP_CENTER" fillWidth="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" snapToPixel="false" style="-fx-background-color: #042E58;">
-         <children>
-            <Pane prefHeight="287.0" prefWidth="300.0" style="-fx-background-color: #042E58;">
-               <children>
-                  <JFXHamburger fx:id="hamburgerD" alignment="CENTER" fillWidth="false" layoutX="14.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
-                  <FontAwesomeIconView fx:id="cancelDirections" fill="#f2f5f7" glyphName="TIMES" layoutX="263.0" layoutY="34.0" onMouseClicked="#onCancelDirectionsEvent" size="30" wrappingWidth="22.14285659790039" />
-                  <JFXTextField fx:id="sourceLocation" layoutX="54.0" layoutY="103.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Select Start" style="-fx-background-color: #f2f5f7;">
-                     <font>
-                        <Font name="Arial Bold" size="15.0" />
-                     </font></JFXTextField>
-                  <JFXTextField fx:id="destinationLocation" layoutX="54.0" layoutY="169.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Select Destination" style="-fx-background-color: #f2f5f7;">
-                     <font>
-                        <Font name="Arial Bold" size="15.0" />
-                     </font></JFXTextField>
-                  <Pane layoutX="249.0" layoutY="133.0" onMouseClicked="#switchLocations" prefHeight="51.0" prefWidth="48.0">
-                     <children>
-                        <FontAwesomeIconView fill="WHITE" glyphName="ARROW_UP" size="30" translateY="25.0" wrappingWidth="22.142860293388367" />
-                        <FontAwesomeIconView fill="WHITE" glyphName="ARROW_DOWN" size="30" translateX="15.0" translateY="45.0" wrappingWidth="22.142860293388367" />
-                     </children>
-                  </Pane>
-                  <FontAwesomeIconView fill="WHITE" glyphName="MAP_MARKER" layoutX="23.0" layoutY="204.0" size="30" wrappingWidth="22.14285659790039" />
-                  <Circle layoutX="31.0" layoutY="129.0" radius="7.0" stroke="#f2f5f7" strokeLineCap="ROUND" strokeLineJoin="ROUND">
-                     <fill>
-                        <RadialGradient centerX="0.5055555555555555" centerY="0.5" radius="0.47674418604651164">
-                           <stops>
-                              <Stop color="WHITE" />
-                              <Stop color="BLACK" offset="1.0" />
-                           </stops>
-                        </RadialGradient>
-                     </fill>
-                  </Circle>
-                  <Circle fill="WHITE" layoutX="31.0" layoutY="159.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
-                  <Circle fill="WHITE" layoutX="31.0" layoutY="143.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
-                  <Circle fill="WHITE" layoutX="31.0" layoutY="174.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
-                  <Text fill="WHITE" layoutX="96.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Directions">
-                     <font>
-                        <Font name="Arial Bold" size="24.0" />
-                     </font>
-                  </Text>
-                  <JFXButton layoutX="109.0" layoutY="230.0" onAction="#onNavigate" style="-fx-background-color: #767878;" text="Navigate" textFill="WHITE">
-                     <font>
-                        <Font name="Arial Bold" size="15.0" />
-                     </font>
-                  </JFXButton>
-               </children>
-            </Pane>
-            <Pane prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: WHITE;">
-               <children>
-                  <JFXListView fx:id="searchList" prefHeight="189.0" prefWidth="300.0" visible="false" />
-                  <JFXTextArea editable="false" layoutY="182.0" prefHeight="293.0" prefWidth="300.0" />
-                  <JFXListView fx:id="directionsList" onMouseClicked="#setDirectionLocation" prefHeight="189.0" prefWidth="300.0" visible="false" />
-               </children>
-            </Pane>
-         </children>
-      </VBox>
-
-                    <VBox fx:id="adminBox" alignment="TOP_CENTER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" style="-fx-background-color: #616161;" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647">
+        <VBox fx:id="directionsBox" alignment="TOP_CENTER" fillWidth="false" maxWidth="-Infinity" minHeight="-Infinity"
+              minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" snapToPixel="false"
+              style="-fx-background-color: #042E58;">
             <children>
-            <Pane prefHeight="86.0" prefWidth="300.0">
-               <children>
-                  <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" layoutX="251.0" layoutY="53.0" onMouseClicked="#setCancelMenuEvent" size="40" wrappingWidth="22.142844200134277" />
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="24.0" prefHeight="38.0" prefWidth="112.0" text="MENU">
-                     <font>
-                        <Font name="System Bold" size="25.0" />
-                     </font>
-                  </Label>
-               </children>
-            </Pane>
-            <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefHeight="163.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="New Service Request" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="20.0" />
-               </font>
-               <graphic>
-                  <FontAwesomeIconView glyphName="CLIPBOARD" size="50" />
-               </graphic>
-            </JFXButton>
-            <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onSearchServiceRequest" prefHeight="152.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Search Service Request" textFill="WHITE">
-               <font>
-                  <Font name="Arial" size="20.0" />
-               </font>
-               <graphic>
-                  <FontAwesomeIconView glyphName="SEARCH" size="50" />
-               </graphic>
-            </JFXButton>
-                <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onMapEditor" prefHeight="145.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Map Editor" textFill="WHITE">
-                    <font>
-                        <Font name="Arial" size="20.0" />
-                    </font>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
-                    </graphic>
-            </JFXButton>
-                <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onEditUsers" prefHeight="143.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Edit Users" textFill="WHITE">
-                    <font>
-                        <Font name="Arial" size="20.0" />
-                    </font>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="USER" glyphStyle="USER" size="50" />
-                    </graphic>
-            </JFXButton>
+                <Pane prefHeight="287.0" prefWidth="300.0" style="-fx-background-color: #042E58;">
+                    <children>
+                        <JFXHamburger fx:id="hamburgerD" alignment="CENTER" fillWidth="false" layoutX="14.0"
+                                      layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                      minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0"
+                                      prefWidth="34.0"/>
+                        <FontAwesomeIconView fx:id="cancelDirections" fill="#f2f5f7" glyphName="TIMES" layoutX="263.0"
+                                             layoutY="34.0" onMouseClicked="#onCancelDirectionsEvent" size="30"
+                                             wrappingWidth="22.14285659790039"/>
+                        <JFXTextField fx:id="sourceLocation" layoutX="54.0" layoutY="103.0" maxHeight="-Infinity"
+                                      maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0"
+                                      prefWidth="195.0" promptText="Select Start"
+                                      style="-fx-background-color: #f2f5f7;">
+                            <font>
+                                <Font name="Arial Bold" size="15.0"/>
+                            </font>
+                        </JFXTextField>
+                        <JFXTextField fx:id="destinationLocation" layoutX="54.0" layoutY="169.0" maxHeight="-Infinity"
+                                      maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0"
+                                      prefWidth="195.0" promptText="Select Destination"
+                                      style="-fx-background-color: #f2f5f7;">
+                            <font>
+                                <Font name="Arial Bold" size="15.0"/>
+                            </font>
+                        </JFXTextField>
+                        <Pane layoutX="249.0" layoutY="133.0" onMouseClicked="#switchLocations" prefHeight="51.0"
+                              prefWidth="48.0">
+                            <children>
+                                <FontAwesomeIconView fill="WHITE" glyphName="ARROW_UP" size="30" translateY="25.0"
+                                                     wrappingWidth="22.142860293388367"/>
+                                <FontAwesomeIconView fill="WHITE" glyphName="ARROW_DOWN" size="30" translateX="15.0"
+                                                     translateY="45.0" wrappingWidth="22.142860293388367"/>
+                            </children>
+                        </Pane>
+                        <FontAwesomeIconView fill="WHITE" glyphName="MAP_MARKER" layoutX="23.0" layoutY="204.0"
+                                             size="30" wrappingWidth="22.14285659790039"/>
+                        <Circle layoutX="31.0" layoutY="129.0" radius="7.0" stroke="#f2f5f7" strokeLineCap="ROUND"
+                                strokeLineJoin="ROUND">
+                            <fill>
+                                <RadialGradient centerX="0.5055555555555555" centerY="0.5" radius="0.47674418604651164">
+                                    <stops>
+                                        <Stop color="WHITE"/>
+                                        <Stop color="BLACK" offset="1.0"/>
+                                    </stops>
+                                </RadialGradient>
+                            </fill>
+                        </Circle>
+                        <Circle fill="WHITE" layoutX="31.0" layoutY="159.0" radius="4.0" stroke="#f2f5f7"
+                                strokeType="INSIDE"/>
+                        <Circle fill="WHITE" layoutX="31.0" layoutY="143.0" radius="4.0" stroke="#f2f5f7"
+                                strokeType="INSIDE"/>
+                        <Circle fill="WHITE" layoutX="31.0" layoutY="174.0" radius="4.0" stroke="#f2f5f7"
+                                strokeType="INSIDE"/>
+                        <Text fill="WHITE" layoutX="96.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="Directions">
+                            <font>
+                                <Font name="Arial Bold" size="24.0"/>
+                            </font>
+                        </Text>
+                        <JFXButton layoutX="109.0" layoutY="230.0" onAction="#onNavigate"
+                                   style="-fx-background-color: #767878;" text="Navigate" textFill="WHITE">
+                            <font>
+                                <Font name="Arial Bold" size="15.0"/>
+                            </font>
+                        </JFXButton>
+                    </children>
+                </Pane>
+                <Pane prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: WHITE;">
+                    <children>
+                        <JFXListView fx:id="searchList" prefHeight="189.0" prefWidth="300.0" visible="false"/>
+                        <JFXTextArea editable="false" layoutY="182.0" prefHeight="293.0" prefWidth="300.0"/>
+                        <JFXListView fx:id="directionsList" onMouseClicked="#setDirectionLocation" prefHeight="189.0"
+                                     prefWidth="300.0" visible="false"/>
+                    </children>
+                </Pane>
             </children>
         </VBox>
-      <JFXButton fx:id="floorBtn" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="Floor Number" textFill="#f2f5f7" textOverrun="CLIP">
-         <font>
-            <Font name="Arial Bold" size="28.0" />
-         </font></JFXButton>
-      <JFXButton fx:id="l2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="L2" textFill="#f2f5f7" textOverrun="CLIP">
-         <font>
-            <Font name="Arial Bold" size="28.0" />
-         </font></JFXButton>
-      <JFXButton fx:id="l1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="L1" textFill="#f2f5f7" textOverrun="CLIP">
-         <font>
-            <Font name="Arial Bold" size="28.0" />
-         </font></JFXButton>
-      <JFXButton fx:id="groundFloor" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="G" textFill="#f2f5f7" textOverrun="CLIP">
-         <font>
-            <Font name="Arial Bold" size="28.0" />
-         </font></JFXButton>
-      <JFXButton fx:id="floor1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="1" textFill="#f2f5f7" textOverrun="CLIP">
-         <font>
-            <Font name="Arial Bold" size="28.0" />
-         </font></JFXButton>
-      <JFXButton fx:id="floor2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="2" textFill="#f2f5f7" textOverrun="CLIP">
-         <font>
-            <Font name="Arial Bold" size="28.0" />
-         </font></JFXButton>
-      <JFXButton fx:id="floor3" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="3" textFill="#f2f5f7" textOverrun="CLIP">
-         <font>
-            <Font name="Arial Bold" size="28.0" />
-         </font></JFXButton>
-      <VBox fx:id="logoutBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0" style="-fx-background-color: #042E58;" visible="false">
-         <children>
-            <Pane prefHeight="87.0" prefWidth="250.0">
-               <children>
-                  <FontAwesomeIconView fx:id="logoutCancel" fill="#f2f5f7" glyphName="TIMES" layoutX="6.0" layoutY="20.0" size="20" />
-                  <JFXButton fx:id="logoutBtn" buttonType="RAISED" layoutX="69.0" layoutY="28.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onLogOutBtn" prefHeight="28.0" prefWidth="112.0" style="-fx-background-color: #f2f5f7;" text="Logout">
-                     <font>
-                        <Font name="Arial Bold" size="15.0" />
-                     </font></JFXButton>
-               </children>
-            </Pane>
-         </children>
-      </VBox>
-      <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0" style="-fx-background-color: #042E58;" visible="false">
-         <children>
-            <Pane prefHeight="80.0" prefWidth="233.0">
-               <children>
-                  <JFXTextField fx:id="loginUsername" layoutX="52.0" layoutY="13.0" prefWidth="150.0" promptText="Username" style="-fx-background-color: WHITE;">
-                     <font>
-                        <Font name="Arial Bold" size="15.0" />
-                     </font></JFXTextField>
-                  <JFXPasswordField fx:id="loginPassword" layoutX="52.0" layoutY="45.0" prefWidth="150.0" promptText="Password" style="-fx-background-color: WHITE;">
-                     <font>
-                        <Font name="Arial Bold" size="15.0" />
-                     </font></JFXPasswordField>
-                  <FontAwesomeIconView fx:id="loginCancel" fill="#f2f5f7" glyphName="TIMES" layoutX="6.0" layoutY="20.0" size="20" />
-               </children>
-            </Pane>
-         </children>
-      </VBox>
-        <GridPane fx:id="gpaneNodeInfo" maxWidth="250.0" prefHeight="601.0" prefWidth="250.0" style="-fx-background-color: rgba(217, 217, 217, 0.9);" visible="false" GridPane.columnSpan="2">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints maxHeight="146.0" minHeight="10.0" prefHeight="129.85105895996094" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="65.82270050048828" minHeight="0.0" prefHeight="52.14894104003906" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="82.02838134765625" minHeight="0.0" prefHeight="34.58868408203125" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="182.0" minHeight="10.0" prefHeight="178.41131591796875" vgrow="SOMETIMES" />
-            </rowConstraints>
+
+        <VBox fx:id="adminBox" alignment="TOP_CENTER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+              prefHeight="720.0" prefWidth="300.0" style="-fx-background-color: #616161;"
+              GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647">
             <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Short Name:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                <TextField fx:id="modNode_shortName" layoutX="195.0" layoutY="169.0" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                <Text layoutX="65.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Long Name:" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                <TextField fx:id="modNode_longName" layoutX="10.0" layoutY="16.0" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type:" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                <ComboBox fx:id="modNode_type" maxWidth="100.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Building:" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                <ComboBox fx:id="modNode_building" maxWidth="100.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="X:" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-                <TextField fx:id="modNode_x" layoutX="10.0" layoutY="24.0" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Y:" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-                <TextField fx:id="modNode_y" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-                <Button mnemonicParsing="false" onAction="#onNodeModify" text="Modify Node" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
-                <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onModificationCancel" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
+                <Pane prefHeight="86.0" prefWidth="300.0">
+                    <children>
+                        <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" layoutX="251.0"
+                                             layoutY="53.0" onMouseClicked="#setCancelMenuEvent" size="40"
+                                             wrappingWidth="22.142844200134277"/>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="24.0"
+                               prefHeight="38.0" prefWidth="112.0" text="MENU">
+                            <font>
+                                <Font name="System Bold" size="25.0"/>
+                            </font>
+                        </Label>
+                    </children>
+                </Pane>
+                <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP"
+                           graphicTextGap="20.0" onAction="#onServiceRequest" prefHeight="163.0" prefWidth="300.0"
+                           ripplerFill="#11119d" style="-fx-background-color: #616161;" text="New Service Request"
+                           textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="20.0"/>
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="CLIPBOARD" size="50"/>
+                    </graphic>
+                </JFXButton>
+                <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP"
+                           graphicTextGap="20.0" onAction="#onSearchServiceRequest" prefHeight="152.0" prefWidth="300.0"
+                           ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Search Service Request"
+                           textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="20.0"/>
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="SEARCH" size="50"/>
+                    </graphic>
+                </JFXButton>
+                <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0"
+                           onAction="#onMapEditor" prefHeight="145.0" prefWidth="300.0" ripplerFill="#11119d"
+                           style="-fx-background-color: #616161;" text="Map Editor" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="20.0"/>
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50"/>
+                    </graphic>
+                </JFXButton>
+                <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0"
+                           onAction="#onEditUsers" prefHeight="143.0" prefWidth="300.0" ripplerFill="#11119d"
+                           style="-fx-background-color: #616161;" text="Edit Users" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="20.0"/>
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="USER" glyphStyle="USER" size="50"/>
+                    </graphic>
+                </JFXButton>
             </children>
-        </GridPane>
-
-
-        <GridPane fx:id="leftGPane" alignment="BOTTOM_LEFT" prefHeight="687.0" prefWidth="811.0" GridPane.columnSpan="2">
+        </VBox>
+        <JFXButton fx:id="floorBtn" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                   minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="Floor Number"
+                   textFill="#f2f5f7" textOverrun="CLIP">
+            <font>
+                <Font name="Arial Bold" size="28.0"/>
+            </font>
+        </JFXButton>
+        <JFXButton fx:id="l2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                   minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="L2" textFill="#f2f5f7"
+                   textOverrun="CLIP">
+            <font>
+                <Font name="Arial Bold" size="28.0"/>
+            </font>
+        </JFXButton>
+        <JFXButton fx:id="l1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                   minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="L1" textFill="#f2f5f7"
+                   textOverrun="CLIP">
+            <font>
+                <Font name="Arial Bold" size="28.0"/>
+            </font>
+        </JFXButton>
+        <JFXButton fx:id="groundFloor" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity"
+                   minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="G" textFill="#f2f5f7"
+                   textOverrun="CLIP">
+            <font>
+                <Font name="Arial Bold" size="28.0"/>
+            </font>
+        </JFXButton>
+        <JFXButton fx:id="floor1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                   minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="1" textFill="#f2f5f7"
+                   textOverrun="CLIP">
+            <font>
+                <Font name="Arial Bold" size="28.0"/>
+            </font>
+        </JFXButton>
+        <JFXButton fx:id="floor2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                   minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="2" textFill="#f2f5f7"
+                   textOverrun="CLIP">
+            <font>
+                <Font name="Arial Bold" size="28.0"/>
+            </font>
+        </JFXButton>
+        <JFXButton fx:id="floor3" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                   minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="3" textFill="#f2f5f7"
+                   textOverrun="CLIP">
+            <font>
+                <Font name="Arial Bold" size="28.0"/>
+            </font>
+        </JFXButton>
+        <VBox fx:id="logoutBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+              minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0"
+              style="-fx-background-color: #042E58;" visible="false">
+            <children>
+                <Pane prefHeight="87.0" prefWidth="250.0">
+                    <children>
+                        <FontAwesomeIconView fx:id="logoutCancel" fill="#f2f5f7" glyphName="TIMES" layoutX="6.0"
+                                             layoutY="20.0" size="20"/>
+                        <JFXButton fx:id="logoutBtn" buttonType="RAISED" layoutX="69.0" layoutY="28.0"
+                                   maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                                   onAction="#onLogOutBtn" prefHeight="28.0" prefWidth="112.0"
+                                   style="-fx-background-color: #f2f5f7;" text="Logout">
+                            <font>
+                                <Font name="Arial Bold" size="15.0"/>
+                            </font>
+                        </JFXButton>
+                    </children>
+                </Pane>
+            </children>
+        </VBox>
+        <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+              minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0"
+              style="-fx-background-color: #042E58;" visible="false">
+            <children>
+                <Pane prefHeight="80.0" prefWidth="233.0">
+                    <children>
+                        <JFXTextField fx:id="loginUsername" layoutX="52.0" layoutY="13.0" prefWidth="150.0"
+                                      promptText="Username" style="-fx-background-color: WHITE;">
+                            <font>
+                                <Font name="Arial Bold" size="15.0"/>
+                            </font>
+                        </JFXTextField>
+                        <JFXPasswordField fx:id="loginPassword" layoutX="52.0" layoutY="45.0" prefWidth="150.0"
+                                          promptText="Password" style="-fx-background-color: WHITE;">
+                            <font>
+                                <Font name="Arial Bold" size="15.0"/>
+                            </font>
+                        </JFXPasswordField>
+                        <FontAwesomeIconView fx:id="loginCancel" fill="#f2f5f7" glyphName="TIMES" layoutX="6.0"
+                                             layoutY="20.0" size="20"/>
+                    </children>
+                </Pane>
+            </children>
+        </VBox>
+        <GridPane fx:id="leftGPane" alignment="BOTTOM_LEFT" prefHeight="687.0" prefWidth="811.0"
+                  GridPane.columnSpan="2">
             <columnConstraints>
-                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="260.0" minHeight="10.0" prefHeight="62.57142639160156" vgrow="NEVER" />
-                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="632.3370742797852" vgrow="ALWAYS" />
-            <RowConstraints />
+                <RowConstraints maxHeight="260.0" minHeight="10.0" prefHeight="62.57142639160156" vgrow="NEVER"/>
+                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="632.3370742797852"
+                                vgrow="ALWAYS"/>
+                <RowConstraints/>
             </rowConstraints>
             <children>
-                <GesturePane fx:id="gesturePane" HBarEnabled="false" VBarEnabled="false" fitMode="COVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minScale="2.3" minWidth="-Infinity" pickOnBounds="false" scrollMode="ZOOM" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                <GesturePane fx:id="gesturePane" HBarEnabled="false" VBarEnabled="false" fitMode="COVER"
+                             maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+                             minScale="2.3" minWidth="-Infinity" pickOnBounds="false" scrollMode="ZOOM"
+                             GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS"
+                             GridPane.rowSpan="2147483647" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                     <Pane maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0">
                         <children>
-                            <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="false" preserveRatio="false">
+                            <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="false"
+                                       preserveRatio="false">
                                 <image>
-                                    <Image url="@BW2D%20Maps/02_thesecondfloor.png" />
+                                    <Image url="@BW2D%20Maps/02_thesecondfloor.png"/>
                                 </image>
                             </ImageView>
-                            <Pane fx:id="mapContainer" maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0">
+                            <Pane fx:id="mapContainer" maxHeight="578.0" maxWidth="844.0" prefHeight="578.0"
+                                  prefWidth="844.0">
                             </Pane>
                         </children>
                     </Pane>
                 </GesturePane>
-            <Pane fx:id="voicePane" pickOnBounds="false" prefHeight="148.0" prefWidth="1280.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
-                <Text fx:id="MainTitle" fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%BrighamTitleSecondFloor" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <Pane fx:id="voicePane" pickOnBounds="false" prefHeight="148.0" prefWidth="1280.0"
+                      GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647"/>
+                <Text fx:id="MainTitle" fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="%BrighamTitleSecondFloor" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <font>
-                        <Font name="Arial Bold" size="28.0" />
+                        <Font name="Arial Bold" size="28.0"/>
                     </font>
                 </Text>
-                <VBox fx:id="addLocationPopup" alignment="CENTER" maxHeight="235.0" maxWidth="178.0" prefHeight="235.0" prefWidth="177.0" spacing="10.0" style="-fx-background-color: rgba(217, 217, 217, 0.9); -fx-border-style: solid; -fx-border-color: grey;" visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                <VBox fx:id="addLocationPopup" alignment="CENTER" maxHeight="235.0" maxWidth="178.0" prefHeight="235.0"
+                      prefWidth="177.0" spacing="10.0"
+                      style="-fx-background-color: rgba(217, 217, 217, 0.9); -fx-border-style: solid; -fx-border-color: grey;"
+                      visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%AddLocation" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%AddLocation"/>
                         <GridPane>
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                             <children>
-                                <TextField fx:id="newNode_x" GridPane.columnIndex="1" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="X" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                <TextField fx:id="newNode_x" GridPane.columnIndex="1"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="X" GridPane.halignment="CENTER"
+                                      GridPane.valignment="CENTER">
                                     <font>
-                                        <Font size="11.0" />
+                                        <Font size="11.0"/>
                                     </font>
                                 </Text>
                             </children>
                         </GridPane>
                         <GridPane layoutX="21.0" layoutY="172.0">
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                             <children>
-                                <TextField fx:id="newNode_y" GridPane.columnIndex="1" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Y" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                <TextField fx:id="newNode_y" GridPane.columnIndex="1"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Y" GridPane.halignment="CENTER"
+                                      GridPane.valignment="CENTER">
                                     <font>
-                                        <Font size="11.0" />
+                                        <Font size="11.0"/>
                                     </font>
                                 </Text>
                             </children>
                         </GridPane>
                         <GridPane>
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                             <children>
-                                <ComboBox fx:id="newNode_type" prefWidth="150.0" GridPane.columnIndex="1" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%Type" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                <ComboBox fx:id="newNode_type" prefWidth="150.0" GridPane.columnIndex="1"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%Type" GridPane.halignment="CENTER"
+                                      GridPane.valignment="CENTER">
                                     <font>
-                                        <Font size="11.0" />
+                                        <Font size="11.0"/>
                                     </font>
                                 </Text>
                             </children>
                         </GridPane>
                         <GridPane>
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                             <children>
-                                <TextField fx:id="newNode_shortName" GridPane.columnIndex="1" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%Name" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                <TextField fx:id="newNode_shortName" GridPane.columnIndex="1"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%Name" GridPane.halignment="CENTER"
+                                      GridPane.valignment="CENTER">
                                     <font>
-                                        <Font size="11.0" />
+                                        <Font size="11.0"/>
                                     </font>
                                 </Text>
                             </children>
                         </GridPane>
-                        <Button fx:id="btnLocationConfirm" mnemonicParsing="false" onAction="#onAddLocationConfirm" text="%Confirm">
+                        <Button fx:id="btnLocationConfirm" mnemonicParsing="false" onAction="#onAddLocationConfirm"
+                                text="%Confirm">
                             <font>
-                                <Font size="11.0" />
+                                <Font size="11.0"/>
                             </font>
                         </Button>
-                        <Button fx:id="btnLocationCancel" mnemonicParsing="false" onAction="#onAddLocationCancel" text="%Cancel">
+                        <Button fx:id="btnLocationCancel" mnemonicParsing="false" onAction="#onAddLocationCancel"
+                                text="%Cancel">
                             <font>
-                                <Font size="11.0" />
+                                <Font size="11.0"/>
                             </font>
                         </Button>
                     </children>
                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                     </padding>
                 </VBox>
-                <Text fx:id="txtAdminHelp" strokeType="OUTSIDE" strokeWidth="0.0" translateX="-70.0" translateY="-20.0" visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                <Text fx:id="txtAdminHelp" strokeType="OUTSIDE" strokeWidth="0.0" translateX="-70.0" translateY="-20.0"
+                      visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                     <font>
-                        <Font size="15.0" />
+                        <Font size="15.0"/>
                     </font>
                 </Text>
-            <StackPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
-               <children>
-                  <JFXDrawer fx:id="directionsDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefHeight="720.0" prefWidth="300.0" resizeContent="true" StackPane.alignment="TOP_LEFT" />
-                  <JFXDrawer fx:id="adminDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefWidth="300.0" resizeContent="true" StackPane.alignment="TOP_CENTER" />
-                  <HBox fx:id="searchBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="300.0" spacing="5.0" style="-fx-background-color: #042E58;" StackPane.alignment="TOP_CENTER">
-                     <children>
-                        <JFXHamburger fx:id="hamburger" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
-                        <JFXTextField fx:id="searchLocation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="161.0" promptText="Type or click map" style="-fx-background-color: #f2f5f7;">
-                           <font>
-                              <Font name="Arial Bold" size="15.0" />
-                           </font></JFXTextField>
-                        <FontAwesomeIconView fill="#f2f5f7" glyphName="SEARCH" onMouseClicked="#onSearchLocation" size="20" />
-                        <Line startY="-50.0" stroke="#f2f5f7">
-                           <HBox.margin>
-                              <Insets left="7.5" right="7.5" />
-                           </HBox.margin>
-                        </Line>
-                        <FontAwesomeIconView fx:id="directionsArrow" fill="#f2f5f7" glyphName="ARROW_RIGHT" onMouseClicked="#onArrowEvent" size="25" wrappingWidth="22.14285659790039" />
-                     </children>
-                  </HBox>
-               </children>
-            </StackPane>
-            <JFXDrawer fx:id="loginDrawer" defaultDrawerSize="400.0" direction="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" style="-fx-background-color: rgba(0, 0, 0, 0);" GridPane.halignment="RIGHT" GridPane.valignment="BASELINE">
-               <GridPane.margin>
-                  <Insets right="60.0" top="20.0" />
-               </GridPane.margin>
-            </JFXDrawer>
-            <JFXButton fx:id="loginBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="Login" textFill="#f2f5f7" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
-               <GridPane.margin>
-                  <Insets right="20.0" top="20.0" />
-               </GridPane.margin>
-               <graphic>
-                  <FontAwesomeIconView fill="#f2f5f7" glyphName="USER" size="20" />
-               </graphic>
-               <font>
-                  <Font name="Arial Bold" size="15.0" />
-               </font>
-            </JFXButton>
-            <JFXListView fx:id="searchList" maxHeight="200.0" maxWidth="300.0" onMouseClicked="#setSourceSearch" visible="false" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-            <FontAwesomeIconView fill="#727272" glyphName="QUESTION" onMouseClicked="#onHelpPopup" size="50" translateX="-22.0" translateY="-70.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-            <JFXNodesList fx:id="floorNode" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" spacing="10.0" style="-fx-background-radius: 100;" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
-               <GridPane.margin>
-                  <Insets right="20.0" top="50.0" />
-               </GridPane.margin>
-            </JFXNodesList>
-            <JFXButton fx:id="btn3D" onAction="#on3D" prefHeight="60.0" prefWidth="60.0" ripplerFill="BLACK" style="-fx-background-color: #b6b8b9;" text="3D" textFill="#2c2c2c" translateX="-5.0" translateY="-5.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </JFXButton>
-            <JFXButton fx:id="btn2D" buttonType="RAISED" layoutX="1230.0" layoutY="670.0" onAction="#on2D" prefHeight="60.0" prefWidth="60.0" ripplerFill="BLACK" style="-fx-background-color: #f2f5f7;" text="2D" textFill="#2c2c2c" translateX="-65.0" translateY="-5.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </JFXButton>
+                <StackPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" GridPane.columnSpan="2147483647"
+                           GridPane.halignment="LEFT" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
+                    <children>
+                        <JFXDrawer fx:id="directionsDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0"
+                                   maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false"
+                                   prefHeight="720.0" prefWidth="300.0" resizeContent="true"
+                                   StackPane.alignment="TOP_LEFT"/>
+                        <JFXDrawer fx:id="adminDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0"
+                                   maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false"
+                                   prefWidth="300.0" resizeContent="true" StackPane.alignment="TOP_CENTER"/>
+                        <HBox fx:id="searchBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+                              minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="300.0"
+                              spacing="5.0" style="-fx-background-color: #042E58;" StackPane.alignment="TOP_CENTER">
+                            <children>
+                                <JFXHamburger fx:id="hamburger" alignment="CENTER" fillWidth="false"
+                                              maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                              minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0"
+                                              prefWidth="34.0"/>
+                                <JFXTextField fx:id="searchLocation" maxHeight="-Infinity" maxWidth="-Infinity"
+                                              minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0"
+                                              prefWidth="161.0" promptText="Type or click map"
+                                              style="-fx-background-color: #f2f5f7;">
+                                    <font>
+                                        <Font name="Arial Bold" size="15.0"/>
+                                    </font>
+                                </JFXTextField>
+                                <FontAwesomeIconView fill="#f2f5f7" glyphName="SEARCH"
+                                                     onMouseClicked="#onSearchLocation" size="20"/>
+                                <Line startY="-50.0" stroke="#f2f5f7">
+                                    <HBox.margin>
+                                        <Insets left="7.5" right="7.5"/>
+                                    </HBox.margin>
+                                </Line>
+                                <FontAwesomeIconView fx:id="directionsArrow" fill="#f2f5f7" glyphName="ARROW_RIGHT"
+                                                     onMouseClicked="#onArrowEvent" size="25"
+                                                     wrappingWidth="22.14285659790039"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </StackPane>
+                <JFXDrawer fx:id="loginDrawer" defaultDrawerSize="400.0" direction="RIGHT" maxHeight="-Infinity"
+                           maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0"
+                           prefWidth="250.0" style="-fx-background-color: rgba(0, 0, 0, 0);" GridPane.halignment="RIGHT"
+                           GridPane.valignment="BASELINE">
+                    <GridPane.margin>
+                        <Insets right="60.0" top="20.0"/>
+                    </GridPane.margin>
+                </JFXDrawer>
+                <JFXButton fx:id="loginBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP"
+                           maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                           prefHeight="80.0" prefWidth="80.0"
+                           style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="Login"
+                           textFill="#f2f5f7" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+                    <GridPane.margin>
+                        <Insets right="20.0" top="20.0"/>
+                    </GridPane.margin>
+                    <graphic>
+                        <FontAwesomeIconView fill="#f2f5f7" glyphName="USER" size="20"/>
+                    </graphic>
+                    <font>
+                        <Font name="Arial Bold" size="15.0"/>
+                    </font>
+                </JFXButton>
+                <JFXListView fx:id="searchList" maxHeight="200.0" maxWidth="300.0" onMouseClicked="#setSourceSearch"
+                             visible="false" GridPane.rowIndex="1" GridPane.valignment="TOP"/>
+                <FontAwesomeIconView fill="#727272" glyphName="QUESTION" onMouseClicked="#onHelpPopup" size="50"
+                                     translateX="-22.0" translateY="-70.0" GridPane.halignment="RIGHT"
+                                     GridPane.rowIndex="1" GridPane.valignment="BOTTOM"/>
+                <JFXNodesList fx:id="floorNode" alignment="CENTER" fillWidth="false" maxHeight="-Infinity"
+                              maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0"
+                              prefWidth="80.0" spacing="10.0" style="-fx-background-radius: 100;"
+                              GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                    <GridPane.margin>
+                        <Insets right="20.0" top="50.0"/>
+                    </GridPane.margin>
+                </JFXNodesList>
+                <JFXButton fx:id="btn3D" onAction="#on3D" prefHeight="60.0" prefWidth="60.0" ripplerFill="BLACK"
+                           style="-fx-background-color: #b6b8b9;" text="3D" textFill="#2c2c2c" translateX="-5.0"
+                           translateY="-5.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1"
+                           GridPane.valignment="BOTTOM">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </JFXButton>
+                <JFXButton fx:id="btn2D" buttonType="RAISED" layoutX="1230.0" layoutY="670.0" onAction="#on2D"
+                           prefHeight="60.0" prefWidth="60.0" ripplerFill="BLACK" style="-fx-background-color: #f2f5f7;"
+                           text="2D" textFill="#2c2c2c" translateX="-65.0" translateY="-5.0" GridPane.halignment="RIGHT"
+                           GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </JFXButton>
             </children>
         </GridPane>
-      <Pane fx:id="helpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="565.0" style="-fx-background-color: WHITE;" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <children>
-            <GridPane prefHeight="400.0" prefWidth="565.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="236.0" minHeight="10.0" prefHeight="234.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Help Menu" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Text>
-                  <GridPane fx:id="userInstructions" prefHeight="273.0" prefWidth="521.0" GridPane.rowIndex="1">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Move Map: " GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
+        <Pane fx:id="helpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+              prefHeight="400.0" prefWidth="565.0" style="-fx-background-color: WHITE;" visible="false"
+              GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <children>
+                <GridPane prefHeight="400.0" prefWidth="565.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints maxHeight="236.0" minHeight="10.0" prefHeight="234.0" vgrow="SOMETIMES"/>
+                        <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Help Menu" GridPane.halignment="CENTER"
+                              GridPane.valignment="CENTER">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Zoom: " GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll Map around to zoom" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll to zoom" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Location: " GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Left click on location" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lock Panning Movement:" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hold Ctrl" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </GridPane>
-                  <GridPane fx:id="adminInstructions" layoutX="10.0" layoutY="91.0" prefHeight="273.0" prefWidth="521.0" visible="false" GridPane.rowIndex="1">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="176.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="420.0" minWidth="10.0" prefWidth="389.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Remove Path:" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Holding ctrl, Select Start location and right click drag to end location" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Move/Pan Map: " GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Zoom: " GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll map around to zoom" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll to zoom" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hold Ctrl" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Location: " GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lock Panning Movement:" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Left click on location" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Double left click" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add Location:" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Remove Location:" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Double right click" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add Path:" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Holding ctrl, Select Start location and left clickdrag to end location" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                     </children>
-                  </GridPane>
-                  <Button mnemonicParsing="false" onAction="#onCancelClose" text="Cancel" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-               </children>
-            </GridPane>
-         </children>
-      </Pane>
-      <AnchorPane fx:id="searchPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="900.0" style="-fx-background-color: WHITE;" visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
-         <children>
-            <HBox alignment="CENTER" prefHeight="900.0" prefWidth="1563.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="900.0" prefWidth="333.0" spacing="40.0">
-                     <children>
-                        <Label text="Search Service Requests">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
+                        <GridPane fx:id="userInstructions" prefHeight="273.0" prefWidth="521.0" GridPane.rowIndex="1">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                            </rowConstraints>
+                            <children>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Move Map: "
+                                      GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="15.0"/>
+                                    </font>
+                                </Text>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Zoom: " GridPane.halignment="CENTER"
+                                      GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="15.0"/>
+                                    </font>
+                                </Text>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll Map around to zoom"
+                                      GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="15.0"/>
+                                    </font>
+                                </Text>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll to zoom"
+                                      GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1"
+                                      GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="15.0"/>
+                                    </font>
+                                </Text>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Location: "
+                                      GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="15.0"/>
+                                    </font>
+                                </Text>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Left click on location"
+                                      GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2"
+                                      GridPane.valignment="CENTER">
+                                    <font>
+                                        <Font size="15.0"/>
+                                    </font>
+                                </Text>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lock Panning Movement:"
+                                      GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                                    <font>
+                                        <Font size="15.0"/>
+                                    </font>
+                                </Text>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hold Ctrl" GridPane.columnIndex="1"
+                                      GridPane.rowIndex="3">
+                                    <font>
+                                        <Font size="15.0"/>
+                                    </font>
+                                </Text>
+                            </children>
+                        </GridPane>
+                        <GridPane fx:id="adminInstructions" layoutX="10.0" layoutY="91.0" prefHeight="273.0"
+                                  prefWidth="521.0" visible="false" GridPane.rowIndex="1">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0"
+                                                   prefWidth="176.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="420.0" minWidth="10.0"
+                                                   prefWidth="389.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                            </rowConstraints>
+                            <children>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Remove Path:"
+                                      GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="Holding ctrl, Select Start location and right click drag to end location"
+                                      GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Move/Pan Map: "
+                                      GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Zoom: " GridPane.halignment="CENTER"
+                                      GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll map around to zoom"
+                                      GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll to zoom"
+                                      GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1"
+                                      GridPane.valignment="CENTER"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hold Ctrl" GridPane.columnIndex="1"
+                                      GridPane.rowIndex="2"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Location: "
+                                      GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lock Panning Movement:"
+                                      GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Left click on location"
+                                      GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3"
+                                      GridPane.valignment="CENTER"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Double left click"
+                                      GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add Location:"
+                                      GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Remove Location:"
+                                      GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Double right click"
+                                      GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add Path:"
+                                      GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER"/>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="Holding ctrl, Select Start location and left clickdrag to end location"
+                                      GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                            </children>
+                        </GridPane>
+                        <Button mnemonicParsing="false" onAction="#onCancelClose" text="Cancel"
+                                GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER"/>
+                    </children>
+                </GridPane>
+            </children>
+        </Pane>
+        <AnchorPane fx:id="searchPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                    minWidth="-Infinity" prefHeight="540.0" prefWidth="900.0" style="-fx-background-color: WHITE;"
+                    visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER"
+                    GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
+            <children>
+                <HBox alignment="CENTER" prefHeight="900.0" prefWidth="1563.0" AnchorPane.bottomAnchor="0.0"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <VBox alignment="CENTER" prefHeight="900.0" prefWidth="333.0" spacing="40.0">
+                            <children>
+                                <Label text="Search Service Requests">
+                                    <font>
+                                        <Font size="20.0"/>
+                                    </font>
+                                </Label>
+                                <Label text="Filter Results">
+                                    <font>
+                                        <Font size="17.0"/>
+                                    </font>
+                                </Label>
+                                <JFXComboBox fx:id="filterType" onAction="#onFilterType" prefHeight="25.0"
+                                             prefWidth="153.0"/>
+                                <JFXComboBox fx:id="availableTypes" onAction="#onAvailableTypes" prefHeight="25.0"
+                                             prefWidth="153.0"/>
+                                <JFXButton buttonType="RAISED" onAction="#onClear" prefHeight="26.0" prefWidth="52.0"
+                                           ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Clear"
+                                           textFill="WHITE"/>
+                                <JFXButton buttonType="RAISED" onAction="#onSearch" prefHeight="84.0" prefWidth="149.0"
+                                           ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Search"
+                                           textFill="WHITE"/>
+                                <JFXButton buttonType="RAISED" onAction="#onCancelSearch" prefHeight="60.0"
+                                           prefWidth="119.0" ripplerFill="#11119d"
+                                           style="-fx-background-color: #5264ae;" text="Cancel" textFill="WHITE"/>
+                            </children>
+                        </VBox>
+                        <TableView fx:id="searchResultTable" prefHeight="900.0" prefWidth="701.0">
+                            <columns>
+                                <TableColumn fx:id="btnsCol" editable="false" minWidth="0.0" prefWidth="64.0"
+                                             resizable="false" text="Choose"/>
+                                <TableColumn fx:id="idNumberCol" editable="false" minWidth="0.0" prefWidth="38.0"
+                                             resizable="false" text="ID"/>
+                                <TableColumn fx:id="requestTypeCol" editable="false" prefWidth="98.142822265625"
+                                             resizable="false" text="Type"/>
+                                <TableColumn fx:id="firstNameCol" editable="false" prefWidth="112.857177734375"
+                                             resizable="false" text="First Name"/>
+                                <TableColumn fx:id="lastNameCol" editable="false" prefWidth="105.14288330078125"
+                                             resizable="false" text="Last Name"/>
+                                <TableColumn fx:id="destinationCol" editable="false" prefWidth="108.85711669921875"
+                                             resizable="false" text="Location"/>
+                                <TableColumn fx:id="requestPriorityCol" editable="false" prefWidth="60.8570556640625"
+                                             resizable="false" text="Priority"/>
+                                <TableColumn fx:id="theStatusCol" editable="false" prefWidth="108.571533203125"
+                                             resizable="false" text="Status"/>
+                            </columns>
+                        </TableView>
+                    </children>
+                </HBox>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="editRequestPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="540.0"
+                    prefWidth="900.0" style="-fx-background-color: WHITE;" visible="false"
+                    GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647"
+                    GridPane.valignment="CENTER">
+            <children>
+                <GridPane layoutX="-86.0" layoutY="-85.0" prefHeight="485.0" prefWidth="686.0"
+                          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                          AnchorPane.topAnchor="0.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="234.71429443359375" minWidth="10.0"
+                                           prefWidth="15.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="278.71429443359375" minWidth="10.0"
+                                           prefWidth="278.71429443359375"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.57147216796875" minWidth="10.0"
+                                           prefWidth="199.5714111328125"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.14288330078125" minWidth="10.0"
+                                           prefWidth="206.4285888671875"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="15.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <Label fx:id="idLabel" alignment="CENTER" prefHeight="36.0" prefWidth="309.0"
+                               text="Service Request #000" textAlignment="CENTER" underline="true"
+                               GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                            <font>
+                                <Font size="25.0"/>
+                            </font>
                         </Label>
-                        <Label text="Filter Results">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
+                        <Label fx:id="typeLabel" text="Type: Service Request" GridPane.columnSpan="4"
+                               GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
                         </Label>
-                        <JFXComboBox fx:id="filterType" onAction="#onFilterType" prefHeight="25.0" prefWidth="153.0" />
-                        <JFXComboBox fx:id="availableTypes" onAction="#onAvailableTypes" prefHeight="25.0" prefWidth="153.0" />
-                        <JFXButton buttonType="RAISED" onAction="#onClear" prefHeight="26.0" prefWidth="52.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Clear" textFill="WHITE" />
-                        <JFXButton buttonType="RAISED" onAction="#onSearch" prefHeight="84.0" prefWidth="149.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Search" textFill="WHITE" />
-                        <JFXButton buttonType="RAISED" onAction="#onCancelSearch" prefHeight="60.0" prefWidth="119.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Cancel" textFill="WHITE" />
-                     </children>
-                  </VBox>
-                  <TableView fx:id="searchResultTable" prefHeight="900.0" prefWidth="701.0">
-                     <columns>
-                        <TableColumn fx:id="btnsCol" editable="false" minWidth="0.0" prefWidth="64.0" resizable="false" text="Choose" />
-                        <TableColumn fx:id="idNumberCol" editable="false" minWidth="0.0" prefWidth="38.0" resizable="false" text="ID" />
-                        <TableColumn fx:id="requestTypeCol" editable="false" prefWidth="98.142822265625" resizable="false" text="Type" />
-                        <TableColumn fx:id="firstNameCol" editable="false" prefWidth="112.857177734375" resizable="false" text="First Name" />
-                        <TableColumn fx:id="lastNameCol" editable="false" prefWidth="105.14288330078125" resizable="false" text="Last Name" />
-                        <TableColumn fx:id="destinationCol" editable="false" prefWidth="108.85711669921875" resizable="false" text="Location" />
-                        <TableColumn fx:id="requestPriorityCol" editable="false" prefWidth="60.8570556640625" resizable="false" text="Priority" />
-                        <TableColumn fx:id="theStatusCol" editable="false" prefWidth="108.571533203125" resizable="false" text="Status" />
-                     </columns>
-                  </TableView>
-               </children>
-            </HBox>
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="editRequestPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="540.0" prefWidth="900.0" style="-fx-background-color: WHITE;" visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
-         <children>
-            <GridPane layoutX="-86.0" layoutY="-85.0" prefHeight="485.0" prefWidth="686.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="234.71429443359375" minWidth="10.0" prefWidth="15.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="278.71429443359375" minWidth="10.0" prefWidth="278.71429443359375" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.57147216796875" minWidth="10.0" prefWidth="199.5714111328125" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.14288330078125" minWidth="10.0" prefWidth="206.4285888671875" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="15.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <Label fx:id="idLabel" alignment="CENTER" prefHeight="36.0" prefWidth="309.0" text="Service Request #000" textAlignment="CENTER" underline="true" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.valignment="TOP">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="typeLabel" text="Type: Service Request" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <children>
-                        <Label alignment="CENTER" text="Patient Information" underline="true">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
+                        <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <children>
+                                <Label alignment="CENTER" text="Patient Information" underline="true">
+                                    <font>
+                                        <Font size="20.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="firstNameLabel" text="First Name: Alex">
+                                    <font>
+                                        <Font size="16.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="lastNameLabel" text="Last Name: Tavares" VBox.vgrow="ALWAYS">
+                                    <font>
+                                        <Font size="16.0"/>
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                        <VBox GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1"
+                              GridPane.valignment="TOP">
+                            <children>
+                                <Label text="Location" underline="true">
+                                    <font>
+                                        <Font size="20.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="locationLabel" text="location">
+                                    <font>
+                                        <Font size="16.0"/>
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                        <VBox GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1"
+                              GridPane.valignment="TOP">
+                            <children>
+                                <Label text="Status" underline="true">
+                                    <font>
+                                        <Font size="20.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="statusLabel" text="status">
+                                    <font>
+                                        <Font size="16.0"/>
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                        <JFXTextArea fx:id="instructionsTextArea" GridPane.columnIndex="1" GridPane.columnSpan="3"
+                                     GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM"/>
+                        <Label text="Special Instructions" GridPane.columnIndex="1" GridPane.halignment="LEFT"
+                               GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
                         </Label>
-                        <Label fx:id="firstNameLabel" text="First Name: Alex">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
+                        <JFXButton buttonType="RAISED" onAction="#onCancelEdit" prefHeight="31.0" prefWidth="70.0"
+                                   ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Cancel"
+                                   textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT"
+                                   GridPane.rowIndex="4"/>
+                        <Label text="Mark As" GridPane.columnIndex="3" GridPane.halignment="LEFT"
+                               GridPane.valignment="TOP"/>
+                        <Label fx:id="completedByLabel" text="Completed By:" visible="false" GridPane.columnIndex="1"
+                               GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4"
+                               GridPane.valignment="CENTER"/>
+                        <Label fx:id="usernameLabel" text="username" visible="false" GridPane.columnIndex="2"
+                               GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                            <GridPane.margin>
+                                <Insets left="65.0"/>
+                            </GridPane.margin>
                         </Label>
-                        <Label fx:id="lastNameLabel" text="Last Name: Tavares" VBox.vgrow="ALWAYS">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
+                        <JFXButton alignment="CENTER" buttonType="RAISED" onAction="#onSubmitEdit" prefHeight="31.0"
+                                   prefWidth="70.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;"
+                                   text="Submit" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="RIGHT"
+                                   GridPane.rowIndex="4"/>
+                        <JFXComboBox fx:id="statusBox" onAction="#onStatusBox" prefHeight="25.0" prefWidth="147.0"
+                                     GridPane.columnIndex="3"/>
+                        <JFXTextField fx:id="usernameSearch" alignment="BOTTOM_LEFT" GridPane.columnIndex="3"
+                                      GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP"/>
+                        <JFXListView fx:id="usernameList" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="76.0"
+                                     prefWidth="210.0" GridPane.columnIndex="3" GridPane.rowIndex="2"
+                                     GridPane.valignment="BOTTOM"/>
+                        <Label text="Assign to: " GridPane.columnIndex="2" GridPane.halignment="RIGHT"
+                               GridPane.rowIndex="2" GridPane.valignment="TOP">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
                         </Label>
-                     </children>
-                  </VBox>
-                  <VBox GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
-                     <children>
-                        <Label text="Location" underline="true">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="locationLabel" text="location">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
-                     <children>
-                        <Label text="Status" underline="true">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="statusLabel" text="status">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <JFXTextArea fx:id="instructionsTextArea" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
-                  <Label text="Special Instructions" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <JFXButton buttonType="RAISED" onAction="#onCancelEdit" prefHeight="31.0" prefWidth="70.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Cancel" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
-                  <Label text="Mark As" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="TOP" />
-                  <Label fx:id="completedByLabel" text="Completed By:" visible="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-                  <Label fx:id="usernameLabel" text="username" visible="false" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-                     <GridPane.margin>
-                        <Insets left="65.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <JFXButton alignment="CENTER" buttonType="RAISED" onAction="#onSubmitEdit" prefHeight="31.0" prefWidth="70.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Submit" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                  <JFXComboBox fx:id="statusBox" onAction="#onStatusBox" prefHeight="25.0" prefWidth="147.0" GridPane.columnIndex="3" />
-                  <JFXTextField fx:id="usernameSearch" alignment="BOTTOM_LEFT" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-                  <JFXListView fx:id="usernameList" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="76.0" prefWidth="210.0" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
-                  <Label text="Assign to: " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-               </children>
-            </GridPane>
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="editUserPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="543.0" prefWidth="885.0" style="-fx-background-color: WHITE;" visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
-         <children>
-            <HBox alignment="CENTER" prefHeight="900.0" prefWidth="1563.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <Pane prefHeight="543.0" prefWidth="328.0">
-                     <children>
-                        <FontAwesomeIconView glyphName="USER" layoutX="182.0" layoutY="47.0" size="40.0" />
-                        <Label layoutX="33.0" layoutY="18.0" text="Search Users">
-                           <font>
-                              <Font size="22.0" />
-                           </font>
-                        </Label>
-                        <JFXTextField fx:id="userTextField" layoutX="61.0" layoutY="193.0" />
-                        <JFXButton buttonType="RAISED" layoutX="97.0" layoutY="437.0" onAction="#onCancelEditUser" prefHeight="41.0" prefWidth="62.0" style="-fx-background-color: #606060;" text="Cancel" />
-                        <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutX="75.0" layoutY="299.0" onAction="#onNewUserEvent" prefHeight="76.0" prefWidth="107.0" style="-fx-background-color: #606060;" text="New User">
-                           <graphic>
-                              <FontAwesomeIconView glyphName="USER" size="20" />
-                           </graphic>
-                        </JFXButton>
-                        <FontAwesomeIconView glyphName="SEARCH" layoutX="39.0" layoutY="211.0" size="20" />
-                     </children>
-                  </Pane>
-                  <TableView fx:id="searchUserResultTable" prefHeight="900.0" prefWidth="701.0">
-                     <columns>
-                        <TableColumn fx:id="chooseCol" editable="false" minWidth="0.0" prefWidth="64.0" resizable="false" text="Choose" />
-                        <TableColumn fx:id="usernameCol" editable="false" minWidth="0.0" prefWidth="109.0" resizable="false" text="Username" />
-                        <TableColumn fx:id="firstNameUserCol" editable="false" prefWidth="111.28570556640625" resizable="false" text="First Name" />
-                        <TableColumn fx:id="lastNameUserCol" editable="false" prefWidth="114.5714111328125" resizable="false" text="Last Name" />
-                        <TableColumn fx:id="privilegeCol" editable="false" prefWidth="120.71429443359375" resizable="false" text="Privilege" />
-                        <TableColumn fx:id="occupationCol" editable="false" prefWidth="106.142822265625" resizable="false" text="Occupation" />
-                     </columns>
-                  </TableView>
-               </children>
-            </HBox>
-         </children>
-      </AnchorPane>
+                    </children>
+                </GridPane>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="editUserPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                    minWidth="-Infinity" prefHeight="543.0" prefWidth="885.0" style="-fx-background-color: WHITE;"
+                    visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER"
+                    GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
+            <children>
+                <HBox alignment="CENTER" prefHeight="900.0" prefWidth="1563.0" AnchorPane.bottomAnchor="0.0"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <Pane prefHeight="543.0" prefWidth="328.0">
+                            <children>
+                                <FontAwesomeIconView glyphName="USER" layoutX="182.0" layoutY="47.0" size="40.0"/>
+                                <Label layoutX="33.0" layoutY="18.0" text="Search Users">
+                                    <font>
+                                        <Font size="22.0"/>
+                                    </font>
+                                </Label>
+                                <JFXTextField fx:id="userTextField" layoutX="61.0" layoutY="193.0"/>
+                                <JFXButton buttonType="RAISED" layoutX="97.0" layoutY="437.0"
+                                           onAction="#onCancelEditUser" prefHeight="41.0" prefWidth="62.0"
+                                           style="-fx-background-color: #606060;" text="Cancel"/>
+                                <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutX="75.0" layoutY="299.0"
+                                           onAction="#onNewUserEvent" prefHeight="76.0" prefWidth="107.0"
+                                           style="-fx-background-color: #606060;" text="New User">
+                                    <graphic>
+                                        <FontAwesomeIconView glyphName="USER" size="20"/>
+                                    </graphic>
+                                </JFXButton>
+                                <FontAwesomeIconView glyphName="SEARCH" layoutX="39.0" layoutY="211.0" size="20"/>
+                            </children>
+                        </Pane>
+                        <TableView fx:id="searchUserResultTable" prefHeight="900.0" prefWidth="701.0">
+                            <columns>
+                                <TableColumn fx:id="chooseCol" editable="false" minWidth="0.0" prefWidth="64.0"
+                                             resizable="false" text="Choose"/>
+                                <TableColumn fx:id="usernameCol" editable="false" minWidth="0.0" prefWidth="109.0"
+                                             resizable="false" text="Username"/>
+                                <TableColumn fx:id="firstNameUserCol" editable="false" prefWidth="111.28570556640625"
+                                             resizable="false" text="First Name"/>
+                                <TableColumn fx:id="lastNameUserCol" editable="false" prefWidth="114.5714111328125"
+                                             resizable="false" text="Last Name"/>
+                                <TableColumn fx:id="privilegeCol" editable="false" prefWidth="120.71429443359375"
+                                             resizable="false" text="Privilege"/>
+                                <TableColumn fx:id="occupationCol" editable="false" prefWidth="106.142822265625"
+                                             resizable="false" text="Occupation"/>
+                            </columns>
+                        </TableView>
+                    </children>
+                </HBox>
+            </children>
+        </AnchorPane>
+        <GridPane fx:id="gpaneNodeInfo" maxWidth="302.0" prefHeight="720.0" prefWidth="302.0"
+                  style="-fx-background-color: #042E58;" visible="false" GridPane.columnSpan="2">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="146.0" minHeight="10.0" prefHeight="129.85105895996094" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="65.82270050048828" minHeight="0.0" prefHeight="52.14894104003906"
+                                vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="82.02838134765625" minHeight="0.0" prefHeight="34.58868408203125"
+                                vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="182.0" minHeight="10.0" prefHeight="178.41131591796875" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Short Name:"
+                      GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Text>
+                <TextField fx:id="modNode_shortName" layoutX="195.0" layoutY="169.0" maxWidth="80.0"
+                           GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+                <Text fill="#fffbfb" layoutX="65.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Long Name:" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Text>
+                <TextField fx:id="modNode_longName" layoutX="10.0" layoutY="16.0" maxWidth="80.0"
+                           GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Type:" GridPane.halignment="CENTER"
+                      GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Text>
+                <ComboBox fx:id="modNode_type" maxWidth="100.0" prefWidth="150.0" GridPane.columnIndex="1"
+                          GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Building:" GridPane.halignment="CENTER"
+                      GridPane.rowIndex="4">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Text>
+                <ComboBox fx:id="modNode_building" maxWidth="100.0" prefWidth="150.0" GridPane.columnIndex="1"
+                          GridPane.halignment="CENTER" GridPane.rowIndex="4"/>
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="X:" GridPane.halignment="CENTER"
+                      GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Text>
+                <TextField fx:id="modNode_x" layoutX="10.0" layoutY="24.0" maxWidth="80.0" GridPane.columnIndex="1"
+                           GridPane.halignment="CENTER" GridPane.rowIndex="5"/>
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Y:" GridPane.halignment="CENTER"
+                      GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Text>
+                <TextField fx:id="modNode_y" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                           GridPane.rowIndex="6"/>
+                <JFXButton mnemonicParsing="false" onAction="#onNodeModify" text="Modify Node" textFill="WHITE"
+                           GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </JFXButton>
+                <JFXButton mnemonicParsing="false" onAction="#onModificationCancel" text="Cancel" textFill="WHITE"
+                           GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7"
+                           GridPane.valignment="CENTER">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </JFXButton>
+            </children>
+        </GridPane>
     </children>
 </GridPane>
