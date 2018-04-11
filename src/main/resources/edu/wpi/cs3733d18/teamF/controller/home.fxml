@@ -61,8 +61,12 @@
                      <font>
                         <Font name="Arial Bold" size="15.0" />
                      </font></JFXTextField>
-                  <FontAwesomeIconView fill="WHITE" glyphName="ARROW_UP" layoutX="258.0" layoutY="170.0" size="30" wrappingWidth="22.142860293388367" />
-                  <FontAwesomeIconView fill="WHITE" glyphName="ARROW_DOWN" layoutX="268.0" layoutY="190.0" size="30" wrappingWidth="22.142860293388367" />
+                  <Pane layoutX="249.0" layoutY="133.0" onMouseClicked="#switchLocations" prefHeight="51.0" prefWidth="48.0">
+                     <children>
+                        <FontAwesomeIconView fill="WHITE" glyphName="ARROW_UP" size="30" translateY="25.0" wrappingWidth="22.142860293388367" />
+                        <FontAwesomeIconView fill="WHITE" glyphName="ARROW_DOWN" size="30" translateX="15.0" translateY="45.0" wrappingWidth="22.142860293388367" />
+                     </children>
+                  </Pane>
                   <FontAwesomeIconView fill="WHITE" glyphName="MAP_MARKER" layoutX="23.0" layoutY="204.0" size="30" wrappingWidth="22.14285659790039" />
                   <Circle layoutX="31.0" layoutY="129.0" radius="7.0" stroke="#f2f5f7" strokeLineCap="ROUND" strokeLineJoin="ROUND">
                      <fill>
@@ -77,6 +81,11 @@
                   <Circle fill="WHITE" layoutX="31.0" layoutY="159.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
                   <Circle fill="WHITE" layoutX="31.0" layoutY="143.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
                   <Circle fill="WHITE" layoutX="31.0" layoutY="174.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
+                  <Text fill="WHITE" layoutX="96.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Directions">
+                     <font>
+                        <Font name="Arial Bold" size="24.0" />
+                     </font>
+                  </Text>
                </children>
             </Pane>
             <Pane prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: WHITE;">
@@ -354,7 +363,7 @@
                   <HBox fx:id="searchBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="300.0" spacing="5.0" style="-fx-background-color: #042E58;" StackPane.alignment="TOP_CENTER">
                      <children>
                         <JFXHamburger fx:id="hamburger" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
-                        <JFXTextField fx:id="sourceLocation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="161.0" promptText="Type or click map" style="-fx-background-color: #f2f5f7;">
+                        <JFXTextField fx:id="searchLocation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="161.0" promptText="Type or click map" style="-fx-background-color: #f2f5f7;">
                            <font>
                               <Font name="Arial Bold" size="15.0" />
                            </font></JFXTextField>

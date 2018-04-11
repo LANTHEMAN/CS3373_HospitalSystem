@@ -260,7 +260,11 @@ public class HomeController implements SwitchableController, Observer {
     private FontAwesomeIconView logoutCancel;
     // searching for a location
     @FXML
+    private JFXTextField searchLocation;
+    @FXML
     private JFXTextField sourceLocation;
+    @FXML
+    private JFXTextField destinationLocation;
     @FXML
     private JFXListView searchList;
     @FXML
@@ -269,8 +273,6 @@ public class HomeController implements SwitchableController, Observer {
     private FontAwesomeIconView directionsArrow;
     @FXML
     private FontAwesomeIconView cancelDirections;
-    @FXML
-    private JFXTextField destinationLocation;
     @FXML
     private JFXDrawer directionsDrawer;
     @FXML
@@ -733,7 +735,7 @@ public class HomeController implements SwitchableController, Observer {
         });
 
 
-        sourceLocation.setOnKeyTyped((KeyEvent e) -> {
+        searchLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = sourceLocation.getText();
             input = input.concat("" + e.getCharacter());
             autoComplete(input, searchList, "Node", "longName");
@@ -831,6 +833,7 @@ public class HomeController implements SwitchableController, Observer {
         if (directionsDrawer.isHidden()) {
             directionsDrawer.open();
             directionsDrawer.toFront();
+            sourceLocation.setText(searchLocation.getText());
         }
 
     }
@@ -840,6 +843,7 @@ public class HomeController implements SwitchableController, Observer {
         if (directionsDrawer.isShown()) {
             directionsDrawer.close();
             directionsDrawer.toBack();
+            searchLocation.setText(sourceLocation.getText());
         }
 
 
@@ -851,7 +855,6 @@ public class HomeController implements SwitchableController, Observer {
             adminDrawer.close();
             adminDrawer.toBack();
         }
-
     }
 
     private void setGuestMenu() {
@@ -867,7 +870,7 @@ public class HomeController implements SwitchableController, Observer {
 
     @FXML
     void setSourceSearch() {
-        sourceLocation.setText(searchList.getSelectionModel().getSelectedItem().toString());
+        searchLocation.setText(searchList.getSelectionModel().getSelectedItem().toString());
         searchList.setVisible(false);
     }
 
@@ -1303,6 +1306,21 @@ public class HomeController implements SwitchableController, Observer {
             String cmd = (String) arg;
             commands.add(cmd);
         }
+    }
+
+
+    //////////////////////////////
+    //                          //
+    //         Directions       //
+    //                          //
+    //////////////////////////////
+
+
+    @FXML
+    void switchLocations() {
+        String temp = sourceLocation.getText();
+        sourceLocation.setText(destinationLocation.getText());
+        destinationLocation.setText(temp);
     }
 
 
