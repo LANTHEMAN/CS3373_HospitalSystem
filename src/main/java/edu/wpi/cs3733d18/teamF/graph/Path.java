@@ -120,4 +120,11 @@ public class Path {
 
         return Math.toDegrees(Math.atan2(det, dot));
     }
+
+    public double getUnweightedLength(){
+        return edges.stream()
+                .map(Edge::getDistance)
+                .mapToDouble(value -> value)
+                .sum();
+    }
 }

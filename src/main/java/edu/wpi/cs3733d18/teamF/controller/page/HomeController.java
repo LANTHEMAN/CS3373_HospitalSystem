@@ -124,6 +124,18 @@ public class HomeController implements SwitchableController, Observer {
     public Label completedByLabel;
     @FXML
     public Label usernameLabel;
+    @FXML
+    public TableColumn chooseCol;
+    @FXML
+    public TableColumn<User, Integer> usernameCol;
+    @FXML
+    public TableColumn<User, String> firstNameUserCol;
+    @FXML
+    public TableColumn<User, String> lastNameUserCol;
+    @FXML
+    public TableColumn<User, String> privilegeCol;
+    @FXML
+    public TableColumn<User, String> occupationCol;
     ConcurrentLinkedQueue<String> commands = new ConcurrentLinkedQueue<>();
     PaneVoiceController paneVoiceController;
     Voice voice;
@@ -150,19 +162,6 @@ public class HomeController implements SwitchableController, Observer {
     private JFXTextField userTextField;
     @FXML
     private TableView<User> searchUserResultTable;
-    @FXML
-    public TableColumn chooseCol;
-    @FXML
-    public TableColumn<User, Integer> usernameCol;
-    @FXML
-    public TableColumn<User, String> firstNameUserCol;
-    @FXML
-    public TableColumn<User, String> lastNameUserCol;
-    @FXML
-    public TableColumn<User, String> privilegeCol;
-    @FXML
-    public TableColumn<User, String> occupationCol;
-
     private PaneMapController mapDrawController;
     private Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
     private Node selectedNodeStart = null;
@@ -346,15 +345,20 @@ public class HomeController implements SwitchableController, Observer {
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Orthopedics"))));
                             voice.speak("Here is the route to Orthopedics and Rhemutology");
                         } else if (command.contains("PARKING") && command.contains("GARAGE")) {
-                            mapDrawController.showPath(map.getPath
+                            Path path = map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Parking") &&
-                                                    node.getLongName().contains("Garage"))));
+                                                    node.getLongName().contains("Garage")));
+                            mapDrawController.showPath(path);
+                            for(Node n : path.getNodes()){
+                                System.out.println("n.getPosition() = " + n.getPosition());
+                            }
                             voice.speak("Here is the route to the parking garage");
                         } else if (command.contains("ELEVATOR")) {
-                            mapDrawController.showPath(map.getPath
+                            Path path = map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
-                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("ELEV"))));
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("ELEV")));
+                            mapDrawController.showPath(path);
                             voice.speak("Here is the route to the nearest elevator");
                         } else if (command.contains("DENTIST") || command.contains("DENTISTRY") || command.contains("ORAL")) {
                             mapDrawController.showPath(map.getPath
@@ -404,7 +408,7 @@ public class HomeController implements SwitchableController, Observer {
                         }
                         voice.speak(String.format("The temperature is %d degrees fahrenheit", channel.getItem().getCondition().getTemp()));
                         voice.speak(channel.getAtmosphere().toString());
-                    } else if(command.contains("RAP")){
+                    } else if (command.contains("RAP")) {
                         voice.speak("Boots and Cats and Boots and Cats and Boots and Cats and Boots and Cats and Boots" +
                                 "and Cats and Boots and Cats and Boots and Cats and Boots and Cats and Boots and Cats and Boots");
                     }
@@ -543,10 +547,10 @@ public class HomeController implements SwitchableController, Observer {
 
             if (!nodesShown) {
                 Node src = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
-                if(mapPos.distance(src.getPosition()) < 100) {
+                if (mapPos.distance(src.getPosition()) < 100) {
                     Path path = map.getPath(map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true), src);
                     mapDrawController.showPath(path);
-                }else{
+                } else {
                     return;
                 }
             }
@@ -574,7 +578,7 @@ public class HomeController implements SwitchableController, Observer {
                 selectedNodeStart = node;
 
                 if (PermissionSingleton.getInstance().isAdmin()) {
-                    gpaneNodeInfo.setVisible(true);
+                    mapContainer.getChildren().add(gpaneNodeInfo);
                 }
 
                 modNode_x.setText(String.valueOf(node.getPosition().getX()));
@@ -913,7 +917,7 @@ public class HomeController implements SwitchableController, Observer {
     //////////////////////////////
 
     @FXML
-    private void onCancelEditUser(){
+    private void onCancelEditUser() {
         editUserPane.setVisible(false);
         try {
             searchUserResultTable.getItems().clear();
@@ -923,7 +927,7 @@ public class HomeController implements SwitchableController, Observer {
     }
 
     @FXML
-    private void onNewUserEvent(){
+    private void onNewUserEvent() {
 
     }
     /*
@@ -966,10 +970,6 @@ public class HomeController implements SwitchableController, Observer {
         }
     }
     */
-
-
-
-
 
 
     // Language

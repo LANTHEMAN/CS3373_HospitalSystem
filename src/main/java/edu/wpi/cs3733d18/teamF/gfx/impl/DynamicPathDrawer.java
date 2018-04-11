@@ -49,7 +49,7 @@ public class DynamicPathDrawer extends PathDrawable {
             return;
         }
 
-        double len = path.getLength();
+        double len = path.getUnweightedLength();
         double divDist = 120;
         int divs = (int) ceil(len / divDist);
         divDist = len / divs;
@@ -71,7 +71,7 @@ public class DynamicPathDrawer extends PathDrawable {
                 arrow.progress += timestep / 10;
                 Pair<Pair<Node, Node>, Double> pathPos = getPathPos(arrow.progress);
                 if (pathPos == null) {
-                    arrow.progress -= path.getLength();
+                    arrow.progress -= path.getUnweightedLength();
                     arrow.view.setVisible(false);
                     arrow.prevX = null;
                     arrow.prevY = null;
