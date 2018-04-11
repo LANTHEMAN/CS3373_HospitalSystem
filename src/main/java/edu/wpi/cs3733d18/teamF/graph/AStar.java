@@ -2,7 +2,7 @@ package edu.wpi.cs3733d18.teamF.graph;
 
 import java.util.*;
 
-public class AStar {
+public class AStar implements PathFindingAlgorithm{
 
     /**
      * Static function to determine the best route from one node to another
@@ -13,7 +13,8 @@ public class AStar {
      * @param destination The destination node in the graph
      * @return An array of Nodes that represent a path through the graph
      */
-    public static Path getPath(Graph graph, Node source, Node destination) {
+
+    public  Path getPath(Graph graph, Node source, Node destination) {
         // see if the destination exists or if src equals dst
         if (destination == null || source == null) {
             throw new AssertionError();
