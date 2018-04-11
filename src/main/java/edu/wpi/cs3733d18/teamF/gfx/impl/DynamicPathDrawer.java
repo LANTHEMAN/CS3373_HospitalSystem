@@ -125,6 +125,8 @@ public class DynamicPathDrawer extends PathDrawable {
 
                 if (arrow.prevAngle - angle > 180) {
                     angle += 360;
+                } else if(arrow.prevAngle - angle < -180){
+                    angle -= 360;
                 }
 
                 RotateTransition rotateTransition =

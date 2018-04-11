@@ -380,6 +380,9 @@ public class HomeController implements SwitchableController, Observer {
                         }
                         voice.speak(String.format("The temperature is %d degrees fahrenheit", channel.getItem().getCondition().getTemp()));
                         voice.speak(channel.getAtmosphere().toString());
+                    } else if(command.contains("RAP")){
+                        voice.speak("Boots and Cats and Boots and Cats and Boots and Cats and Boots and Cats and Boots" +
+                                "and Cats and Boots and Cats and Boots and Cats and Boots and Cats and Boots and Cats and Boots");
                     }
                 }
             }

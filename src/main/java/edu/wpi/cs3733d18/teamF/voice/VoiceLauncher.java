@@ -29,8 +29,8 @@ public class VoiceLauncher extends Observable implements Runnable {
         }
 
         configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
-        configuration.setDictionaryPath("0096.dic");
-        configuration.setLanguageModelPath("0096.lm");
+        configuration.setDictionaryPath("3075.dic");
+        configuration.setLanguageModelPath("3075.lm");
     }
 
     public static VoiceLauncher getInstance() {
