@@ -58,15 +58,7 @@ public class HomeController implements SwitchableController, Observer {
     private static final int MIN_PIXELS = 200;
     private static Image maps2D[] = ImageCacheSingleton.maps2D;
     private static Image maps3D[] = ImageCacheSingleton.maps3D;
-    final Boolean canSayCommand[] = {false};
-    private final ObservableList<String> patientRooms = FXCollections.observableArrayList(
-            "Patient Room 1",
-            "Patient Room 2",
-            "Patient Room 3");
-    private final ObservableList<String> bathrooms = FXCollections.observableArrayList(
-            "Bathroom 1",
-            "Bathroom 2");
-    private final ObservableList<String> all = FXCollections.observableArrayList();
+    private final Boolean canSayCommand[] = {false};
     private final ObservableList<String> priority = FXCollections.observableArrayList(
             "0",
             "1",
@@ -123,21 +115,21 @@ public class HomeController implements SwitchableController, Observer {
     public Label completedByLabel;
     @FXML
     public Label usernameLabel;
-    ConcurrentLinkedQueue<String> commands = new ConcurrentLinkedQueue<>();
-    PaneVoiceController paneVoiceController;
-    Voice voice;
-    VoiceManager voiceManager = VoiceManager.getInstance();
+    private ConcurrentLinkedQueue<String> commands = new ConcurrentLinkedQueue<>();
+    private PaneVoiceController paneVoiceController;
+    private Voice voice;
+    private VoiceManager voiceManager = VoiceManager.getInstance();
     ////////////////////////////////////////////////////
     //                                                //
     //           Search Service Request Variables     //
     //                                                //
     ////////////////////////////////////////////////////
-    String searchType;
-    String filter;
-    ServiceRequest serviceRequestPopUp;
-    boolean statusChange;
-    String newStatus;
-    boolean nodesShown = false;
+    private String searchType;
+    private String filter;
+    private ServiceRequest serviceRequestPopUp;
+    private boolean statusChange;
+    private String newStatus;
+    private boolean nodesShown = false;
     ////////////////////////////////////////////////////
     //                                                //
     //           Edit User Variables                  //
@@ -178,12 +170,12 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private VBox addLocationPopup;
 
-    @FXML
+    /*@FXML
     private VBox vbxMenu;
     @FXML
     private VBox vbxLocation;
     @FXML
-    private VBox vbxDirections;
+    private VBox vbxDirections;*/
     /**
      * New node window
      */
@@ -197,12 +189,6 @@ public class HomeController implements SwitchableController, Observer {
     private ComboBox<String> newNode_type = new ComboBox<>(FXCollections.observableArrayList(NodeBuilder.getNodeTypes()));
     @FXML
     private GesturePane gesturePane;
-    @FXML
-    private Text txtUser;
-    @FXML
-    private Button btnMapDimensions;
-    @FXML
-    private Button loginPopup;
     // the modify Node information panel on the left
     @FXML
     private GridPane gpaneNodeInfo;
@@ -257,9 +243,15 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private JFXButton floor3;
     @FXML
+    private JFXButton btn2D;
+    @FXML
+    private JFXButton btn3D;
+    @FXML
     private FontAwesomeIconView loginCancel;
     @FXML
     private HBox searchBar;
+    @FXML
+    private Text MainTitle;
     ////////////////////////////////////////
     //                                    //
     //       Edit Service Request         //
@@ -453,15 +445,6 @@ public class HomeController implements SwitchableController, Observer {
         // set default zoom
         gesturePane.zoomTo(2, new Point2D(600, 600));
 
-        // dynamically change 2d/3d switcher button text
-        if (map.is2D()) {
-            StringBinding mapDim = switcher.resFac.getStringBinding("3DMap");
-            btnMapDimensions.setText(mapDim.get());
-        } else {
-            StringBinding mapDim = switcher.resFac.getStringBinding("2DMap");
-            btnMapDimensions.setText(mapDim.get());
-        }
-
         // set up new node panel
         newNode_type.getItems().addAll(NodeBuilder.getNodeTypes());
         newNode_type.getSelectionModel().selectFirst();
@@ -635,35 +618,42 @@ public class HomeController implements SwitchableController, Observer {
 
         */
 
+
         floorBtn.setText("2");
         l2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("L2");
             floorBtn.setText("L2");
+            MainTitle.setText("Brigham and Women's Hospital: Lower Level 2");
             reloadMap();
         });
         l1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("L1");
             floorBtn.setText("L1");
+            MainTitle.setText("Brigham and Women's Hospital: Lower Level 1");
             reloadMap();
         });
         groundFloor.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("0G");
             floorBtn.setText("G");
+            MainTitle.setText("Brigham and Women's Hospital: Ground Floor");
             reloadMap();
         });
         floor1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("01");
             floorBtn.setText("1");
+            MainTitle.setText("Brigham and Women's Hospital: Level 1");
             reloadMap();
         });
         floor2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("02");
             floorBtn.setText("2");
+            MainTitle.setText("Brigham and Women's Hospital: Level 2");
             reloadMap();
         });
         floor3.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("03");
             floorBtn.setText("3");
+            MainTitle.setText("Brigham and Women's Hospital: Level 3");
             reloadMap();
         });
 
@@ -1002,19 +992,23 @@ public class HomeController implements SwitchableController, Observer {
     // Adjusting the map
 
     @FXML
-    void onMapDimensions() {
-        StringBinding mapDim;
-        if (map.is2D()) {
-            mapDim = switcher.resFac.getStringBinding("2DMap");
-            btnMapDimensions.setText(mapDim.get());
-            map.setIs2D(false);
-            reloadMap();
-        } else {
-            mapDim = switcher.resFac.getStringBinding("3DMap");
-            btnMapDimensions.setText(mapDim.get());
-            map.setIs2D(true);
-            reloadMap();
-        }
+    void on2D() {
+        map.setIs2D(true);
+        reloadMap();
+        btn2D.setButtonType(JFXButton.ButtonType.RAISED);
+        btn2D.setStyle("-fx-background-color:  #f2f5f7");
+        btn3D.setButtonType(JFXButton.ButtonType.FLAT);
+        btn3D.setStyle("-fx-background-color:  #b6b8b9");
+    }
+
+    @FXML
+    void on3D() {
+        map.setIs2D(false);
+        reloadMap();
+        btn2D.setButtonType(JFXButton.ButtonType.FLAT);
+        btn2D.setStyle("-fx-background-color:  #b6b8b9");
+        btn3D.setButtonType(JFXButton.ButtonType.RAISED);
+        btn3D.setStyle("-fx-background-color:  #f2f5f7");
     }
 
     @FXML
@@ -1178,7 +1172,7 @@ public class HomeController implements SwitchableController, Observer {
         reloadMap();
         */
     }
-
+/*
     @FXML
     void onGetDirections() {
         vbxMenu.setVisible(false);
@@ -1188,7 +1182,7 @@ public class HomeController implements SwitchableController, Observer {
     public void onFindLocation() {
         vbxMenu.setVisible(false);
         vbxLocation.setVisible(true);
-    }
+    }*/
 
     @FXML
     public void onMapEditor() {

@@ -256,8 +256,6 @@
                         <Font name="Arial Bold" size="28.0" />
                     </font>
                 </Text>
-
-                <Button fx:id="btnMapDimensions" mnemonicParsing="false" onAction="#onMapDimensions" text="3D Map" translateX="-80.0" translateY="-165.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                 <VBox fx:id="addLocationPopup" alignment="CENTER" maxHeight="235.0" maxWidth="178.0" prefHeight="235.0" prefWidth="177.0" spacing="10.0" style="-fx-background-color: rgba(217, 217, 217, 0.9); -fx-border-style: solid; -fx-border-color: grey;" visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%AddLocation" />
@@ -349,7 +347,6 @@
                         <Font size="15.0" />
                     </font>
                 </Text>
-                <Button mnemonicParsing="false" onAction="#onHelpPopup" text="Help" translateX="-80.0" translateY="-130.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
             <StackPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
                <children>
                   <JFXDrawer fx:id="directionsDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefHeight="720.0" prefWidth="300.0" resizeContent="true" StackPane.alignment="TOP_LEFT" />
@@ -389,18 +386,18 @@
                </font>
             </JFXButton>
             <JFXListView fx:id="searchList" maxHeight="200.0" maxWidth="300.0" onMouseClicked="#setSourceSearch" visible="false" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-            <FontAwesomeIconView fill="#727272" glyphName="QUESTION" size="50" translateX="-22.0" translateY="-70.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+            <FontAwesomeIconView fill="#727272" glyphName="QUESTION" onMouseClicked="#onHelpPopup" size="50" translateX="-22.0" translateY="-70.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
             <JFXNodesList fx:id="floorNode" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" spacing="10.0" style="-fx-background-radius: 100;" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets right="20.0" top="50.0" />
                </GridPane.margin>
             </JFXNodesList>
-            <JFXButton fx:id="btn3D" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #b6b8b9;" text="3D" textFill="#2c2c2c" translateX="-5.0" translateY="-5.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <JFXButton fx:id="btn3D" onAction="#on3D" prefHeight="60.0" prefWidth="60.0" ripplerFill="BLACK" style="-fx-background-color: #b6b8b9;" text="3D" textFill="#2c2c2c" translateX="-5.0" translateY="-5.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <font>
                   <Font size="20.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="btn2D" buttonType="RAISED" layoutX="1230.0" layoutY="670.0" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #f2f5f7;" text="2D" textFill="#2c2c2c" translateX="-65.0" translateY="-5.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <JFXButton fx:id="btn2D" buttonType="RAISED" layoutX="1230.0" layoutY="670.0" onAction="#on2D" prefHeight="60.0" prefWidth="60.0" ripplerFill="BLACK" style="-fx-background-color: #f2f5f7;" text="2D" textFill="#2c2c2c" translateX="-65.0" translateY="-5.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <font>
                   <Font size="20.0" />
                </font>
