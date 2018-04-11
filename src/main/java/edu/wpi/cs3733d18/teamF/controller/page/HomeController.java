@@ -1136,8 +1136,10 @@ public class HomeController implements SwitchableController, Observer {
         fnameField.clear();
         lnameField.clear();
         occupationField.clear();
+        languageCheck.setSelected(false);
+        religiousCheck.setSelected(false);
+        securityCheck.setSelected(false);
         privilegeCombo.getSelectionModel().clearSelection();
-        privilegeCombo.getItems().addAll(privilegeOptions);
         editUserPane.setVisible(false);
         newUserPane.setVisible(true);
     }
@@ -1893,6 +1895,7 @@ public class HomeController implements SwitchableController, Observer {
             }
         }
         newUserPane.setVisible(false);
+        onEditUsers();
     }
 
     @FXML
