@@ -21,13 +21,13 @@ public class PermissionSingleton {
         currUser = "Guest";
 
         if (!userExist("admin")) {
-            addEmployee(new Employee("admin", "admin", "Admin", "Default", "Admin", "Admin"));
+            addUser(new User("admin", "admin", "Admin", "Default", "Admin", "Admin"));
             ServiceRequestSingleton.getInstance().addOccupationLanguageInterpreter("Admin");
             ServiceRequestSingleton.getInstance().addOccupationReligiousServices("Admin");
         }
 
         if (!userExist("staff")) {
-            addEmployee(new Employee("staff", "1234", "Staff", "Staff", "Member", "Nurse"));
+            addUser(new User("staff", "1234", "Staff", "Staff", "Member", "Nurse"));
             ServiceRequestSingleton.getInstance().addOccupationLanguageInterpreter("System Admin");
             ServiceRequestSingleton.getInstance().addOccupationReligiousServices("System Admin");
         }
@@ -81,16 +81,6 @@ public class PermissionSingleton {
     }
 
     public void addUser(User u) {
-        pmanage.users.add(u);
-        String sql = "INSERT INTO HUser"
-                + " VALUES(userType, username, password, privilege) ('user', '" + u.getUname()
-                + "', '" + u.getPsword()
-                + "', '" + u.getType()
-                + "')";
-        dbHandler.runAction(sql);
-    }
-
-    public void addEmployee(Employee u) {
         pmanage.users.add(u);
         String sql = "INSERT INTO HUser"
                 + " VALUES ('employee', '" + u.getUname()

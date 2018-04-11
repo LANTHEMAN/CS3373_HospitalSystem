@@ -40,8 +40,11 @@ public class PermissionManager implements DatabaseItem {
             while(resultSet.next()){
                 String username = resultSet.getString(1);
                 String password = resultSet.getString(2);
-                String type = resultSet.getString(3);
-                User newUser = new User(username,password,type);
+                String firstname = resultSet.getString(3);
+                String lastname = resultSet.getString(4);
+                String privilege = resultSet.getString(5);
+                String occupation = resultSet.getString(6);
+                User newUser = new User(username,password,firstname, lastname, privilege, occupation);
                 users.add(newUser);
             }
         }

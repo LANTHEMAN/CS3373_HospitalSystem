@@ -119,6 +119,18 @@ public class HomeController implements SwitchableController, Observer {
     private PaneVoiceController paneVoiceController;
     private Voice voice;
     private VoiceManager voiceManager = VoiceManager.getInstance();
+    @FXML
+    public TableColumn chooseCol;
+    @FXML
+    public TableColumn<User, String> usernameCol;
+    @FXML
+    public TableColumn<User, String> firstNameUserCol;
+    @FXML
+    public TableColumn<User, String> lastNameUserCol;
+    @FXML
+    public TableColumn<User, String> privilegeCol;
+    @FXML
+    public TableColumn<User, String> occupationCol;
     ////////////////////////////////////////////////////
     //                                                //
     //           Search Service Request Variables     //
@@ -141,19 +153,6 @@ public class HomeController implements SwitchableController, Observer {
     private JFXTextField userTextField;
     @FXML
     private TableView<User> searchUserResultTable;
-    @FXML
-    public TableColumn chooseCol;
-    @FXML
-    public TableColumn<User, Integer> usernameCol;
-    @FXML
-    public TableColumn<User, String> firstNameUserCol;
-    @FXML
-    public TableColumn<User, String> lastNameUserCol;
-    @FXML
-    public TableColumn<User, String> privilegeCol;
-    @FXML
-    public TableColumn<User, String> occupationCol;
-
     private PaneMapController mapDrawController;
     private Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
     private Node selectedNodeStart = null;
@@ -749,7 +748,8 @@ public class HomeController implements SwitchableController, Observer {
         userTextField.setOnKeyTyped((KeyEvent e) -> {
             String input = userTextField.getText();
             input = input.concat("" + e.getCharacter());
-            //autoCompleteUserSearch(input);
+            ArrayList<User> list = autoCompleteUserSearch(input);
+            displayInUserTable(list);
         });
 
     }
@@ -897,7 +897,7 @@ public class HomeController implements SwitchableController, Observer {
     //////////////////////////////
 
     @FXML
-    private void onCancelEditUser(){
+    private void onCancelEditUser() {
         editUserPane.setVisible(false);
         try {
             searchUserResultTable.getItems().clear();
@@ -907,53 +907,115 @@ public class HomeController implements SwitchableController, Observer {
     }
 
     @FXML
-    private void onNewUserEvent(){
+    private void onNewUserEvent() {
 
     }
-    /*
-    @FXML
-    private void autoCompleteUserSearch(String input) {
+
+
+    private ArrayList<User> autoCompleteUserSearch(String input) {
+        ArrayList<User> autoCompleteUser = new ArrayList<>();
         if (input.length() > 0) {
             String sql = "SELECT * FROM HUser";
-            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
-            ArrayList<User> autoCompleteUser = new ArrayList<>();
-            Employee emp;
-            User u;
             try {
+                ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
                 while (resultSet.next()) {
-                    if(resultSet.getString(1).toLowerCase().equals("employee")){
-                        String username = resultSet.getString(2);
-                    }else{
 
-                    }
                     String username = resultSet.getString(1);
-                    if (username.toLowerCase().contains(input.toLowerCase())) {
-                        autoCompleteUser.add(temp);
-                    }
+                    String firstname = resultSet.getString(3);
+                    String lastname = resultSet.getString(4);
+                    String privilege = resultSet.getString(5);
+                    String occupation = resultSet.getString(6);
+                    User temp = new User(username, "dummy", firstname, lastname, privilege, occupation);
+                    autoCompleteUser.add(temp);
+
                 }
+                resultSet.close();
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();
             }
-            try {
-                if (autoCompleteUser.size() > 0) {
-                    ObservableList<User> list = FXCollections.observableArrayList(autoCompleteUser);
-                    //listView.setItems(list);
-                    //listView.setVisible(true);
-                } else {
-                    //listView.setVisible(false);
-                }
-            } catch (Exception anyE) {
-                anyE.printStackTrace();
-            }
-        } else {
-            //listView.setVisible(false);
+
         }
+        return autoCompleteUser;
     }
-    */
+
+    private void displayInUserTable(ArrayList<User> users) {
+        if (users.size() < 1) {
+            //TODO: indicate to user that there are no results
+            return;
+        }
+
+        ObservableList<User> listUsers = FXCollections.observableArrayList(users);
+
+        searchUserResultTable.setEditable(false);
+
+        usernameCol.setCellValueFactory(new PropertyValueFactory<User, String>("uname"));
+        firstNameUserCol.setCellValueFactory(new PropertyValueFactory<User, String>("firstName"));
+        lastNameUserCol.setCellValueFactory(new PropertyValueFactory<User, String>("lastName"));
+        privilegeCol.setCellValueFactory(new PropertyValueFactory<User, String>("lastName"));
+        occupationCol.setCellValueFactory(new PropertyValueFactory<User, String>("occupation"));
+        chooseCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
+
+        Callback<TableColumn<User, String>, TableCell<User, String>> cellFactory
+                = //
+                new Callback<TableColumn<User, String>, TableCell<User, String>>() {
+                    @Override
+                    public TableCell call(final TableColumn<User, String> param) {
+                        final TableCell<User, String> cell = new TableCell<User, String>() {
+
+                            JFXButton btn = new JFXButton("Select");
+
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    btn.setOnAction(event -> {
+                                        User e = getTableView().getItems().get(getIndex());
+                                        onSelectUser(e);
+
+                                    });
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        chooseCol.setCellFactory(cellFactory);
+
+        searchUserResultTable.setItems(listUsers);
+    }
 
 
+    public void onSelectUser(User s) {
+        /*
+        serviceRequestPopUp = ServiceRequestSingleton.getInstance().getPopUpRequest();
+        typeLabel.setText("Type: " + serviceRequestPopUp.getType());
+        idLabel.setText("Service Request #" + serviceRequestPopUp.getId());
+        firstNameLabel.setText("First Name: " + serviceRequestPopUp.getFirstName());
+        lastNameLabel.setText("Last Name: " + serviceRequestPopUp.getLastName());
+        locationLabel.setText(serviceRequestPopUp.getLocation());
+        statusLabel.setText(serviceRequestPopUp.getStatus());
+        instructionsTextArea.setText(serviceRequestPopUp.getDescription());
+        statusChange = false;
+        newStatus = "no";
+        instructionsTextArea.setEditable(false);
 
+        statusBox.getItems().addAll("Incomplete", "In Progress", "Complete");
 
+        if (serviceRequestPopUp.getStatus().equals("Complete")) {
+            completedByLabel.setVisible(true);
+            usernameLabel.setVisible(true);
+            usernameLabel.setText(serviceRequestPopUp.getCompletedBy());
+        }
+        */
+        editUserPane.setVisible(false);
+        //editUserInfoPane.setVisible(true);
+    }
 
 
     // Language
@@ -1377,7 +1439,7 @@ public class HomeController implements SwitchableController, Observer {
         ServiceRequestSingleton.getInstance().setSearch(filter, searchType);
     }
 
-    @FXML
+
     public void onSelect(ServiceRequest s) {
         ServiceRequestSingleton.getInstance().setPopUpRequest(s);
         serviceRequestPopUp = ServiceRequestSingleton.getInstance().getPopUpRequest();
