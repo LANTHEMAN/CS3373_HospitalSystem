@@ -59,17 +59,17 @@ public class TestAStar {
         path2Arr.add(nodeC);
         path2Arr.add(nodeD);
         Path path2 = new Path(path2Arr, graph);
-
-        assertEquals(path1, AStar.getPath(graph, nodeA, nodeD));
+        PathFindingAlgorithm A = new AStar();
+        assertEquals(path1, A.getPath(graph, nodeA, nodeD));
 
         graph.removeEdge(nodeA, nodeB);
-        assertEquals(path2, AStar.getPath(graph, nodeA, nodeD));
+        assertEquals(path2, A.getPath(graph, nodeA, nodeD));
 
         graph.addEdge(nodeA, nodeB);
-        assertEquals(path1, AStar.getPath(graph, nodeA, nodeD));
+        assertEquals(path1, A.getPath(graph, nodeA, nodeD));
 
         graph.removeNode(nodeB);
-        assertEquals(path2, AStar.getPath(graph, nodeA, nodeD));
+        assertEquals(path2, A.getPath(graph, nodeA, nodeD));
 
         // check that filter methods work for nodes
         graph.addNode(nodeB);
@@ -171,8 +171,8 @@ public class TestAStar {
         path.add(nodeQ);
         path.add(nodeR);
         path.add(nodeF);
-
-        assertEquals(new Path(path, graph), AStar.getPath(graph, nodeS, nodeF));
+        PathFindingAlgorithm A = new AStar();
+        assertEquals(new Path(path, graph), A.getPath(graph, nodeS, nodeF));
     }
 
     @Test
@@ -268,14 +268,14 @@ public class TestAStar {
         path2.add(nodeQ);
         path2.add(nodeR);
         path2.add(nodeF);
-
-        assertEquals(new Path(path2, graph), AStar.getPath(graph, nodeS, nodeF));
+        PathFindingAlgorithm A = new AStar();
+        assertEquals(new Path(path2, graph), A.getPath(graph, nodeS, nodeF));
 
         // now 'block' a specific path by adding additional weight
 
         nodeQ.setAdditionalWeight(3);
 
-        assertEquals(new Path(path, graph), AStar.getPath(graph, nodeS, nodeF));
+        assertEquals(new Path(path, graph), A.getPath(graph, nodeS, nodeF));
     }
 
 }

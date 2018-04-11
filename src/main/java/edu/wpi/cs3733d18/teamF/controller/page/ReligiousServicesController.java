@@ -50,7 +50,7 @@ public class ReligiousServicesController implements SwitchableController {
 
     @FXML
     void onCancel() {
-        switcher.switchTo(Screens.ServiceRequest);
+        //switcher.switchTo(Screens.ServiceRequest);
     }
 
     @FXML
@@ -95,7 +95,7 @@ public class ReligiousServicesController implements SwitchableController {
         ServiceRequest request = new ReligiousServices(first_name, last_name, location, new_description, "Incomplete", 1, r);
         ServiceRequestSingleton.getInstance().sendServiceRequest(request);
         ServiceRequestSingleton.getInstance().addServiceRequest(request);
-        switcher.switchTo(Screens.ServiceRequest);
+        //switcher.switchTo(Screens.ServiceRequest);
     }
 }
 

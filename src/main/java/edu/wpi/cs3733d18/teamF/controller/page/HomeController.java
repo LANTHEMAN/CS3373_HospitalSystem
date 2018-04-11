@@ -139,6 +139,30 @@ public class HomeController implements SwitchableController, Observer {
     boolean statusChange;
     String newStatus;
     boolean nodesShown = false;
+    ////////////////////////////////////////////////////
+    //                                                //
+    //           Edit User Variables                  //
+    //                                                //
+    ////////////////////////////////////////////////////
+    @FXML
+    private AnchorPane editUserPane;
+    @FXML
+    private JFXTextField userTextField;
+    @FXML
+    private TableView<User> searchUserResultTable;
+    @FXML
+    public TableColumn chooseCol;
+    @FXML
+    public TableColumn<User, Integer> usernameCol;
+    @FXML
+    public TableColumn<User, String> firstNameUserCol;
+    @FXML
+    public TableColumn<User, String> lastNameUserCol;
+    @FXML
+    public TableColumn<User, String> privilegeCol;
+    @FXML
+    public TableColumn<User, String> occupationCol;
+
     private PaneMapController mapDrawController;
     private Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
     private Node selectedNodeStart = null;
@@ -698,7 +722,6 @@ public class HomeController implements SwitchableController, Observer {
                     loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
                     if (PermissionSingleton.getInstance().isAdmin()) {
                         setAdminMenu();
-                        mapDrawController.unshowPath();
                     } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
                         setAdminMenu();
                     } else {
@@ -737,6 +760,12 @@ public class HomeController implements SwitchableController, Observer {
             String input = usernameSearch.getText();
             input = input.concat("" + e.getCharacter());
             autoComplete(input, usernameList, "HUser", "username");
+        });
+
+        userTextField.setOnKeyTyped((KeyEvent e) -> {
+            String input = userTextField.getText();
+            input = input.concat("" + e.getCharacter());
+            //autoCompleteUserSearch(input);
         });
 
     }
@@ -876,6 +905,71 @@ public class HomeController implements SwitchableController, Observer {
     void onCancelClose() {
         helpPane.setVisible(false);
     }
+
+    //////////////////////////////
+    //                          //
+    //        Edit User         //
+    //                          //
+    //////////////////////////////
+
+    @FXML
+    private void onCancelEditUser(){
+        editUserPane.setVisible(false);
+        try {
+            searchUserResultTable.getItems().clear();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onNewUserEvent(){
+
+    }
+    /*
+    @FXML
+    private void autoCompleteUserSearch(String input) {
+        if (input.length() > 0) {
+            String sql = "SELECT * FROM HUser";
+            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
+            ArrayList<User> autoCompleteUser = new ArrayList<>();
+            Employee emp;
+            User u;
+            try {
+                while (resultSet.next()) {
+                    if(resultSet.getString(1).toLowerCase().equals("employee")){
+                        String username = resultSet.getString(2);
+                    }else{
+
+                    }
+                    String username = resultSet.getString(1);
+                    if (username.toLowerCase().contains(input.toLowerCase())) {
+                        autoCompleteUser.add(temp);
+                    }
+                }
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+            try {
+                if (autoCompleteUser.size() > 0) {
+                    ObservableList<User> list = FXCollections.observableArrayList(autoCompleteUser);
+                    //listView.setItems(list);
+                    //listView.setVisible(true);
+                } else {
+                    //listView.setVisible(false);
+                }
+            } catch (Exception anyE) {
+                anyE.printStackTrace();
+            }
+        } else {
+            //listView.setVisible(false);
+        }
+    }
+    */
+
+
+
+
 
 
     // Language
@@ -1121,6 +1215,7 @@ public class HomeController implements SwitchableController, Observer {
     public void onEditUsers() {
         adminDrawer.close();
         adminDrawer.toBack();
+        editUserPane.setVisible(true);
     }
 
 
