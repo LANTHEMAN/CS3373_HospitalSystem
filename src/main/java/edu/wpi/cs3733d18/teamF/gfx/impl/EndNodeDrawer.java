@@ -1,5 +1,7 @@
 package edu.wpi.cs3733d18.teamF.gfx.impl;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.NodeDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Node;
@@ -7,15 +9,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class RestroomNodeDrawer extends NodeDrawable {
+public class EndNodeDrawer extends NodeDrawable {
 
     private boolean isSelected = false;
 
-    public RestroomNodeDrawer(Node node) {
+    public EndNodeDrawer(Node node) {
         super(node);
     }
 
-    public RestroomNodeDrawer() {
+    public EndNodeDrawer() {
         super();
     }
 
@@ -37,17 +39,17 @@ public class RestroomNodeDrawer extends NodeDrawable {
         double posX = is2D ? node.getPosition().getX() : node.getWireframePosition().getX();
         double posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
 
-        if (!isSelected) {
-            Circle circle = new Circle(1.5, Color.CYAN);
+        if(!isSelected){
+            Circle circle = new Circle(2, Color.RED);
             circle.setCenterX(posX * pane.getMaxWidth() / imageWidth);
             circle.setCenterY(posY * pane.getMaxHeight() / imageHeight);
             pane.getChildren().add(circle);
-        } else {
-            Circle circle = new Circle(2, Color.LIGHTCYAN);
+        }
+        else{
+            Circle circle = new Circle(2, Color.RED);
             circle.setCenterX(posX * pane.getMaxWidth() / imageWidth);
             circle.setCenterY(posY * pane.getMaxHeight() / imageHeight);
             pane.getChildren().add(circle);
         }
     }
 }
-

@@ -1,5 +1,7 @@
 package edu.wpi.cs3733d18.teamF.gfx.impl;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.gfx.EdgeDrawable;
 import edu.wpi.cs3733d18.teamF.gfx.MapDrawable;
@@ -98,7 +100,7 @@ public class UglyMapDrawer extends MapDrawable {
             }
         }
 
-        if (path != null) {
+        if (path != null && path.getNodes().size() > 0) {
             for(Edge edge : path.getEdges()){
                 if(!(edge.getNode1().getFloor().equals(edge.getNode2().getFloor()))){
                     if(edge.getNode1().getFloor().equals(map.getFloor())){
@@ -115,6 +117,18 @@ public class UglyMapDrawer extends MapDrawable {
                     }
                 }
             }
+            Node startNode  = path.getNodes().get(0);
+            NodeDrawable startIconDrawer = new StartNodeDrawer();
+            startIconDrawer.update(startNode);
+            startIconDrawer.draw(pane);
+            /*
+            Node endNode = path.getNodes().get(path.getNodes().size()-1);
+            NodeDrawable endIconDrawer = new EndNodeDrawer();
+            endIconDrawer.update(endNode);
+            endIconDrawer.draw(pane);
+            */
+
+
             pathDrawer.update(path);
             pathDrawer.draw(pane);
         }
