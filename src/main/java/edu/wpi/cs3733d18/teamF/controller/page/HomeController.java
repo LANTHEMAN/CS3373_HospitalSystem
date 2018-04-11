@@ -1207,12 +1207,16 @@ public class HomeController implements SwitchableController, Observer {
                 while (resultSet.next()) {
 
                     String username = resultSet.getString(1);
+                    String password = resultSet.getString(2);
                     String firstname = resultSet.getString(3);
                     String lastname = resultSet.getString(4);
                     String privilege = resultSet.getString(5);
                     String occupation = resultSet.getString(6);
-                    User temp = new User(username, "dummy", firstname, lastname, privilege, occupation);
-                    autoCompleteUser.add(temp);
+                    User temp = new User(username, password, firstname, lastname, privilege, occupation);
+                    String searchString = username+password+firstname+lastname+privilege+occupation;
+                    if(searchString.toLowerCase().contains(input.toLowerCase())) {
+                        autoCompleteUser.add(temp);
+                    }
 
                 }
                 resultSet.close();
@@ -1958,6 +1962,7 @@ public class HomeController implements SwitchableController, Observer {
     public void onCancelUser(){
         newUserPane.setVisible(false);
         editUserPane.setVisible(true);
+        onEditUsers();
     }
 
 
