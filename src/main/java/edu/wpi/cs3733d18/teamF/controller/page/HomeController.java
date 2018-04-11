@@ -18,6 +18,7 @@ import edu.wpi.cs3733d18.teamF.gfx.impl.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.NewNodeBuilder;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.NodeBuilder;
+import edu.wpi.cs3733d18.teamF.graph.Path;
 import edu.wpi.cs3733d18.teamF.sr.ServiceRequest;
 import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
@@ -300,7 +301,7 @@ public class HomeController implements SwitchableController, Observer {
                     if (command.equals("HELP")) {
                         onHelpPopup();
                         voice.speak("Here is the help menu");
-                    } else if (command.contains("DIRECTIONS")) {
+                    } else if (command.contains("DIRECTIONS") || command.contains("WHERE")) {
                         if (command.contains("BATHROOM")) {
                             Node src = map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
                             mapDrawController.showPath(map.getPath(src, map.findNodeClosestTo(src, node -> node.getNodeType().equals("REST"))));
@@ -364,7 +365,7 @@ public class HomeController implements SwitchableController, Observer {
                     } else if (command.contains("ELEVATOR") && command.contains("ENABLE")) {
                         map.enableElevators();
                         voice.speak("Elevators are now enabled for path finding");
-                    } else if (command.contains("WEATHER") && command.contains("TODAY")) {
+                    } else if (command.contains("WEATHER")) {
                         YahooWeatherService service = null;
                         try {
                             service = new YahooWeatherService();
@@ -384,87 +385,6 @@ public class HomeController implements SwitchableController, Observer {
             }
         }
     }));
-    @FXML
-    private JFXHamburger hamburger;
-    @FXML
-    private JFXDrawer adminDrawer;
-    @FXML
-    private VBox adminBox;
-    // login elements
-    @FXML
-    private JFXDrawer loginDrawer;
-    @FXML
-    private VBox loginBox;
-    @FXML
-    private VBox logoutBox;
-    @FXML
-    private JFXButton loginBtn;
-    @FXML
-    private JFXButton logoutBtn;
-    @FXML
-    private JFXTextField loginUsername;
-    @FXML
-    private JFXPasswordField loginPassword;
-    @FXML
-    private JFXNodesList floorNode;
-    @FXML
-    private JFXButton floorBtn;
-    @FXML
-    private JFXButton l2;
-    @FXML
-    private JFXButton l1;
-    @FXML
-    private JFXButton groundFloor;
-    @FXML
-    private JFXButton floor1;
-    @FXML
-    private JFXButton floor2;
-    @FXML
-    private JFXButton floor3;
-    @FXML
-    private FontAwesomeIconView loginCancel;
-    @FXML
-    private HBox searchBar;
-    ////////////////////////////////////////
-    //                                    //
-    //       Edit Service Request         //
-    //                                    //
-    ////////////////////////////////////////
-    @FXML
-    private FontAwesomeIconView logoutCancel;
-    // searching for a location
-    @FXML
-    private JFXTextField sourceLocation;
-    @FXML
-    private JFXListView searchList;
-    @FXML
-    private VBox directionsBox;
-    @FXML
-    private FontAwesomeIconView directionsArrow;
-    @FXML
-    private FontAwesomeIconView cancelDirections;
-    @FXML
-    private JFXTextField destinationLocation;
-    @FXML
-    private JFXDrawer directionsDrawer;
-    @FXML
-    private JFXHamburger hamburgerD;
-    @FXML
-    private FontAwesomeIconView cancelMenu;
-    @FXML
-    private AnchorPane searchPane;
-    private ObservableList<ServiceRequest> listRequests;
-    ////////////////////////////////////////
-    //                                    //
-    //           Help Screen              //
-    //                                    //
-    ////////////////////////////////////////
-    @FXML
-    private Pane helpPane;
-    @FXML
-    private GridPane userInstructions;
-    @FXML
-    private GridPane adminInstructions;
 
     @FXML
     private JFXTextField usernameSearch;
@@ -595,9 +515,13 @@ public class HomeController implements SwitchableController, Observer {
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
             if (!PermissionSingleton.getInstance().isAdmin()) {
-                mapDrawController.showPath(map.getPath
-                        (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
-                                , map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), true, node -> node.getFloor().equals(map.getFloor()))));
+                Node src = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
+                if(mapPos.distance(src.getPosition()) < 100) {
+                    Path path = map.getPath(map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true), src);
+                    mapDrawController.showPath(path);
+                }else{
+                    return;
+                }
             }
 
             // if editing maps
