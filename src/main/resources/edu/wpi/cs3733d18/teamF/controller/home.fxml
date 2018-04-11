@@ -50,6 +50,53 @@
         <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
     </rowConstraints>
     <children>
+
+        <VBox fx:id="adminBox" alignment="TOP_CENTER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" style="-fx-background-color: #616161;" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647">
+            <children>
+                <Pane prefHeight="86.0" prefWidth="300.0">
+                    <children>
+                        <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" layoutX="251.0" layoutY="53.0" onMouseClicked="#setCancelMenuEvent" size="40" wrappingWidth="22.142844200134277" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="24.0" prefHeight="38.0" prefWidth="112.0" text="MENU">
+                            <font>
+                                <Font name="System Bold" size="25.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </Pane>
+            <JFXNodesList fx:id="serviceRequestList" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="152.0" prefWidth="300.0" spacing="150.0" />
+                <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onSearchServiceRequest" prefHeight="150.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Search Service Request" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="20.0" />
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="SEARCH" size="50" />
+                    </graphic>
+                </JFXButton>
+                <JFXButton fx:id="mapEditorBtn" accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onMapEditor" prefHeight="150.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Map Editor" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="20.0" />
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
+                    </graphic>
+                </JFXButton>
+                <JFXButton fx:id="editUsersBtn" accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onEditUsers" prefHeight="150.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Edit Users" textFill="WHITE">
+                    <font>
+                        <Font name="Arial" size="20.0" />
+                    </font>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="USER" glyphStyle="USER" size="50" />
+                    </graphic>
+                </JFXButton>
+            <HBox fx:id="algorithmsBox" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #616161;" visible="false">
+               <children>
+                  <JFXButton fx:id="aStar" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAStar" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #303030;" text="A-Star" textFill="WHITE" />
+                  <JFXButton fx:id="breathFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onBreathFirst" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #616161;" text="Breath Search" textFill="WHITE" />
+                  <JFXButton fx:id="depthFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDepthFirst" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #616161;" text="Depth Search" textFill="WHITE" />
+               </children>
+            </HBox>
+            </children>
+        </VBox>
       <JFXButton fx:id="LI" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onLanguageInterpreter" prefHeight="150.0" prefWidth="300.0" style="-fx-background-color: #042E58;" text="Language Interpreter" textAlignment="CENTER" textFill="#f2f5f7" textOverrun="CLIP">
          <font>
             <Font name="Arial Bold" size="15.0" />
@@ -858,52 +905,5 @@
             </AnchorPane>
          </children>
       </VBox>
-
-        <VBox fx:id="adminBox" alignment="TOP_CENTER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" style="-fx-background-color: #616161;" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647">
-            <children>
-                <Pane prefHeight="86.0" prefWidth="300.0">
-                    <children>
-                        <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" layoutX="251.0" layoutY="53.0" onMouseClicked="#setCancelMenuEvent" size="40" wrappingWidth="22.142844200134277" />
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="24.0" prefHeight="38.0" prefWidth="112.0" text="MENU">
-                            <font>
-                                <Font name="System Bold" size="25.0" />
-                            </font>
-                        </Label>
-                    </children>
-                </Pane>
-            <JFXNodesList fx:id="serviceRequestList" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="152.0" prefWidth="300.0" spacing="150.0" />
-                <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onSearchServiceRequest" prefHeight="150.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Search Service Request" textFill="WHITE">
-                    <font>
-                        <Font name="Arial" size="20.0" />
-                    </font>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="SEARCH" size="50" />
-                    </graphic>
-                </JFXButton>
-                <JFXButton fx:id="mapEditorBtn" accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onMapEditor" prefHeight="150.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Map Editor" textFill="WHITE">
-                    <font>
-                        <Font name="Arial" size="20.0" />
-                    </font>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
-                    </graphic>
-                </JFXButton>
-                <JFXButton fx:id="editUsersBtn" accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onEditUsers" prefHeight="150.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Edit Users" textFill="WHITE">
-                    <font>
-                        <Font name="Arial" size="20.0" />
-                    </font>
-                    <graphic>
-                        <FontAwesomeIconView glyphName="USER" glyphStyle="USER" size="50" />
-                    </graphic>
-                </JFXButton>
-            <HBox fx:id="algorithmsBox" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #616161;" visible="false">
-               <children>
-                  <JFXButton fx:id="aStar" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAStar" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #303030;" text="A-Star" textFill="WHITE" />
-                  <JFXButton fx:id="breathFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onBreathFirst" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #616161;" text="Breath Search" textFill="WHITE" />
-                  <JFXButton fx:id="depthFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDepthFirst" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #616161;" text="Depth Search" textFill="WHITE" />
-               </children>
-            </HBox>
-            </children>
-        </VBox>
     </children>
 </GridPane>
