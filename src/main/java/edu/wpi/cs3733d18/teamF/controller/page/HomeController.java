@@ -74,6 +74,10 @@ public class HomeController implements SwitchableController, Observer {
     private final ObservableList<String> type = FXCollections.observableArrayList(
             "Language Interpreter",
             "Religious Services");
+
+    private boolean draggingNode;
+    private Node heldNode;
+
     @FXML
     public ComboBox filterType;
     @FXML
@@ -615,6 +619,54 @@ public class HomeController implements SwitchableController, Observer {
                 addLocationPopup.setVisible(true);
                 selectedNodeStart = null;
             }
+        });
+        mapContainer.setOnDragDetected(e ->{
+            double map_x = 5000;
+            double map_y = 3400;
+            double map3D_y = 2772;
+            if (!map.is2D()) {
+                map_y = map3D_y;
+            }
+
+            Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
+                    , e.getY() * map_y / mapContainer.getMaxHeight());
+
+
+            if(PermissionSingleton.getInstance().isAdmin()){
+                Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D());
+                double deltaX = mapPos.getX() - node.getPosition().getX();
+                double deltaY = mapPos.getY() - node.getPosition().getY();
+                draggingNode = false;
+                if(Math.sqrt((deltaX * deltaX) + (deltaY * deltaY)) < 20){
+                    draggingNode = true;
+                    heldNode = node;
+                    System.out.println("Picked Up Node");
+                }
+            }
+        });
+
+        mapContainer.setOnMouseDragged(e ->{
+            double map_x = 5000;
+            double map_y = 3400;
+            double map3D_y = 2772;
+            if (!map.is2D()) {
+                map_y = map3D_y;
+            }
+
+            Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
+                    , e.getY() * map_y / mapContainer.getMaxHeight());
+
+            if(PermissionSingleton.getInstance().isAdmin()){
+                if(draggingNode){
+                    heldNode.setPosition(mapPos);
+                    System.out.println("Holding Node");
+                }
+            }
+        });
+
+        mapContainer.setOnMouseReleased(e->{
+            draggingNode = false;
+            System.out.println("Dropped Node");
         });
 
         /*
