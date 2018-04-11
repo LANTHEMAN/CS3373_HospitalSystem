@@ -10,6 +10,7 @@ import javafx.scene.shape.Circle;
 public class RestroomNodeDrawer extends NodeDrawable {
 
     private boolean isSelected = false;
+
     public RestroomNodeDrawer(Node node) {
         super(node);
     }
@@ -36,17 +37,17 @@ public class RestroomNodeDrawer extends NodeDrawable {
         double posX = is2D ? node.getPosition().getX() : node.getWireframePosition().getX();
         double posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
 
-        if(!isSelected){
-            Circle circle = new Circle(1.5, Color.LIGHTCYAN);
+        if (!isSelected) {
+            Circle circle = new Circle(1.5, Color.CYAN);
             circle.setCenterX(posX * pane.getMaxWidth() / imageWidth);
             circle.setCenterY(posY * pane.getMaxHeight() / imageHeight);
             pane.getChildren().add(circle);
-        }
-        else{
-            Circle circle = new Circle(2, Color.CYAN);
+        } else {
+            Circle circle = new Circle(2, Color.LIGHTCYAN);
             circle.setCenterX(posX * pane.getMaxWidth() / imageWidth);
             circle.setCenterY(posY * pane.getMaxHeight() / imageHeight);
             pane.getChildren().add(circle);
         }
     }
 }
+
