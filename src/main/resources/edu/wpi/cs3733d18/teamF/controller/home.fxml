@@ -86,6 +86,11 @@
                         <Font name="Arial Bold" size="24.0" />
                      </font>
                   </Text>
+                  <JFXButton layoutX="109.0" layoutY="230.0" onAction="#onNavigate" style="-fx-background-color: #767878;" text="Navigate" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font>
+                  </JFXButton>
                </children>
             </Pane>
             <Pane prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: WHITE;">
@@ -368,7 +373,7 @@
                            <font>
                               <Font name="Arial Bold" size="15.0" />
                            </font></JFXTextField>
-                        <FontAwesomeIconView fill="#f2f5f7" glyphName="SEARCH" size="20" />
+                        <FontAwesomeIconView fill="#f2f5f7" glyphName="SEARCH" onMouseClicked="#onSearchLocation" size="20" />
                         <Line startY="-50.0" stroke="#f2f5f7">
                            <HBox.margin>
                               <Insets left="7.5" right="7.5" />

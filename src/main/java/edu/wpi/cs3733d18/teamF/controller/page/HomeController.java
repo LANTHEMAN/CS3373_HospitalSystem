@@ -461,6 +461,7 @@ public class HomeController implements SwitchableController, Observer {
                 ctrlHeld = true;
             }
         });
+
         switcher.getScene().setOnKeyReleased(ke -> {
             if (!ke.isControlDown()) {
                 gesturePane.setGestureEnabled(true);
@@ -468,6 +469,7 @@ public class HomeController implements SwitchableController, Observer {
                 ctrlHeld = false;
             }
         });
+
         mapContainer.setOnMouseReleased(e -> {
             if (selectedNodeStart == null || !map.is2D()) {
                 return;
@@ -1345,10 +1347,51 @@ public class HomeController implements SwitchableController, Observer {
 
 
     @FXML
+    void onSearchLocation() {
+        if (!searchLocation.getText().equals("")) {
+            HashSet<Node> n = map.getNodes(node -> node.getLongName().equals(searchLocation.getText()));
+            if (n.size() < 1) {
+                return;
+            }
+
+            Node selectedNode = n.iterator().next();
+            mapDrawController.selectNode(selectedNode);
+            map.setFloor(selectedNode.getFloor());
+            reloadMap();
+        }
+    }
+
+
+    @FXML
     void switchLocations() {
         String temp = sourceLocation.getText();
         sourceLocation.setText(destinationLocation.getText());
         destinationLocation.setText(temp);
+    }
+
+
+    @FXML
+    void onNavigate() {
+        sourceLocation.getText();
+        destinationLocation.getText();
+        if (!sourceLocation.getText().equals("") && !destinationLocation.getText().equals("")) {
+            HashSet<Node> sourceNodeSet = map.getNodes(node -> node.getLongName().equals(sourceLocation.getText()));
+            if (sourceNodeSet.size() < 1) {
+                return;
+            }
+            HashSet<Node> destinationNodeSet = map.getNodes(node -> node.getLongName().equals(destinationLocation.getText()));
+            if (destinationNodeSet.size() < 1) {
+                return;
+            }
+
+            Node sourceNode = sourceNodeSet.iterator().next();
+            Node destinationNode = destinationNodeSet.iterator().next();
+
+            mapDrawController.showPath(map.getPath(sourceNode, destinationNode));
+
+            map.setFloor(sourceNode.getFloor());
+            reloadMap();
+        }
     }
 
 
