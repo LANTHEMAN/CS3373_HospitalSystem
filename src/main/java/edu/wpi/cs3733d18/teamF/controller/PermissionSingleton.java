@@ -83,7 +83,7 @@ public class PermissionSingleton {
     public void addUser(User u) {
         pmanage.users.add(u);
         String sql = "INSERT INTO HUser"
-                + " VALUES(username, password, privilege) ('" + u.getUname()
+                + " VALUES(userType, username, password, privilege) ('user', '" + u.getUname()
                 + "', '" + u.getPsword()
                 + "', '" + u.getType()
                 + "')";
@@ -93,7 +93,7 @@ public class PermissionSingleton {
     public void addEmployee(Employee u) {
         pmanage.users.add(u);
         String sql = "INSERT INTO HUser"
-                + " VALUES ('" + u.getUname()
+                + " VALUES ('employee', '" + u.getUname()
                 + "', '" + u.getPsword()
                 + "', '" + u.getType()
                 + "', '" + u.getFirstName()

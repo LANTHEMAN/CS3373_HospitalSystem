@@ -759,7 +759,7 @@ public class HomeController implements SwitchableController, Observer {
         userTextField.setOnKeyTyped((KeyEvent e) -> {
             String input = userTextField.getText();
             input = input.concat("" + e.getCharacter());
-            autoCompleteUserSearch(input);
+            //autoCompleteUserSearch(input);
         });
 
     }
@@ -920,17 +920,22 @@ public class HomeController implements SwitchableController, Observer {
     private void onNewUserEvent(){
 
     }
-
+    /*
     @FXML
     private void autoCompleteUserSearch(String input) {
         if (input.length() > 0) {
             String sql = "SELECT * FROM HUser";
             ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
             ArrayList<User> autoCompleteUser = new ArrayList<>();
-
+            Employee emp;
+            User u;
             try {
                 while (resultSet.next()) {
-                    User temp = new User("username","pword","type");
+                    if(resultSet.getString(1).toLowerCase().equals("employee")){
+                        String username = resultSet.getString(2);
+                    }else{
+
+                    }
                     String username = resultSet.getString(1);
                     if (username.toLowerCase().contains(input.toLowerCase())) {
                         autoCompleteUser.add(temp);
@@ -954,6 +959,7 @@ public class HomeController implements SwitchableController, Observer {
             //listView.setVisible(false);
         }
     }
+    */
 
 
 
