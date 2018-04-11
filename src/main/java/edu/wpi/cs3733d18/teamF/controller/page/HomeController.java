@@ -144,8 +144,6 @@ public class HomeController implements SwitchableController, Observer {
     private String searchType;
     private String filter;
     private ServiceRequest serviceRequestPopUp;
-    private boolean statusChange;
-    private String newStatus;
     private boolean nodesShown = false;
     ////////////////////////////////////////////////////
     //                                                //
@@ -293,6 +291,38 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private AnchorPane searchPane;
     private ObservableList<ServiceRequest> listRequests;
+
+    ////////////////////////////////////////
+    //                                    //
+    //           User Pop Up              //
+    //                                    //
+    ////////////////////////////////////////
+
+    @FXML
+    private Label userLabel;
+    @FXML
+    private JFXCheckBox languageCheck;
+    @FXML
+    private JFXCheckBox religiousCheck;
+    @FXML
+    private JFXCheckBox securityCheck;
+    @FXML
+    private JFXTextField usernameField;
+    @FXML
+    private JFXTextField passwordField;
+    @FXML
+    private JFXTextField fnameField;
+    @FXML
+    private JFXTextField lnameField;
+    @FXML
+    private JFXTextField occupationField;
+    @FXML
+    private JFXComboBox privilegeCombo;
+    @FXML
+    private AnchorPane newUserPane;
+    String privilegeChoice;
+    User editedUser;
+    boolean newUser;
     ////////////////////////////////////////
     //                                    //
     //           Help Screen              //
@@ -461,6 +491,8 @@ public class HomeController implements SwitchableController, Observer {
     private JFXTextField usernameSearch;
     @FXML
     private JFXListView usernameList;
+    @FXML
+    private JFXCheckBox completeCheck;
 
 
     ////////////////////////////////////////
@@ -616,7 +648,7 @@ public class HomeController implements SwitchableController, Observer {
 
                 if (PermissionSingleton.getInstance().isAdmin()) {
                     gpaneNodeInfo.setVisible(true);
-                }else{
+                } else {
                     gpaneNodeInfo.setVisible(false);
                 }
 
@@ -634,8 +666,8 @@ public class HomeController implements SwitchableController, Observer {
                 if (nodes.size() > 0 && !nodesShown) {
                     selectedNodeStart = nodes.iterator().next();
                     Path path = map.getPath(selectedNodeStart, selectedNodeEnd);
-                    if(path.getNodes().size() < 2){
-                        if(map.getNeighbors(selectedNodeStart).size() > 0){
+                    if (path.getNodes().size() < 2) {
+                        if (map.getNeighbors(selectedNodeStart).size() > 0) {
                             path = map.getPath(selectedNodeStart, map.getNeighbors(selectedNodeStart).iterator().next());
                         }
                     }
@@ -679,7 +711,7 @@ public class HomeController implements SwitchableController, Observer {
                 selectedNodeEnd = null;
             }
         });
-        mapContainer.setOnDragDetected(e ->{
+        mapContainer.setOnDragDetected(e -> {
             double map_x = 5000;
             double map_y = 3400;
             double map3D_y = 2772;
@@ -691,12 +723,12 @@ public class HomeController implements SwitchableController, Observer {
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
 
-            if(PermissionSingleton.getInstance().isAdmin()){
+            if (PermissionSingleton.getInstance().isAdmin()) {
                 Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D());
                 double deltaX = mapPos.getX() - node.getPosition().getX();
                 double deltaY = mapPos.getY() - node.getPosition().getY();
                 draggingNode = false;
-                if(Math.sqrt((deltaX * deltaX) + (deltaY * deltaY)) < 20){
+                if (Math.sqrt((deltaX * deltaX) + (deltaY * deltaY)) < 20) {
                     draggingNode = true;
                     heldNode = node;
                     System.out.println("Picked Up Node");
@@ -704,7 +736,7 @@ public class HomeController implements SwitchableController, Observer {
             }
         });
 
-        mapContainer.setOnMouseDragged(e ->{
+        mapContainer.setOnMouseDragged(e -> {
             double map_x = 5000;
             double map_y = 3400;
             double map3D_y = 2772;
@@ -715,15 +747,15 @@ public class HomeController implements SwitchableController, Observer {
             Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
-            if(PermissionSingleton.getInstance().isAdmin()){
-                if(draggingNode){
+            if (PermissionSingleton.getInstance().isAdmin()) {
+                if (draggingNode) {
                     heldNode.setPosition(mapPos);
                     System.out.println("Holding Node");
                 }
             }
         });
 
-        mapContainer.setOnMouseReleased(e->{
+        mapContainer.setOnMouseReleased(e -> {
             draggingNode = false;
             System.out.println("Dropped Node");
         });
@@ -956,9 +988,9 @@ public class HomeController implements SwitchableController, Observer {
         List<String> directions = route.makeTextDirections();
 
         StringBuilder sb = new StringBuilder();
-        for( String text: directions) {
+        for (String text : directions) {
 
-            if( sb.length() > 0) {
+            if (sb.length() > 0) {
                 sb.append("\n");
             }
             sb.append(text);
@@ -1082,7 +1114,10 @@ public class HomeController implements SwitchableController, Observer {
 
     @FXML
     private void onNewUserEvent() {
-
+        privilegeCombo.getItems().addAll("Admin", "Staff");
+        userLabel.setText("New User");
+        newUser = true;
+        newUserPane.setVisible(true);
     }
 
 
@@ -1165,30 +1200,34 @@ public class HomeController implements SwitchableController, Observer {
     }
 
 
-    public void onSelectUser(User s) {
-        /*
-        serviceRequestPopUp = ServiceRequestSingleton.getInstance().getPopUpRequest();
-        typeLabel.setText("Type: " + serviceRequestPopUp.getType());
-        idLabel.setText("Service Request #" + serviceRequestPopUp.getId());
-        firstNameLabel.setText("First Name: " + serviceRequestPopUp.getFirstName());
-        lastNameLabel.setText("Last Name: " + serviceRequestPopUp.getLastName());
-        locationLabel.setText(serviceRequestPopUp.getLocation());
-        statusLabel.setText(serviceRequestPopUp.getStatus());
-        instructionsTextArea.setText(serviceRequestPopUp.getDescription());
-        statusChange = false;
-        newStatus = "no";
-        instructionsTextArea.setEditable(false);
-
-        statusBox.getItems().addAll("Incomplete", "In Progress", "Complete");
-
-        if (serviceRequestPopUp.getStatus().equals("Complete")) {
-            completedByLabel.setVisible(true);
-            usernameLabel.setVisible(true);
-            usernameLabel.setText(serviceRequestPopUp.getCompletedBy());
+    public void onSelectUser(User e) {
+        userLabel.setText("Edit User");
+        editedUser = e;
+        newUser = false;
+        usernameField.setText(e.getUname());
+        passwordField.setText(e.getPsword());
+        fnameField.setText(e.getFirstName());
+        lnameField.setText(e.getLastName());
+        occupationField.setText(e.getOccupation());
+        privilegeCombo.getSelectionModel().select(e.getPrivilege());
+        if(ServiceRequestSingleton.getInstance().isInTable(e.getUname(), "LanguageInterpreter")){
+            languageCheck.setSelected(true);
+        }else{
+            languageCheck.setSelected(false);
         }
-        */
+        if(ServiceRequestSingleton.getInstance().isInTable(e.getUname(), "ReligiousServices")){
+            religiousCheck.setSelected(true);
+        }else{
+            religiousCheck.setSelected(false);
+        }
+        if(ServiceRequestSingleton.getInstance().isInTable(e.getUname(), "SecurityRequest")){
+            securityCheck.setSelected(true);
+        }else{
+            securityCheck.setSelected(false);
+        }
+
         editUserPane.setVisible(false);
-        //editUserInfoPane.setVisible(true);
+        newUserPane.setVisible(true);
     }
 
 
@@ -1247,12 +1286,17 @@ public class HomeController implements SwitchableController, Observer {
         btn3D.setStyle("-fx-background-color:  #f2f5f7");
     }
 
+    private final ObservableList<String> filterOptions = FXCollections.observableArrayList(
+            "Priority",
+            "Status",
+            "Type");
+
     @FXML
     private void onSearchServiceRequest() {
         filter = "none";
         searchType = "none";
 
-        filterType.getItems().addAll("Priority", "Status", "Type");
+        filterType.getItems().addAll(filterOptions);
 
         String lastSearch = ServiceRequestSingleton.getInstance().getLastSearch();
         String lastFilter = ServiceRequestSingleton.getInstance().getLastFilter();
@@ -1686,21 +1730,23 @@ public class HomeController implements SwitchableController, Observer {
     }
 
 
+
     public void onSelect(ServiceRequest s) {
         ServiceRequestSingleton.getInstance().setPopUpRequest(s);
-        serviceRequestPopUp = ServiceRequestSingleton.getInstance().getPopUpRequest();
-        typeLabel.setText("Type: " + serviceRequestPopUp.getType());
-        idLabel.setText("Service Request #" + serviceRequestPopUp.getId());
-        firstNameLabel.setText("First Name: " + serviceRequestPopUp.getFirstName());
-        lastNameLabel.setText("Last Name: " + serviceRequestPopUp.getLastName());
-        locationLabel.setText(serviceRequestPopUp.getLocation());
-        statusLabel.setText(serviceRequestPopUp.getStatus());
-        instructionsTextArea.setText(serviceRequestPopUp.getDescription());
-        statusChange = false;
-        newStatus = "no";
+        serviceRequestPopUp = s;
+        typeLabel.setText("Type: " + s.getType());
+        idLabel.setText("Service Request #" + s.getId());
+        firstNameLabel.setText("First Name: " + s.getFirstName());
+        lastNameLabel.setText("Last Name: " + s.getLastName());
+        locationLabel.setText(s.getLocation());
+        statusLabel.setText(s.getStatus());
+        instructionsTextArea.setText(s.getDescription());
         instructionsTextArea.setEditable(false);
-
-        statusBox.getItems().addAll("Incomplete", "In Progress", "Complete");
+        if(s.getStatus().equalsIgnoreCase("Complete")){
+            completeCheck.setSelected(true);
+        }else{
+            completeCheck.setSelected(false);
+        }
 
         if (serviceRequestPopUp.getStatus().equals("Complete")) {
             completedByLabel.setVisible(true);
@@ -1738,39 +1784,96 @@ public class HomeController implements SwitchableController, Observer {
     //                                    //
     ////////////////////////////////////////
 
-    public void onStatusBox() {
-        try {
-            if (statusBox.getSelectionModel().getSelectedItem().equals("Incomplete")) {
-                newStatus = "Incomplete";
-                statusChange = true;
-            } else if (statusBox.getSelectionModel().getSelectedItem().equals("In Progress")) {
-                newStatus = "In Progress";
-                statusChange = true;
-            } else if (statusBox.getSelectionModel().getSelectedItem().equals("Complete")) {
-                newStatus = "Complete";
-                statusChange = true;
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void onCancelEdit() {
         editRequestPane.setVisible(false);
         searchPane.setVisible(true);
     }
 
     public void onSubmitEdit() {
-        if (statusChange && newStatus.compareTo(serviceRequestPopUp.getStatus()) != 0) {
-            serviceRequestPopUp.setStatus(newStatus);
-            if (newStatus.equals("Complete")) {
-                serviceRequestPopUp.setCompletedBy(PermissionSingleton.getInstance().getCurrUser());
-                ServiceRequestSingleton.getInstance().updateCompletedBy(serviceRequestPopUp);
-            }
+        if (completeCheck.isSelected() && !serviceRequestPopUp.getStatus().equalsIgnoreCase("Complete")) {
+            serviceRequestPopUp.setStatus("Complete");
+            serviceRequestPopUp.setCompletedBy(PermissionSingleton.getInstance().getCurrUser());
+            ServiceRequestSingleton.getInstance().updateCompletedBy(serviceRequestPopUp);
             ServiceRequestSingleton.getInstance().updateStatus(serviceRequestPopUp);
-
         }
+        if (usernameSearch.getText() != null && !usernameSearch.getText().trim().isEmpty()) {
+            ServiceRequestSingleton.getInstance().assignTo(usernameSearch.getText(), serviceRequestPopUp);
+        }
+        usernameSearch.setText("");
         editRequestPane.setVisible(false);
         searchPane.setVisible(true);
+        onSearch();
+
+    }
+
+    ////////////////////////////////////////
+    //                                    //
+    //       New/Edit USer                //
+    //                                    //
+    ////////////////////////////////////////
+
+    @FXML
+    private void onSubmitUser(){
+        String username = editedUser.getUname();
+        String password = editedUser.getPsword();
+        String firstName = fnameField.getText();
+        String lastName = lnameField.getText();
+        String occupation = occupationField.getText();
+        boolean languageServices = languageCheck.isSelected();
+        boolean religiousServices = religiousCheck.isSelected();
+        boolean securityRequest = securityCheck.isSelected();
+
+        User temp = new User(username, password, firstName, lastName, privilegeChoice, occupation);
+        if(newUser){
+            PermissionSingleton.getInstance().addUser(temp);
+        }else{
+            PermissionSingleton.getInstance().removeUser(temp);
+            PermissionSingleton.getInstance().addUser(temp);
+        }
+
+        if(ServiceRequestSingleton.getInstance().isInTable(username, "LanguageInterpreter")){
+            if(!languageServices){
+                ServiceRequestSingleton.getInstance().removeUsernameLanguageInterpreter(username);
+            }
+        }else{
+            if(languageServices){
+                ServiceRequestSingleton.getInstance().addUsernameLanguageInterpreter(username);
+            }
+        }
+
+        if(ServiceRequestSingleton.getInstance().isInTable(username, "ReligiousServices")){
+            if(!religiousServices){
+                ServiceRequestSingleton.getInstance().removeUsernameReligiousServices(username);
+            }
+        }else{
+            if(religiousServices){
+                ServiceRequestSingleton.getInstance().addUsernameReligiousServices(username);
+            }
+        }
+
+        if(ServiceRequestSingleton.getInstance().isInTable(username, "SecurityRequest")){
+            if(!securityRequest){
+                ServiceRequestSingleton.getInstance().removeUsernameSecurityRequest(username);
+            }
+        }else{
+            if(securityRequest){
+                ServiceRequestSingleton.getInstance().addUsernameSecurityRequest(username);
+            }
+        }
+        newUserPane.setVisible(false);
+    }
+
+    @FXML
+    private void onPrivilegeBox(){
+        try {
+            privilegeChoice = privilegeCombo.getSelectionModel().getSelectedItem().toString();
+        } catch (NullPointerException e) {
+            privilegeChoice = "Guest";
+        }
+    }
+
+    @FXML
+    public void onCancelUser(){
+        newUserPane.setVisible(false);
     }
 }

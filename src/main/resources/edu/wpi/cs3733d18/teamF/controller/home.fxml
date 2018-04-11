@@ -2,6 +2,7 @@
 
 <?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
@@ -597,7 +598,7 @@
                                 </Label>
                             </children>
                         </VBox>
-                        <VBox GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                        <VBox GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                             <children>
                                 <Label text="Location" underline="true">
                                     <font>
@@ -611,7 +612,7 @@
                                 </Label>
                             </children>
                         </VBox>
-                        <VBox GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                             <children>
                                 <Label text="Status" underline="true">
                                     <font>
@@ -632,7 +633,6 @@
                             </font>
                         </Label>
                         <JFXButton buttonType="RAISED" onAction="#onCancelEdit" prefHeight="31.0" prefWidth="70.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Cancel" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
-                        <Label text="Mark As" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="TOP" />
                         <Label fx:id="completedByLabel" text="Completed By:" visible="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
                         <Label fx:id="usernameLabel" text="username" visible="false" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                             <GridPane.margin>
@@ -640,14 +640,14 @@
                             </GridPane.margin>
                         </Label>
                         <JFXButton alignment="CENTER" buttonType="RAISED" onAction="#onSubmitEdit" prefHeight="31.0" prefWidth="70.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Submit" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                        <JFXComboBox fx:id="statusBox" onAction="#onStatusBox" prefHeight="25.0" prefWidth="147.0" GridPane.columnIndex="3" />
                         <JFXTextField fx:id="usernameSearch" alignment="BOTTOM_LEFT" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-                        <JFXListView fx:id="usernameList" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="76.0" prefWidth="210.0" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                        <JFXListView fx:id="usernameList" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="76.0" prefWidth="239.0" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                         <Label text="Assign to: " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
                             <font>
                                 <Font size="20.0" />
                             </font>
                         </Label>
+                  <JFXCheckBox fx:id="completeCheck" maxHeight="-Infinity" maxWidth="-Infinity" text="Complete" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                     </children>
                 </GridPane>
             </children>
@@ -753,5 +753,61 @@
                 </JFXButton>
             </children>
         </GridPane>
+      <AnchorPane fx:id="newUserPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="463.0" prefWidth="638.0" style="-fx-background-color: WHITE;" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <children>
+            <Label fx:id="userLabel" alignment="CENTER" layoutX="292.0" layoutY="27.0" text="User" textAlignment="CENTER">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Label>
+            <Line endX="500.0" layoutX="119.0" layoutY="322.0" startX="-100.0" />
+            <Label layoutX="20.0" layoutY="338.0" text="Service Requests">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <JFXCheckBox fx:id="languageCheck" layoutX="70.0" layoutY="380.0" text="Language Interpreter" />
+            <JFXCheckBox fx:id="religiousCheck" layoutX="280.0" layoutY="380.0" text="Religious Services" />
+            <JFXCheckBox fx:id="securityCheck" layoutX="490.0" layoutY="380.0" text="Security Request" />
+            <JFXButton buttonType="RAISED" layoutX="568.0" layoutY="424.0" onAction="#onSubmitUser" style="-fx-background-color: #042E58;" text="Submit" textFill="WHITE" />
+            <JFXButton buttonType="RAISED" layoutX="20.0" layoutY="424.0" onAction="#onCancelUser" style="-fx-background-color: #042E58;" text="Cancel" textFill="WHITE" />
+            <Label layoutX="32.0" layoutY="120.0" text="Username:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="32.0" layoutY="180.0" text="First Name:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="32.0" layoutY="240.0" text="Last Name:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="340.0" layoutY="180.0" text="Occupation:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="340.0" layoutY="240.0" text="Privilege:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="usernameField" alignment="BOTTOM_LEFT" editable="false" layoutX="101.0" layoutY="118.0" />
+            <JFXTextField fx:id="fnameField" alignment="BOTTOM_LEFT" layoutX="101.0" layoutY="178.0" />
+            <JFXTextField fx:id="lnameField" alignment="BOTTOM_LEFT" layoutX="101.0" layoutY="238.0" />
+            <JFXTextField fx:id="occupationField" alignment="BOTTOM_LEFT" layoutX="415.0" layoutY="180.0" />
+            <JFXComboBox fx:id="privilegeCombo" layoutX="399.0" layoutY="240.0" onAction="#onPrivilegeBox" prefHeight="25.0" prefWidth="126.0" />
+            <Label layoutX="340.0" layoutY="120.0" text="Password:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="passwordField" alignment="BOTTOM_LEFT" editable="false" layoutX="402.0" layoutY="118.0" />
+         </children>
+      </AnchorPane>
     </children>
 </GridPane>
