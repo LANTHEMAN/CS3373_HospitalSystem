@@ -27,7 +27,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
         dbHandler = DatabaseSingleton.getInstance().getDbHandler();
         dbHandler.trackAndInitItem(this);
 
-        // TODO get largest ID from database
+
         int max = -1;
         String sql = "SELECT MAX(ID) FROM SERVICEREQUEST";
         ResultSet rs = dbHandler.runQuery(sql);
@@ -74,6 +74,11 @@ public class ServiceRequestSingleton implements DatabaseItem {
 
     public void updateCompletedBy(ServiceRequest s){
         String sql = "UPDATE ServiceRequest SET completedBy = '" + s.getCompletedBy() + "' WHERE id = " + s.getId();
+        dbHandler.runAction(sql);
+    }
+
+    public void updateAssignedTo(ServiceRequest s){
+        String sql = "UPDATE ServiceRequest SET assignedTo = '" + s.getAssignedTo() + "' WHERE id = " + s.getId();
         dbHandler.runAction(sql);
     }
 
@@ -140,44 +145,70 @@ public class ServiceRequestSingleton implements DatabaseItem {
                     String instructions = resultSet.getString(6);
                     int priority = resultSet.getInt(7);
                     String status = resultSet.getString(8);
+                    String assignedTo = null;
                     String completedBy = null;
                     if(status.equals("Complete")) {
                         try {
-                            completedBy = resultSet.getString(9);
+                            assignedTo = resultSet.getString(9);
+                            completedBy = resultSet.getString(10);
                         } catch (SQLException e) {
                             e.printStackTrace();
+                            assignedTo = null;
                             completedBy = null;
+                        }
+                    }else if(status.equals("In Progress")){
+                        try {
+                            assignedTo = resultSet.getString(9);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            assignedTo = null;
                         }
                     }
 
 
                     ServiceRequest s;
-                    String[] parts = instructions.split("/////", 2);
-                    String special = parts[0];
-                    String description = parts[1];
+                    String[] parts;
+                    String special = "";
+                    String description = "";
+                    if(!type.equals("Security Request")) {
+                        parts = instructions.split("/////", 2);
+                        special = parts[0];
+                        description = parts[1];
+                    }
+
                     switch (type) {
                         case "Religious Services":
-                            if(completedBy == null){
-                                s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special);
+                            if(completedBy != null){
+                                s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, assignedTo, completedBy);
+                            }else if(assignedTo != null){
+                                s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, assignedTo);
                             }else{
-                                s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, completedBy);
+                                s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special);
                             }
                             break;
 
                         case "Language Interpreter":
-                            if(completedBy == null) {
-                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
+                            if(completedBy != null){
+                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, assignedTo, completedBy);
+                            }else if(assignedTo != null){
+                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, assignedTo);
                             }else{
-                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, completedBy);
+                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
+                            }
+                            break;
+
+                        case "Security Request":
+                            if(completedBy != null){
+                                s = new SecurityRequest(id, location, description, status, priority, assignedTo, completedBy);
+                            }else if(assignedTo != null){
+                                s = new SecurityRequest(id, location, description, status, priority, assignedTo);
+                            }else{
+                                s = new SecurityRequest(id, location, description, status, priority);
                             }
                             break;
 
                         default:
-                            if(completedBy == null) {
-                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
-                            }else{
-                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, completedBy);
-                            }
+                            s = new SecurityRequest(id, location, description, status, priority);
                             break;
                     }
 
@@ -261,43 +292,70 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 String instructions = resultSet.getString(6);
                 int priority = resultSet.getInt(7);
                 String status = resultSet.getString(8);
-                String username = null;
+                String assignedTo = null;
+                String completedBy = null;
                 if(status.equals("Complete")) {
                     try {
-                        username = resultSet.getString(9);
+                        assignedTo = resultSet.getString(9);
+                        completedBy = resultSet.getString(10);
                     } catch (SQLException e) {
                         e.printStackTrace();
-                        username = null;
+                        assignedTo = null;
+                        completedBy = null;
+                    }
+                }else if(status.equals("In Progress")){
+                    try {
+                        assignedTo = resultSet.getString(9);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        assignedTo = null;
                     }
                 }
 
+
                 ServiceRequest s;
-                String[] parts = instructions.split("/////", 2);
-                String special = parts[0];
-                String description = parts[1];
+                String[] parts;
+                String special = "";
+                String description = "";
+                if(!type.equals("Security Request")) {
+                    parts = instructions.split("/////", 2);
+                    special = parts[0];
+                    description = parts[1];
+                }
+
                 switch (type) {
                     case "Religious Services":
-                        if(username == null){
-                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special);
+                        if(completedBy != null){
+                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, assignedTo, completedBy);
+                        }else if(assignedTo != null){
+                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, assignedTo);
                         }else{
-                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, username);
+                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special);
                         }
                         break;
 
                     case "Language Interpreter":
-                        if(username == null){
-                            s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
+                        if(completedBy != null){
+                            s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, assignedTo, completedBy);
+                        }else if(assignedTo != null){
+                            s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, assignedTo);
                         }else{
-                            s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, username);
+                            s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
+                        }
+                        break;
+
+                    case "Security Request":
+                        if(completedBy != null){
+                            s = new SecurityRequest(id, location, description, status, priority, assignedTo, completedBy);
+                        }else if(assignedTo != null){
+                            s = new SecurityRequest(id, location, description, status, priority, assignedTo);
+                        }else{
+                            s = new SecurityRequest(id, location, description, status, priority);
                         }
                         break;
 
                     default:
-                        if(username == null){
-                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special);
-                        }else{
-                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, username);
-                        }
+                        s = new SecurityRequest(id, location, description, status, priority);
                         break;
                 }
 
@@ -336,17 +394,17 @@ public class ServiceRequestSingleton implements DatabaseItem {
     }
 
     public void addUsernameLanguageInterpreter(String username){
-        String sql = "INSERT INTO LanguageInterpreter"+" VALUES ('"+username+"')";
+        String sql = "INSERT INTO LanguageInterpreter VALUES ('"+username+"')";
         dbHandler.runAction(sql);
     }
 
     public void addUsernameReligiousServices(String username){
-        String sql = "INSERT INTO ReligiousServices"+" VALUES ('"+username+"')";
+        String sql = "INSERT INTO ReligiousServices VALUES ('"+username+"')";
         dbHandler.runAction(sql);
     }
 
     public void addUsernameSecurityRequest(String username){
-        String sql = "INSERT INTO SecurityRequest"+" VALUES ('"+username+"')";
+        String sql = "INSERT INTO SecurityRequest VALUES ('"+username+"')";
         dbHandler.runAction(sql);
     }
 
@@ -385,5 +443,15 @@ public class ServiceRequestSingleton implements DatabaseItem {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public void assignTo(String username, ServiceRequest sr){
+
+        sr.setAssignedTo(username);
+        sr.setStatus("In Progress");
+        updateAssignedTo(sr);
+        updateStatus(sr);
+
+        String sql = "INSERT INTO Inbox VALUES ('" + username  + "', " + sr.getId() + ")";
     }
 }

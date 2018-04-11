@@ -47,6 +47,67 @@
         <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
     </rowConstraints>
     <children>
+        <VBox fx:id="directionsBox" alignment="TOP_CENTER" fillWidth="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" snapToPixel="false" style="-fx-background-color: #042E58;">
+            <children>
+                <Pane prefHeight="287.0" prefWidth="300.0" style="-fx-background-color: #042E58;">
+                    <children>
+                        <JFXHamburger fx:id="hamburgerD" alignment="CENTER" fillWidth="false" layoutX="14.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
+                        <FontAwesomeIconView fx:id="cancelDirections" fill="#f2f5f7" glyphName="TIMES" layoutX="263.0" layoutY="34.0" onMouseClicked="#onCancelDirectionsEvent" size="30" wrappingWidth="22.14285659790039" />
+                        <JFXTextField fx:id="sourceLocation" layoutX="54.0" layoutY="103.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Select Start" style="-fx-background-color: #f2f5f7;">
+                            <font>
+                                <Font name="Arial Bold" size="15.0" />
+                            </font>
+                        </JFXTextField>
+                        <JFXTextField fx:id="destinationLocation" layoutX="54.0" layoutY="169.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Select Destination" style="-fx-background-color: #f2f5f7;">
+                            <font>
+                                <Font name="Arial Bold" size="15.0" />
+                            </font>
+                        </JFXTextField>
+                        <Pane layoutX="249.0" layoutY="133.0" onMouseClicked="#switchLocations" prefHeight="51.0" prefWidth="48.0">
+                            <children>
+                                <FontAwesomeIconView fill="WHITE" glyphName="ARROW_UP" size="30" translateY="25.0" wrappingWidth="22.142860293388367" />
+                                <FontAwesomeIconView fill="WHITE" glyphName="ARROW_DOWN" size="30" translateX="15.0" translateY="45.0" wrappingWidth="22.142860293388367" />
+                            </children>
+                        </Pane>
+                        <FontAwesomeIconView fill="WHITE" glyphName="MAP_MARKER" layoutX="23.0" layoutY="204.0" size="30" wrappingWidth="22.14285659790039" />
+                        <Circle layoutX="31.0" layoutY="129.0" radius="7.0" stroke="#f2f5f7" strokeLineCap="ROUND" strokeLineJoin="ROUND">
+                            <fill>
+                                <RadialGradient centerX="0.5055555555555555" centerY="0.5" radius="0.47674418604651164">
+                                    <stops>
+                                        <Stop color="WHITE" />
+                                        <Stop color="BLACK" offset="1.0" />
+                                    </stops>
+                                </RadialGradient>
+                            </fill>
+                        </Circle>
+                        <Circle fill="WHITE" layoutX="31.0" layoutY="159.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
+                        <Circle fill="WHITE" layoutX="31.0" layoutY="143.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
+                        <Circle fill="WHITE" layoutX="31.0" layoutY="174.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
+                        <Text fill="WHITE" layoutX="96.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Directions">
+                            <font>
+                                <Font name="Arial Bold" size="24.0" />
+                            </font>
+                        </Text>
+                        <JFXButton layoutX="109.0" layoutY="230.0" onAction="#onNavigate" style="-fx-background-color: #767878;" text="Navigate" textFill="WHITE">
+                            <font>
+                                <Font name="Arial Bold" size="15.0" />
+                            </font>
+                        </JFXButton>
+                    </children>
+                </Pane>
+                <Pane prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: WHITE;">
+                    <children>
+                        <JFXListView fx:id="searchList" prefHeight="189.0" prefWidth="300.0" visible="false" />
+                        <JFXTextArea fx:id="txtDirections" editable="false" focusColor="#ffffff00" layoutX="17.0" layoutY="-1.0" prefHeight="198.0" prefWidth="284.0" unFocusColor="#ffffff00">
+                     <font>
+                        <Font name="Arial Bold" size="13.0" />
+                     </font></JFXTextArea>
+                        <JFXListView fx:id="directionsList" onMouseClicked="#setDirectionLocation" prefHeight="189.0" prefWidth="300.0" visible="false" />
+                  <Pane fx:id="qrImage" layoutX="22.0" layoutY="220.0" prefHeight="256.0" prefWidth="256.0" />
+                    </children>
+                </Pane>
+            </children>
+        </VBox>
 
         <VBox fx:id="adminBox" alignment="TOP_CENTER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" style="-fx-background-color: #616161;" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647">
             <children>
@@ -692,66 +753,5 @@
                 </JFXButton>
             </children>
         </GridPane>
-        <VBox fx:id="directionsBox" alignment="TOP_CENTER" fillWidth="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" snapToPixel="false" style="-fx-background-color: #042E58;">
-            <children>
-                <Pane prefHeight="287.0" prefWidth="300.0" style="-fx-background-color: #042E58;">
-                    <children>
-                        <JFXHamburger fx:id="hamburgerD" alignment="CENTER" fillWidth="false" layoutX="14.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
-                        <FontAwesomeIconView fx:id="cancelDirections" fill="#f2f5f7" glyphName="TIMES" layoutX="263.0" layoutY="34.0" onMouseClicked="#onCancelDirectionsEvent" size="30" wrappingWidth="22.14285659790039" />
-                        <JFXTextField fx:id="sourceLocation" layoutX="54.0" layoutY="103.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Select Start" style="-fx-background-color: #f2f5f7;">
-                            <font>
-                                <Font name="Arial Bold" size="15.0" />
-                            </font>
-                        </JFXTextField>
-                        <JFXTextField fx:id="destinationLocation" layoutX="54.0" layoutY="169.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Select Destination" style="-fx-background-color: #f2f5f7;">
-                            <font>
-                                <Font name="Arial Bold" size="15.0" />
-                            </font>
-                        </JFXTextField>
-                        <Pane layoutX="249.0" layoutY="133.0" onMouseClicked="#switchLocations" prefHeight="51.0" prefWidth="48.0">
-                            <children>
-                                <FontAwesomeIconView fill="WHITE" glyphName="ARROW_UP" size="30" translateY="25.0" wrappingWidth="22.142860293388367" />
-                                <FontAwesomeIconView fill="WHITE" glyphName="ARROW_DOWN" size="30" translateX="15.0" translateY="45.0" wrappingWidth="22.142860293388367" />
-                            </children>
-                        </Pane>
-                        <FontAwesomeIconView fill="WHITE" glyphName="MAP_MARKER" layoutX="23.0" layoutY="204.0" size="30" wrappingWidth="22.14285659790039" />
-                        <Circle layoutX="31.0" layoutY="129.0" radius="7.0" stroke="#f2f5f7" strokeLineCap="ROUND" strokeLineJoin="ROUND">
-                            <fill>
-                                <RadialGradient centerX="0.5055555555555555" centerY="0.5" radius="0.47674418604651164">
-                                    <stops>
-                                        <Stop color="WHITE" />
-                                        <Stop color="BLACK" offset="1.0" />
-                                    </stops>
-                                </RadialGradient>
-                            </fill>
-                        </Circle>
-                        <Circle fill="WHITE" layoutX="31.0" layoutY="159.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
-                        <Circle fill="WHITE" layoutX="31.0" layoutY="143.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
-                        <Circle fill="WHITE" layoutX="31.0" layoutY="174.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
-                        <Text fill="WHITE" layoutX="96.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Directions">
-                            <font>
-                                <Font name="Arial Bold" size="24.0" />
-                            </font>
-                        </Text>
-                        <JFXButton layoutX="109.0" layoutY="230.0" onAction="#onNavigate" style="-fx-background-color: #767878;" text="Navigate" textFill="WHITE">
-                            <font>
-                                <Font name="Arial Bold" size="15.0" />
-                            </font>
-                        </JFXButton>
-                    </children>
-                </Pane>
-                <Pane prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: WHITE;">
-                    <children>
-                        <JFXListView fx:id="searchList" prefHeight="189.0" prefWidth="300.0" visible="false" />
-                        <JFXTextArea fx:id="txtDirections" editable="false" focusColor="#ffffff00" layoutX="17.0" layoutY="-1.0" prefHeight="198.0" prefWidth="284.0" unFocusColor="#ffffff00">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font></JFXTextArea>
-                        <JFXListView fx:id="directionsList" onMouseClicked="#setDirectionLocation" prefHeight="189.0" prefWidth="300.0" visible="false" />
-                  <Pane fx:id="qrImage" layoutX="22.0" layoutY="220.0" prefHeight="256.0" prefWidth="256.0" />
-                    </children>
-                </Pane>
-            </children>
-        </VBox>
     </children>
 </GridPane>

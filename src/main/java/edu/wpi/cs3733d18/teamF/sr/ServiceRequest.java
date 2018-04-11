@@ -1,6 +1,6 @@
 package edu.wpi.cs3733d18.teamF.sr;
 
-import java.util.LinkedList;
+
 
 public abstract class ServiceRequest {
     private String type;
@@ -12,7 +12,7 @@ public abstract class ServiceRequest {
     private String status;
     private int priority;
     private String completedBy;
-    private LinkedList<String> occupationAccess;
+    private String assignedTo;
 
 
     public ServiceRequest(String type, String firstName, String lastName, String location, String description, String status, int priority) {
@@ -37,7 +37,7 @@ public abstract class ServiceRequest {
         this.priority = priority;
     }
 
-    public ServiceRequest(String type, int id, String firstName, String lastName, String location, String description, String status, int priority, String completedBy){
+    public ServiceRequest(String type, int id, String firstName, String lastName, String location, String description, String status, int priority, String assignedTo){
         this.type = type;
         this.id = id;
         this.firstName = firstName;
@@ -46,6 +46,19 @@ public abstract class ServiceRequest {
         this.description = description;
         this.status = status;
         this.priority = priority;
+        this.assignedTo = assignedTo;
+    }
+
+    public ServiceRequest(String type, int id, String firstName, String lastName, String location, String description, String status, int priority, String assignedTo, String completedBy){
+        this.type = type;
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.location = location;
+        this.description = description;
+        this.status = status;
+        this.priority = priority;
+        this.assignedTo = assignedTo;
         this.completedBy = completedBy;
     }
 
@@ -115,5 +128,13 @@ public abstract class ServiceRequest {
 
     public void setCompletedBy(String completedBy) {
         this.completedBy = completedBy;
+    }
+
+    public String getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(String assignedTo) {
+        this.assignedTo = assignedTo;
     }
 }
