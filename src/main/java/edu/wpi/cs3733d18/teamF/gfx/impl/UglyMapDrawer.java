@@ -21,11 +21,13 @@ public class UglyMapDrawer extends MapDrawable {
 
     private EdgeDrawable edgeDrawer = new LineEdgeDrawer();
     private NodeDrawable nodeDrawer = new CircleNodeDrawer();
-    //private PathDrawable pathDrawer = new StalePathDrawer(new LineEdgeDrawer(Color.DEEPPINK));
-    private PathDrawable pathDrawer = new DynamicPathDrawer();
+    private PathDrawable pathDrawer2 = new StalePathDrawer(new LineEdgeDrawer(Color.DEEPPINK));
+    private PathDrawable pathDrawer3 = new DynamicPathDrawer();
+    private PathDrawable pathDrawer = pathDrawer3;
     private NodeDrawable elevatorDrawer = new ElevatorNodeDrawer();
     private NodeDrawable exitDrawer = new ExitNodeDrawer();
     private NodeDrawable stairDrawer = new StairNodeDrawer();
+    private NodeDrawable restroomDrawer = new RestroomNodeDrawer();
     private NodeDrawable currNodeDrawable = nodeDrawer;
 
     public UglyMapDrawer(Map map) {
@@ -141,6 +143,7 @@ public class UglyMapDrawer extends MapDrawable {
             case "STAI":    //stairs
                 return stairDrawer;
             case "REST":    //restroom
+                return restroomDrawer;
             case "DEPT":    //medical departments, clinics, and waiting room areas
             case "LABS":    //labs, imaging centers, and medical testing areas
             case "INFO":    //information desks, security desks, lost and found
@@ -149,6 +152,14 @@ public class UglyMapDrawer extends MapDrawable {
             case "SERV":    //hospital non-medical services, interpreters, shuttles, spiritual, library, patient financial, etc.
             default:    //will be hallways and anything not implemented
                 return nodeDrawer;
+        }
+    }
+    public void changePathType(boolean type){
+        if(type){
+            pathDrawer = pathDrawer3;
+        }
+        else {
+            pathDrawer = pathDrawer2;
         }
     }
 }
