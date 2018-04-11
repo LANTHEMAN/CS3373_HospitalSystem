@@ -20,8 +20,7 @@ import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.NodeBuilder;
 import edu.wpi.cs3733d18.teamF.graph.Path;
 import edu.wpi.cs3733d18.teamF.qr.qrConverter;
-import edu.wpi.cs3733d18.teamF.sr.ServiceRequest;
-import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
+import edu.wpi.cs3733d18.teamF.sr.*;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -497,6 +496,10 @@ public class HomeController implements SwitchableController, Observer {
     private JFXListView usernameList;
     @FXML
     private JFXCheckBox completeCheck;
+    @FXML
+    private JFXNodesList serviceRequestList;
+    @FXML
+    private JFXButton newServiceRequest;
 
 
     ////////////////////////////////////////
@@ -1017,7 +1020,10 @@ public class HomeController implements SwitchableController, Observer {
     private void onLogOutBtn() {
         PermissionSingleton.getInstance().logout();
         loginDrawer.close();
-        adminDrawer.close();
+        onCancelDirectionsEvent();
+        setCancelMenuEvent();
+        serviceRequestList.animateList(false);
+        serviceRequestList.getChildren().clear();
         hamburger.setVisible(false);
         hamburgerD.setVisible(false);
         mapDrawController.unshowNodes();
@@ -1054,6 +1060,13 @@ public class HomeController implements SwitchableController, Observer {
         }
     }
 
+    @FXML
+    private JFXButton LI;
+    @FXML
+    private JFXButton RS;
+    @FXML
+    private JFXButton SR;
+
     private void setGuestMenu() {
         hamburger.setVisible(false);
         hamburgerD.setVisible(false);
@@ -1064,6 +1077,12 @@ public class HomeController implements SwitchableController, Observer {
         hamburgerD.setVisible(true);
         mapEditorBtn.setVisible(true);
         editUsersBtn.setVisible(true);
+        serviceRequestList.getChildren().clear();
+        serviceRequestList.addAnimatedNode(newServiceRequest);
+        serviceRequestList.addAnimatedNode(LI);
+        serviceRequestList.addAnimatedNode(RS);
+        serviceRequestList.addAnimatedNode(SR);
+        serviceRequestList.setRotate(-90);
     }
 
     private void setStaffMenu() {
@@ -1071,6 +1090,18 @@ public class HomeController implements SwitchableController, Observer {
         hamburgerD.setVisible(true);
         mapEditorBtn.setVisible(false);
         editUsersBtn.setVisible(false);
+        serviceRequestList.getChildren().clear();
+        serviceRequestList.addAnimatedNode(newServiceRequest);
+        if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "LanguageInterpreter")){
+            serviceRequestList.addAnimatedNode(LI);
+        }
+        if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "ReligiousServices")){
+            serviceRequestList.addAnimatedNode(RS);
+        }
+        if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "SecurityRequest")){
+            serviceRequestList.addAnimatedNode(SR);
+        }
+        serviceRequestList.setRotate(-90);
     }
 
 
@@ -1089,6 +1120,28 @@ public class HomeController implements SwitchableController, Observer {
             destinationLocation.setText(selection);
         }
         directionsList.setVisible(false);
+    }
+
+    @FXML
+    private void onLanguageInterpreter(){
+        onCancelDirectionsEvent();
+        setCancelMenuEvent();
+        languageInterpreterPane.setVisible(true);
+        serviceRequestList.animateList(false);
+    }
+    @FXML
+    private void onReligiousServices(){
+        onCancelDirectionsEvent();
+        setCancelMenuEvent();
+        religiousServicesPane.setVisible(true);
+        serviceRequestList.animateList(false);
+    }
+    @FXML
+    private void onSecurityRequest(){
+        onCancelDirectionsEvent();
+        setCancelMenuEvent();
+        securityPane.setVisible(true);
+        serviceRequestList.animateList(false);
     }
 
     // Popup upon help request
@@ -1285,12 +1338,6 @@ public class HomeController implements SwitchableController, Observer {
                 Screens.Home);
     }
 
-    @FXML
-    void onServiceRequest() {
-        adminDrawer.close();
-        adminDrawer.toBack();
-    }
-
 
     // Adjusting the map
 
@@ -1334,8 +1381,8 @@ public class HomeController implements SwitchableController, Observer {
         }
         onSearch();
         searchPane.setVisible(true);
-        adminDrawer.close();
-        adminDrawer.toBack();
+        onCancelDirectionsEvent();
+        setCancelMenuEvent();
     }
 
 
@@ -1504,14 +1551,14 @@ public class HomeController implements SwitchableController, Observer {
             mapDrawController.unshowPath();
             nodesShown = true;
         }
-        adminDrawer.close();
-        adminDrawer.toBack();
+        onCancelDirectionsEvent();
+        setCancelMenuEvent();
     }
 
     @FXML
     public void onEditUsers() {
-        adminDrawer.close();
-        adminDrawer.toBack();
+        onCancelDirectionsEvent();
+        setCancelMenuEvent();
         userTextField.clear();
         searchUserResultTable.getItems().clear();
         editUserPane.setVisible(true);
@@ -1911,5 +1958,212 @@ public class HomeController implements SwitchableController, Observer {
     public void onCancelUser(){
         newUserPane.setVisible(false);
         editUserPane.setVisible(true);
+    }
+
+
+    ////////////////////////////////////////
+    //                                    //
+    //           Language Interpreter     //
+    //                                    //
+    ////////////////////////////////////////
+
+    @FXML
+    TextField languageField;
+
+    @FXML
+    TextField firstNameLanguage;
+
+    @FXML
+    TextField lastNameLanguage;
+
+    @FXML
+    TextField destinationLanguage;
+
+    @FXML
+    TextArea instructionsLanguage;
+
+    @FXML
+    Label languageRequiredLI;
+
+    @FXML
+    Label firstNameRequiredLI;
+
+    @FXML
+    Label lastNameRequiredLI;
+
+    @FXML
+    Label locationRequiredLI;
+    @FXML
+    private AnchorPane languageInterpreterPane;
+
+
+    @FXML
+    void onCancelLI() {
+        languageInterpreterPane.setVisible(false);
+    }
+
+    @FXML
+    void onSubmitLI() {
+        int requiredFieldsEmpty = 0;
+        String l;
+        String first_name;
+        String last_name;
+        String location;
+        String description;
+        if (languageField.getText() == null || languageField.getText().trim().isEmpty()) {
+            languageRequiredLI.setVisible(true);
+            requiredFieldsEmpty++;
+        }
+        if (firstNameLanguage.getText() == null || firstNameLanguage.getText().trim().isEmpty()) {
+            firstNameRequiredLI.setVisible(true);
+            requiredFieldsEmpty++;
+        }
+        if (lastNameLanguage.getText() == null || lastNameLanguage.getText().trim().isEmpty()) {
+            lastNameRequiredLI.setVisible(true);
+            requiredFieldsEmpty++;
+        }
+        if (destinationLanguage.getText() == null || destinationLanguage.getText().trim().isEmpty()) {
+            locationRequiredLI.setVisible(true);
+            requiredFieldsEmpty++;
+        }
+        if (requiredFieldsEmpty > 0) {
+            return;
+        }
+
+        if (instructionsLanguage.getText() == null || instructionsLanguage.getText().trim().isEmpty()) {
+            description = "N/A";
+        } else {
+            description = instructionsLanguage.getText();
+        }
+        l = languageField.getText();
+        first_name = firstNameLanguage.getText();
+        last_name = lastNameLanguage.getText();
+        location = destinationLanguage.getText();
+        String new_description = l + "/////" + description;
+        ServiceRequest request = new LanguageInterpreter(first_name, last_name, location, new_description, "Incomplete", 1, l);
+        ServiceRequestSingleton.getInstance().sendServiceRequest(request);
+        ServiceRequestSingleton.getInstance().addServiceRequest(request);
+        languageInterpreterPane.setVisible(false);
+
+    }
+
+
+    @FXML
+    TextField religionField;
+
+    @FXML
+    TextField firstNameRS;
+
+    @FXML
+    TextField lastNameRS;
+
+    @FXML
+    TextField destinationRS;
+
+    @FXML
+    TextArea instructionsRS;
+
+    @FXML
+    Label religionRequiredRS;
+
+    @FXML
+    Label firstNameRequiredRS;
+
+    @FXML
+    Label lastNameRequiredRS;
+
+    @FXML
+    Label locationRequiredRS;
+    @FXML
+    private AnchorPane religiousServicesPane;
+
+
+    @FXML
+    void onCancelRS() {
+        religiousServicesPane.setVisible(false);
+    }
+
+    @FXML
+    void onSubmitRS() {
+        int requiredFieldsEmpty = 0;
+        String r;
+        String first_name;
+        String last_name;
+        String location;
+        String description;
+        if (religionField.getText() == null || religionField.getText().trim().isEmpty()) {
+            religionRequiredRS.setVisible(true);
+            requiredFieldsEmpty++;
+        }
+        if (firstNameRS.getText() == null || firstNameRS.getText().trim().isEmpty()) {
+            firstNameRequiredRS.setVisible(true);
+            requiredFieldsEmpty++;
+        }
+        if (lastNameRS.getText() == null || lastNameRS.getText().trim().isEmpty()) {
+            lastNameRequiredRS.setVisible(true);
+            requiredFieldsEmpty++;
+        }
+        if (destinationRS.getText() == null || destinationRS.getText().trim().isEmpty()) {
+            locationRequiredRS.setVisible(true);
+            requiredFieldsEmpty++;
+        }
+        if (requiredFieldsEmpty > 0) {
+            return;
+        }
+
+        if (instructionsRS.getText() == null || instructionsRS.getText().trim().isEmpty()) {
+            description = "N/A";
+        } else {
+            description = instructionsRS.getText();
+        }
+        r = religionField.getText();
+        first_name = firstNameRS.getText();
+        last_name = lastNameRS.getText();
+        location = destinationRS.getText();
+        String new_description = r + "/////" + description + "\n";
+        ServiceRequest request = new ReligiousServices(first_name, last_name, location, new_description, "Incomplete", 1, r);
+        ServiceRequestSingleton.getInstance().sendServiceRequest(request);
+        ServiceRequestSingleton.getInstance().addServiceRequest(request);
+        religiousServicesPane.setVisible(false);
+    }
+
+
+    ////////////////////////////////////////
+    //                                    //
+    //       Security Services            //
+    //                                    //
+    ////////////////////////////////////////
+    @FXML
+    private JFXTextArea securityTextArea;
+    @FXML
+    private JFXTextField securityLocationField;
+    @FXML
+    private ToggleGroup securityToogle;
+    @FXML
+    private Label securityLocationRequired;
+    @FXML
+    private VBox securityPane;
+
+    @FXML
+    private void onCancelSecurity(){
+        securityPane.setVisible(false);
+    }
+
+    @FXML
+    private void onSubmitSecurity(){
+        if (securityLocationField.getText() == null || securityLocationField.getText().trim().isEmpty()) {
+            securityLocationRequired.setVisible(true);
+            return;
+        }
+        String location = securityLocationField.getText();
+        String description = securityTextArea.getText();
+        String status = "Incomplete";
+        int priority = Integer.parseInt(securityToogle.getSelectedToggle().getUserData().toString());
+
+        SecurityRequest sec = new SecurityRequest(location, description, status, priority);
+
+        ServiceRequestSingleton.getInstance().sendServiceRequest(sec);
+        ServiceRequestSingleton.getInstance().addServiceRequest(sec);
+        securityPane.setVisible(false);
     }
 }
