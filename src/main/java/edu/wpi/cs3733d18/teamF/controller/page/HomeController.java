@@ -18,6 +18,7 @@ import edu.wpi.cs3733d18.teamF.gfx.impl.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.NewNodeBuilder;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.NodeBuilder;
+import edu.wpi.cs3733d18.teamF.graph.Path;
 import edu.wpi.cs3733d18.teamF.sr.ServiceRequest;
 import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
@@ -123,6 +124,18 @@ public class HomeController implements SwitchableController, Observer {
     public Label completedByLabel;
     @FXML
     public Label usernameLabel;
+    @FXML
+    public TableColumn chooseCol;
+    @FXML
+    public TableColumn<User, Integer> usernameCol;
+    @FXML
+    public TableColumn<User, String> firstNameUserCol;
+    @FXML
+    public TableColumn<User, String> lastNameUserCol;
+    @FXML
+    public TableColumn<User, String> privilegeCol;
+    @FXML
+    public TableColumn<User, String> occupationCol;
     ConcurrentLinkedQueue<String> commands = new ConcurrentLinkedQueue<>();
     PaneVoiceController paneVoiceController;
     Voice voice;
@@ -138,6 +151,17 @@ public class HomeController implements SwitchableController, Observer {
     boolean statusChange;
     String newStatus;
     boolean nodesShown = false;
+    ////////////////////////////////////////////////////
+    //                                                //
+    //           Edit User Variables                  //
+    //                                                //
+    ////////////////////////////////////////////////////
+    @FXML
+    private AnchorPane editUserPane;
+    @FXML
+    private JFXTextField userTextField;
+    @FXML
+    private TableView<User> searchUserResultTable;
     private PaneMapController mapDrawController;
     private Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
     private Node selectedNodeStart = null;
@@ -300,7 +324,7 @@ public class HomeController implements SwitchableController, Observer {
                     if (command.equals("HELP")) {
                         onHelpPopup();
                         voice.speak("Here is the help menu");
-                    } else if (command.contains("DIRECTIONS")) {
+                    } else if (command.contains("DIRECTIONS") || command.contains("WHERE")) {
                         if (command.contains("BATHROOM")) {
                             Node src = map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
                             mapDrawController.showPath(map.getPath(src, map.findNodeClosestTo(src, node -> node.getNodeType().equals("REST"))));
@@ -321,15 +345,20 @@ public class HomeController implements SwitchableController, Observer {
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Orthopedics"))));
                             voice.speak("Here is the route to Orthopedics and Rhemutology");
                         } else if (command.contains("PARKING") && command.contains("GARAGE")) {
-                            mapDrawController.showPath(map.getPath
+                            Path path = map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
                                             , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getLongName().contains("Parking") &&
-                                                    node.getLongName().contains("Garage"))));
+                                                    node.getLongName().contains("Garage")));
+                            mapDrawController.showPath(path);
+                            for(Node n : path.getNodes()){
+                                System.out.println("n.getPosition() = " + n.getPosition());
+                            }
                             voice.speak("Here is the route to the parking garage");
                         } else if (command.contains("ELEVATOR")) {
-                            mapDrawController.showPath(map.getPath
+                            Path path = map.getPath
                                     (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
-                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("ELEV"))));
+                                            , map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true, node -> node.getNodeType().equals("ELEV")));
+                            mapDrawController.showPath(path);
                             voice.speak("Here is the route to the nearest elevator");
                         } else if (command.contains("DENTIST") || command.contains("DENTISTRY") || command.contains("ORAL")) {
                             mapDrawController.showPath(map.getPath
@@ -364,7 +393,7 @@ public class HomeController implements SwitchableController, Observer {
                     } else if (command.contains("ELEVATOR") && command.contains("ENABLE")) {
                         map.enableElevators();
                         voice.speak("Elevators are now enabled for path finding");
-                    } else if (command.contains("WEATHER") && command.contains("TODAY")) {
+                    } else if (command.contains("WEATHER")) {
                         YahooWeatherService service = null;
                         try {
                             service = new YahooWeatherService();
@@ -379,12 +408,15 @@ public class HomeController implements SwitchableController, Observer {
                         }
                         voice.speak(String.format("The temperature is %d degrees fahrenheit", channel.getItem().getCondition().getTemp()));
                         voice.speak(channel.getAtmosphere().toString());
+                    } else if (command.contains("RAP")) {
+                        voice.speak("Boots and Cats and Boots and Cats and Boots and Cats and Boots and Cats and Boots" +
+                                "and Cats and Boots and Cats and Boots and Cats and Boots and Cats and Boots and Cats and Boots");
                     }
                 }
             }
         }
     }));
-    
+
     @FXML
     private JFXTextField usernameSearch;
     @FXML
@@ -513,10 +545,14 @@ public class HomeController implements SwitchableController, Observer {
             Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
-            if (!PermissionSingleton.getInstance().isAdmin()) {
-                mapDrawController.showPath(map.getPath
-                        (map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true)
-                                , map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), true, node -> node.getFloor().equals(map.getFloor()))));
+            if (!nodesShown) {
+                Node src = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
+                if (mapPos.distance(src.getPosition()) < 100) {
+                    Path path = map.getPath(map.findNodeClosestTo(startLocation.getX(), startLocation.getY(), true), src);
+                    mapDrawController.showPath(path);
+                } else {
+                    return;
+                }
             }
 
             // if editing maps
@@ -542,7 +578,7 @@ public class HomeController implements SwitchableController, Observer {
                 selectedNodeStart = node;
 
                 if (PermissionSingleton.getInstance().isAdmin()) {
-                    gpaneNodeInfo.setVisible(true);
+                    mapContainer.getChildren().add(gpaneNodeInfo);
                 }
 
                 modNode_x.setText(String.valueOf(node.getPosition().getX()));
@@ -690,7 +726,6 @@ public class HomeController implements SwitchableController, Observer {
                     loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
                     if (PermissionSingleton.getInstance().isAdmin()) {
                         setAdminMenu();
-                        mapDrawController.unshowPath();
                     } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
                         setAdminMenu();
                     } else {
@@ -729,6 +764,12 @@ public class HomeController implements SwitchableController, Observer {
             String input = usernameSearch.getText();
             input = input.concat("" + e.getCharacter());
             autoComplete(input, usernameList, "HUser", "username");
+        });
+
+        userTextField.setOnKeyTyped((KeyEvent e) -> {
+            String input = userTextField.getText();
+            input = input.concat("" + e.getCharacter());
+            //autoCompleteUserSearch(input);
         });
 
     }
@@ -868,6 +909,67 @@ public class HomeController implements SwitchableController, Observer {
     void onCancelClose() {
         helpPane.setVisible(false);
     }
+
+    //////////////////////////////
+    //                          //
+    //        Edit User         //
+    //                          //
+    //////////////////////////////
+
+    @FXML
+    private void onCancelEditUser() {
+        editUserPane.setVisible(false);
+        try {
+            searchUserResultTable.getItems().clear();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onNewUserEvent() {
+
+    }
+    /*
+    @FXML
+    private void autoCompleteUserSearch(String input) {
+        if (input.length() > 0) {
+            String sql = "SELECT * FROM HUser";
+            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
+            ArrayList<User> autoCompleteUser = new ArrayList<>();
+            Employee emp;
+            User u;
+            try {
+                while (resultSet.next()) {
+                    if(resultSet.getString(1).toLowerCase().equals("employee")){
+                        String username = resultSet.getString(2);
+                    }else{
+
+                    }
+                    String username = resultSet.getString(1);
+                    if (username.toLowerCase().contains(input.toLowerCase())) {
+                        autoCompleteUser.add(temp);
+                    }
+                }
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+            try {
+                if (autoCompleteUser.size() > 0) {
+                    ObservableList<User> list = FXCollections.observableArrayList(autoCompleteUser);
+                    //listView.setItems(list);
+                    //listView.setVisible(true);
+                } else {
+                    //listView.setVisible(false);
+                }
+            } catch (Exception anyE) {
+                anyE.printStackTrace();
+            }
+        } else {
+            //listView.setVisible(false);
+        }
+    }
+    */
 
 
     // Language
@@ -1103,6 +1205,7 @@ public class HomeController implements SwitchableController, Observer {
         } else {
             mapDrawController.showNodes();
             mapDrawController.showEdges();
+            mapDrawController.unshowPath();
             nodesShown = true;
         }
         adminDrawer.close();
@@ -1113,6 +1216,7 @@ public class HomeController implements SwitchableController, Observer {
     public void onEditUsers() {
         adminDrawer.close();
         adminDrawer.toBack();
+        editUserPane.setVisible(true);
     }
 
 

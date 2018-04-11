@@ -2,7 +2,6 @@ package edu.wpi.cs3733d18.teamF.gfx.impl;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.PathDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Edge;
@@ -17,7 +16,6 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 
 import static java.lang.Math.ceil;
-import static java.lang.Math.nextAfter;
 
 public class DynamicPathDrawer extends PathDrawable {
 
@@ -51,7 +49,7 @@ public class DynamicPathDrawer extends PathDrawable {
             return;
         }
 
-        double len = path.getLength();
+        double len = path.getUnweightedLength();
         double divDist = 120;
         int divs = (int) ceil(len / divDist);
         divDist = len / divs;
@@ -73,14 +71,14 @@ public class DynamicPathDrawer extends PathDrawable {
                 arrow.progress += timestep / 10;
                 Pair<Pair<Node, Node>, Double> pathPos = getPathPos(arrow.progress);
                 if (pathPos == null) {
-                    arrow.progress -= path.getLength();
+                    arrow.progress -= path.getUnweightedLength();
                     arrow.view.setVisible(false);
                     arrow.prevX = null;
                     arrow.prevY = null;
                     continue;
                 }
-
-                if(!MapSingleton.getInstance().getMap().getFloor().equals(pathPos.getKey().getKey().getFloor())){
+                if (!MapSingleton.getInstance().getMap().getFloor().equals(pathPos.getKey().getValue().getFloor())
+                        || !MapSingleton.getInstance().getMap().getFloor().equals(pathPos.getKey().getKey().getFloor())) {
                     arrow.view.setVisible(false);
                     arrow.prevX = null;
                     arrow.prevY = null;
@@ -127,6 +125,8 @@ public class DynamicPathDrawer extends PathDrawable {
 
                 if (arrow.prevAngle - angle > 180) {
                     angle += 360;
+                } else if(arrow.prevAngle - angle < -180){
+                    angle -= 360;
                 }
 
                 RotateTransition rotateTransition =

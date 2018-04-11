@@ -32,6 +32,12 @@ public class Map extends Observable implements DatabaseItem, Observer {
     private boolean stairsDisabled = false;
     private boolean elevatorsDisabled = false;
 
+    public void setPathSelector(PathFindingAlgorithm pathSelector) {
+        this.pathSelector = pathSelector;
+    }
+
+    private PathFindingAlgorithm pathSelector = new AStar();
+
     public Map() {
         graph = new Graph();
         dbHandler = DatabaseSingleton.getInstance().getDbHandler();
@@ -214,7 +220,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
     }
 
     public edu.wpi.cs3733d18.teamF.graph.Path getPath(Node node1, Node node2) {
-        return AStar.getPath(graph, node1, node2);
+        return pathSelector.getPath(graph, node1, node2);
     }
 
 
@@ -274,7 +280,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
 
             for (Node n : Nodes) {
                 if (n.getNodeType().equals("STAI")) {
-                    n.setAdditionalWeight(n.getAdditionalWeight() + 10000000);
+                    n.setAdditionalWeight(n.getAdditionalWeight() + 5000);
                 }
             }
         }
@@ -288,7 +294,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
 
             for (Node n : nodes) {
                 if (n.getNodeType().equals("STAI")) {
-                    n.setAdditionalWeight(n.getAdditionalWeight() - 10000000);
+                    n.setAdditionalWeight(n.getAdditionalWeight() - 5000);
                 }
             }
         }
@@ -302,7 +308,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
 
             for (Node n : nodes) {
                 if (n.getNodeType().equals("ELEV")) {
-                    n.setAdditionalWeight(n.getAdditionalWeight() + 10000000);
+                    n.setAdditionalWeight(n.getAdditionalWeight() + 5000);
                 }
             }
         }
@@ -316,7 +322,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
 
             for (Node n : nodes) {
                 if (n.getNodeType().equals("ELEV")) {
-                    n.setAdditionalWeight(n.getAdditionalWeight() - 10000000);
+                    n.setAdditionalWeight(n.getAdditionalWeight() - 5000);
                 }
             }
         }

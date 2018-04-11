@@ -50,7 +50,7 @@ public class LanguageInterpreterController implements SwitchableController {
 
     @FXML
     void onCancel() {
-        switcher.switchTo(Screens.ServiceRequest);
+        //switcher.switchTo(Screens.ServiceRequest);
     }
 
     @FXML
@@ -96,7 +96,7 @@ public class LanguageInterpreterController implements SwitchableController {
         ServiceRequest request = new LanguageInterpreter(first_name, last_name, location, new_description, "Incomplete", 1, l);
         ServiceRequestSingleton.getInstance().sendServiceRequest(request);
         ServiceRequestSingleton.getInstance().addServiceRequest(request);
-        switcher.switchTo(Screens.ServiceRequest);
+        //switcher.switchTo(Screens.ServiceRequest);
 
     }
 }
