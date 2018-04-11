@@ -416,7 +416,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
     }
 
     public void removeUsernameReligiousServices(String username) {
-        String sql = "DELETE FROM ReligiousServices WHERE occupation = '" + username + "'";
+        String sql = "DELETE FROM ReligiousServices WHERE username = '" + username + "'";
         dbHandler.runAction(sql);
     }
 
