@@ -1058,6 +1058,9 @@ public class HomeController implements SwitchableController, Observer {
             adminDrawer.close();
             adminDrawer.toBack();
         }
+        if(serviceRequestList.isExpanded()){
+            serviceRequestList.animateList(false);
+        }
     }
 
     @FXML
@@ -2163,8 +2166,8 @@ public class HomeController implements SwitchableController, Observer {
         String location = securityLocationField.getText();
         String description = securityTextArea.getText();
         String status = "Incomplete";
-        int priority = Integer.parseInt(securityToogle.getSelectedToggle().getUserData().toString());
-
+        RadioButton selected = (RadioButton) securityToogle.getSelectedToggle();
+        int priority = Integer.parseInt(selected.getText());
         SecurityRequest sec = new SecurityRequest(location, description, status, priority);
 
         ServiceRequestSingleton.getInstance().sendServiceRequest(sec);

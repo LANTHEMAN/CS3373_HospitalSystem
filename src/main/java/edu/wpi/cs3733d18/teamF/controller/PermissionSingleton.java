@@ -97,12 +97,14 @@ public class PermissionSingleton {
     }
 
     public void removeUser(User u) {
-        pmanage.users.add(u);
         String sql = "DELETE FROM HUser WHERE username = '" + u.getUname() + "'";
         dbHandler.runAction(sql);
+        sql = "SELECT * FROM HUser";
+        ResultSet resultSet = PermissionSingleton.getInstance().dbHandler.runQuery(sql);
+        pmanage.syncLocalFromDB("HUser", resultSet);
     }
 
-    public void updateUser(User u){
+    public void updateUser(User u) {
         String sql = "UPDATE HUser SET password = '" + u.getPsword()
                 + "', firstName = '" + u.getFirstName()
                 + "', lastName = '" + u.getLastName()
@@ -110,6 +112,9 @@ public class PermissionSingleton {
                 + "', occupation = '" + u.getOccupation()
                 + "' WHERE username = '" + u.getUname() + "'";
         dbHandler.runAction(sql);
+        sql = "SELECT * FROM HUser";
+        ResultSet resultSet = PermissionSingleton.getInstance().dbHandler.runQuery(sql);
+        pmanage.syncLocalFromDB("HUser", resultSet);
     }
 
     public boolean userExist(String username) {
@@ -146,4 +151,6 @@ public class PermissionSingleton {
     public String getUserPrivilege() {
         return userPrivilege;
     }
+
+
 }
