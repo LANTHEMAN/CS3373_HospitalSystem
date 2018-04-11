@@ -798,36 +798,42 @@ public class HomeController implements SwitchableController, Observer {
             map.setFloor("L2");
             floorBtn.setText("L2");
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 2");
+            floorNode.animateList(false);
             reloadMap();
         });
         l1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("L1");
             floorBtn.setText("L1");
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 1");
+            floorNode.animateList(false);
             reloadMap();
         });
         groundFloor.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("0G");
             floorBtn.setText("G");
             MainTitle.setText("Brigham and Women's Hospital: Ground Floor");
+            floorNode.animateList(false);
             reloadMap();
         });
         floor1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("01");
             floorBtn.setText("1");
             MainTitle.setText("Brigham and Women's Hospital: Level 1");
+            floorNode.animateList(false);
             reloadMap();
         });
         floor2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("02");
             floorBtn.setText("2");
             MainTitle.setText("Brigham and Women's Hospital: Level 2");
+            floorNode.animateList(false);
             reloadMap();
         });
         floor3.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("03");
             floorBtn.setText("3");
             MainTitle.setText("Brigham and Women's Hospital: Level 3");
+            floorNode.animateList(false);
             reloadMap();
         });
 
