@@ -22,15 +22,19 @@ public class PermissionSingleton {
 
         if (!userExist("admin")) {
             addUser(new User("admin", "admin", "Admin", "Default", "Admin", "Admin"));
-            ServiceRequestSingleton.getInstance().addUsernameLanguageInterpreter("Admin");
-            ServiceRequestSingleton.getInstance().addUsernameReligiousServices("Admin");
-            ServiceRequestSingleton.getInstance().addUsernameSecurityRequest("Admin");
+            if (!ServiceRequestSingleton.getInstance().isInTable("admin", "LanguageInterpreter")) {
+                ServiceRequestSingleton.getInstance().addUsernameLanguageInterpreter("admin");
+                ServiceRequestSingleton.getInstance().addUsernameReligiousServices("admin");
+                ServiceRequestSingleton.getInstance().addUsernameSecurityRequest("admin");
+            }
         }
 
         if (!userExist("staff")) {
-            addUser(new User("staff", "1234", "Staff", "Staff", "Member", "Nurse"));
-            ServiceRequestSingleton.getInstance().addUsernameLanguageInterpreter("System Admin");
-            ServiceRequestSingleton.getInstance().addUsernameReligiousServices("System Admin");
+            addUser(new User("staff", "staff", "Staff", "Member", "Staff", "Nurse"));
+            if (!ServiceRequestSingleton.getInstance().isInTable("staff", "LanguageInterpreter")) {
+                ServiceRequestSingleton.getInstance().addUsernameLanguageInterpreter("staff");
+                ServiceRequestSingleton.getInstance().addUsernameReligiousServices("staff");
+            }
         }
 
     }
@@ -42,7 +46,7 @@ public class PermissionSingleton {
     private static String getPrivilege(String type) {
         if (type.equals("Admin")) {
             return Privilege.ADMIN;
-        } else if(type.equals("Staff")){
+        } else if (type.equals("Staff")) {
             return Privilege.STAFF;
         } else {
             return Privilege.GUEST;
@@ -84,9 +88,9 @@ public class PermissionSingleton {
         String sql = "INSERT INTO HUser"
                 + " VALUES ('" + u.getUname()
                 + "', '" + u.getPsword()
-                + "', '" + u.getType()
                 + "', '" + u.getFirstName()
                 + "', '" + u.getLastName()
+                + "', '" + u.getPrivilege()
                 + "', '" + u.getOccupation()
                 + "')";
         dbHandler.runAction(sql);
@@ -94,7 +98,17 @@ public class PermissionSingleton {
 
     public void removeUser(User u) {
         pmanage.users.add(u);
-        String sql = "DELETE FROM HUser WHERE username = '"+u.getUname()+"'";
+        String sql = "DELETE FROM HUser WHERE username = '" + u.getUname() + "'";
+        dbHandler.runAction(sql);
+    }
+
+    public void updateUser(User u){
+        String sql = "UPDATE HUser SET password = '" + u.getPsword()
+                + "', firstName = '" + u.getFirstName()
+                + "', lastName = '" + u.getLastName()
+                + "', privilege = '" + u.getPrivilege()
+                + "', occupation = '" + u.getOccupation()
+                + "' WHERE username = '" + u.getUname() + "'";
         dbHandler.runAction(sql);
     }
 

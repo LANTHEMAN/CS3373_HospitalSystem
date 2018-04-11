@@ -138,7 +138,7 @@
                         <FontAwesomeIconView glyphName="SEARCH" size="50" />
                     </graphic>
                 </JFXButton>
-                <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onMapEditor" prefHeight="145.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Map Editor" textFill="WHITE">
+                <JFXButton fx:id="mapEditorBtn" accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onMapEditor" prefHeight="145.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Map Editor" textFill="WHITE">
                     <font>
                         <Font name="Arial" size="20.0" />
                     </font>
@@ -146,7 +146,7 @@
                         <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
                     </graphic>
                 </JFXButton>
-                <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onEditUsers" prefHeight="143.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Edit Users" textFill="WHITE">
+                <JFXButton fx:id="editUsersBtn" accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onEditUsers" prefHeight="143.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Edit Users" textFill="WHITE">
                     <font>
                         <Font name="Arial" size="20.0" />
                     </font>
@@ -806,7 +806,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <JFXTextField fx:id="passwordField" alignment="BOTTOM_LEFT" editable="false" layoutX="402.0" layoutY="118.0" />
+            <JFXTextField fx:id="passwordField" alignment="BOTTOM_LEFT" layoutX="402.0" layoutY="118.0" />
          </children>
       </AnchorPane>
     </children>

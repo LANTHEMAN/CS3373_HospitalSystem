@@ -257,6 +257,10 @@ public class HomeController implements SwitchableController, Observer {
     private JFXTextArea txtDirections;
     @FXML
     private Pane qrImage;
+    @FXML
+    private JFXButton mapEditorBtn;
+    @FXML
+    private JFXButton editUsersBtn;
     ////////////////////////////////////////
     //                                    //
     //       Edit Service Request         //
@@ -847,6 +851,7 @@ public class HomeController implements SwitchableController, Observer {
 
         directionsDrawer.setSidePane(directionsBox);
         adminDrawer.setSidePane(adminBox);
+        privilegeCombo.getItems().addAll(privilegeOptions);
 
         // login
         loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -866,10 +871,10 @@ public class HomeController implements SwitchableController, Observer {
                 // login in the user and close the drawer
                 if (PermissionSingleton.getInstance().login(loginUsername.getText(), loginPassword.getText())) {
                     loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
-                    if (PermissionSingleton.getInstance().isAdmin()) {
+                    if (PermissionSingleton.getInstance().getUserPrivilege().equals("Admin")) {
                         setAdminMenu();
                     } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
-                        setAdminMenu();
+                        setStaffMenu();
                     } else {
                         setGuestMenu();
                     }
@@ -1057,6 +1062,15 @@ public class HomeController implements SwitchableController, Observer {
     private void setAdminMenu() {
         hamburger.setVisible(true);
         hamburgerD.setVisible(true);
+        mapEditorBtn.setVisible(true);
+        editUsersBtn.setVisible(true);
+    }
+
+    private void setStaffMenu() {
+        hamburger.setVisible(true);
+        hamburgerD.setVisible(true);
+        mapEditorBtn.setVisible(false);
+        editUsersBtn.setVisible(false);
     }
 
 
@@ -1114,9 +1128,17 @@ public class HomeController implements SwitchableController, Observer {
 
     @FXML
     private void onNewUserEvent() {
-        privilegeCombo.getItems().addAll("Admin", "Staff");
         userLabel.setText("New User");
+        usernameField.setEditable(true);
         newUser = true;
+        usernameField.clear();
+        passwordField.clear();
+        fnameField.clear();
+        lnameField.clear();
+        occupationField.clear();
+        privilegeCombo.getSelectionModel().clearSelection();
+        privilegeCombo.getItems().addAll(privilegeOptions);
+        editUserPane.setVisible(false);
         newUserPane.setVisible(true);
     }
 
@@ -1160,7 +1182,7 @@ public class HomeController implements SwitchableController, Observer {
         usernameCol.setCellValueFactory(new PropertyValueFactory<User, String>("uname"));
         firstNameUserCol.setCellValueFactory(new PropertyValueFactory<User, String>("firstName"));
         lastNameUserCol.setCellValueFactory(new PropertyValueFactory<User, String>("lastName"));
-        privilegeCol.setCellValueFactory(new PropertyValueFactory<User, String>("lastName"));
+        privilegeCol.setCellValueFactory(new PropertyValueFactory<User, String>("privilege"));
         occupationCol.setCellValueFactory(new PropertyValueFactory<User, String>("occupation"));
         chooseCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
 
@@ -1199,8 +1221,12 @@ public class HomeController implements SwitchableController, Observer {
         searchUserResultTable.setItems(listUsers);
     }
 
+    private final ObservableList<String> privilegeOptions = FXCollections.observableArrayList(
+            "Staff",
+            "Admin");
 
     public void onSelectUser(User e) {
+        usernameField.setEditable(false);
         userLabel.setText("Edit User");
         editedUser = e;
         newUser = false;
@@ -1484,6 +1510,8 @@ public class HomeController implements SwitchableController, Observer {
     public void onEditUsers() {
         adminDrawer.close();
         adminDrawer.toBack();
+        userTextField.clear();
+        searchUserResultTable.getItems().clear();
         editUserPane.setVisible(true);
     }
 
@@ -1814,8 +1842,13 @@ public class HomeController implements SwitchableController, Observer {
 
     @FXML
     private void onSubmitUser(){
-        String username = editedUser.getUname();
-        String password = editedUser.getPsword();
+        String username;
+        if (newUser) {
+            username = usernameField.getText();
+        }else{
+            username = editedUser.getUname();
+        }
+        String password = passwordField.getText();
         String firstName = fnameField.getText();
         String lastName = lnameField.getText();
         String occupation = occupationField.getText();
@@ -1827,8 +1860,7 @@ public class HomeController implements SwitchableController, Observer {
         if(newUser){
             PermissionSingleton.getInstance().addUser(temp);
         }else{
-            PermissionSingleton.getInstance().removeUser(temp);
-            PermissionSingleton.getInstance().addUser(temp);
+            PermissionSingleton.getInstance().updateUser(temp);
         }
 
         if(ServiceRequestSingleton.getInstance().isInTable(username, "LanguageInterpreter")){
@@ -1875,5 +1907,6 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     public void onCancelUser(){
         newUserPane.setVisible(false);
+        editUserPane.setVisible(true);
     }
 }
