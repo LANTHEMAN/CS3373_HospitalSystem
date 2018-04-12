@@ -559,12 +559,18 @@ public class HomeController implements SwitchableController, Observer {
 
                 if (PermissionSingleton.getInstance().isAdmin()) {
                     gpaneNodeInfo.setVisible(true);
-                }else{
+                } else {
                     gpaneNodeInfo.setVisible(false);
                 }
 
-                modNode_x.setText(String.valueOf(node.getPosition().getX()));
-                modNode_y.setText(String.valueOf(node.getPosition().getY()));
+                if (map.is2D()) {
+                    modNode_x.setText(String.valueOf(node.getPosition().getX()));
+                    modNode_y.setText(String.valueOf(node.getPosition().getY()));
+                } else {
+                    modNode_x.setText(String.valueOf(node.getWireframePosition().getX()));
+                    modNode_y.setText(String.valueOf(node.getWireframePosition().getY()));
+                }
+
                 modNode_shortName.setText(node.getShortName());
                 modNode_longName.setText(node.getLongName());
                 // TODO implement change building, change type
@@ -1408,8 +1414,16 @@ public class HomeController implements SwitchableController, Observer {
 
     @FXML
     void onNodeModify() {
-        modifyNode.setPosition(new Point2D(Double.parseDouble(modNode_x.getText())
-                , Double.parseDouble(modNode_y.getText())));
+        if(map.is2D()){
+            modifyNode.setPosition(new Point2D(Double.parseDouble(modNode_x.getText())
+                    , Double.parseDouble(modNode_y.getText())));
+        }
+        else{
+            modifyNode.setWireframePosition(new Point2D(Double.parseDouble(modNode_x.getText())
+                    , Double.parseDouble(modNode_y.getText())));
+        }
+
+
         modifyNode.setShortName(modNode_shortName.getText());
         modifyNode.setLongName(modNode_longName.getText());
     }
