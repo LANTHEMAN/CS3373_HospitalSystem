@@ -21,15 +21,20 @@ public class PermissionSingleton {
         currUser = "Guest";
 
         if (!userExist("admin")) {
-            addEmployee(new Employee("admin", "admin", "Admin", "Default", "Admin", "Admin"));
-            ServiceRequestSingleton.getInstance().addOccupationLanguageInterpreter("Admin");
-            ServiceRequestSingleton.getInstance().addOccupationReligiousServices("Admin");
+            addUser(new User("admin", "admin", "Admin", "Default", "Admin", "Admin"));
+            if (!ServiceRequestSingleton.getInstance().isInTable("admin", "LanguageInterpreter")) {
+                ServiceRequestSingleton.getInstance().addUsernameLanguageInterpreter("admin");
+                ServiceRequestSingleton.getInstance().addUsernameReligiousServices("admin");
+                ServiceRequestSingleton.getInstance().addUsernameSecurityRequest("admin");
+            }
         }
 
-        if (!userExist("SysAdmin")) {
-            addEmployee(new Employee("SysAdmin", "1234", "System Admin", "Sys", "Admin", "System Admin"));
-            ServiceRequestSingleton.getInstance().addOccupationLanguageInterpreter("System Admin");
-            ServiceRequestSingleton.getInstance().addOccupationReligiousServices("System Admin");
+        if (!userExist("staff")) {
+            addUser(new User("staff", "staff", "Staff", "Member", "Staff", "Nurse"));
+            if (!ServiceRequestSingleton.getInstance().isInTable("staff", "LanguageInterpreter")) {
+                ServiceRequestSingleton.getInstance().addUsernameLanguageInterpreter("staff");
+                ServiceRequestSingleton.getInstance().addUsernameReligiousServices("staff");
+            }
         }
 
     }
@@ -39,11 +44,9 @@ public class PermissionSingleton {
     }
 
     private static String getPrivilege(String type) {
-        if (type.equals("System Admin")) {
-            return Privilege.SYSADMIN;
-        } else if (type.equals("Admin")) {
+        if (type.equals("Admin")) {
             return Privilege.ADMIN;
-        } else if(type.equals("Staff")){
+        } else if (type.equals("Staff")) {
             return Privilege.STAFF;
         } else {
             return Privilege.GUEST;
@@ -55,10 +58,7 @@ public class PermissionSingleton {
     }
 
     public boolean isAdmin() {
-        if (userPrivilege.equals(Privilege.ADMIN) || userPrivilege.equals(Privilege.SYSADMIN)) {
-            return true;
-        }
-        return false;
+        return (userPrivilege.equals(Privilege.ADMIN));
     }
 
     public boolean login(String uname, String psword) {
@@ -86,24 +86,35 @@ public class PermissionSingleton {
     public void addUser(User u) {
         pmanage.users.add(u);
         String sql = "INSERT INTO HUser"
-                + " VALUES(username, password, privilege) ('" + u.getUname()
+                + " VALUES ('" + u.getUname()
                 + "', '" + u.getPsword()
-                + "', '" + u.getType()
+                + "', '" + u.getFirstName()
+                + "', '" + u.getLastName()
+                + "', '" + u.getPrivilege()
+                + "', '" + u.getOccupation()
                 + "')";
         dbHandler.runAction(sql);
     }
 
-    public void addEmployee(Employee u) {
-        pmanage.users.add(u);
-        String sql = "INSERT INTO HUser"
-                + " VALUES ('" + u.getUname()
-                + "', '" + u.getPsword()
-                + "', '" + u.getType()
-                + "', '" + u.getFirstName()
-                + "', '" + u.getLastName()
-                + "', '" + u.getOccupation()
-                + "')";
+    public void removeUser(User u) {
+        String sql = "DELETE FROM HUser WHERE username = '" + u.getUname() + "'";
         dbHandler.runAction(sql);
+        sql = "SELECT * FROM HUser";
+        ResultSet resultSet = PermissionSingleton.getInstance().dbHandler.runQuery(sql);
+        pmanage.syncLocalFromDB("HUser", resultSet);
+    }
+
+    public void updateUser(User u) {
+        String sql = "UPDATE HUser SET password = '" + u.getPsword()
+                + "', firstName = '" + u.getFirstName()
+                + "', lastName = '" + u.getLastName()
+                + "', privilege = '" + u.getPrivilege()
+                + "', occupation = '" + u.getOccupation()
+                + "' WHERE username = '" + u.getUname() + "'";
+        dbHandler.runAction(sql);
+        sql = "SELECT * FROM HUser";
+        ResultSet resultSet = PermissionSingleton.getInstance().dbHandler.runQuery(sql);
+        pmanage.syncLocalFromDB("HUser", resultSet);
     }
 
     public boolean userExist(String username) {
@@ -134,8 +145,12 @@ public class PermissionSingleton {
     public static class Privilege {
         public static final String GUEST = "Guest";
         public static final String ADMIN = "Admin";
-        public static final String SYSADMIN = "System Admin";
         public static final String STAFF = "Staff";
     }
+
+    public String getUserPrivilege() {
+        return userPrivilege;
+    }
+
 
 }

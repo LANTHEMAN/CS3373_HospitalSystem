@@ -13,8 +13,13 @@ public class LanguageInterpreter extends ServiceRequest {
         this.language = language;
     }
 
-    public LanguageInterpreter(int id, String firstName, String lastName, String location, String description, String status, int priority, String language, String completedBy) {
-        super("Language Interpreter", id, firstName, lastName, location, description, status, priority, completedBy);
+    public LanguageInterpreter(int id, String firstName, String lastName, String location, String description, String status, int priority, String language, String assignedTo) {
+        super("Language Interpreter", id, firstName, lastName, location, description, status, priority, assignedTo);
+        this.language = language;
+    }
+
+    public LanguageInterpreter(int id, String firstName, String lastName, String location, String description, String status, int priority, String language, String assignedTo, String completedBy) {
+        super("Language Interpreter", id, firstName, lastName, location, description, status, priority, assignedTo, completedBy);
         this.language = language;
     }
 

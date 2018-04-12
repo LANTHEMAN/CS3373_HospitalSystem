@@ -27,12 +27,12 @@ public class ServiceRequestSingleton implements DatabaseItem {
         dbHandler = DatabaseSingleton.getInstance().getDbHandler();
         dbHandler.trackAndInitItem(this);
 
-        // TODO get largest ID from database
+
         int max = -1;
         String sql = "SELECT MAX(ID) FROM SERVICEREQUEST";
         ResultSet rs = dbHandler.runQuery(sql);
         try {
-            if(rs.next()) {
+            if (rs.next()) {
                 max = rs.getInt(1);
             }
             rs.close();
@@ -72,8 +72,13 @@ public class ServiceRequestSingleton implements DatabaseItem {
         syncLocalFromDB("ServiceRequest", rs);
     }
 
-    public void updateCompletedBy(ServiceRequest s){
+    public void updateCompletedBy(ServiceRequest s) {
         String sql = "UPDATE ServiceRequest SET completedBy = '" + s.getCompletedBy() + "' WHERE id = " + s.getId();
+        dbHandler.runAction(sql);
+    }
+
+    public void updateAssignedTo(ServiceRequest s) {
+        String sql = "UPDATE ServiceRequest SET assignedTo = '" + s.getAssignedTo() + "' WHERE id = " + s.getId();
         dbHandler.runAction(sql);
     }
 
@@ -117,6 +122,8 @@ public class ServiceRequestSingleton implements DatabaseItem {
         dbHandler.runSQLScript("init_sr_db.sql");
         dbHandler.runSQLScript("init_sr_li_db.sql");
         dbHandler.runSQLScript("init_sr_rs_db.sql");
+        dbHandler.runSQLScript("init_sr_sr_db.sql");
+        dbHandler.runSQLScript("init_user_sr_inbox_db.sql");
         if (dbHandler != DatabaseSingleton.getInstance().getDbHandler()) {
             initDatabase(DatabaseSingleton.getInstance().getDbHandler());
         }
@@ -140,44 +147,70 @@ public class ServiceRequestSingleton implements DatabaseItem {
                     String instructions = resultSet.getString(6);
                     int priority = resultSet.getInt(7);
                     String status = resultSet.getString(8);
+                    String assignedTo = null;
                     String completedBy = null;
-                    if(status.equals("Complete")) {
+                    if (status.equals("Complete")) {
                         try {
-                            completedBy = resultSet.getString(9);
+                            assignedTo = resultSet.getString(9);
+                            completedBy = resultSet.getString(10);
                         } catch (SQLException e) {
                             e.printStackTrace();
+                            assignedTo = null;
                             completedBy = null;
+                        }
+                    } else if (status.equals("In Progress")) {
+                        try {
+                            assignedTo = resultSet.getString(9);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            assignedTo = null;
                         }
                     }
 
 
                     ServiceRequest s;
-                    String[] parts = instructions.split("/////", 2);
-                    String special = parts[0];
-                    String description = parts[1];
+                    String[] parts;
+                    String special = "";
+                    String description = "";
+                    if (!type.equals("Security Request")) {
+                        parts = instructions.split("/////", 2);
+                        special = parts[0];
+                        description = parts[1];
+                    }
+
                     switch (type) {
                         case "Religious Services":
-                            if(completedBy == null){
+                            if (completedBy != null) {
+                                s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, assignedTo, completedBy);
+                            } else if (assignedTo != null) {
+                                s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, assignedTo);
+                            } else {
                                 s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special);
-                            }else{
-                                s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, completedBy);
                             }
                             break;
 
                         case "Language Interpreter":
-                            if(completedBy == null) {
+                            if (completedBy != null) {
+                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, assignedTo, completedBy);
+                            } else if (assignedTo != null) {
+                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, assignedTo);
+                            } else {
                                 s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
-                            }else{
-                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, completedBy);
+                            }
+                            break;
+
+                        case "Security Request":
+                            if (completedBy != null) {
+                                s = new SecurityRequest(id, location, description, status, priority, assignedTo, completedBy);
+                            } else if (assignedTo != null) {
+                                s = new SecurityRequest(id, location, description, status, priority, assignedTo);
+                            } else {
+                                s = new SecurityRequest(id, location, description, status, priority);
                             }
                             break;
 
                         default:
-                            if(completedBy == null) {
-                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
-                            }else{
-                                s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, completedBy);
-                            }
+                            s = new SecurityRequest(id, location, description, status, priority);
                             break;
                     }
 
@@ -261,43 +294,70 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 String instructions = resultSet.getString(6);
                 int priority = resultSet.getInt(7);
                 String status = resultSet.getString(8);
-                String username = null;
-                if(status.equals("Complete")) {
+                String assignedTo = null;
+                String completedBy = null;
+                if (status.equals("Complete")) {
                     try {
-                        username = resultSet.getString(9);
+                        assignedTo = resultSet.getString(9);
+                        completedBy = resultSet.getString(10);
                     } catch (SQLException e) {
                         e.printStackTrace();
-                        username = null;
+                        assignedTo = null;
+                        completedBy = null;
+                    }
+                } else if (status.equals("In Progress")) {
+                    try {
+                        assignedTo = resultSet.getString(9);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        assignedTo = null;
                     }
                 }
 
+
                 ServiceRequest s;
-                String[] parts = instructions.split("/////", 2);
-                String special = parts[0];
-                String description = parts[1];
+                String[] parts;
+                String special = "";
+                String description = "";
+                if (!type.equals("Security Request")) {
+                    parts = instructions.split("/////", 2);
+                    special = parts[0];
+                    description = parts[1];
+                }
+
                 switch (type) {
                     case "Religious Services":
-                        if(username == null){
+                        if (completedBy != null) {
+                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, assignedTo, completedBy);
+                        } else if (assignedTo != null) {
+                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, assignedTo);
+                        } else {
                             s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special);
-                        }else{
-                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, username);
                         }
                         break;
 
                     case "Language Interpreter":
-                        if(username == null){
+                        if (completedBy != null) {
+                            s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, assignedTo, completedBy);
+                        } else if (assignedTo != null) {
+                            s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, assignedTo);
+                        } else {
                             s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special);
-                        }else{
-                            s = new LanguageInterpreter(id, firstName, lastName, location, description, status, priority, special, username);
+                        }
+                        break;
+
+                    case "Security Request":
+                        if (completedBy != null) {
+                            s = new SecurityRequest(id, location, description, status, priority, assignedTo, completedBy);
+                        } else if (assignedTo != null) {
+                            s = new SecurityRequest(id, location, description, status, priority, assignedTo);
+                        } else {
+                            s = new SecurityRequest(id, location, description, status, priority);
                         }
                         break;
 
                     default:
-                        if(username == null){
-                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special);
-                        }else{
-                            s = new ReligiousServices(id, firstName, lastName, location, description, status, priority, special, username);
-                        }
+                        s = new SecurityRequest(id, location, description, status, priority);
                         break;
                 }
 
@@ -330,28 +390,87 @@ public class ServiceRequestSingleton implements DatabaseItem {
         return lastSearch;
     }
 
-    public void setSearchNull(){
+    public void setSearchNull() {
         this.lastFilter = null;
         this.lastSearch = null;
     }
 
-    public void addOccupationLanguageInterpreter(String occupation){
-        String sql = "INSERT INTO LanguageInterpreter"+" VALUES ('"+occupation+"')";
+    public void addUsernameLanguageInterpreter(String username) {
+        String sql = "INSERT INTO LanguageInterpreter VALUES ('" + username + "')";
         dbHandler.runAction(sql);
     }
 
-    public void addOccupationReligiousServices(String occupation){
-        String sql = "INSERT INTO ReligiousServices"+" VALUES ('"+occupation+"')";
+    public void addUsernameReligiousServices(String username) {
+        String sql = "INSERT INTO ReligiousServices VALUES ('" + username + "')";
         dbHandler.runAction(sql);
     }
 
-    public void removeOccupationLanguageInterpreter(String occupation){
-        String sql = "DELETE FROM LanguageInterpreter WHERE occupation = '"+occupation+"'";
+    public void addUsernameSecurityRequest(String username) {
+        String sql = "INSERT INTO SecurityRequest VALUES ('" + username + "')";
         dbHandler.runAction(sql);
     }
 
-    public void removeOccupationReligiousServices(String occupation){
-        String sql = "DELETE FROM ReligiousServices WHERE occupation = '"+occupation+"'";
+    public void removeUsernameLanguageInterpreter(String username) {
+        String sql = "DELETE FROM LanguageInterpreter WHERE username = '" + username + "'";
         dbHandler.runAction(sql);
+    }
+
+    public void removeUsernameReligiousServices(String username) {
+        String sql = "DELETE FROM ReligiousServices WHERE username = '" + username + "'";
+        dbHandler.runAction(sql);
+    }
+
+    public void removeUsernameSecurityRequest(String username) {
+        String sql = "DELETE FROM SecurityRequest WHERE username = '" + username + "'";
+        dbHandler.runAction(sql);
+    }
+
+
+    public boolean isInTable(String username, String table) {
+        ResultSet rs;
+        String sql;
+        switch (table){
+            case "HUser":
+                sql = "SELECT * FROM HUser WHERE username = '" + username + "'";
+                break;
+            case "LanguageInterpreter":
+                sql = "SELECT * FROM LanguageInterpreter WHERE username = '" + username + "'";
+                break;
+            case "ReligiousServices":
+                sql = "SELECT * FROM ReligiousServices WHERE username = '" + username + "'";
+                break;
+            case "SecurityRequest":
+                sql = "SELECT * FROM SecurityRequest WHERE username = '" + username + "'";
+                break;
+            default:
+                sql = "SELECT * FROM '" + table + "' WHERE username = '" + username + "'";
+                break;
+        }
+        try {
+            rs = dbHandler.runQuery(sql);
+
+            if (!rs.next()) {
+                rs.close();
+                return false;
+            } else {
+                rs.close();
+                return true;
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void assignTo(String username, ServiceRequest sr) {
+        if (isInTable(username, "HUser")) {
+            sr.setAssignedTo(username);
+            sr.setStatus("In Progress");
+            updateAssignedTo(sr);
+            updateStatus(sr);
+            String sql = "INSERT INTO Inbox VALUES ('" + username + "', " + sr.getId() + ")";
+        }
     }
 }

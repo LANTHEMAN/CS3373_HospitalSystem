@@ -35,15 +35,20 @@ public class PermissionManager implements DatabaseItem {
     }
 
     @Override
-    public void syncLocalFromDB(String tableName, ResultSet resultSet) {
+    public void syncLocalFromDB(String table, ResultSet resultSet) {
         try{
+            ArrayList<User> userList = new ArrayList<>();
             while(resultSet.next()){
                 String username = resultSet.getString(1);
                 String password = resultSet.getString(2);
-                String type = resultSet.getString(3);
-                User newUser = new User(username,password,type);
-                users.add(newUser);
+                String firstname = resultSet.getString(3);
+                String lastname = resultSet.getString(4);
+                String privilege = resultSet.getString(5);
+                String occupation = resultSet.getString(6);
+                User newUser = new User(username,password,firstname, lastname, privilege, occupation);
+                userList.add(newUser);
             }
+            this.users = userList;
         }
         catch(SQLException e){
             e.printStackTrace();

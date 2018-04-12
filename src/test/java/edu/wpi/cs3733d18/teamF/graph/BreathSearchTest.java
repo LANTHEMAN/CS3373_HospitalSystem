@@ -93,8 +93,8 @@ public class BreathSearchTest {
         path.add(nodeR);
         path.add(nodeF);
 
-
-        assertEquals(new Path(path, graph), BreathSearch.getPathBreath(graph, nodeS, nodeF));
+        PathFindingAlgorithm B = new BreathSearch();
+        assertEquals(new Path(path, graph), B.getPath(graph, nodeS, nodeF));
     }
 
 
@@ -146,11 +146,11 @@ public class BreathSearchTest {
         path2Arr.add(nodeC);
         path2Arr.add(nodeD);
         Path path2 = new Path(path2Arr, graph);
-
-        assertEquals(path1, BreathSearch.getPathBreath(graph, nodeA, nodeC));
+        PathFindingAlgorithm B = new BreathSearch();
+        assertEquals(path1, B.getPath(graph, nodeA, nodeC));
 
         graph.removeEdge(nodeA, nodeB);
-        assertEquals(path2, BreathSearch.getPathBreath(graph, nodeA, nodeD));
+        assertEquals(path2, B.getPath(graph, nodeA, nodeD));
 
     }
 

@@ -30,6 +30,14 @@ public class Path {
         //}
     }
 
+    public double getLength() {
+        return edges.stream()
+                .map(node -> node.getDistance() + node.getNode1().getAdditionalWeight() + node.getNode2().getAdditionalWeight())
+                .mapToDouble(value -> value)
+                .sum();
+    }
+
+
     /**
      * @return the nodes of this path
      */
@@ -51,5 +59,72 @@ public class Path {
         }
         Path path = (Path) obj;
         return this.nodes.equals(path.nodes);
+    }
+
+    public ArrayList<String> makeTextDirections() {
+        ArrayList<String> directions = new ArrayList<>();
+
+        double dist = 0;
+
+        for (int nodeIndex = 1; nodeIndex < this.nodes.size() - 1; nodeIndex++) {
+
+            Node previousNode = this.getNodes().get(nodeIndex - 1);
+            Node currentNode = this.getNodes().get(nodeIndex);
+            Node nextNode = this.getNodes().get(nodeIndex + 1);
+
+            double angle = getAngle(previousNode, currentNode, nextNode);
+
+            dist += previousNode.displacementTo(currentNode);
+
+            if(currentNode.getNodeType().equals("ELEV") && nextNode.getNodeType().equals("ELEV")){
+                directions.add("Take Elevator to floor: " + nextNode.getFloor());
+                continue;
+            }else if(currentNode.getNodeType().equals("STAI") && nextNode.getNodeType().equals("ELEV")){
+                directions.add("Take Stairs to floor: " + nextNode.getFloor());
+                continue;
+            }
+
+            if (angle < -30) {
+                directions.add(String.format("Walk straight for %.0f feet", dist));
+                if(currentNode.getNodeType().equals("HALL"))
+                    directions.add("Turn Left");
+                else
+                    directions.add("Turn Left at " + currentNode.getShortName());
+                dist = 0;
+            } else if (angle > 30) {
+                directions.add(String.format("Walk straight for %.0f feet", dist));
+                if(currentNode.getNodeType().equals("HALL"))
+                    directions.add("Turn Right");
+                else
+                    directions.add("Turn Right at " + currentNode.getShortName());
+                dist = 0;
+            }
+        }
+
+        directions.add(String.format("Walk straight for %.0f feet", nodes.get(nodes.size()-2).displacementTo(nodes.get(nodes.size()-1)) + dist));
+        directions.add("Arrive at " + nodes.get(nodes.size()-1).getShortName());
+
+        return directions;
+    }
+
+    public double getAngle(Node previousNode, Node currentNode, Node nextNode) {
+
+        double v1X = currentNode.getPosition().getX() - previousNode.getPosition().getX();
+        double v1Y = currentNode.getPosition().getY() - previousNode.getPosition().getY();
+
+        double v2X = nextNode.getPosition().getX() - currentNode.getPosition().getX();
+        double v2Y = nextNode.getPosition().getY() - currentNode.getPosition().getY();
+
+        double dot = v1X * v2X + v1Y * v2Y;
+        double det = v1X * v2Y - v1Y * v2X;
+
+        return Math.toDegrees(Math.atan2(det, dot));
+    }
+
+    public double getUnweightedLength(){
+        return edges.stream()
+                .map(Edge::getDistance)
+                .mapToDouble(value -> value)
+                .sum();
     }
 }

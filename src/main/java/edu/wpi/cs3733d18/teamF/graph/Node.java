@@ -5,6 +5,9 @@ import javafx.geometry.Point3D;
 
 import java.util.Observable;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 public class Node extends Observable {
     // the database ID of this node
     private final String nodeID;
@@ -17,7 +20,7 @@ public class Node extends Observable {
     // position of the node on the wireframe map
     private Point2D wireframePosition;
     // extra weight to cause A* to more likely avoid this node
-    private double additionalWeight = 0;
+    private double additionalWeight;
     // the name of the building this node is located in
     private String building;
     // an abbreviation of the name of this node
@@ -125,6 +128,25 @@ public class Node extends Observable {
      */
     public void setPosition(Point2D position) {
         this.position = new Point3D(position.getX(), position.getY(), getHeight());
+
+        double transX = 1203.7;
+        double transY = 290.0;
+        double transXp = 3.94;
+        double transYp = 2.226;
+        double scaleX = 0.736;
+        double scaleY = 0.545;
+        double rotateAngle = 0.17;
+
+        double a = scaleX * cos(rotateAngle);
+        double b = -scaleY * sin(rotateAngle) * transXp;
+        double c = transX * scaleX * cos(rotateAngle) - transY * scaleY * sin(rotateAngle);
+        double d = scaleX * sin(rotateAngle) * transYp;
+        double e = scaleY * cos(rotateAngle);
+        double f = transX * scaleX * sin(rotateAngle) + transY * scaleY * cos(rotateAngle);
+
+        this.wireframePosition = new Point2D(a * position.getX() + b * position.getY() + c,
+                d * position.getX() + e * position.getY() + f);
+
         signalClassChanged();
     }
 
@@ -174,7 +196,7 @@ public class Node extends Observable {
      */
     public void setNodeType(String nodeType, int nodeTypeCount) {
         if (!(NodeBuilder.getNodeTypes().contains(nodeType))
-                || nodeType.equals("ELEV")) {
+                || nodeType.equals("ELEV") || nodeType.equals("STAI")) {
             throw new AssertionError("The nodeType was invalid.");
         }
         if (nodeTypeCount > 999 || nodeTypeCount < 0) {
@@ -189,18 +211,18 @@ public class Node extends Observable {
         setNodeID(newNodeID);
     }
 
-    public void setNodeType(String nodeType, char elevatorChar) {
-        if (!(nodeType.equals("ELEV"))) {
+    public void setNodeType(String nodeType, char linkChar) {
+        if (!(nodeType.equals("ELEV") || nodeType.equals("STAI"))) {
             throw new AssertionError("The nodeType was invalid.");
         }
-        if (!(Character.isLetter(elevatorChar))) {
-            throw new AssertionError("You must assign a valid elevator character!");
+        if (!(Character.isLetter(linkChar))) {
+            throw new AssertionError("You must assign a valid link character!");
         }
 
         // notify the change in nodeID
         String newNodeID = nodeID.substring(0, 1)
                 + nodeType
-                + "00" + elevatorChar
+                + "00" + linkChar
                 + nodeID.substring(8);
         setNodeID(newNodeID);
     }
