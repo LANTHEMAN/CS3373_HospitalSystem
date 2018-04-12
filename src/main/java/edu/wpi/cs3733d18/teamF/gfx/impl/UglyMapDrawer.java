@@ -121,13 +121,11 @@ public class UglyMapDrawer extends MapDrawable {
             NodeDrawable startIconDrawer = new StartNodeDrawer();
             startIconDrawer.update(startNode);
             startIconDrawer.draw(pane);
-            /*
+
             Node endNode = path.getNodes().get(path.getNodes().size()-1);
             NodeDrawable endIconDrawer = new EndNodeDrawer();
             endIconDrawer.update(endNode);
             endIconDrawer.draw(pane);
-            */
-
 
             pathDrawer.update(path);
             pathDrawer.draw(pane);
