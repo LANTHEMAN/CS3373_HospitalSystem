@@ -654,7 +654,9 @@ public class HomeController implements SwitchableController, Observer {
                 }
 
                 Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node1 -> node1.getFloor().equals(map.getFloor()));
-                mapDrawController.selectNode(node);
+                if(nodesShown) {
+                    mapDrawController.selectNode(node);
+                }
                 selectedNodeEnd = node;
 
                 searchLocation.setText(node.getLongName());
