@@ -2004,11 +2004,15 @@ public class HomeController implements SwitchableController, Observer {
 
         if(arg instanceof Node) {
             Node voiceSelectedEnd = (Node)arg;
-            mapDrawController.showPath(map.getPath(selectedNodeStart, voiceSelectedEnd));
+            Path path = map.getPath(selectedNodeStart, voiceSelectedEnd);
+            mapDrawController.showPath(path);
+            displayTextDirections(path);
         }else if(arg instanceof HashSet){
             HashSet<Node> potentialDestinations = (HashSet<Node>) arg;
             Node voiceSelectedEnd = map.findNodeClosestTo(selectedNodeStart, potentialDestinations);
-            mapDrawController.showPath(map.getPath(selectedNodeStart, voiceSelectedEnd));
+            Path path = map.getPath(selectedNodeStart, voiceSelectedEnd);
+            mapDrawController.showPath(path);
+            displayTextDirections(path);
         }else if(arg instanceof String){
             String cmd = (String) arg;
             if(cmd.equalsIgnoreCase("Help")){
@@ -2019,5 +2023,6 @@ public class HomeController implements SwitchableController, Observer {
                 paneVoiceController.setVisibility(true);
             }
         }
+        reloadMap();
     }
 }
