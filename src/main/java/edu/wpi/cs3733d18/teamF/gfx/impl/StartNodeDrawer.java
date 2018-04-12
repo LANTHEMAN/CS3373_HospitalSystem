@@ -42,17 +42,14 @@ public class StartNodeDrawer extends NodeDrawable {
             return;
         }
 
-        if(!isSelected){
-            Circle circle = new Circle(2, Color.GREEN);
-            circle.setCenterX(posX * pane.getMaxWidth() / imageWidth);
-            circle.setCenterY(posY * pane.getMaxHeight() / imageHeight);
-            pane.getChildren().add(circle);
-        }
-        else{
-            Circle circle = new Circle(2, Color.GREEN);
-            circle.setCenterX(posX * pane.getMaxWidth() / imageWidth);
-            circle.setCenterY(posY * pane.getMaxHeight() / imageHeight);
-            pane.getChildren().add(circle);
-        }
+        FontAwesomeIconView start = new FontAwesomeIconView(FontAwesomeIcon.HOME);
+        start.setTranslateX((posX * pane.getMaxWidth() / imageWidth)-5.5);
+        start.setTranslateY((posY * pane.getMaxHeight() / imageHeight)+3.5);
+
+        start.setScaleX(0.5);
+        start.setScaleY(0.5);
+        start.setFill(Color.GREEN);
+        start.setVisible(true);
+        pane.getChildren().add(start);
     }
 }
