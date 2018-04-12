@@ -1989,10 +1989,12 @@ public class HomeController implements SwitchableController, Observer {
         }
 
         if(arg instanceof Node) {
-            //TODO: draw path from start node to this node
+            Node voiceSelectedEnd = (Node)arg;
+            mapDrawController.showPath(map.getPath(selectedNodeStart, voiceSelectedEnd));
         }else if(arg instanceof HashSet){
-            //TODO: determine best node to pathfind to then draw the path from start to here
-            System.out.println("Got some nodes");
+            HashSet<Node> potentialDestinations = (HashSet<Node>) arg;
+            Node voiceSelectedEnd = map.findNodeClosestTo(selectedNodeStart, potentialDestinations);
+            mapDrawController.showPath(map.getPath(selectedNodeStart, voiceSelectedEnd));
         }else if(arg instanceof String){
             String cmd = (String) arg;
             if(cmd.equalsIgnoreCase("Help")){

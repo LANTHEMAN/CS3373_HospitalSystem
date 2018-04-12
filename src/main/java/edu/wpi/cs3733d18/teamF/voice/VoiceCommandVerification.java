@@ -76,7 +76,7 @@ public class VoiceCommandVerification extends Observable implements Observer {
                         }
                         voice.speak("Here is the route to Orthopedics and Rhemutology");
                     } else if (command.contains("PARKING") || command.contains("GARAGE")) {
-                        HashSet<Node> nodes = map.getNodes(node -> node.getLongName().contains("Parking") || node.getLongName().contains("Garage"));
+                        HashSet<Node> nodes = map.getNodes(node -> node.getLongName().contains("Parking") && node.getLongName().contains("Garage"));
                         if (nodes.size() == 1) {
                             signalClassChanged(nodes.iterator().next());
                         } else {
@@ -91,7 +91,6 @@ public class VoiceCommandVerification extends Observable implements Observer {
                             signalClassChanged(nodes);
                         }
                         voice.speak("Here is the route to the nearest elevator");
-
                     } else if (command.contains("DENTIST") || command.contains("DENTISTRY") || command.contains("ORAL")) {
                         HashSet<Node> nodes = map.getNodes(node -> node.getLongName().contains("Dentistry"));
                         if (nodes.size() == 1) {
