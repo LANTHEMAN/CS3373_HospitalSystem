@@ -38,18 +38,17 @@ public class EndNodeDrawer extends NodeDrawable {
         double imageHeight = is2D ? 3400 : 2772;
         double posX = is2D ? node.getPosition().getX() : node.getWireframePosition().getX();
         double posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
+        if(!node.getFloor().equals(MapSingleton.getInstance().getMap().getFloor())){
+            return;
+        }
+        FontAwesomeIconView end = new FontAwesomeIconView(FontAwesomeIcon.MAP_PIN);
+        end.setTranslateX((posX * pane.getMaxWidth() / imageWidth)-3.4);
+        end.setTranslateY((posY * pane.getMaxHeight() / imageHeight)+1.7);
 
-        if(!isSelected){
-            Circle circle = new Circle(2, Color.RED);
-            circle.setCenterX(posX * pane.getMaxWidth() / imageWidth);
-            circle.setCenterY(posY * pane.getMaxHeight() / imageHeight);
-            pane.getChildren().add(circle);
-        }
-        else{
-            Circle circle = new Circle(2, Color.RED);
-            circle.setCenterX(posX * pane.getMaxWidth() / imageWidth);
-            circle.setCenterY(posY * pane.getMaxHeight() / imageHeight);
-            pane.getChildren().add(circle);
-        }
+        end.setScaleX(0.5);
+        end.setScaleY(0.5);
+        end.setFill(Color.RED);
+        end.setVisible(true);
+        pane.getChildren().add(end);
     }
 }

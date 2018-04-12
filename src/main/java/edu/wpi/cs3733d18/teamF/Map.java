@@ -223,7 +223,6 @@ public class Map extends Observable implements DatabaseItem, Observer {
         return pathSelector.getPath(graph, node1, node2);
     }
 
-
     public Node findNodeClosestTo(Node node, Predicate<Node> destFilter) {
         double closestDistance = Double.MAX_VALUE;
         Node closestNode = null;
@@ -241,7 +240,6 @@ public class Map extends Observable implements DatabaseItem, Observer {
         return closestNode;
     }
 
-
     //Note: This function gets you the closest node on the specified floor. Don't use this if you don't know what floor you're looking for!
     public Node findNodeClosestTo(double x1, double y1) {
         return findNodeClosestTo(x1, y1, true);
@@ -250,6 +248,23 @@ public class Map extends Observable implements DatabaseItem, Observer {
     //Note: This function gets you the closest node on the specified floor. Don't use this if you don't know what floor you're looking for!
     public Node findNodeClosestTo(double x1, double y1, boolean is2D) {
         return findNodeClosestTo(x1, y1, is2D, Objects::nonNull);
+    }
+
+    public Node findNodeClosestTo(Node node, HashSet<Node> nodes){
+        double closestDistance = Double.MAX_VALUE;
+        Node closestNode = null;
+        for (Node n : nodes) {
+            Path path = getPath(node, n);
+            if (path.getNodes().size() == 0) {
+                continue;
+            }
+            double len = path.getLength();
+            if (len < closestDistance) {
+                closestDistance = len;
+                closestNode = n;
+            }
+        }
+        return closestNode;
     }
 
     //Note: This function gets you the closest node on the specified floor. Don't use this if you don't know what floor you're looking for!
