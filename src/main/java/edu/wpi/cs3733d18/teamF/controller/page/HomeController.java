@@ -559,7 +559,7 @@ public class HomeController implements SwitchableController, Observer {
 
                 if (PermissionSingleton.getInstance().isAdmin()) {
                     gpaneNodeInfo.setVisible(true);
-                } else {
+                }else{
                     gpaneNodeInfo.setVisible(false);
                 }
 
