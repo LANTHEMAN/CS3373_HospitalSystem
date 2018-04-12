@@ -427,7 +427,7 @@
                 </JFXButton>
             </children>
         </GridPane>
-        <Pane fx:id="helpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="565.0" style="-fx-background-color: WHITE; -fx-border-color: GREY;" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+        <Pane fx:id="helpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="565.0" style="-fx-background-color: rgba(255,255,255,0.90); -fx-border-color: GREY;" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <children>
                 <GridPane prefHeight="400.0" prefWidth="565.0">
                     <columnConstraints>
@@ -457,17 +457,19 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Move Map: " GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <FontAwesomeIconView fill="#464646" glyphName="ARROWS" size="16" translateX="-80.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Move/Pan Map: " GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                     <font>
                                         <Font name="Arial" size="18.0" />
                                     </font>
                                 </Text>
-                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Zoom: " GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Drag map to move" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                                     <font>
                                         <Font name="Arial" size="18.0" />
                                     </font>
                                 </Text>
-                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll Map around to zoom" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                        <FontAwesomeIconView fill="#464646" glyphName="SEARCH" size="16" translateX="-60.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Zoom Map:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                     <font>
                                         <Font name="Arial" size="18.0" />
                                     </font>
@@ -477,22 +479,24 @@
                                         <Font name="Arial" size="18.0" />
                                     </font>
                                 </Text>
-                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Location: " GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                        <FontAwesomeIconView fill="#464646" glyphName="HOME" size="16" translateX="-100.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Start Location: " GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                     <font>
                                         <Font name="Arial" size="18.0" />
                                     </font>
                                 </Text>
-                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Left click on location" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Right-Click on location" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                     <font>
                                         <Font name="Arial" size="18.0" />
                                     </font>
                                 </Text>
-                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Lock Panning Movement:" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                        <FontAwesomeIconView fill="#464646" glyphName="MAP_PIN" size="16" translateX="-95.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Select End Location:" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                                     <font>
                                         <Font name="Arial" size="18.0" />
                                     </font>
                                 </Text>
-                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Hold Ctrl" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Left-Click on location" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                     <font>
                                         <Font name="Arial" size="18.0" />
                                     </font>
@@ -515,22 +519,22 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Remove Path:" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Holding ctrl, Select Start location and right click drag to end location" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Move/Pan Map: " GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Zoom: " GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll map around to zoom" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll to zoom" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hold Ctrl" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Location: " GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lock Panning Movement:" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Left click on location" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Double left click" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add Location:" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Remove Location:" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Double right click" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add Path:" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Holding ctrl, Select Start location and left clickdrag to end location" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Remove Path:" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Holding ctrl, Select Start location and right click drag to end location" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Move/Pan Map: " GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Zoom: " GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Drag map to move" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll to zoom" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Hold Ctrl" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Location: " GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Lock Panning Movement:" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Left click on location" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Double left click" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Location:" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Remove Location:" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Double right click" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Path:" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Holding ctrl, Select Start location and left clickdrag to end location" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                             </children>
                         </GridPane>
                     </children>
