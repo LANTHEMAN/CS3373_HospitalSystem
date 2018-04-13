@@ -13,6 +13,7 @@ import edu.wpi.cs3733d18.teamF.gfx.impl.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.*;
 import edu.wpi.cs3733d18.teamF.qr.qrConverter;
 import edu.wpi.cs3733d18.teamF.sr.*;
+import edu.wpi.cs3733d18.teamF.voice.TTS;
 import edu.wpi.cs3733d18.teamF.voice.VoiceCommandVerification;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.animation.TranslateTransition;
@@ -866,6 +867,14 @@ public class HomeController implements SwitchableController, Observer {
         } else {
             listView.setVisible(false);
         }
+    }
+
+    /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+    //REMOVE WHEN YA DONT WANT THE HAPPY BDAY BUTTON
+    /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+    TTS justinTTS = new TTS();
+    public void onBirthday(){
+        justinTTS.speak("happy birthday to you, happy birthday to you, happy birthday dear justin, happy birthday you yaaaaaaaay");
     }
 
     // will shake the password field back and forth
