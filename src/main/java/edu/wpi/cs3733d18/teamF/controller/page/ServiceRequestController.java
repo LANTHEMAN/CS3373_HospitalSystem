@@ -1,6 +1,8 @@
 package edu.wpi.cs3733d18.teamF.controller.page;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.page.HomeController;
 import edu.wpi.cs3733d18.teamF.sr.ServiceRequest;
@@ -8,10 +10,7 @@ import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
@@ -49,24 +48,72 @@ public class ServiceRequestController{
             "Religious Services");
 
 
-
     private HomeController homeController;
-    private ComboBox filterType;
+
     private AnchorPane searchPane;
-    private ComboBox availableTypes;
-    private TableView searchResultTable;
+    private ComboBox filterType;
 
     private String searchType;
     private String filter;
     private ServiceRequest serviceRequestPopUp;
     private ObservableList<ServiceRequest> listRequests;
+    private ComboBox availableTypes;
+    private TableView<ServiceRequest> searchResultTable;
 
-    public ServiceRequestController(HomeController homeController, ComboBox filterType, AnchorPane searchPane, ComboBox availableTypes, TableView searchResultTable) {
+    private TableColumn<ServiceRequest, Integer> idNumberCol;
+    private TableColumn<ServiceRequest, String> requestTypeCol;
+    private TableColumn<ServiceRequest, String> firstNameCol;
+    private TableColumn<ServiceRequest, String> lastNameCol;
+    private TableColumn<ServiceRequest, String> destinationCol;
+    private TableColumn<ServiceRequest, Integer> requestPriorityCol;
+    private TableColumn<ServiceRequest, String> theStatusCol;
+
+    private TableColumn btnsCol;
+
+
+    private Label typeLabel;
+    private Label idLabel;
+    private Label firstNameLabel;
+    private Label lastNameLabel;
+    private Label locationLabel;
+    private Label statusLabel;
+    private TextArea instructionsTextArea;
+    private JFXCheckBox completeCheck;
+    private Label completedByLabel;
+    private Label usernameLabel;
+    private AnchorPane editRequestPane;
+    private JFXTextField usernameSearch;
+
+    public ServiceRequestController(HomeController homeController) {
         this.homeController = homeController;
-        this.filterType = filterType;
-        this.searchPane = searchPane;
-        this.availableTypes = availableTypes;
-        this.searchResultTable = searchResultTable;
+
+        this.searchPane = homeController.searchPane;
+        this.filterType = homeController.filterType;
+        this.availableTypes = homeController.availableTypes;
+        this.searchResultTable  = homeController.searchResultTable;
+
+        this.idNumberCol = homeController.idNumberCol;
+        this.requestTypeCol = homeController.requestTypeCol;
+        this.firstNameCol = homeController.firstNameCol;
+        this.lastNameCol = homeController.lastNameCol;
+        this.destinationCol = homeController.destinationCol;
+        this.requestPriorityCol = homeController.requestPriorityCol;
+        this.theStatusCol = homeController.theStatusCol;
+        this.btnsCol = homeController.btnsCol;
+
+        this.typeLabel = homeController.typeLabel;
+        this.idLabel = homeController.idLabel;
+        this.firstNameLabel = homeController.firstNameLabel;
+        this.lastNameLabel = homeController.lastNameLabel;
+        this.locationLabel = homeController.locationLabel;
+        this.statusLabel = homeController.statusLabel;
+        this.instructionsTextArea = homeController.instructionsTextArea;
+
+        this.completeCheck = homeController.completeCheck;
+        this.completedByLabel = homeController.completedByLabel;
+        this.usernameLabel = homeController.usernameLabel;
+        this.editRequestPane = homeController.editRequestPane;
+
     }
 
     ////////////////////////////////////////////////////
@@ -75,12 +122,11 @@ public class ServiceRequestController{
     //                                                //
     ////////////////////////////////////////////////////
 
-    @FXML
-    private void onSearchServiceRequest() {
+    void onSearchServiceRequest() {
         filter = "none";
         searchType = "none";
 
-        filterType.getItems().addAll(filterOptions);
+        homeController.filterType.getItems().addAll(filterOptions);
 
         String lastSearch = ServiceRequestSingleton.getInstance().getLastSearch();
         String lastFilter = ServiceRequestSingleton.getInstance().getLastFilter();
@@ -94,7 +140,6 @@ public class ServiceRequestController{
         homeController.setCancelMenuEvent();
     }
 
-    @FXML
     void onFilterType() {
         searchType = "none";
         filter = "none";
@@ -117,7 +162,6 @@ public class ServiceRequestController{
         }
     }
 
-    @FXML
     void onAvailableTypes() {
         try {
             filter = availableTypes.getSelectionModel().getSelectedItem().toString();
@@ -126,7 +170,6 @@ public class ServiceRequestController{
         }
     }
 
-    @FXML
     void onSearch() {
         ArrayList<ServiceRequest> requests = new ArrayList<>();
         try {
@@ -248,7 +291,6 @@ public class ServiceRequestController{
         editRequestPane.setVisible(true);
     }
 
-    @FXML
     void onClear() {
         availableTypes.setVisible(false);
         availableTypes.valueProperty().set(null);
@@ -263,7 +305,6 @@ public class ServiceRequestController{
         ServiceRequestSingleton.getInstance().setSearchNull();
     }
 
-    @FXML
     void onCancelSearch() {
         searchPane.setVisible(false);
     }

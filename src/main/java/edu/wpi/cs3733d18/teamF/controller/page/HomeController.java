@@ -475,15 +475,15 @@ public class HomeController implements SwitchableController, Observer {
     }));
 
     @FXML
-    private JFXTextField usernameSearch;
+    JFXTextField usernameSearch;
     @FXML
-    private JFXListView usernameList;
+    JFXListView usernameList;
     @FXML
-    private JFXCheckBox completeCheck;
+    JFXCheckBox completeCheck;
     @FXML
-    private JFXNodesList serviceRequestList;
+    JFXNodesList serviceRequestList;
     @FXML
-    private JFXButton newServiceRequest;
+    JFXButton newServiceRequest;
 
 
     ////////////////////////////////////////
@@ -492,12 +492,14 @@ public class HomeController implements SwitchableController, Observer {
     //                                    //
     ////////////////////////////////////////
     @FXML
-    private AnchorPane editRequestPane;
+    AnchorPane editRequestPane;
+
+    private ServiceRequestController serviceRequestController;
 
     @Override
     public void initialize(PaneSwitcher switcher) {
 
-        ServiceRequestController serviceRequestController = new ServiceRequestController(this, filterType, searchPane, availableTypes, searchResultTable);
+        this.serviceRequestController = new ServiceRequestController(this);
         this.switcher = switcher;
         VoiceLauncher.getInstance().addObserver(this);
 
@@ -1981,5 +1983,45 @@ public class HomeController implements SwitchableController, Observer {
         ServiceRequestSingleton.getInstance().sendServiceRequest(sec);
         ServiceRequestSingleton.getInstance().addServiceRequest(sec);
         securityPane.setVisible(false);
+    }
+
+    @FXML
+    private void onSearchServiceRequest(){
+        serviceRequestController.onSearchServiceRequest();
+    }
+
+    @FXML
+    private void onFilterType(){
+        serviceRequestController.onFilterType();
+    }
+
+    @FXML
+    void onAvailableTypes() {
+        serviceRequestController.onAvailableTypes();
+    }
+
+    @FXML
+    void onSearch() {
+        serviceRequestController.onSearch();
+    }
+
+    @FXML
+    void onClear() {
+        serviceRequestController.onClear();
+    }
+
+    @FXML
+    void onCancelSearch() {
+        serviceRequestController.onCancelSearch();
+    }
+
+    @FXML
+    public void onCancelEdit() {
+        serviceRequestController.onCancelEdit();
+    }
+
+    @FXML
+    public void onSubmitEdit() {
+        serviceRequestController.onSubmitEdit();
     }
 }
