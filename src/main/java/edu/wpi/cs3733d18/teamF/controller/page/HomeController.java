@@ -18,7 +18,6 @@ import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
@@ -135,6 +134,11 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     Label religionRequiredRS, firstNameRequiredRS, lastNameRequiredRS, locationRequiredRS;
 
+    ///////////////////////////////////
+    //       Religious Service       //
+    ///////////////////////////////////
+    @FXML
+    private AnchorPane religiousServicesPane;
     ///////////////////////////////////
     //       Security Service        //
     ///////////////////////////////////
@@ -435,7 +439,7 @@ public class HomeController implements SwitchableController, Observer {
                 }
 
                 Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node1 -> node1.getFloor().equals(map.getFloor()));
-                if(nodesShown) {
+                if (nodesShown) {
                     mapDrawController.selectNode(node);
                 }
                 selectedNodeEnd = node;
@@ -720,27 +724,27 @@ public class HomeController implements SwitchableController, Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if(!(o instanceof VoiceCommandVerification)){
+        if (!(o instanceof VoiceCommandVerification)) {
             return;
         }
 
-        if(arg instanceof Node) {
-            Node voiceSelectedEnd = (Node)arg;
+        if (arg instanceof Node) {
+            Node voiceSelectedEnd = (Node) arg;
             Path path = map.getPath(selectedNodeStart, voiceSelectedEnd);
             mapDrawController.showPath(path);
             displayTextDirections(path);
-        }else if(arg instanceof HashSet){
+        } else if (arg instanceof HashSet) {
             HashSet<Node> potentialDestinations = (HashSet<Node>) arg;
             Node voiceSelectedEnd = map.findNodeClosestTo(selectedNodeStart, potentialDestinations);
             Path path = map.getPath(selectedNodeStart, voiceSelectedEnd);
             mapDrawController.showPath(path);
             displayTextDirections(path);
-        }else if(arg instanceof String){
+        } else if (arg instanceof String) {
             String cmd = (String) arg;
-            if(cmd.equalsIgnoreCase("Help")){
+            if (cmd.equalsIgnoreCase("Help")) {
                 // popup the help menu
                 onHelpPopup();
-            }else if(cmd.equalsIgnoreCase("Activate")) {
+            } else if (cmd.equalsIgnoreCase("Activate")) {
                 // got a string saying that the activation command has been said
                 paneVoiceController.setVisibility(true);
             }
@@ -816,13 +820,13 @@ public class HomeController implements SwitchableController, Observer {
 
     }
 
-    private void changeFloorButtons(Path path){
+    private void changeFloorButtons(Path path) {
         String first_floor = path.getNodes().get(0).getFloor();
         String last_floor = path.getNodes().get(0).getFloor();
         editButtonColor(first_floor, "GREEN");
-        for(int i = 0; i < path.getNodes().size(); i++){
-            if(!path.getNodes().get(i).getFloor().equals(last_floor)){
-                if(!last_floor.equals(first_floor)) {
+        for (int i = 0; i < path.getNodes().size(); i++) {
+            if (!path.getNodes().get(i).getFloor().equals(last_floor)) {
+                if (!last_floor.equals(first_floor)) {
                     editButtonColor(last_floor, "GRAY");
                 }
                 last_floor = path.getNodes().get(i).getFloor();
@@ -831,9 +835,9 @@ public class HomeController implements SwitchableController, Observer {
         editButtonColor(last_floor, "RED");
     }
 
-    private void editButtonColor(String floor, String color){
+    private void editButtonColor(String floor, String color) {
         JFXButton btn = l2;
-        switch (floor){
+        switch (floor) {
             case "L2":
                 btn = l2;
                 break;
@@ -853,7 +857,7 @@ public class HomeController implements SwitchableController, Observer {
                 btn = floor3;
                 break;
         }
-        switch(color){
+        switch (color) {
             case "GREEN":
                 btn.setStyle("-fx-border-color: GREEN;" +
                         " -fx-border-width: 5px;" +
@@ -878,7 +882,7 @@ public class HomeController implements SwitchableController, Observer {
         }
     }
 
-    private void clearColors(){
+    private void clearColors() {
         resetButtonStyle(l2);
         resetButtonStyle(l1);
         resetButtonStyle(groundFloor);
@@ -887,7 +891,7 @@ public class HomeController implements SwitchableController, Observer {
         resetButtonStyle(floor3);
     }
 
-    private void resetButtonStyle(JFXButton btn){
+    private void resetButtonStyle(JFXButton btn) {
         btn.setStyle("-fx-border-color: #042E58;" +
                 " -fx-border-width: 5px;" +
                 " -fx-border-radius: 100;" +
@@ -1339,11 +1343,10 @@ public class HomeController implements SwitchableController, Observer {
 
     @FXML
     void onNodeModify() {
-        if(map.is2D()){
+        if (map.is2D()) {
             modifyNode.setPosition(new Point2D(Double.parseDouble(modNode_x.getText())
                     , Double.parseDouble(modNode_y.getText())));
-        }
-        else{
+        } else {
             modifyNode.setWireframePosition(new Point2D(Double.parseDouble(modNode_x.getText())
                     , Double.parseDouble(modNode_y.getText())));
         }
@@ -1462,7 +1465,7 @@ public class HomeController implements SwitchableController, Observer {
         editedUser = e;
         newUser = false;
         usernameField.setText(e.getUname());
-        passwordField.setText(e.getPsword());
+        //passwordField.setText(e.getPsword());
         fnameField.setText(e.getFirstName());
         lnameField.setText(e.getLastName());
         occupationField.setText(e.getOccupation());
