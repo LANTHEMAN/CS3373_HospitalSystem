@@ -15,6 +15,9 @@ import edu.wpi.cs3733d18.teamF.qr.qrConverter;
 import edu.wpi.cs3733d18.teamF.sr.*;
 import edu.wpi.cs3733d18.teamF.voice.VoiceCommandVerification;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,6 +40,8 @@ import net.kurobako.gesturefx.GesturePane;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class HomeController implements SwitchableController, Observer {
@@ -144,7 +149,7 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private JFXTextField securityLocationField;
     @FXML
-    private ToggleGroup securityToogle;
+    private ToggleGroup securityToggle;
     @FXML
     private Label securityLocationRequired;
 
@@ -300,6 +305,15 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private GridPane userInstructions, adminInstructions;
 
+    /////////////////////////////////
+    //                             //
+    //           Date/Time         //
+    //                             //
+    /////////////////////////////////
+    @FXML
+    private Label time;
+    @FXML
+    private Label date;
 
     /**
      * Constructor for this class
@@ -390,6 +404,7 @@ public class HomeController implements SwitchableController, Observer {
             }
 
         });
+
 
 
         mapContainer.setOnMouseClicked(e -> {
@@ -714,6 +729,24 @@ public class HomeController implements SwitchableController, Observer {
         });
 
         serviceRequestList.addAnimatedNode(newServiceRequest);
+
+
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            Calendar cal = Calendar.getInstance();
+            int second = cal.get(Calendar.SECOND);
+            int minute = cal.get(Calendar.MINUTE);
+            int hour = cal.get(Calendar.HOUR);
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+            int month = cal.get(Calendar.MONTH);
+            int year = cal.get(Calendar.YEAR);
+            //System.out.println(hour + ":" + (minute) + ":" + second);
+            time.setText(hour + ":" + (minute) + ":" + second);
+            date.setText(month + "/" + day + "/" + year);
+        }),
+                new KeyFrame(Duration.seconds(1))
+        );
+        clock.setCycleCount(Animation.INDEFINITE);
+        clock.play();
 
     }
 
@@ -1921,7 +1954,7 @@ public class HomeController implements SwitchableController, Observer {
         String location = securityLocationField.getText();
         String description = securityTextArea.getText();
         String status = "Incomplete";
-        RadioButton selected = (RadioButton) securityToogle.getSelectedToggle();
+        RadioButton selected = (RadioButton) securityToggle.getSelectedToggle();
         int priority = Integer.parseInt(selected.getText());
         SecurityRequest sec = new SecurityRequest(location, description, status, priority);
 
