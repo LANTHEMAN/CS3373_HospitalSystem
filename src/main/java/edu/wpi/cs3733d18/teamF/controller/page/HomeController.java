@@ -135,11 +135,6 @@ public class HomeController implements SwitchableController, Observer {
     Label religionRequiredRS, firstNameRequiredRS, lastNameRequiredRS, locationRequiredRS;
 
     ///////////////////////////////////
-    //       Religious Service       //
-    ///////////////////////////////////
-    @FXML
-    private AnchorPane religiousServicesPane;
-    ///////////////////////////////////
     //       Security Service        //
     ///////////////////////////////////
     @FXML
