@@ -1764,11 +1764,11 @@ public class HomeController implements SwitchableController, Observer {
     }
 
 
-    ///////////////////////////////////////
-    //                                   //
-    //          Service Request          //
-    //                                   //
-    ///////////////////////////////////////
+    ////////////////////////////////////////
+    //                                    //
+    //       Language Interpreter         //
+    //                                    //
+    ////////////////////////////////////////
 
     @FXML
     private void onSearchServiceRequest() {
