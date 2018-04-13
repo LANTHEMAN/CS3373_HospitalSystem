@@ -65,42 +65,21 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private AnchorPane editRequestPane;
     @FXML
-    private JFXButton LI;
-    @FXML
-    private JFXButton RS;
-    @FXML
-    private JFXButton SR;
+    private JFXButton LI, RS, SR;
 
     /////////////////////////////////
     //       Search Services       //
     /////////////////////////////////
     private String privilegeChoice;
-    private User editedUser;
-    private boolean newUser;
     private String searchType;
     private String filter;
-    private ObservableList<ServiceRequest> listRequests;
-    private final ObservableList<String> priority = FXCollections.observableArrayList(
-            "0",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5");
-    private final ObservableList<String> status = FXCollections.observableArrayList(
-            "Incomplete",
-            "In Progress",
-            "Complete");
-    private final ObservableList<String> type = FXCollections.observableArrayList(
-            "Language Interpreter",
-            "Religious Services");
-    private final ObservableList<String> privilegeOptions = FXCollections.observableArrayList(
-            "Staff",
-            "Admin");
-    private final ObservableList<String> filterOptions = FXCollections.observableArrayList(
-            "Priority",
-            "Status",
-            "Type");
+    private User editedUser;
+    private boolean newUser;
+    private final ObservableList<String> priority = FXCollections.observableArrayList("0", "1", "2", "3", "4", "5");
+    private final ObservableList<String> status = FXCollections.observableArrayList("Incomplete", "In Progress", "Complete");
+    private final ObservableList<String> type = FXCollections.observableArrayList("Language Interpreter", "Religious Services");
+    private final ObservableList<String> privilegeOptions = FXCollections.observableArrayList("Staff", "Admin");
+    private final ObservableList<String> filterOptions = FXCollections.observableArrayList("Priority", "Status", "Type");
     @FXML
     private AnchorPane searchPane;
     @FXML
@@ -114,59 +93,23 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private JFXButton newServiceRequest;
     @FXML
-    public ComboBox filterType;
-    @FXML
-    public ComboBox availableTypes;
+    public ComboBox filterType, availableTypes;
     @FXML
     public TableView<ServiceRequest> searchResultTable;
     @FXML
     public TableColumn btnsCol;
     @FXML
-    public TableColumn<ServiceRequest, Integer> idNumberCol;
+    public TableColumn<ServiceRequest, Integer> idNumberCol, requestPriorityCol;
     @FXML
-    public TableColumn<ServiceRequest, String> requestTypeCol;
+    public TableColumn<ServiceRequest, String> requestTypeCol, firstNameCol, lastNameCol, destinationCol, theStatusCol;
     @FXML
-    public TableColumn<ServiceRequest, String> firstNameCol;
-    @FXML
-    public TableColumn<ServiceRequest, String> lastNameCol;
-    @FXML
-    public TableColumn<ServiceRequest, String> destinationCol;
-    @FXML
-    public TableColumn<ServiceRequest, Integer> requestPriorityCol;
-    @FXML
-    public TableColumn<ServiceRequest, String> theStatusCol;
-    @FXML
-    public Label typeLabel;
-    @FXML
-    public Label idLabel;
-    @FXML
-    public Label firstNameLabel;
-    @FXML
-    public Label lastNameLabel;
-    @FXML
-    public Label locationLabel;
-    @FXML
-    public Label statusLabel;
+    public Label typeLabel,idLabel, firstNameLabel,  lastNameLabel, locationLabel, statusLabel, completedByLabel, usernameLabel;
     @FXML
     public TextArea instructionsTextArea;
     @FXML
-    public ComboBox statusBox;
-    @FXML
-    public Label completedByLabel;
-    @FXML
-    public Label usernameLabel;
-    @FXML
     public TableColumn chooseCol;
     @FXML
-    public TableColumn<User, String> usernameCol;
-    @FXML
-    public TableColumn<User, String> firstNameUserCol;
-    @FXML
-    public TableColumn<User, String> lastNameUserCol;
-    @FXML
-    public TableColumn<User, String> privilegeCol;
-    @FXML
-    public TableColumn<User, String> occupationCol;
+    public TableColumn<User, String> usernameCol, firstNameUserCol, lastNameUserCol,  privilegeCol, occupationCol;
 
     //////////////////////////////////
     //       Language Service       //
@@ -174,23 +117,11 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private AnchorPane languageInterpreterPane;
     @FXML
-    TextField languageField;
-    @FXML
-    TextField firstNameLanguage;
-    @FXML
-    TextField lastNameLanguage;
-    @FXML
-    TextField destinationLanguage;
+    TextField languageField,  firstNameLanguage, lastNameLanguage, destinationLanguage;
     @FXML
     TextArea instructionsLanguage;
     @FXML
-    Label languageRequiredLI;
-    @FXML
-    Label firstNameRequiredLI;
-    @FXML
-    Label lastNameRequiredLI;
-    @FXML
-    Label locationRequiredLI;
+    Label languageRequiredLI, firstNameRequiredLI, lastNameRequiredLI, locationRequiredLI;
 
     ///////////////////////////////////
     //       Religious Service       //
@@ -198,23 +129,11 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private AnchorPane religiousServicesPane;
     @FXML
-    TextField religionField;
-    @FXML
-    TextField firstNameRS;
-    @FXML
-    TextField lastNameRS;
-    @FXML
-    TextField destinationRS;
+    TextField religionField, firstNameRS, lastNameRS, destinationRS;
     @FXML
     TextArea instructionsRS;
     @FXML
-    Label religionRequiredRS;
-    @FXML
-    Label firstNameRequiredRS;
-    @FXML
-    Label lastNameRequiredRS;
-    @FXML
-    Label locationRequiredRS;
+    Label religionRequiredRS, firstNameRequiredRS, lastNameRequiredRS, locationRequiredRS;
 
     ///////////////////////////////////
     //       Security Service        //
@@ -238,11 +157,7 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private HBox algorithmsBox;
     @FXML
-    private JFXButton aStar;
-    @FXML
-    private JFXButton depthFirst;
-    @FXML
-    private JFXButton breathFirst;
+    private JFXButton aStar, depthFirst, breathFirst;
 
     /////////////////////////
     //                     //
@@ -261,23 +176,9 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private JFXNodesList floorNode;
     @FXML
-    private JFXButton floorBtn;
+    private JFXButton floorBtn, l2, l1, groundFloor,  floor1, floor2, floor3;
     @FXML
-    private JFXButton l2;
-    @FXML
-    private JFXButton l1;
-    @FXML
-    private JFXButton groundFloor;
-    @FXML
-    private JFXButton floor1;
-    @FXML
-    private JFXButton floor2;
-    @FXML
-    private JFXButton floor3;
-    @FXML
-    private JFXButton btn2D;
-    @FXML
-    private JFXButton btn3D;
+    private JFXButton btn2D, btn3D;
 
     ////////////////////////////////
     //                            //
@@ -285,7 +186,6 @@ public class HomeController implements SwitchableController, Observer {
     //                            //
     ////////////////////////////////
     private PaneMapController mapDrawController;
-    private Circle newNodeCircle = new Circle(2, Color.BLUEVIOLET);
     private Node selectedNodeStart = null;
     private Node selectedNodeEnd = null;
     private Node modifyNode = null;
@@ -300,13 +200,7 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private GridPane gpaneNodeInfo;
     @FXML
-    private TextField modNode_shortName;
-    @FXML
-    private TextField modNode_longName;
-    @FXML
-    private TextField modNode_x;
-    @FXML
-    private TextField modNode_y;
+    private TextField modNode_shortName, modNode_longName, modNode_x,  modNode_y;
 
     ///////////////////////////////
     //      New Node Window      //
@@ -314,11 +208,7 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private VBox addLocationPopup;
     @FXML
-    private TextField newNode_x;
-    @FXML
-    private TextField newNode_y;
-    @FXML
-    private TextField newNode_shortName;
+    private TextField newNode_x, newNode_y, newNode_shortName;
     @FXML
     private ComboBox<String> newNode_type = new ComboBox<>(FXCollections.observableArrayList(NodeBuilder.getNodeTypes()));
 
@@ -330,21 +220,15 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private JFXDrawer loginDrawer;
     @FXML
-    private VBox loginBox;
-    @FXML
-    private VBox logoutBox;
+    private VBox loginBox, logoutBox;
     @FXML
     private JFXButton loginBtn;
-    @FXML
-    private JFXButton logoutBtn;
     @FXML
     private JFXTextField loginUsername;
     @FXML
     private JFXPasswordField loginPassword;
     @FXML
-    private FontAwesomeIconView loginCancel;
-    @FXML
-    private FontAwesomeIconView logoutCancel;
+    private FontAwesomeIconView loginCancel, logoutCancel;
 
     ///////////////////////////////////
     //                               //
@@ -354,15 +238,9 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private HBox searchBar;
     @FXML
-    private JFXTextField searchLocation;
+    private JFXTextField searchLocation, sourceLocation, destinationLocation;
     @FXML
-    private JFXTextField sourceLocation;
-    @FXML
-    private JFXTextField destinationLocation;
-    @FXML
-    private JFXListView searchList;
-    @FXML
-    private JFXListView directionsList;
+    private JFXListView searchList, directionsList;
     private boolean sourceLocationActive = false;
 
     /////////////////////////////////
@@ -377,9 +255,7 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private VBox adminBox;
     @FXML
-    private JFXButton mapEditorBtn;
-    @FXML
-    private JFXButton editUsersBtn;
+    private JFXButton mapEditorBtn, editUsersBtn;
 
     /////////////////////////////
     //      Directions Box     //
@@ -387,15 +263,9 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private VBox directionsBox;
     @FXML
-    private FontAwesomeIconView directionsArrow;
-    @FXML
-    private FontAwesomeIconView cancelDirections;
-    @FXML
     private JFXDrawer directionsDrawer;
     @FXML
     private JFXHamburger hamburgerD;
-    @FXML
-    private FontAwesomeIconView cancelMenu;
     @FXML
     private JFXTextArea txtDirections;
     @FXML
@@ -407,7 +277,7 @@ public class HomeController implements SwitchableController, Observer {
     //                          //
     //////////////////////////////
     @FXML
-    private AnchorPane editUserPane;
+    private AnchorPane editUserPane, newUserPane;
     @FXML
     private JFXTextField userTextField;
     @FXML
@@ -415,25 +285,11 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private Label userLabel;
     @FXML
-    private JFXCheckBox languageCheck;
+    private JFXCheckBox languageCheck, religiousCheck, securityCheck;
     @FXML
-    private JFXCheckBox religiousCheck;
-    @FXML
-    private JFXCheckBox securityCheck;
-    @FXML
-    private JFXTextField usernameField;
-    @FXML
-    private JFXTextField passwordField;
-    @FXML
-    private JFXTextField fnameField;
-    @FXML
-    private JFXTextField lnameField;
-    @FXML
-    private JFXTextField occupationField;
+    private JFXTextField usernameField,passwordField, fnameField, lnameField, occupationField;
     @FXML
     private JFXComboBox privilegeCombo;
-    @FXML
-    private AnchorPane newUserPane;
 
     /////////////////////////////////
     //                             //
@@ -443,13 +299,13 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     private Pane helpPane;
     @FXML
-    private GridPane userInstructions;
-    @FXML
-    private GridPane adminInstructions;
+    private GridPane userInstructions, adminInstructions;
 
 
-
-
+    /**
+     * Constructor for this class
+     * @param switcher
+     */
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
@@ -652,9 +508,6 @@ public class HomeController implements SwitchableController, Observer {
                 newNode_y.setEditable(false);
                 newNode_x.setText("" + (int) (e.getX() * map_x / mapContainer.getMaxWidth()));
                 newNode_y.setText("" + (int) (e.getY() * map_y / mapContainer.getMaxHeight()));
-                newNodeCircle.setVisible(true);
-                newNodeCircle.setCenterX(Double.parseDouble(newNode_x.getText()) * mapContainer.getMaxWidth() / map_x);
-                newNodeCircle.setCenterY(Double.parseDouble(newNode_y.getText()) * mapContainer.getMaxHeight() / map_y);
                 addLocationPopup.setVisible(true);
                 selectedNodeEnd = null;
             }
@@ -1443,7 +1296,6 @@ public class HomeController implements SwitchableController, Observer {
                     || map.getNodes(node -> node.getNodeID().contains(type + "00" + newNode_shortName.getText().charAt(0) + map.getFloor())).size() == 1) {
                 addLocationPopup.setVisible(false);
                 newNode_shortName.setText("");
-                newNodeCircle.setVisible(false);
             }
 
             Node newNode = new NewNodeBuilder()
@@ -1466,14 +1318,12 @@ public class HomeController implements SwitchableController, Observer {
 
         addLocationPopup.setVisible(false);
         newNode_shortName.setText("");
-        newNodeCircle.setVisible(false);
     }
 
     @FXML
     void onAddLocationCancel() {
         addLocationPopup.setVisible(false);
         newNode_shortName.setText("");
-        newNodeCircle.setVisible(false);
     }
 
     @FXML
@@ -1712,6 +1562,7 @@ public class HomeController implements SwitchableController, Observer {
         }
 
         //TODO: put result of search into table
+        ObservableList<ServiceRequest> listRequests;
         if (requests.size() < 1) {
             //TODO: indicate to user that there are no results
             return;
