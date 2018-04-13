@@ -600,7 +600,10 @@ public class HomeController implements SwitchableController, Observer {
                 if (!map.is2D()) {
                     return;
                 }
-                if (nodes.size() > 0) {
+
+                // td fixed bug - deleting end node on double right click
+                // added && nodesShown
+                if (nodes.size() > 0 && nodesShown) {
                     // TODO get closest node
                     //selectedNodeStart = map.findNodeClosestTo(1850, 1035, true, node -> node.getFloor().equals(map.getFloor()));
                     //sourceLocation.setText(selectedNodeStart.getLongName());
@@ -608,7 +611,6 @@ public class HomeController implements SwitchableController, Observer {
                     map.removeNode(selectedNodeEnd);
                     selectedNodeEnd = null;
                 }
-                selectedNodeEnd = null;
             }
             // create a new node
             if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
