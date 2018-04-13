@@ -65,9 +65,10 @@ public class DynamicPathDrawer extends PathDrawable {
 
         int timestep = 300;
         for (Arrow arrow : arrows) {
+            arrow.view.setVisible(false);
             pane.getChildren().add(arrow.view);
-            arrow.prevX = pane.getMaxWidth() / 2;
-            arrow.prevY = pane.getMaxHeight() / 2;
+            arrow.prevX = null; //pane.getMaxWidth() / 2;
+            arrow.prevY = null; //pane.getMaxHeight() / 2;
         }
 
         timeline = new Timeline(new KeyFrame(Duration.millis(timestep), event -> {
