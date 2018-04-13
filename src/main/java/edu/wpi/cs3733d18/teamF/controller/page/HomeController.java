@@ -571,6 +571,8 @@ public class HomeController implements SwitchableController, Observer {
                         Path path = map.getPath(map.findNodeClosestTo(selectedNodeStart.getPosition().getX(), selectedNodeStart.getPosition().getY(), true), src);
                         mapDrawController.showPath(path);
                         displayTextDirections(path);
+                        clearColors();
+                        changeFloorButtons(path);
                     } else {
                         return;
                     }
@@ -1232,6 +1234,8 @@ public class HomeController implements SwitchableController, Observer {
 
             mapDrawController.showPath(map.getPath(sourceNode, destinationNode));
             displayTextDirections(map.getPath(sourceNode, destinationNode));
+            clearColors();
+            changeFloorButtons(map.getPath(sourceNode, destinationNode));
 
             map.setFloor(sourceNode.getFloor());
             reloadMap();
