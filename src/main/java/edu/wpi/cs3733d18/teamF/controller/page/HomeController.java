@@ -618,6 +618,9 @@ public class HomeController implements SwitchableController, Observer {
                     }
                     mapDrawController.showPath(path);
                     displayTextDirections(path);
+                    clearColors();
+                    changeFloorButtons(path);
+                    floorNode.animateList(true);
 
                     sourceLocation.setText(selectedNodeStart.getLongName());
                 }
@@ -699,47 +702,47 @@ public class HomeController implements SwitchableController, Observer {
             }
         });
 
-        floorBtn.setText("2");
+        //floorBtn.setText("2");
         l2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("L2");
-            floorBtn.setText("L2");
+            //floorBtn.setText("L2");
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 2");
-            floorNode.animateList(false);
+            //floorNode.animateList(false);
             reloadMap();
         });
         l1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("L1");
-            floorBtn.setText("L1");
+            //floorBtn.setText("L1");
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 1");
-            floorNode.animateList(false);
+            //floorNode.animateList(false);
             reloadMap();
         });
         groundFloor.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("0G");
-            floorBtn.setText("G");
+            //floorBtn.setText("G");
             MainTitle.setText("Brigham and Women's Hospital: Ground Floor");
-            floorNode.animateList(false);
+            //floorNode.animateList(false);
             reloadMap();
         });
         floor1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("01");
-            floorBtn.setText("1");
+            //floorBtn.setText("1");
             MainTitle.setText("Brigham and Women's Hospital: Level 1");
-            floorNode.animateList(false);
+            //floorNode.animateList(false);
             reloadMap();
         });
         floor2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("02");
-            floorBtn.setText("2");
+            //floorBtn.setText("2");
             MainTitle.setText("Brigham and Women's Hospital: Level 2");
-            floorNode.animateList(false);
+            //floorNode.animateList(false);
             reloadMap();
         });
         floor3.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("03");
-            floorBtn.setText("3");
+            //floorBtn.setText("3");
             MainTitle.setText("Brigham and Women's Hospital: Level 3");
-            floorNode.animateList(false);
+            //floorNode.animateList(false);
             reloadMap();
         });
 
@@ -956,6 +959,85 @@ public class HomeController implements SwitchableController, Observer {
 
     }
 
+    private void changeFloorButtons(Path path){
+        String first_floor = path.getNodes().get(0).getFloor();
+        String last_floor = path.getNodes().get(0).getFloor();
+        editButtonColor(first_floor, "GREEN");
+        for(int i = 0; i < path.getNodes().size(); i++){
+            if(!path.getNodes().get(i).getFloor().equals(last_floor)){
+                if(!last_floor.equals(first_floor)) {
+                    editButtonColor(last_floor, "GRAY");
+                }
+                last_floor = path.getNodes().get(i).getFloor();
+            }
+        }
+        editButtonColor(last_floor, "RED");
+    }
+
+    private void editButtonColor(String floor, String color){
+        JFXButton btn = l2;
+        switch (floor){
+            case "L2":
+                btn = l2;
+                break;
+            case "L1":
+                btn = l1;
+                break;
+            case "0G":
+                btn = groundFloor;
+                break;
+            case "01":
+                btn = floor1;
+                break;
+            case "02":
+                btn = floor2;
+                break;
+            case "03":
+                btn = floor3;
+                break;
+        }
+        switch(color){
+            case "GREEN":
+                btn.setStyle("-fx-border-color: GREEN;" +
+                        " -fx-border-width: 5px;" +
+                        " -fx-border-radius: 100;" +
+                        " -fx-background-color: #042E58;" +
+                        " -fx-background-radius: 100;");
+                break;
+            case "GRAY":
+                btn.setStyle("-fx-border-color: #606060;" +
+                        " -fx-border-width: 5px;" +
+                        " -fx-border-radius: 100;" +
+                        " -fx-background-color: #042E58;" +
+                        " -fx-background-radius: 100;");
+                break;
+            case "RED":
+                btn.setStyle("-fx-border-color: RED;" +
+                        " -fx-border-width: 5px;" +
+                        " -fx-border-radius: 100;" +
+                        " -fx-background-color: #042E58;" +
+                        " -fx-background-radius: 100;");
+                break;
+        }
+    }
+
+    private void clearColors(){
+        resetButtonStyle(l2);
+        resetButtonStyle(l1);
+        resetButtonStyle(groundFloor);
+        resetButtonStyle(floor1);
+        resetButtonStyle(floor2);
+        resetButtonStyle(floor3);
+    }
+
+    private void resetButtonStyle(JFXButton btn){
+        btn.setStyle("-fx-border-color: #042E58;" +
+                " -fx-border-width: 5px;" +
+                " -fx-border-radius: 100;" +
+                " -fx-background-color: #042E58;" +
+                " -fx-background-radius: 100;");
+    }
+
     /////////////////////////////////
     //                             //
     //          Hamburger          //
@@ -1079,6 +1161,8 @@ public class HomeController implements SwitchableController, Observer {
 
         mapDrawController.showPath(map.getPath(selectedNodeStart, selectedNodeEnd));
         displayTextDirections(map.getPath(selectedNodeStart, selectedNodeEnd));
+        clearColors();
+        changeFloorButtons(map.getPath(selectedNodeStart, selectedNodeEnd));
 
         map.setFloor(selectedNodeStart.getFloor());
         reloadMap();
