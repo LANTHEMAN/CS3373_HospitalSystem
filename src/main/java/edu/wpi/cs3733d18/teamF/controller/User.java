@@ -11,9 +11,9 @@ public class User {
 
 
     public User(String uname, String psword, String firstName, String lastName, String privilege, String occupation) {
-
         this.uname = uname;
-        this.psword = psword;
+        // do it for the encryption
+        setPsword(psword);
         this.firstName = firstName;
         this.lastName = lastName;
         this.privilege = privilege;
@@ -33,7 +33,11 @@ public class User {
     }
 
     public void setPsword(String psword) {
-        this.psword = psword;
+        this.psword = Encryption.encryptSHA256(psword);
+    }
+
+    public void setAlreadyEncryptedPassword(String password){
+        this.psword = password;
     }
 
     public String getType() {
