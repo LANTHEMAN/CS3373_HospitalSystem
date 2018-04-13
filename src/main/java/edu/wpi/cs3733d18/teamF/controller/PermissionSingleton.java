@@ -64,7 +64,8 @@ public class PermissionSingleton {
     public boolean login(String uname, String psword) {
         for (User u : pmanage.users) {
             if (u.uname.equals(uname)) {
-                if (u.getPsword().equals(psword)) {
+                String encryption = Encryption.encryptSHA256(psword);
+                if (u.getPsword().equals(encryption)) {
                     userPrivilege = getPrivilege(u.getType());
                     currUser = uname;
                     return true;
@@ -130,8 +131,6 @@ public class PermissionSingleton {
                 rs.close();
                 return true;
             }
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
