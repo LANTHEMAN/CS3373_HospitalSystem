@@ -173,111 +173,111 @@ public class HomeController implements SwitchableController, Observer {
     @FXML
     TextField newNode_shortName;
     @FXML
-    private ComboBox<String> newNode_type = new ComboBox<>(FXCollections.observableArrayList(NodeBuilder.getNodeTypes()));
+    ComboBox<String> newNode_type = new ComboBox<>(FXCollections.observableArrayList(NodeBuilder.getNodeTypes()));
     @FXML
-    private GesturePane gesturePane;
+    GesturePane gesturePane;
     // the modify Node information panel on the left
     @FXML
-    private GridPane gpaneNodeInfo;
+    GridPane gpaneNodeInfo;
     @FXML
-    private TextField modNode_shortName;
+    TextField modNode_shortName;
     @FXML
-    private TextField modNode_longName;
+    TextField modNode_longName;
     @FXML
-    private TextField modNode_x;
+    TextField modNode_x;
     @FXML
-    private TextField modNode_y;
+    TextField modNode_y;
     @FXML
-    private Pane voicePane;
+    Pane voicePane;
     // menu in bottom left corner
     @FXML
-    private JFXHamburger hamburger;
+    JFXHamburger hamburger;
     @FXML
-    private JFXDrawer adminDrawer;
+    JFXDrawer adminDrawer;
     @FXML
-    private VBox adminBox;
+    VBox adminBox;
     // login elements
     @FXML
-    private JFXDrawer loginDrawer;
+    JFXDrawer loginDrawer;
     @FXML
-    private VBox loginBox;
+    VBox loginBox;
     @FXML
-    private VBox logoutBox;
+    VBox logoutBox;
     @FXML
-    private JFXButton loginBtn;
+    JFXButton loginBtn;
     @FXML
-    private JFXButton logoutBtn;
+    JFXButton logoutBtn;
     @FXML
-    private JFXTextField loginUsername;
+    JFXTextField loginUsername;
     @FXML
-    private JFXPasswordField loginPassword;
+    JFXPasswordField loginPassword;
     @FXML
-    private JFXNodesList floorNode;
+    JFXNodesList floorNode;
     @FXML
-    private JFXButton floorBtn;
+    JFXButton floorBtn;
     @FXML
-    private JFXButton l2;
+    JFXButton l2;
     @FXML
-    private JFXButton l1;
+    JFXButton l1;
     @FXML
-    private JFXButton groundFloor;
+    JFXButton groundFloor;
     @FXML
-    private JFXButton floor1;
+    JFXButton floor1;
     @FXML
-    private JFXButton floor2;
+    JFXButton floor2;
     @FXML
-    private JFXButton floor3;
+    JFXButton floor3;
     @FXML
-    private JFXButton btn2D;
+    JFXButton btn2D;
     @FXML
-    private JFXButton btn3D;
+    JFXButton btn3D;
     @FXML
-    private FontAwesomeIconView loginCancel;
+    FontAwesomeIconView loginCancel;
     @FXML
-    private HBox searchBar;
+    HBox searchBar;
     @FXML
-    private Text MainTitle;
+    Text MainTitle;
     @FXML
-    private JFXTextArea txtDirections;
+    JFXTextArea txtDirections;
     @FXML
-    private Pane qrImage;
+    Pane qrImage;
     @FXML
-    private JFXButton mapEditorBtn;
+    JFXButton mapEditorBtn;
     @FXML
-    private JFXButton editUsersBtn;
+    JFXButton editUsersBtn;
     ////////////////////////////////////////
     //                                    //
     //       Edit Service Request         //
     //                                    //
     ////////////////////////////////////////
     @FXML
-    private FontAwesomeIconView logoutCancel;
+    FontAwesomeIconView logoutCancel;
     // searching for a location
     @FXML
-    private JFXTextField searchLocation;
+    JFXTextField searchLocation;
     @FXML
-    private JFXTextField sourceLocation;
+    JFXTextField sourceLocation;
     @FXML
-    private JFXTextField destinationLocation;
+    JFXTextField destinationLocation;
     @FXML
-    private JFXListView searchList;
+    JFXListView searchList;
     @FXML
-    private JFXListView directionsList;
+    JFXListView directionsList;
     private boolean sourceLocationActive = false;
     @FXML
-    private VBox directionsBox;
+    VBox directionsBox;
     @FXML
-    private FontAwesomeIconView directionsArrow;
+    FontAwesomeIconView directionsArrow;
     @FXML
-    private FontAwesomeIconView cancelDirections;
+    FontAwesomeIconView cancelDirections;
     @FXML
-    private JFXDrawer directionsDrawer;
+    JFXDrawer directionsDrawer;
     @FXML
-    private JFXHamburger hamburgerD;
+    JFXHamburger hamburgerD;
     @FXML
-    private FontAwesomeIconView cancelMenu;
+    FontAwesomeIconView cancelMenu;
     @FXML
-    private AnchorPane searchPane;
+    AnchorPane searchPane;
 
     ////////////////////////////////////////
     //                                    //
@@ -286,27 +286,27 @@ public class HomeController implements SwitchableController, Observer {
     ////////////////////////////////////////
 
     @FXML
-    private Label userLabel;
+    Label userLabel;
     @FXML
-    private JFXCheckBox languageCheck;
+    JFXCheckBox languageCheck;
     @FXML
-    private JFXCheckBox religiousCheck;
+    JFXCheckBox religiousCheck;
     @FXML
-    private JFXCheckBox securityCheck;
+    JFXCheckBox securityCheck;
     @FXML
-    private JFXTextField usernameField;
+    JFXTextField usernameField;
     @FXML
-    private JFXTextField passwordField;
+    JFXTextField passwordField;
     @FXML
-    private JFXTextField fnameField;
+    JFXTextField fnameField;
     @FXML
-    private JFXTextField lnameField;
+    JFXTextField lnameField;
     @FXML
-    private JFXTextField occupationField;
+    JFXTextField occupationField;
     @FXML
-    private JFXComboBox privilegeCombo;
+    JFXComboBox privilegeCombo;
     @FXML
-    private AnchorPane newUserPane;
+    AnchorPane newUserPane;
     String privilegeChoice;
     User editedUser;
     boolean newUser;
@@ -316,11 +316,11 @@ public class HomeController implements SwitchableController, Observer {
     //                                    //
     ////////////////////////////////////////
     @FXML
-    private Pane helpPane;
+    Pane helpPane;
     @FXML
-    private GridPane userInstructions;
+    GridPane userInstructions;
     @FXML
-    private GridPane adminInstructions;
+    GridPane adminInstructions;
     Timeline commandExecuter = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
