@@ -771,31 +771,6 @@ public class HomeController implements SwitchableController, Observer {
             }
         });
 
-        /*mapContainer.setOnMouseReleased(e -> {
-            draggingNode = false;
-            //System.out.println("Dropped Node");
-        });*/
-
-        /*
-
-
-        cboxDestinationType.getItems().clear();
-        cboxDestinationType.getItems().addAll(
-                "All",
-                "Patient Room",
-                "Bathroom",
-                "ATM",
-                "Emergrency Services");
-        cboxDestinationType.getSelectionModel().selectFirst(); // or ".select("All");
-
-        //cboxAvailableLocations.getItems().addAll(patientRooms, bathrooms);
-
-        all.addAll(patientRooms);
-        all.addAll(bathrooms);
-        cboxAvailableLocations.getItems().addAll(all);
-
-        */
-
 
         floorBtn.setText("2");
         l2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -2034,7 +2009,7 @@ public class HomeController implements SwitchableController, Observer {
 
     ////////////////////////////////////////
     //                                    //
-    //           Language Interpreter     //
+    //       Language Interpreter         //
     //                                    //
     ////////////////////////////////////////
 

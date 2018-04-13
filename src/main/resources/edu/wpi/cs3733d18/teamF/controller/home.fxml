@@ -259,20 +259,43 @@
                 <RowConstraints />
             </rowConstraints>
             <children>
-                <GesturePane fx:id="gesturePane" HBarEnabled="false" VBarEnabled="false" fitMode="COVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minScale="2.3" minWidth="-Infinity" pickOnBounds="false" scrollMode="ZOOM" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-                    <Pane maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0">
-                        <children>
-                            <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="false" preserveRatio="false">
-                                <image>
-                                    <Image url="@BW2D%20Maps/02_thesecondfloor.png" />
-                                </image>
-                            </ImageView>
-                            <Pane fx:id="mapContainer" maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0">
+                <StackPane minWidth="-Infinity" prefWidth="300.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
+                    <children>
+                        <JFXDrawer fx:id="directionsDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefHeight="720.0" prefWidth="300.0" resizeContent="true" StackPane.alignment="CENTER_LEFT" />
+                        <JFXDrawer fx:id="adminDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefWidth="300.0" resizeContent="true" StackPane.alignment="CENTER_LEFT" />
+                      <GesturePane fx:id="gesturePane" HBarEnabled="false" VBarEnabled="false" fitMode="COVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minScale="2.3" minWidth="-Infinity" pickOnBounds="false" scrollMode="ZOOM">
+                          <Pane maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0">
+                              <children>
+                                  <ImageView fx:id="ivMap" fitHeight="578.0" fitWidth="844.0" pickOnBounds="false" preserveRatio="false">
+                                      <image>
+                                          <Image url="@BW2D%20Maps/02_thesecondfloor.png" />
+                                      </image>
+                                  </ImageView>
+                                  <Pane fx:id="mapContainer" maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0">
                             </Pane>
-                        </children>
-                    </Pane>
-                </GesturePane>
-                <Pane fx:id="voicePane" pickOnBounds="false" prefHeight="148.0" prefWidth="1280.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
+                              </children>
+                          </Pane>
+                      </GesturePane>
+                      <Pane fx:id="voicePane" pickOnBounds="false" prefHeight="148.0" prefWidth="1280.0" />
+                        <HBox fx:id="searchBar" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="300.0" spacing="5.0" style="-fx-background-color: #042E58;" StackPane.alignment="TOP_LEFT">
+                            <children>
+                                <JFXHamburger fx:id="hamburger" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
+                                <JFXTextField fx:id="searchLocation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="161.0" promptText="Type or click map" style="-fx-background-color: #f2f5f7;">
+                                    <font>
+                                        <Font name="Arial Bold" size="15.0" />
+                                    </font>
+                                </JFXTextField>
+                                <FontAwesomeIconView fill="#f2f5f7" glyphName="SEARCH" onMouseClicked="#onSearchLocation" size="20" />
+                                <Line startY="-50.0" stroke="#f2f5f7">
+                                    <HBox.margin>
+                                        <Insets left="7.5" right="7.5" />
+                                    </HBox.margin>
+                                </Line>
+                                <FontAwesomeIconView fx:id="directionsArrow" fill="#f2f5f7" glyphName="ARROW_RIGHT" onMouseClicked="#onArrowEvent" size="25" wrappingWidth="22.14285659790039" />
+                            </children>
+                        </HBox>
+                    </children>
+                </StackPane>
                 <Text fx:id="MainTitle" fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%BrighamTitleSecondFloor" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <font>
                         <Font name="Arial Bold" size="28.0" />
@@ -369,29 +392,6 @@
                         <Font size="15.0" />
                     </font>
                 </Text>
-                <StackPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
-                    <children>
-                        <JFXDrawer fx:id="directionsDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefHeight="720.0" prefWidth="300.0" resizeContent="true" StackPane.alignment="TOP_LEFT" />
-                        <JFXDrawer fx:id="adminDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefWidth="300.0" resizeContent="true" StackPane.alignment="TOP_CENTER" />
-                        <HBox fx:id="searchBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="300.0" spacing="5.0" style="-fx-background-color: #042E58;" StackPane.alignment="TOP_CENTER">
-                            <children>
-                                <JFXHamburger fx:id="hamburger" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
-                                <JFXTextField fx:id="searchLocation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="161.0" promptText="Type or click map" style="-fx-background-color: #f2f5f7;">
-                                    <font>
-                                        <Font name="Arial Bold" size="15.0" />
-                                    </font>
-                                </JFXTextField>
-                                <FontAwesomeIconView fill="#f2f5f7" glyphName="SEARCH" onMouseClicked="#onSearchLocation" size="20" />
-                                <Line startY="-50.0" stroke="#f2f5f7">
-                                    <HBox.margin>
-                                        <Insets left="7.5" right="7.5" />
-                                    </HBox.margin>
-                                </Line>
-                                <FontAwesomeIconView fx:id="directionsArrow" fill="#f2f5f7" glyphName="ARROW_RIGHT" onMouseClicked="#onArrowEvent" size="25" wrappingWidth="22.14285659790039" />
-                            </children>
-                        </HBox>
-                    </children>
-                </StackPane>
                 <JFXDrawer fx:id="loginDrawer" defaultDrawerSize="400.0" direction="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" style="-fx-background-color: rgba(0, 0, 0, 0);" GridPane.halignment="RIGHT" GridPane.valignment="BASELINE">
                     <GridPane.margin>
                         <Insets right="60.0" top="20.0" />
