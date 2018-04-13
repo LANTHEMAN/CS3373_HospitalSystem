@@ -43,87 +43,46 @@ public class VoiceCommandVerification extends Observable implements Observer {
                     signalClassChanged("Help");
                     voice.speak("Here is the help menu");
                 } else if (command.contains("DIRECTIONS") || command.contains("WHERE")) {
+                    HashSet<Node> nodes = new HashSet<>();
+
                     if (command.contains("BATHROOM")) {
-                        HashSet<Node> nodes = map.getNodes(node -> node.getNodeType().equals("REST"));
-                        if (nodes.size() == 1) {
-                            signalClassChanged(nodes.iterator().next());
-                        } else {
-                            signalClassChanged(nodes);
-                        }
+                        nodes = map.getNodes(node -> node.getNodeType().equals("REST"));
                         voice.speak("Here is the route to the nearest bathroom");
                     } else if (command.contains("EXIT")) {
-                        HashSet<Node> nodes = map.getNodes(node -> node.getNodeType().equals("EXIT") && !node.getLongName().contains("Ambulance"));
-                        if (nodes.size() == 1) {
-                            signalClassChanged(nodes.iterator().next());
-                        } else {
-                            signalClassChanged(nodes);
-                        }
+                        nodes = map.getNodes(node -> node.getNodeType().equals("EXIT") && !node.getLongName().contains("Ambulance"));
                         voice.speak("Here is the route to the nearest exit");
                     } else if (command.contains("NEUROSCIENCE")) {
-                        HashSet<Node> nodes = map.getNodes(node -> node.getLongName().contains("Neuroscience"));
-                        if (nodes.size() == 1) {
-                            signalClassChanged(nodes.iterator().next());
-                        } else {
-                            signalClassChanged(nodes);
-                        }
+                        nodes = map.getNodes(node -> node.getLongName().contains("Neuroscience"));
                         voice.speak("Here is the route to neuroscience");
                     } else if (command.contains("ORTHOPEDICS") || command.contains("RHEMUTOLOGY")) {
-                        HashSet<Node> nodes = map.getNodes(node -> node.getLongName().contains("Orthopedics") || node.getLongName().contains("Rhemutalogy"));
-                        if (nodes.size() == 1) {
-                            signalClassChanged(nodes.iterator().next());
-                        } else {
-                            signalClassChanged(nodes);
-                        }
+                        nodes = map.getNodes(node -> node.getLongName().contains("Orthopedics") || node.getLongName().contains("Rhemutalogy"));
                         voice.speak("Here is the route to Orthopedics and Rhemutology");
                     } else if (command.contains("PARKING") || command.contains("GARAGE")) {
-                        HashSet<Node> nodes = map.getNodes(node -> node.getLongName().contains("Parking") && node.getLongName().contains("Garage"));
-                        if (nodes.size() == 1) {
-                            signalClassChanged(nodes.iterator().next());
-                        } else {
-                            signalClassChanged(nodes);
-                        }
+                        nodes = map.getNodes(node -> node.getLongName().contains("Parking") && node.getLongName().contains("Garage"));
                         voice.speak("Here is the route to the parking garage");
                     } else if (command.contains("ELEVATOR")) {
-                        HashSet<Node> nodes = map.getNodes(node -> node.getNodeType().equals("ELEV"));
-                        if (nodes.size() == 1) {
-                            signalClassChanged(nodes.iterator().next());
-                        } else {
-                            signalClassChanged(nodes);
-                        }
+                        nodes = map.getNodes(node -> node.getNodeType().equals("ELEV"));
                         voice.speak("Here is the route to the nearest elevator");
                     } else if (command.contains("DENTIST") || command.contains("DENTISTRY") || command.contains("ORAL")) {
-                        HashSet<Node> nodes = map.getNodes(node -> node.getLongName().contains("Dentistry"));
-                        if (nodes.size() == 1) {
-                            signalClassChanged(nodes.iterator().next());
-                        } else {
-                            signalClassChanged(nodes);
-                        }
+                        nodes = map.getNodes(node -> node.getLongName().contains("Dentistry"));
                         voice.speak("Here is the route to Dentistry and Oral Medicine");
                     } else if (command.contains("PLASTIC SURGERY")) {
-                        HashSet<Node> nodes = map.getNodes(node -> node.getLongName().contains("Plastic Surgery"));
-                        if (nodes.size() == 1) {
-                            signalClassChanged(nodes.iterator().next());
-                        } else {
-                            signalClassChanged(nodes);
-                        }
+                        nodes = map.getNodes(node -> node.getLongName().contains("Plastic Surgery"));
                         voice.speak("Here is the route to Plastic Surgery");
                     } else if (command.contains("RADIOLOGY")) {
-                        HashSet<Node> nodes = map.getNodes(node -> node.getLongName().contains("Radiation Oncology"));
-                        if (nodes.size() == 1) {
-                            signalClassChanged(nodes.iterator().next());
-                        } else {
-                            signalClassChanged(nodes);
-                        }
+                        nodes = map.getNodes(node -> node.getLongName().contains("Radiation Oncology"));
                         voice.speak("Here is the route to Radiology");
                     } else if (command.contains("NUCLEAR")) {
-                        HashSet<Node> nodes = map.getNodes(node -> node.getLongName().contains("Nuclear Medicine"));
-                        if (nodes.size() == 1) {
-                            signalClassChanged(nodes.iterator().next());
-                        } else {
-                            signalClassChanged(nodes);
-                        }
+                        nodes = map.getNodes(node -> node.getLongName().contains("Nuclear Medicine"));
                         voice.speak("Here is the route to Nuclear Medicine");
                     }
+
+                    if (nodes.size() == 1) {
+                        signalClassChanged(nodes.iterator().next());
+                    } else if (nodes.size() > 1){
+                        signalClassChanged(nodes);
+                    }
+
                 } else if (command.contains("STAIRS") && command.contains("DISABLE")) {
                     map.disableStairs();
                     voice.speak("Stairs are now disabled for path finding");
