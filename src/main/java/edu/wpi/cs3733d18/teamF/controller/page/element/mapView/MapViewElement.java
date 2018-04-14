@@ -1,4 +1,4 @@
-package edu.wpi.cs3733d18.teamF.controller.page.element.mapViewer;
+package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
 import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
@@ -18,7 +18,7 @@ import net.kurobako.gesturefx.GesturePane;
 import java.util.HashSet;
 
 
-public class MapElement extends PageElement {
+public class MapViewElement extends PageElement {
     @FXML
     private GesturePane gesturePane;
     @FXML
@@ -40,9 +40,9 @@ public class MapElement extends PageElement {
 
     private Map map;
 
-    private MapListener listener;
+    private MapViewListener listener;
 
-    public void initialize(MapListener listener, Map map, AnchorPane sourcePane) {
+    public void initialize(MapViewListener listener, Map map, AnchorPane sourcePane) {
         // initialize fundamentals
         this.listener = listener;
         this.map = map;
@@ -116,7 +116,7 @@ public class MapElement extends PageElement {
                             , node.getWireframePosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor()));
                 }
             }
-            // not editing mapViewer
+            // not editing mapView
             else {
                 nodes.add(map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor())));
             }
@@ -175,7 +175,7 @@ public class MapElement extends PageElement {
                 // added && nodesShown
                 if (nodes.size() > 0 && nodesShown) {
                     // TODO get closest node
-                    //selectedNodeStart = mapViewer.findNodeClosestTo(1850, 1035, true, node -> node.getFloor().equals(mapViewer.getFloor()));
+                    //selectedNodeStart = mapView.findNodeClosestTo(1850, 1035, true, node -> node.getFloor().equals(mapView.getFloor()));
                     //sourceLocation.setText(selectedNodeStart.getLongName());
                     mapDrawController.unshowPath();
                     map.removeNode(selectedNodeEnd);

@@ -6,8 +6,8 @@ import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.controller.*;
-import edu.wpi.cs3733d18.teamF.controller.page.element.mapViewer.MapElement;
-import edu.wpi.cs3733d18.teamF.controller.page.element.mapViewer.MapListener;
+import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewElement;
+import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewListener;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
 import edu.wpi.cs3733d18.teamF.graph.*;
@@ -39,7 +39,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class HomeController implements SwitchableController, Observer, MapListener {
+public class HomeController implements SwitchableController, Observer, MapViewListener {
 
     private static Image maps2D[] = ImageCacheSingleton.maps2D;
     private static Image maps3D[] = ImageCacheSingleton.maps3D;
@@ -179,7 +179,7 @@ public class HomeController implements SwitchableController, Observer, MapListen
     //                            //
     ////////////////////////////////
 
-    MapElement mapElement;
+    MapViewElement mapViewElement;
     @FXML
     AnchorPane mapElementPane;
 
@@ -311,10 +311,10 @@ public class HomeController implements SwitchableController, Observer, MapListen
         map = MapSingleton.getInstance().getMap();
 
         // initialize element
-        // init mapViewer
-        Pair<MapElement, Pane> mapElementInfo = switcher.loadElement("mapViewer.fxml");
-        mapElement = mapElementInfo.getKey();
-        mapElement.initialize(this, map, mapElementPane);
+        // init mapView
+        Pair<MapViewElement, Pane> mapElementInfo = switcher.loadElement("mapView.fxml");
+        mapViewElement = mapElementInfo.getKey();
+        mapViewElement.initialize(this, map, mapElementPane);
         // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);
 
@@ -337,7 +337,7 @@ public class HomeController implements SwitchableController, Observer, MapListen
             reloadMap();
         });
         l1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            mapElement.changeFloor("L1");
+            mapViewElement.changeFloor("L1");
             map.setFloor("L1");
             //floorBtn.setText("L1");
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 1");
@@ -514,7 +514,7 @@ public class HomeController implements SwitchableController, Observer, MapListen
 
         if (arg instanceof Node) {
             Node voiceSelectedEnd = (Node) arg;
-           // Path path = mapViewer.getPath(selectedNodeStart, voiceSelectedEnd);
+           // Path path = mapView.getPath(selectedNodeStart, voiceSelectedEnd);
            // mapDrawController.showPath(path);
            // displayTextDirections(path);
         } else if (arg instanceof HashSet) {

@@ -1,4 +1,4 @@
-package edu.wpi.cs3733d18.teamF.controller.page.element.mapViewer;
+package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.gfx.MapDrawable;
