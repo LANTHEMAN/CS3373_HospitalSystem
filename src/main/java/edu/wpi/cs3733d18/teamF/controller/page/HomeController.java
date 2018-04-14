@@ -6,6 +6,7 @@ import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.controller.*;
+import edu.wpi.cs3733d18.teamF.controller.page.element.MapElement;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.PaneMapController;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
@@ -37,6 +38,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.Duration;
+import javafx.util.Pair;
 import net.kurobako.gesturefx.GesturePane;
 
 import java.sql.ResultSet;
@@ -171,12 +173,6 @@ public class HomeController implements SwitchableController, Observer {
     /////////////////////////
     private Map map;
     @FXML
-    private GesturePane gesturePane;
-    @FXML
-    private ImageView ivMap;
-    @FXML
-    private Pane mapContainer;
-    @FXML
     private Text MainTitle;
     @FXML
     private JFXNodesList floorNode;
@@ -190,14 +186,10 @@ public class HomeController implements SwitchableController, Observer {
     //         Map Builder        //
     //                            //
     ////////////////////////////////
-    private PaneMapController mapDrawController;
-    private Node selectedNodeStart = null;
-    private Node selectedNodeEnd = null;
-    private Node modifyNode = null;
-    private boolean ctrlHeld = false;
-    private boolean draggingNode;
-    private Node heldNode;
-    private boolean nodesShown = false;
+
+    MapElement mapElement;
+    @FXML
+    AnchorPane mapElementPane;
 
     /////////////////////////////////
     //      Modify Node Panel      //
@@ -322,7 +314,15 @@ public class HomeController implements SwitchableController, Observer {
      */
     @Override
     public void initialize(PaneSwitcher switcher) {
+        // initialize fundamentals
         this.switcher = switcher;
+        map = MapSingleton.getInstance().getMap();
+
+        // initialize element
+        // init map
+        Pair<MapElement, Pane> mapElementInfo = switcher.loadElement("map.fxml");
+        mapElement = mapElementInfo.getKey();
+        mapElement.initialize(map, mapElementPane);
 
         paneVoiceController = new PaneVoiceController(voicePane);
 
@@ -331,248 +331,15 @@ public class HomeController implements SwitchableController, Observer {
         VoiceLauncher.getInstance().addObserver(voice);
 
         // initialize map and map drawer
-        map = MapSingleton.getInstance().getMap();
-        mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
 
-        selectedNodeStart = map.findNodeClosestTo(1850, 1035, true, node -> node.getFloor().equals(map.getFloor()));
-        sourceLocation.setText(selectedNodeStart.getLongName());
 
-        // set default zoom
-        gesturePane.zoomTo(2, new Point2D(600, 600));
 
         // set up new node panel
         newNode_type.getItems().addAll(NodeBuilder.getNodeTypes());
         newNode_type.getSelectionModel().selectFirst();
 
 
-        // react to key presses and mouse clicks
-        switcher.getScene().setOnKeyPressed(ke -> {
-            if (ke.isControlDown()) {
-                gesturePane.setGestureEnabled(false);
-                ctrlHeld = true;
-            }
-        });
 
-        switcher.getScene().setOnKeyReleased(ke -> {
-            if (!ke.isControlDown()) {
-                gesturePane.setGestureEnabled(true);
-                selectedNodeEnd = null;
-                ctrlHeld = false;
-            }
-        });
-
-        mapContainer.setOnMouseReleased(e -> {
-            if (!PermissionSingleton.getInstance().isAdmin() || !ctrlHeld) {
-                return;
-            }
-
-            draggingNode = false;
-
-            double map_x = 5000;
-            double map_y = 3400;
-            double map3D_y = 2772;
-            if (!map.is2D()) {
-                map_y = map3D_y;
-            }
-
-            Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
-                    , e.getY() * map_y / mapContainer.getMaxHeight());
-
-            HashSet<Node> nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
-                    , node.getPosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor())
-            );
-
-            if (nodes.size() > 0) {
-                // TODO get closest node
-                Node node = nodes.iterator().next();
-                mapDrawController.selectNode(node);
-
-                if (node == selectedNodeEnd) {
-                    selectedNodeEnd = null;
-                    return;
-                }
-
-                if (e.getButton() == MouseButton.PRIMARY) {
-                    map.addEdge(node, selectedNodeEnd);
-                }
-
-                if (e.getButton() == MouseButton.SECONDARY) {
-                    map.removeEdge(node, selectedNodeEnd);
-                }
-                selectedNodeEnd = null;
-            } else {
-                selectedNodeEnd = null;
-            }
-
-        });
-
-
-
-        mapContainer.setOnMouseClicked(e -> {
-            double map_x = 5000;
-            double map_y = 3400;
-            double map3D_y = 2772;
-            if (!map.is2D()) {
-                map_y = map3D_y;
-            }
-
-            Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
-                    , e.getY() * map_y / mapContainer.getMaxHeight());
-
-            // if editing maps
-            HashSet<Node> nodes = new HashSet<>();
-            if (PermissionSingleton.getInstance().isAdmin()) {
-                if (map.is2D()) {
-                    nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
-                            , node.getPosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor()));
-                } else {
-                    nodes = map.getNodes(node -> new Point2D(node.getWireframePosition().getX()
-                            , node.getWireframePosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor()));
-                }
-            }
-            // not editing map
-            else {
-                nodes.add(map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor())));
-            }
-            if (nodes.size() > 0 && e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 1) {
-                if (!nodesShown) {
-
-                    Node src = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
-                    if ((map.is2D() ? mapPos.distance(src.getPosition()) : mapPos.distance(src.getWireframePosition())) < 200) {
-                        Path path = map.getPath(map.findNodeClosestTo(selectedNodeStart.getPosition().getX(), selectedNodeStart.getPosition().getY(), true), src);
-                        mapDrawController.showPath(path);
-                        displayTextDirections(path);
-                        clearColors();
-                        changeFloorButtons(path);
-                    } else {
-                        return;
-                    }
-                }
-
-                Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node1 -> node1.getFloor().equals(map.getFloor()));
-                if (nodesShown) {
-                    mapDrawController.selectNode(node);
-                }
-                selectedNodeEnd = node;
-
-                searchLocation.setText(node.getLongName());
-                destinationLocation.setText(node.getLongName());
-
-                if (PermissionSingleton.getInstance().isAdmin()) {
-                    gpaneNodeInfo.setVisible(true);
-                } else {
-                    gpaneNodeInfo.setVisible(false);
-                }
-
-                if (map.is2D()) {
-                    modNode_x.setText(String.valueOf(node.getPosition().getX()));
-                    modNode_y.setText(String.valueOf(node.getPosition().getY()));
-                } else {
-                    modNode_x.setText(String.valueOf(node.getWireframePosition().getX()));
-                    modNode_y.setText(String.valueOf(node.getWireframePosition().getY()));
-                }
-
-                modNode_shortName.setText(node.getShortName());
-                modNode_longName.setText(node.getLongName());
-                // TODO implement change building, change type
-
-                modifyNode = node;
-
-            }
-
-            if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 1) {
-                if (nodes.size() > 0 && !nodesShown) {
-                    selectedNodeStart = nodes.iterator().next();
-                    Path path = map.getPath(selectedNodeStart, selectedNodeEnd);
-                    if (path.getNodes().size() < 2) {
-                        if (map.getNeighbors(selectedNodeStart).size() > 0) {
-                            path = map.getPath(selectedNodeStart, map.getNeighbors(selectedNodeStart).iterator().next());
-                        }
-                    }
-                    mapDrawController.showPath(path);
-                    displayTextDirections(path);
-                    clearColors();
-                    changeFloorButtons(path);
-                    floorNode.animateList(true);
-
-                    sourceLocation.setText(selectedNodeStart.getLongName());
-                }
-            }
-
-            // remove a node
-            if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 2) {
-                if (!map.is2D()) {
-                    return;
-                }
-
-                // td fixed bug - deleting end node on double right click
-                // added && nodesShown
-                if (nodes.size() > 0 && nodesShown) {
-                    // TODO get closest node
-                    //selectedNodeStart = map.findNodeClosestTo(1850, 1035, true, node -> node.getFloor().equals(map.getFloor()));
-                    //sourceLocation.setText(selectedNodeStart.getLongName());
-                    mapDrawController.unshowPath();
-                    map.removeNode(selectedNodeEnd);
-                    selectedNodeEnd = null;
-                }
-            }
-            // create a new node
-            if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
-                if (!map.is2D() || !PermissionSingleton.getInstance().isAdmin()) {
-                    return;
-                }
-                addLocationPopup.setTranslateX(e.getSceneX() - 90);
-                addLocationPopup.setTranslateY(e.getSceneY() - 400);
-                newNode_x.setEditable(false);
-                newNode_y.setEditable(false);
-                newNode_x.setText("" + (int) (e.getX() * map_x / mapContainer.getMaxWidth()));
-                newNode_y.setText("" + (int) (e.getY() * map_y / mapContainer.getMaxHeight()));
-                addLocationPopup.setVisible(true);
-                selectedNodeEnd = null;
-            }
-        });
-
-        mapContainer.setOnDragDetected(e -> {
-            double map_x = 5000;
-            double map_y = 3400;
-            double map3D_y = 2772;
-            if (!map.is2D()) {
-                map_y = map3D_y;
-            }
-
-            Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
-                    , e.getY() * map_y / mapContainer.getMaxHeight());
-
-
-            if (PermissionSingleton.getInstance().isAdmin()) {
-                Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D());
-                double deltaX = mapPos.getX() - node.getPosition().getX();
-                double deltaY = mapPos.getY() - node.getPosition().getY();
-                draggingNode = false;
-                if (Math.sqrt((deltaX * deltaX) + (deltaY * deltaY)) < 20) {
-                    draggingNode = true;
-                    heldNode = node;
-                }
-            }
-        });
-
-        mapContainer.setOnMouseDragged(e -> {
-            double map_x = 5000;
-            double map_y = 3400;
-            double map3D_y = 2772;
-            if (!map.is2D()) {
-                map_y = map3D_y;
-            }
-
-            Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
-                    , e.getY() * map_y / mapContainer.getMaxHeight());
-
-            if (PermissionSingleton.getInstance().isAdmin() && nodesShown) {
-                if (draggingNode) {
-                    heldNode.setPosition(mapPos);
-                }
-            }
-        });
 
         //floorBtn.setText("2");
         l2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -759,15 +526,15 @@ public class HomeController implements SwitchableController, Observer {
 
         if (arg instanceof Node) {
             Node voiceSelectedEnd = (Node) arg;
-            Path path = map.getPath(selectedNodeStart, voiceSelectedEnd);
-            mapDrawController.showPath(path);
-            displayTextDirections(path);
+           // Path path = map.getPath(selectedNodeStart, voiceSelectedEnd);
+           // mapDrawController.showPath(path);
+           // displayTextDirections(path);
         } else if (arg instanceof HashSet) {
             HashSet<Node> potentialDestinations = (HashSet<Node>) arg;
-            Node voiceSelectedEnd = map.findNodeClosestTo(selectedNodeStart, potentialDestinations);
-            Path path = map.getPath(selectedNodeStart, voiceSelectedEnd);
-            mapDrawController.showPath(path);
-            displayTextDirections(path);
+         //   Node voiceSelectedEnd = map.findNodeClosestTo(selectedNodeStart, potentialDestinations);
+        //    Path path = map.getPath(selectedNodeStart, voiceSelectedEnd);
+         //   mapDrawController.showPath(path);
+          //  displayTextDirections(path);
         } else if (arg instanceof String) {
             String cmd = (String) arg;
             if (cmd.equalsIgnoreCase("Help")) {
@@ -851,8 +618,7 @@ public class HomeController implements SwitchableController, Observer {
         if (algorithmsBox.isVisible()) {
             algorithmsBox.setVisible(false);
         }
-        mapDrawController.unshowNodes();
-        mapDrawController.unshowEdges();
+
         loginBtn.setText("Login");
 
     }
@@ -1040,8 +806,6 @@ public class HomeController implements SwitchableController, Observer {
             }
 
             Node selectedNode = n.iterator().next();
-            selectedNodeEnd = selectedNode;
-            mapDrawController.selectNode(selectedNode);
             map.setFloor(selectedNode.getFloor());
             reloadMap();
         }
@@ -1053,17 +817,6 @@ public class HomeController implements SwitchableController, Observer {
         sourceLocation.setText(destinationLocation.getText());
         destinationLocation.setText(temp);
 
-        Node tempNode = selectedNodeStart;
-        selectedNodeStart = selectedNodeEnd;
-        selectedNodeEnd = tempNode;
-
-        mapDrawController.showPath(map.getPath(selectedNodeStart, selectedNodeEnd));
-        displayTextDirections(map.getPath(selectedNodeStart, selectedNodeEnd));
-        clearColors();
-        changeFloorButtons(map.getPath(selectedNodeStart, selectedNodeEnd));
-
-        map.setFloor(selectedNodeStart.getFloor());
-        reloadMap();
     }
 
     @FXML
@@ -1125,10 +878,6 @@ public class HomeController implements SwitchableController, Observer {
             Node sourceNode = sourceNodeSet.iterator().next();
             Node destinationNode = destinationNodeSet.iterator().next();
 
-            selectedNodeStart = sourceNode;
-            selectedNodeEnd = destinationNode;
-
-            mapDrawController.showPath(map.getPath(sourceNode, destinationNode));
             displayTextDirections(map.getPath(sourceNode, destinationNode));
             clearColors();
             changeFloorButtons(map.getPath(sourceNode, destinationNode));
@@ -1304,13 +1053,6 @@ public class HomeController implements SwitchableController, Observer {
         } else {
             index = 5;
         }
-
-        if (!map.is2D()) {
-            ivMap.setImage(maps3D[index]);
-
-        } else {
-            ivMap.setImage(maps2D[index]);
-        }
     }
 
 
@@ -1380,31 +1122,12 @@ public class HomeController implements SwitchableController, Observer {
 
     @FXML
     void onNodeModify() {
-        if (map.is2D()) {
-            modifyNode.setPosition(new Point2D(Double.parseDouble(modNode_x.getText())
-                    , Double.parseDouble(modNode_y.getText())));
-        } else {
-            modifyNode.setWireframePosition(new Point2D(Double.parseDouble(modNode_x.getText())
-                    , Double.parseDouble(modNode_y.getText())));
-        }
 
-
-        modifyNode.setShortName(modNode_shortName.getText());
-        modifyNode.setLongName(modNode_longName.getText());
     }
 
     @FXML
     public void onMapEditor() {
-        if (nodesShown) {
-            mapDrawController.unshowNodes();
-            mapDrawController.unshowEdges();
-            nodesShown = false;
-        } else {
-            mapDrawController.showNodes();
-            mapDrawController.showEdges();
-            mapDrawController.unshowPath();
-            nodesShown = true;
-        }
+
         onCancelDirectionsEvent();
         setCancelMenuEvent();
     }

@@ -19,6 +19,7 @@ public class LineEdgeDrawer extends EdgeDrawable {
     public LineEdgeDrawer() {
         super();
     }
+
     public LineEdgeDrawer(Paint color) {
         super();
         this.color = color;
@@ -35,6 +36,8 @@ public class LineEdgeDrawer extends EdgeDrawable {
         double posY2 = is2D ? edge.getNode2().getPosition().getY() : edge.getNode2().getWireframePosition().getY();
 
         Line line = new Line();
+        System.out.println("(" + pane.getBoundsInLocal().getWidth() + "," + pane.getBoundsInLocal().getHeight() + ")");
+
         line.setStartX(posX1 * pane.getMaxWidth() / imageWidth);
         line.setStartY(posY1 * pane.getMaxHeight() / imageHeight);
         line.setEndX(posX2 * pane.getMaxWidth() / imageWidth);

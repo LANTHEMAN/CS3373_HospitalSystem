@@ -2,9 +2,11 @@ package edu.wpi.cs3733d18.teamF.controller;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -89,5 +91,17 @@ public class PaneSwitcher {
         popup.close();
         load(screen);
         scene.setRoot(panes.get(screen.fxmlFile));
+    }
+
+    public <Element> Pair<Element, Pane> loadElement(String fxmlFile){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("element/" + fxmlFile), resFac.getResources());
+            Pane pane = loader.load();
+            Object controller = loader.getController();
+            return new Pair(controller, pane);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
