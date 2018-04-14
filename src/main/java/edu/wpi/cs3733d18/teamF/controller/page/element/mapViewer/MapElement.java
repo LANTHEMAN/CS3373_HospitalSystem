@@ -1,10 +1,9 @@
-package edu.wpi.cs3733d18.teamF.controller.page.element;
+package edu.wpi.cs3733d18.teamF.controller.page.element.mapViewer;
 
 import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
-import edu.wpi.cs3733d18.teamF.gfx.PaneMapController;
 import edu.wpi.cs3733d18.teamF.gfx.impl.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
@@ -14,8 +13,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import net.kurobako.gesturefx.GesturePane;
 
 import java.util.HashSet;
@@ -43,8 +40,11 @@ public class MapElement extends PageElement {
 
     private Map map;
 
-    public void initialize(Map map, AnchorPane sourcePane) {
+    private MapListener listener;
+
+    public void initialize(MapListener listener, Map map, AnchorPane sourcePane) {
         // initialize fundamentals
+        this.listener = listener;
         this.map = map;
         initElement(sourcePane, root);
 
@@ -116,7 +116,7 @@ public class MapElement extends PageElement {
                             , node.getWireframePosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor()));
                 }
             }
-            // not editing map
+            // not editing mapViewer
             else {
                 nodes.add(map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor())));
             }
@@ -175,7 +175,7 @@ public class MapElement extends PageElement {
                 // added && nodesShown
                 if (nodes.size() > 0 && nodesShown) {
                     // TODO get closest node
-                    //selectedNodeStart = map.findNodeClosestTo(1850, 1035, true, node -> node.getFloor().equals(map.getFloor()));
+                    //selectedNodeStart = mapViewer.findNodeClosestTo(1850, 1035, true, node -> node.getFloor().equals(mapViewer.getFloor()));
                     //sourceLocation.setText(selectedNodeStart.getLongName());
                     mapDrawController.unshowPath();
                     map.removeNode(selectedNodeEnd);
@@ -232,6 +232,11 @@ public class MapElement extends PageElement {
                 }
             }
         });
+    }
+
+    public void changeFloor(String floor){
+        // TODO fix
+        mapImage.setImage(ImageCacheSingleton.maps2D[1]);
     }
 
 

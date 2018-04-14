@@ -6,11 +6,10 @@ import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.controller.*;
-import edu.wpi.cs3733d18.teamF.controller.page.element.MapElement;
+import edu.wpi.cs3733d18.teamF.controller.page.element.mapViewer.MapElement;
+import edu.wpi.cs3733d18.teamF.controller.page.element.mapViewer.MapListener;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
-import edu.wpi.cs3733d18.teamF.gfx.PaneMapController;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
-import edu.wpi.cs3733d18.teamF.gfx.impl.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.*;
 import edu.wpi.cs3733d18.teamF.qr.qrConverter;
 import edu.wpi.cs3733d18.teamF.sr.*;
@@ -28,26 +27,19 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.Pair;
-import net.kurobako.gesturefx.GesturePane;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class HomeController implements SwitchableController, Observer {
+public class HomeController implements SwitchableController, Observer, MapListener {
 
     private static Image maps2D[] = ImageCacheSingleton.maps2D;
     private static Image maps3D[] = ImageCacheSingleton.maps3D;
@@ -319,26 +311,21 @@ public class HomeController implements SwitchableController, Observer {
         map = MapSingleton.getInstance().getMap();
 
         // initialize element
-        // init map
-        Pair<MapElement, Pane> mapElementInfo = switcher.loadElement("map.fxml");
+        // init mapViewer
+        Pair<MapElement, Pane> mapElementInfo = switcher.loadElement("mapViewer.fxml");
         mapElement = mapElementInfo.getKey();
-        mapElement.initialize(map, mapElementPane);
-
+        mapElement.initialize(this, map, mapElementPane);
+        // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);
 
         VoiceCommandVerification voice = new VoiceCommandVerification();
         voice.addObserver(this);
         VoiceLauncher.getInstance().addObserver(voice);
 
-        // initialize map and map drawer
-
-
 
         // set up new node panel
         newNode_type.getItems().addAll(NodeBuilder.getNodeTypes());
         newNode_type.getSelectionModel().selectFirst();
-
-
 
 
         //floorBtn.setText("2");
@@ -350,6 +337,7 @@ public class HomeController implements SwitchableController, Observer {
             reloadMap();
         });
         l1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            mapElement.changeFloor("L1");
             map.setFloor("L1");
             //floorBtn.setText("L1");
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 1");
@@ -526,15 +514,11 @@ public class HomeController implements SwitchableController, Observer {
 
         if (arg instanceof Node) {
             Node voiceSelectedEnd = (Node) arg;
-           // Path path = map.getPath(selectedNodeStart, voiceSelectedEnd);
+           // Path path = mapViewer.getPath(selectedNodeStart, voiceSelectedEnd);
            // mapDrawController.showPath(path);
            // displayTextDirections(path);
         } else if (arg instanceof HashSet) {
             HashSet<Node> potentialDestinations = (HashSet<Node>) arg;
-         //   Node voiceSelectedEnd = map.findNodeClosestTo(selectedNodeStart, potentialDestinations);
-        //    Path path = map.getPath(selectedNodeStart, voiceSelectedEnd);
-         //   mapDrawController.showPath(path);
-          //  displayTextDirections(path);
         } else if (arg instanceof String) {
             String cmd = (String) arg;
             if (cmd.equalsIgnoreCase("Help")) {
@@ -1700,4 +1684,13 @@ public class HomeController implements SwitchableController, Observer {
         securityPane.setVisible(false);
     }
 
+    @Override
+    public void onSrcNodeSelected(Node node) {
+
+    }
+
+    @Override
+    public void onDstNodeSelected(Node node) {
+
+    }
 }

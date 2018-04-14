@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import net.kurobako.gesturefx.GesturePane?>
 
-<AnchorPane fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.element.MapElement">
+<AnchorPane fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.element.mapViewer.MapElement">
     <GesturePane fx:id="gesturePane" HBarEnabled="false" VBarEnabled="false" fitMode="COVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minScale="2.3" minWidth="-Infinity" scrollMode="ZOOM" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Pane maxHeight="578.0" maxWidth="844.0" prefHeight="578.0" prefWidth="844.0">
             <children>

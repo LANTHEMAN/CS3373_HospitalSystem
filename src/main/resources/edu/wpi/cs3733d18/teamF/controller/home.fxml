@@ -97,7 +97,6 @@
                 </Pane>
                 <Pane prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: WHITE;">
                     <children>
-                        <JFXListView fx:id="searchList" prefHeight="189.0" prefWidth="300.0" visible="false" />
                         <JFXTextArea fx:id="txtDirections" editable="false" focusColor="#ffffff00" layoutX="17.0" layoutY="-1.0" prefHeight="198.0" prefWidth="284.0" unFocusColor="#ffffff00">
                             <font>
                                 <Font name="Arial Bold" size="13.0" />
