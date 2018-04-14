@@ -47,7 +47,6 @@
         <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
     </rowConstraints>
     <children>
-        <AnchorPane fx:id="mapElementPane" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
         <VBox fx:id="directionsBox" alignment="TOP_CENTER" fillWidth="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" snapToPixel="false" style="-fx-background-color: #042E58;">
             <children>
                 <Pane prefHeight="332.0" prefWidth="300.0" style="-fx-background-color: #042E58;">
@@ -251,7 +250,8 @@
                 </Pane>
             </children>
         </VBox>
-        <GridPane fx:id="leftGPane" alignment="BOTTOM_LEFT" prefHeight="687.0" prefWidth="811.0" GridPane.columnSpan="2">
+        <AnchorPane fx:id="mapElementPane" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
+        <GridPane fx:id="leftGPane" alignment="BOTTOM_LEFT" pickOnBounds="false" prefHeight="687.0" prefWidth="811.0" GridPane.columnSpan="2">
             <columnConstraints>
                 <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
@@ -261,7 +261,7 @@
                 <RowConstraints />
             </rowConstraints>
             <children>
-                <StackPane alignment="CENTER_LEFT" minWidth="-Infinity" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
+                <StackPane alignment="CENTER_LEFT" minWidth="-Infinity" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
                     <children>
                         <JFXDrawer fx:id="directionsDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefHeight="720.0" prefWidth="300.0" resizeContent="true" StackPane.alignment="CENTER_LEFT" />
                         <JFXDrawer fx:id="adminDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefWidth="300.0" resizeContent="true" StackPane.alignment="CENTER_LEFT" />
@@ -280,7 +280,7 @@
                                 </Label>
                             </children>
                         </VBox>
-                        <HBox fx:id="searchBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="300.0" spacing="5.0" style="-fx-background-color: #042E58;" StackPane.alignment="TOP_LEFT">
+                        <HBox fx:id="searchBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" prefHeight="66.0" prefWidth="300.0" spacing="5.0" style="-fx-background-color: #042E58;" StackPane.alignment="TOP_LEFT">
                             <children>
                                 <JFXHamburger fx:id="hamburger" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
                                 <JFXTextField fx:id="searchLocation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="161.0" promptText="Type or click map" style="-fx-background-color: #f2f5f7;">
