@@ -43,9 +43,50 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     private static Image maps2D[] = ImageCacheSingleton.maps2D;
     private static Image maps3D[] = ImageCacheSingleton.maps3D;
+    private final ObservableList<String> priority = FXCollections.observableArrayList("0", "1", "2", "3", "4", "5");
+    private final ObservableList<String> status = FXCollections.observableArrayList("Incomplete", "In Progress", "Complete");
+    private final ObservableList<String> type = FXCollections.observableArrayList("Language Interpreter", "Religious Services");
+    private final ObservableList<String> privilegeOptions = FXCollections.observableArrayList("Staff", "Admin");
+    private final ObservableList<String> filterOptions = FXCollections.observableArrayList("Priority", "Status", "Type");
+    @FXML
+    public ComboBox filterType, availableTypes;
+    @FXML
+    public TableView<ServiceRequest> searchResultTable;
+    @FXML
+    public TableColumn btnsCol;
+    @FXML
+    public TableColumn<ServiceRequest, Integer> idNumberCol, requestPriorityCol;
+    @FXML
+    public TableColumn<ServiceRequest, String> requestTypeCol, firstNameCol, lastNameCol, destinationCol, theStatusCol;
+    @FXML
+    public Label typeLabel, idLabel, firstNameLabel, lastNameLabel, locationLabel, statusLabel, completedByLabel, usernameLabel;
+    @FXML
+    public TextArea instructionsTextArea;
+    @FXML
+    public TableColumn chooseCol;
+    @FXML
+    public TableColumn<User, String> usernameCol, firstNameUserCol, lastNameUserCol, privilegeCol, occupationCol;
+    @FXML
+    TextField languageField, firstNameLanguage, lastNameLanguage, destinationLanguage;
+    @FXML
+    TextArea instructionsLanguage;
+    @FXML
+    Label languageRequiredLI, firstNameRequiredLI, lastNameRequiredLI, locationRequiredLI;
+    @FXML
+    TextField religionField, firstNameRS, lastNameRS, destinationRS;
+    @FXML
+    TextArea instructionsRS;
+    @FXML
+    Label religionRequiredRS, firstNameRequiredRS, lastNameRequiredRS, locationRequiredRS;
+    MapViewElement mapViewElement;
+    @FXML
+    AnchorPane mapElementPane;
+    /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+    //REMOVE WHEN YA DONT WANT THE HAPPY BDAY BUTTON
+    /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+    TTS justinTTS = new TTS();
     private PaneSwitcher switcher;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
-
     ///////////////////////////////
     //                           //
     //           Voice           //
@@ -54,7 +95,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private PaneVoiceController paneVoiceController;
     @FXML
     private Pane voicePane;
-
     /////////////////////////////////////////
     //                                     //
     //           Service Request           //
@@ -65,7 +105,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private AnchorPane editRequestPane;
     @FXML
     private JFXButton LI, RS, SR;
-
     /////////////////////////////////
     //       Search Services       //
     /////////////////////////////////
@@ -74,11 +113,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private String filter;
     private User editedUser;
     private boolean newUser;
-    private final ObservableList<String> priority = FXCollections.observableArrayList("0", "1", "2", "3", "4", "5");
-    private final ObservableList<String> status = FXCollections.observableArrayList("Incomplete", "In Progress", "Complete");
-    private final ObservableList<String> type = FXCollections.observableArrayList("Language Interpreter", "Religious Services");
-    private final ObservableList<String> privilegeOptions = FXCollections.observableArrayList("Staff", "Admin");
-    private final ObservableList<String> filterOptions = FXCollections.observableArrayList("Priority", "Status", "Type");
     @FXML
     private AnchorPane searchPane;
     @FXML
@@ -91,49 +125,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private JFXNodesList serviceRequestList;
     @FXML
     private JFXButton newServiceRequest;
-    @FXML
-    public ComboBox filterType, availableTypes;
-    @FXML
-    public TableView<ServiceRequest> searchResultTable;
-    @FXML
-    public TableColumn btnsCol;
-    @FXML
-    public TableColumn<ServiceRequest, Integer> idNumberCol, requestPriorityCol;
-    @FXML
-    public TableColumn<ServiceRequest, String> requestTypeCol, firstNameCol, lastNameCol, destinationCol, theStatusCol;
-    @FXML
-    public Label typeLabel,idLabel, firstNameLabel,  lastNameLabel, locationLabel, statusLabel, completedByLabel, usernameLabel;
-    @FXML
-    public TextArea instructionsTextArea;
-    @FXML
-    public TableColumn chooseCol;
-    @FXML
-    public TableColumn<User, String> usernameCol, firstNameUserCol, lastNameUserCol,  privilegeCol, occupationCol;
-
     //////////////////////////////////
     //       Language Service       //
     //////////////////////////////////
     @FXML
     private AnchorPane languageInterpreterPane;
-    @FXML
-    TextField languageField,  firstNameLanguage, lastNameLanguage, destinationLanguage;
-    @FXML
-    TextArea instructionsLanguage;
-    @FXML
-    Label languageRequiredLI, firstNameRequiredLI, lastNameRequiredLI, locationRequiredLI;
-
     ///////////////////////////////////
     //       Religious Service       //
     ///////////////////////////////////
     @FXML
     private AnchorPane religiousServicesPane;
-    @FXML
-    TextField religionField, firstNameRS, lastNameRS, destinationRS;
-    @FXML
-    TextArea instructionsRS;
-    @FXML
-    Label religionRequiredRS, firstNameRequiredRS, lastNameRequiredRS, locationRequiredRS;
-
     ///////////////////////////////////
     //       Security Service        //
     ///////////////////////////////////
@@ -147,7 +148,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private ToggleGroup securityToggle;
     @FXML
     private Label securityLocationRequired;
-
     //////////////////////////////////////////
     //                                      //
     //           Search Algorithm           //
@@ -157,7 +157,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private HBox algorithmsBox;
     @FXML
     private JFXButton aStar, depthFirst, breathFirst;
-
     /////////////////////////
     //                     //
     //         Map         //
@@ -166,31 +165,25 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private Map map;
     @FXML
     private Text MainTitle;
-    @FXML
-    private JFXNodesList floorNode;
-    @FXML
-    private JFXButton floorBtn, l2, l1, groundFloor,  floor1, floor2, floor3;
-    @FXML
-    private JFXButton btn2D, btn3D;
 
     ////////////////////////////////
     //                            //
     //         Map Builder        //
     //                            //
     ////////////////////////////////
-
-    MapViewElement mapViewElement;
     @FXML
-    AnchorPane mapElementPane;
-
+    private JFXNodesList floorNode;
+    @FXML
+    private JFXButton floorBtn, l2, l1, groundFloor, floor1, floor2, floor3;
+    @FXML
+    private JFXButton btn2D, btn3D;
     /////////////////////////////////
     //      Modify Node Panel      //
     /////////////////////////////////
     @FXML
     private GridPane gpaneNodeInfo;
     @FXML
-    private TextField modNode_shortName, modNode_longName, modNode_x,  modNode_y;
-
+    private TextField modNode_shortName, modNode_longName, modNode_x, modNode_y;
     ///////////////////////////////
     //      New Node Window      //
     ///////////////////////////////
@@ -200,7 +193,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private TextField newNode_x, newNode_y, newNode_shortName;
     @FXML
     private ComboBox<String> newNode_type = new ComboBox<>(FXCollections.observableArrayList(NodeBuilder.getNodeTypes()));
-
     ///////////////////////////////
     //                           //
     //           Login           //
@@ -218,7 +210,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private JFXPasswordField loginPassword;
     @FXML
     private FontAwesomeIconView loginCancel, logoutCancel;
-
     ///////////////////////////////////
     //                               //
     //       Search Location         //
@@ -231,7 +222,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private JFXListView searchList, directionsList;
     private boolean sourceLocationActive = false;
-
     /////////////////////////////////
     //                             //
     //          Hamburger          //
@@ -245,7 +235,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private VBox adminBox;
     @FXML
     private JFXButton mapEditorBtn, editUsersBtn;
-
     /////////////////////////////
     //      Directions Box     //
     /////////////////////////////
@@ -259,7 +248,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private JFXTextArea txtDirections;
     @FXML
     private Pane qrImage;
-
     //////////////////////////////
     //                          //
     //        Edit User         //
@@ -276,10 +264,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private JFXCheckBox languageCheck, religiousCheck, securityCheck;
     @FXML
-    private JFXTextField usernameField,passwordField, fnameField, lnameField, occupationField;
+    private JFXTextField usernameField, passwordField, fnameField, lnameField, occupationField;
     @FXML
     private JFXComboBox privilegeCombo;
-
     /////////////////////////////////
     //                             //
     //           Help Pane         //
@@ -289,7 +276,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private Pane helpPane;
     @FXML
     private GridPane userInstructions, adminInstructions;
-
     /////////////////////////////////
     //                             //
     //           Date/Time         //
@@ -302,6 +288,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     /**
      * Constructor for this class
+     *
      * @param switcher
      */
     @Override
@@ -331,14 +318,15 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         //floorBtn.setText("2");
         l2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("L2");
+            mapViewElement.refreshFloorDrawn();
             //floorBtn.setText("L2");
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 2");
             //floorNode.animateList(false);
             reloadMap();
         });
         l1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            mapViewElement.changeFloor("L1");
             map.setFloor("L1");
+            mapViewElement.refreshFloorDrawn();
             //floorBtn.setText("L1");
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 1");
             //floorNode.animateList(false);
@@ -346,6 +334,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         });
         groundFloor.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("0G");
+            mapViewElement.refreshFloorDrawn();
             //floorBtn.setText("G");
             MainTitle.setText("Brigham and Women's Hospital: Ground Floor");
             //floorNode.animateList(false);
@@ -353,6 +342,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         });
         floor1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("01");
+            mapViewElement.refreshFloorDrawn();
             //floorBtn.setText("1");
             MainTitle.setText("Brigham and Women's Hospital: Level 1");
             //floorNode.animateList(false);
@@ -360,6 +350,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         });
         floor2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("02");
+            mapViewElement.refreshFloorDrawn();
             //floorBtn.setText("2");
             MainTitle.setText("Brigham and Women's Hospital: Level 2");
             //floorNode.animateList(false);
@@ -367,6 +358,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         });
         floor3.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("03");
+            mapViewElement.refreshFloorDrawn();
             //floorBtn.setText("3");
             MainTitle.setText("Brigham and Women's Hospital: Level 3");
             //floorNode.animateList(false);
@@ -514,9 +506,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
         if (arg instanceof Node) {
             Node voiceSelectedEnd = (Node) arg;
-           // Path path = mapView.getPath(selectedNodeStart, voiceSelectedEnd);
-           // mapDrawController.showPath(path);
-           // displayTextDirections(path);
+            // Path path = mapView.getPath(selectedNodeStart, voiceSelectedEnd);
+            // mapDrawController.showPath(path);
+            // displayTextDirections(path);
         } else if (arg instanceof HashSet) {
             HashSet<Node> potentialDestinations = (HashSet<Node>) arg;
         } else if (arg instanceof String) {
@@ -565,11 +557,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
     }
 
-    /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-    //REMOVE WHEN YA DONT WANT THE HAPPY BDAY BUTTON
-    /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-    TTS justinTTS = new TTS();
-    public void onBirthday(){
+    public void onBirthday() {
         justinTTS.speak("happy birthday to you, happy birthday to you, happy birthday dear justin, happy birthday you yaaaaaaaay");
     }
 
@@ -1024,19 +1012,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     private void reloadMap() {
         int index;
-        if (map.getFloor().equals("L2")) {
-            index = 0;
-        } else if (map.getFloor().equals("L1")) {
-            index = 1;
-        } else if (map.getFloor().equals("0G")) {
-            index = 2;
-        } else if (map.getFloor().equals("01")) {
-            index = 3;
-        } else if (map.getFloor().equals("02")) {
-            index = 4;
-        } else {
-            index = 5;
-        }
+
     }
 
 

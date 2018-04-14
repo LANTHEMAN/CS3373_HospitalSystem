@@ -52,8 +52,7 @@ public class MapViewElement extends PageElement {
         mapDrawController.showEdges();
         mapDrawController.showNodes();
 
-        // TODO fix
-        mapImage.setImage(ImageCacheSingleton.maps2D[0]);
+        refreshFloorDrawn();
 
         // set default zoom
         gesturePane.zoomTo(2, new Point2D(600, 600));
@@ -234,10 +233,27 @@ public class MapViewElement extends PageElement {
         });
     }
 
-    public void changeFloor(String floor){
-        // TODO fix
-        mapImage.setImage(ImageCacheSingleton.maps2D[1]);
+
+    public void refreshFloorDrawn() {
+        int index;
+        if (map.getFloor().equals("L2")) {
+            index = 0;
+        } else if (map.getFloor().equals("L1")) {
+            index = 1;
+        } else if (map.getFloor().equals("0G")) {
+            index = 2;
+        } else if (map.getFloor().equals("01")) {
+            index = 3;
+        } else if (map.getFloor().equals("02")) {
+            index = 4;
+        } else {
+            index = 5;
+        }
+
+        if (map.is2D()) {
+            mapImage.setImage(ImageCacheSingleton.maps2D[index]);
+        } else {
+            mapImage.setImage(ImageCacheSingleton.maps3D[index]);
+        }
     }
-
-
 }
