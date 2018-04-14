@@ -16,9 +16,13 @@ import javafx.scene.layout.Pane;
 import net.kurobako.gesturefx.GesturePane;
 
 import java.util.HashSet;
+import java.util.Observable;
+import java.util.Observer;
 
 
 public class MapViewElement extends PageElement {
+    // used to see if the floor has changed to update the map drawn
+    MapListener mapListener;
     @FXML
     private GesturePane gesturePane;
     @FXML
@@ -27,7 +31,6 @@ public class MapViewElement extends PageElement {
     private Pane mapContainer;
     @FXML
     private AnchorPane root;
-
     private Node selectedNodeStart = null;
     private Node selectedNodeEnd = null;
     private Node modifyNode = null;
@@ -35,8 +38,9 @@ public class MapViewElement extends PageElement {
     private boolean draggingNode;
     private Node heldNode;
     private boolean nodesShown = false;
-
     private PaneMapController mapDrawController;
+    private String mapFloorDrawn;
+    private boolean isMap2D;
 
     private Map map;
 
@@ -46,6 +50,9 @@ public class MapViewElement extends PageElement {
         // initialize fundamentals
         this.listener = listener;
         this.map = map;
+        map.addObserver(mapListener = new MapListener());
+        mapFloorDrawn = map.getFloor();
+        isMap2D = map.is2D();
         initElement(sourcePane, root);
 
         mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
@@ -234,7 +241,9 @@ public class MapViewElement extends PageElement {
     }
 
 
-    public void refreshFloorDrawn() {
+    private void refreshFloorDrawn() {
+        mapFloorDrawn = map.getFloor();
+        isMap2D = map.is2D();
         int index;
         if (map.getFloor().equals("L2")) {
             index = 0;
@@ -249,11 +258,22 @@ public class MapViewElement extends PageElement {
         } else {
             index = 5;
         }
-
         if (map.is2D()) {
             mapImage.setImage(ImageCacheSingleton.maps2D[index]);
         } else {
             mapImage.setImage(ImageCacheSingleton.maps3D[index]);
+        }
+    }
+
+    /**
+     * Just used to see if the map floor image has to be changed
+     */
+    private class MapListener implements Observer {
+        @Override
+        public void update(Observable o, Object arg) {
+            if (!mapFloorDrawn.equals(map.getFloor()) || isMap2D != map.is2D()) {
+                refreshFloorDrawn();
+            }
         }
     }
 }

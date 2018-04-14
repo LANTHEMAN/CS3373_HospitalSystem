@@ -318,48 +318,36 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         //floorBtn.setText("2");
         l2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("L2");
-            mapViewElement.refreshFloorDrawn();
-            //floorBtn.setText("L2");
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 2");
             //floorNode.animateList(false);
             reloadMap();
         });
         l1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("L1");
-            mapViewElement.refreshFloorDrawn();
-            //floorBtn.setText("L1");
             MainTitle.setText("Brigham and Women's Hospital: Lower Level 1");
             //floorNode.animateList(false);
             reloadMap();
         });
         groundFloor.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("0G");
-            mapViewElement.refreshFloorDrawn();
-            //floorBtn.setText("G");
             MainTitle.setText("Brigham and Women's Hospital: Ground Floor");
             //floorNode.animateList(false);
             reloadMap();
         });
         floor1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("01");
-            mapViewElement.refreshFloorDrawn();
-            //floorBtn.setText("1");
             MainTitle.setText("Brigham and Women's Hospital: Level 1");
             //floorNode.animateList(false);
             reloadMap();
         });
         floor2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("02");
-            mapViewElement.refreshFloorDrawn();
-            //floorBtn.setText("2");
             MainTitle.setText("Brigham and Women's Hospital: Level 2");
             //floorNode.animateList(false);
             reloadMap();
         });
         floor3.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             map.setFloor("03");
-            mapViewElement.refreshFloorDrawn();
-            //floorBtn.setText("3");
             MainTitle.setText("Brigham and Women's Hospital: Level 3");
             //floorNode.animateList(false);
             reloadMap();

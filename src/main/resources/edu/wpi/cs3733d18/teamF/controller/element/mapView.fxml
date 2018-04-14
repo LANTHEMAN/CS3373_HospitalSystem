@@ -11,7 +11,7 @@
             <children>
                 <ImageView fx:id="mapImage" fitHeight="578.0" fitWidth="844.0" preserveRatio="true">
                 </ImageView>
-                <Pane fx:id="mapContainer" maxHeight="578.0" maxWidth="844.0" minHeight="844.0" minWidth="578.0">
+                <Pane fx:id="mapContainer" maxHeight="578.0" maxWidth="844.0" minHeight="578.0" minWidth="844.0">
                 </Pane>
             </children>
         </Pane>
