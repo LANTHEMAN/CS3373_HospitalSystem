@@ -39,12 +39,16 @@ public class CircleNodeDrawer extends NodeDrawable {
 
         if(!isSelected){
             Circle circle = new Circle(1, Color.BLUE);
+            circle.setPickOnBounds(false);
+            circle.setMouseTransparent(true);
             circle.setCenterX(posX * pane.getMaxWidth() / imageWidth);
             circle.setCenterY(posY * pane.getMaxHeight() / imageHeight);
             pane.getChildren().add(circle);
         }
         else{
             Circle circle = new Circle(1.4, Color.CORNFLOWERBLUE);
+            circle.setPickOnBounds(false);
+            circle.setMouseTransparent(true);
             circle.setCenterX(posX * pane.getMaxWidth() / imageWidth);
             circle.setCenterY(posY * pane.getMaxHeight() / imageHeight);
             pane.getChildren().add(circle);

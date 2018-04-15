@@ -40,9 +40,6 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class HomeController implements SwitchableController, Observer, MapViewListener {
-
-    private static Image maps2D[] = ImageCacheSingleton.maps2D;
-    private static Image maps3D[] = ImageCacheSingleton.maps3D;
     private final ObservableList<String> priority = FXCollections.observableArrayList("0", "1", "2", "3", "4", "5");
     private final ObservableList<String> status = FXCollections.observableArrayList("Incomplete", "In Progress", "Complete");
     private final ObservableList<String> type = FXCollections.observableArrayList("Language Interpreter", "Religious Services");
@@ -289,19 +286,20 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     /**
      * Constructor for this class
      *
-     * @param switcher
+     * @param switcher allows the class to switch panes and get access to the scene
      */
     @Override
     public void initialize(PaneSwitcher switcher) {
         // initialize fundamentals
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
+        map.setFloor("01");
 
         // initialize element
         // init mapView
         Pair<MapViewElement, Pane> mapElementInfo = switcher.loadElement("mapView.fxml");
         mapViewElement = mapElementInfo.getKey();
-        mapViewElement.initialize(this, map, mapElementPane);
+        mapViewElement.initialize(this, map, switcher, mapElementPane);
         // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);
 
@@ -494,11 +492,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
         if (arg instanceof Node) {
             Node voiceSelectedEnd = (Node) arg;
-            // Path path = mapView.getPath(selectedNodeStart, voiceSelectedEnd);
-            // mapDrawController.showPath(path);
-            // displayTextDirections(path);
+            Path path = mapViewElement.changePathDestination(voiceSelectedEnd);
+            displayTextDirections(path);
         } else if (arg instanceof HashSet) {
             HashSet<Node> potentialDestinations = (HashSet<Node>) arg;
+            Node voiceSelectedEnd = map.findNodeClosestTo(mapViewElement.getSelectedNodeStart(), potentialDestinations);
+            Path path = mapViewElement.changePathDestination(voiceSelectedEnd);
+            displayTextDirections(path);
         } else if (arg instanceof String) {
             String cmd = (String) arg;
             if (cmd.equalsIgnoreCase("Help")) {
@@ -580,6 +580,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
 
         loginBtn.setText("Login");
+        mapViewElement.getMapDrawController().unshowNodes();
+        mapViewElement.getMapDrawController().unshowEdges();
 
     }
 
@@ -766,6 +768,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             }
 
             Node selectedNode = n.iterator().next();
+            mapViewElement.setSelectedNodeStart(selectedNode);
+            mapViewElement.getMapDrawController().selectNode(selectedNode);
             map.setFloor(selectedNode.getFloor());
             reloadMap();
         }
@@ -777,6 +781,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         sourceLocation.setText(destinationLocation.getText());
         destinationLocation.setText(temp);
 
+        Path newPath = mapViewElement.swapSrcAndDst();
+        displayTextDirections(newPath);
+        clearColors();
+        changeFloorButtons(newPath);
+
+        map.setFloor(mapViewElement.getSelectedNodeStart().getFloor());
+        reloadMap();
     }
 
     @FXML
@@ -838,9 +849,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             Node sourceNode = sourceNodeSet.iterator().next();
             Node destinationNode = destinationNodeSet.iterator().next();
 
-            displayTextDirections(map.getPath(sourceNode, destinationNode));
+            Path newPath = mapViewElement.changePath(sourceNode, destinationNode);
+
+            displayTextDirections(newPath);
             clearColors();
-            changeFloorButtons(map.getPath(sourceNode, destinationNode));
+            changeFloorButtons(newPath);
 
             map.setFloor(sourceNode.getFloor());
             reloadMap();
@@ -1070,14 +1083,22 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     void onNodeModify() {
-
+        if (map.is2D()) {
+            mapViewElement.getModifyNode().setPosition(new Point2D(Double.parseDouble(modNode_x.getText())
+                    , Double.parseDouble(modNode_y.getText())));
+        } else {
+            mapViewElement.getModifyNode().setWireframePosition(new Point2D(Double.parseDouble(modNode_x.getText())
+                    , Double.parseDouble(modNode_y.getText())));
+        }
+        mapViewElement.getModifyNode().setShortName(modNode_shortName.getText());
+        mapViewElement.getModifyNode().setLongName(modNode_longName.getText());
     }
 
     @FXML
     public void onMapEditor() {
-
         onCancelDirectionsEvent();
         setCancelMenuEvent();
+        mapViewElement.toggleEditorMode();
     }
 
 
@@ -1132,8 +1153,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         occupationCol.setCellValueFactory(new PropertyValueFactory<User, String>("occupation"));
         chooseCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
 
-        Callback<TableColumn<User, String>, TableCell<User, String>> cellFactory
-                = //
+        Callback<TableColumn<User, String>, TableCell<User, String>> cellFactory =
                 new Callback<TableColumn<User, String>, TableCell<User, String>>() {
                     @Override
                     public TableCell call(final TableColumn<User, String> param) {
@@ -1649,12 +1669,49 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     @Override
-    public void onSrcNodeSelected(Node node) {
-
+    public void onNewPathSelected(Path path) {
+        displayTextDirections(path);
+        clearColors();
+        changeFloorButtons(path);
+        floorNode.animateList(true);
+        sourceLocation.setText(mapViewElement.getSelectedNodeStart().getLongName());
+        searchLocation.setText(mapViewElement.getSelectedNodeEnd().getLongName());
+        destinationLocation.setText(mapViewElement.getSelectedNodeEnd().getLongName());
     }
 
     @Override
-    public void onDstNodeSelected(Node node) {
+    public void onNewDestinationNode(Node node) {
+        searchLocation.setText(node.getLongName());
+        destinationLocation.setText(node.getLongName());
+    }
 
+    @Override
+    public void onUpdateModifyNodePane(boolean isHidden, boolean is2D, Node modifiedNode) {
+        if(isHidden){
+            gpaneNodeInfo.setVisible(false);
+            return;
+        }
+        gpaneNodeInfo.setVisible(true);
+        if (map.is2D()) {
+            modNode_x.setText(String.valueOf(modifiedNode.getPosition().getX()));
+            modNode_y.setText(String.valueOf(modifiedNode.getPosition().getY()));
+        } else {
+            modNode_x.setText(String.valueOf(modifiedNode.getWireframePosition().getX()));
+            modNode_y.setText(String.valueOf(modifiedNode.getWireframePosition().getY()));
+        }
+
+        modNode_shortName.setText(modifiedNode.getShortName());
+        modNode_longName.setText(modifiedNode.getLongName());
+    }
+
+    @Override
+    public void onModifyNodePopup(Point2D sceneLocation, Point2D nodeLocation) {
+        addLocationPopup.setTranslateX(sceneLocation.getX() - 90);
+        addLocationPopup.setTranslateY(sceneLocation.getY() - 400);
+        newNode_x.setEditable(false);
+        newNode_y.setEditable(false);
+        newNode_x.setText("" + (int) nodeLocation.getX());
+        newNode_y.setText("" + (int) nodeLocation.getY());
+        addLocationPopup.setVisible(true);
     }
 }

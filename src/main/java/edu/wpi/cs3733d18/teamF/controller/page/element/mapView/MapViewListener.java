@@ -1,8 +1,12 @@
 package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
 import edu.wpi.cs3733d18.teamF.graph.Node;
+import edu.wpi.cs3733d18.teamF.graph.Path;
+import javafx.geometry.Point2D;
 
 public interface MapViewListener {
-    void onSrcNodeSelected(Node node);
-    void onDstNodeSelected(Node node);
+    void onNewPathSelected(Path path);
+    void onNewDestinationNode(Node node);
+    void onUpdateModifyNodePane(boolean isHidden, boolean is2D, Node modifiedNode);
+    void onModifyNodePopup(Point2D sceneLocation, Point2D nodeLocation);
 }

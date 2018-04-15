@@ -2,6 +2,7 @@ package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
 import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
+import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
 import edu.wpi.cs3733d18.teamF.gfx.impl.UglyMapDrawer;
@@ -23,6 +24,7 @@ import java.util.Observer;
 public class MapViewElement extends PageElement {
     // used to see if the floor has changed to update the map drawn
     MapListener mapListener;
+    ViewMode viewMode = ViewMode.VIEW;
     @FXML
     private GesturePane gesturePane;
     @FXML
@@ -37,16 +39,13 @@ public class MapViewElement extends PageElement {
     private boolean ctrlHeld = false;
     private boolean draggingNode;
     private Node heldNode;
-    private boolean nodesShown = false;
     private PaneMapController mapDrawController;
     private String mapFloorDrawn;
     private boolean isMap2D;
-
     private Map map;
-
     private MapViewListener listener;
 
-    public void initialize(MapViewListener listener, Map map, AnchorPane sourcePane) {
+    public void initialize(MapViewListener listener, Map map, PaneSwitcher switcher, AnchorPane sourcePane) {
         // initialize fundamentals
         this.listener = listener;
         this.map = map;
@@ -55,19 +54,36 @@ public class MapViewElement extends PageElement {
         isMap2D = map.is2D();
         initElement(sourcePane, root);
 
+        // draw the nodes
         mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
-        mapDrawController.showEdges();
-        mapDrawController.showNodes();
 
+        // set the correct floor
         refreshFloorDrawn();
 
         // set default zoom
         gesturePane.zoomTo(2, new Point2D(600, 600));
 
+        // disable gesturePane when ctrl is held
+        switcher.getScene().setOnKeyPressed(ke -> {
+            if (ke.isControlDown()) {
+                gesturePane.setGestureEnabled(false);
+                ctrlHeld = true;
+            }
+        });
+        switcher.getScene().setOnKeyReleased(ke -> {
+            if (!ke.isControlDown()) {
+                gesturePane.setGestureEnabled(true);
+                selectedNodeEnd = null;
+                ctrlHeld = false;
+            }
+        });
+
         mapContainer.setOnMouseReleased(e -> {
             if (!PermissionSingleton.getInstance().isAdmin()) {
                 return;
             }
+
+            draggingNode = false;
 
             double map_x = 5000;
             double map_y = 3400;
@@ -88,6 +104,10 @@ public class MapViewElement extends PageElement {
                 Node node = nodes.iterator().next();
                 mapDrawController.selectNode(node);
 
+                if (node == selectedNodeEnd) {
+                    selectedNodeEnd = null;
+                    return;
+                }
 
                 if (e.getButton() == MouseButton.PRIMARY) {
                     map.addEdge(node, selectedNodeEnd);
@@ -96,8 +116,10 @@ public class MapViewElement extends PageElement {
                 if (e.getButton() == MouseButton.SECONDARY) {
                     map.removeEdge(node, selectedNodeEnd);
                 }
+                selectedNodeEnd = null;
+            } else {
+                selectedNodeEnd = null;
             }
-
         });
 
         mapContainer.setOnMouseClicked(e -> {
@@ -113,7 +135,7 @@ public class MapViewElement extends PageElement {
 
             // if editing maps
             HashSet<Node> nodes = new HashSet<>();
-            if (PermissionSingleton.getInstance().isAdmin()) {
+            if (PermissionSingleton.getInstance().isAdmin() && viewMode == ViewMode.EDIT) {
                 if (map.is2D()) {
                     nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
                             , node.getPosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor()));
@@ -122,32 +144,35 @@ public class MapViewElement extends PageElement {
                             , node.getWireframePosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor()));
                 }
             }
-            // not editing mapView
+            // not editing map
             else {
                 nodes.add(map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor())));
             }
             if (nodes.size() > 0 && e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 1) {
-                if (!nodesShown) {
-
+                if (viewMode == ViewMode.VIEW) {
                     Node src = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
                     if ((map.is2D() ? mapPos.distance(src.getPosition()) : mapPos.distance(src.getWireframePosition())) < 200) {
+                        // TODO nullptrexception
                         Path path = map.getPath(map.findNodeClosestTo(selectedNodeStart.getPosition().getX(), selectedNodeStart.getPosition().getY(), true), src);
                         mapDrawController.showPath(path);
+                        listener.onNewPathSelected(path);
                     } else {
                         return;
                     }
                 }
 
                 Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node1 -> node1.getFloor().equals(map.getFloor()));
-                if (nodesShown) {
+                if (viewMode == ViewMode.EDIT) {
                     mapDrawController.selectNode(node);
                 }
                 selectedNodeEnd = node;
 
+                listener.onNewDestinationNode(selectedNodeEnd);
 
-                if (map.is2D()) {
-
+                if (PermissionSingleton.getInstance().isAdmin() && viewMode == ViewMode.EDIT) {
+                    listener.onUpdateModifyNodePane(false, map.is2D(), node);
                 } else {
+                    listener.onUpdateModifyNodePane(true, false, null);
 
                 }
 
@@ -158,8 +183,13 @@ public class MapViewElement extends PageElement {
 
             }
 
+            System.out.println("nodes.toArray() = " + nodes.toArray());
+            System.out.println(e.getButton());
+            System.out.println(e.getClickCount());
+            System.out.println("---------------");
+
             if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 1) {
-                if (nodes.size() > 0 && !nodesShown) {
+                if (nodes.size() > 0 && viewMode == ViewMode.VIEW) {
                     selectedNodeStart = nodes.iterator().next();
                     Path path = map.getPath(selectedNodeStart, selectedNodeEnd);
                     if (path.getNodes().size() < 2) {
@@ -168,6 +198,7 @@ public class MapViewElement extends PageElement {
                         }
                     }
                     mapDrawController.showPath(path);
+                    listener.onNewPathSelected(path);
                 }
             }
 
@@ -177,22 +208,19 @@ public class MapViewElement extends PageElement {
                     return;
                 }
 
-                // td fixed bug - deleting end node on double right click
-                // added && nodesShown
-                if (nodes.size() > 0 && nodesShown) {
-                    // TODO get closest node
-                    //selectedNodeStart = mapView.findNodeClosestTo(1850, 1035, true, node -> node.getFloor().equals(mapView.getFloor()));
-                    //sourceLocation.setText(selectedNodeStart.getLongName());
+                if (nodes.size() > 0 && viewMode == ViewMode.EDIT) {
                     mapDrawController.unshowPath();
-                    map.removeNode(selectedNodeEnd);
+                    map.removeNode(map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor())));
                     selectedNodeEnd = null;
                 }
             }
             // create a new node
             if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
-                if (!map.is2D() || !PermissionSingleton.getInstance().isAdmin()) {
+                if (!map.is2D() || !PermissionSingleton.getInstance().isAdmin() || viewMode == ViewMode.VIEW) {
                     return;
                 }
+                listener.onModifyNodePopup(new Point2D( e.getSceneX(),e.getSceneY())
+                        , new Point2D(e.getX() * map_x / mapContainer.getMaxWidth(), (e.getY() * map_y / mapContainer.getMaxHeight())));
                 selectedNodeEnd = null;
             }
         });
@@ -232,7 +260,7 @@ public class MapViewElement extends PageElement {
             Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
                     , e.getY() * map_y / mapContainer.getMaxHeight());
 
-            if (PermissionSingleton.getInstance().isAdmin() && nodesShown) {
+            if (PermissionSingleton.getInstance().isAdmin() && viewMode == ViewMode.EDIT) {
                 if (draggingNode) {
                     heldNode.setPosition(mapPos);
                 }
@@ -240,6 +268,68 @@ public class MapViewElement extends PageElement {
         });
     }
 
+    public Path changePathDestination(Node destinationNode) {
+        Path path = map.getPath(selectedNodeStart, destinationNode);
+        mapDrawController.showPath(path);
+        return path;
+    }
+
+    public PaneMapController getMapDrawController() {
+        return mapDrawController;
+    }
+
+    public Node getSelectedNodeStart() {
+        return selectedNodeStart;
+    }
+
+    public MapViewElement setSelectedNodeStart(Node selectedNodeStart) {
+        this.selectedNodeStart = selectedNodeStart;
+        return this;
+    }
+
+    public Path swapSrcAndDst() {
+        Node tempNode = selectedNodeStart;
+        selectedNodeStart = selectedNodeEnd;
+        selectedNodeEnd = tempNode;
+        return changePath(selectedNodeStart, selectedNodeEnd);
+    }
+
+    public Node getModifyNode() {
+        return modifyNode;
+    }
+
+    public Node getSelectedNodeEnd() {
+
+        return selectedNodeEnd;
+    }
+
+    public MapViewElement setSelectedNodeEnd(Node selectedNodeEnd) {
+        this.selectedNodeEnd = selectedNodeEnd;
+        return this;
+    }
+
+    public void toggleEditorMode() {
+        if (viewMode == ViewMode.VIEW) {
+            viewMode = ViewMode.EDIT;
+            mapDrawController.showNodes();
+            mapDrawController.showEdges();
+            mapDrawController.unshowPath();
+        } else {
+            viewMode = ViewMode.VIEW;
+            mapDrawController.unshowNodes();
+            mapDrawController.unshowEdges();
+            mapDrawController.unshowPath();
+        }
+    }
+
+    public Path changePath(Node src, Node dst) {
+        selectedNodeStart = src;
+        selectedNodeEnd = dst;
+
+        Path newPath = map.getPath(src, dst);
+        mapDrawController.showPath(newPath);
+        return newPath;
+    }
 
     private void refreshFloorDrawn() {
         mapFloorDrawn = map.getFloor();
@@ -263,6 +353,11 @@ public class MapViewElement extends PageElement {
         } else {
             mapImage.setImage(ImageCacheSingleton.maps3D[index]);
         }
+    }
+
+
+    private enum ViewMode {
+        EDIT, VIEW
     }
 
     /**
