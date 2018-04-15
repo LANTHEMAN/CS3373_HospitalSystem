@@ -1705,7 +1705,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             modNode_x.setText(String.valueOf(modifiedNode.getWireframePosition().getX()));
             modNode_y.setText(String.valueOf(modifiedNode.getWireframePosition().getY()));
         }
-
         modNode_shortName.setText(modifiedNode.getShortName());
         modNode_longName.setText(modifiedNode.getLongName());
     }

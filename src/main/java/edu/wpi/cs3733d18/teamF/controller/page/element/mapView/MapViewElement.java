@@ -8,10 +8,12 @@ import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
 import edu.wpi.cs3733d18.teamF.gfx.impl.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import net.kurobako.gesturefx.GesturePane;
@@ -25,6 +27,7 @@ public class MapViewElement extends PageElement {
     // used to see if the floor has changed to update the map drawn
     MapListener mapListener;
     ViewMode viewMode = ViewMode.VIEW;
+    EditMode editMode = EditMode.PAN;
     Point2D mousePressedPosition = new Point2D(0, 0);
     @FXML
     private GesturePane gesturePane;
@@ -82,21 +85,18 @@ public class MapViewElement extends PageElement {
         });
 
         mapContainer.setOnMouseReleased(e -> {
-            if (!PermissionSingleton.getInstance().isAdmin()) {
+            if (!PermissionSingleton.getInstance().isAdmin() || viewMode == ViewMode.VIEW) {
                 return;
             }
 
             draggingNode = false;
 
-            double map_x = 5000;
-            double map_y = 3400;
-            double map3D_y = 2772;
-            if (!map.is2D()) {
-                map_y = map3D_y;
+            // don't select new node or path when panning
+            if(mousePressedPosition.distance(new Point2D(e.getSceneX(), e.getSceneY())) > 25){
+                return;
             }
 
-            Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
-                    , e.getY() * map_y / mapContainer.getMaxHeight());
+            Point2D mapPos = getMapPos(e);
 
             HashSet<Node> nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
                     , node.getPosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor())
@@ -122,20 +122,13 @@ public class MapViewElement extends PageElement {
         });
 
         mapContainer.setOnMouseClicked(e -> {
-            double map_x = 5000;
-            double map_y = 3400;
-            double map3D_y = 2772;
-            if (!map.is2D()) {
-                map_y = map3D_y;
-            }
-
             // don't select new node or path when panning
             if(mousePressedPosition.distance(new Point2D(e.getSceneX(), e.getSceneY())) > 25){
                 return;
             }
 
-            Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
-                    , e.getY() * map_y / mapContainer.getMaxHeight());
+            // get the mouse position
+            Point2D mapPos = getMapPos(e);
 
             // if editing maps
             HashSet<Node> nodes = new HashSet<>();
@@ -152,6 +145,8 @@ public class MapViewElement extends PageElement {
             else {
                 nodes.add(map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor())));
             }
+
+
             if (nodes.size() > 0 && e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 1) {
                 if (viewMode == ViewMode.VIEW) {
                     Node src = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
@@ -170,18 +165,16 @@ public class MapViewElement extends PageElement {
                     mapDrawController.selectNode(node);
                 }
                 selectedNodeEnd = node;
+                modifyNode = node;
 
                 listener.onNewDestinationNode(selectedNodeEnd);
 
                 if (PermissionSingleton.getInstance().isAdmin() && viewMode == ViewMode.EDIT) {
-                    listener.onUpdateModifyNodePane(false, map.is2D(), node);
+                    listener.onUpdateModifyNodePane(false, map.is2D(), modifyNode);
                 } else {
                     listener.onUpdateModifyNodePane(true, false, null);
 
                 }
-
-                modifyNode = node;
-
             }
 
             if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 1) {
@@ -221,6 +214,13 @@ public class MapViewElement extends PageElement {
             if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
                 if (!map.is2D() || !PermissionSingleton.getInstance().isAdmin() || viewMode == ViewMode.VIEW) {
                     return;
+                }
+
+                double map_x = 5000;
+                double map_y = 3400;
+                double map3D_y = 2772;
+                if (!map.is2D()) {
+                    map_y = map3D_y;
                 }
                 listener.onNewNodePopup(new Point2D(e.getSceneX(), e.getSceneY())
                         , new Point2D(e.getX() * map_x / mapContainer.getMaxWidth(), (e.getY() * map_y / mapContainer.getMaxHeight())));
@@ -370,6 +370,41 @@ public class MapViewElement extends PageElement {
 
     public enum ViewMode {
         EDIT, VIEW
+    }
+    public enum EditMode {
+        ADDNODE, REMNODE, ADDEDGE, REMEDGE, MOVENODE, EDITNODE, PAN
+    }
+
+    public void setEditMode(EditMode editMode){
+        this.editMode = editMode;
+        switch (editMode) {
+            case ADDNODE:
+                break;
+            case REMNODE:
+                break;
+            case ADDEDGE:
+                break;
+            case REMEDGE:
+                break;
+            case MOVENODE:
+                break;
+            case EDITNODE:
+                break;
+            case PAN:
+                break;
+        }
+
+    }
+
+    private Point2D getMapPos(MouseEvent e){
+        double map_x = 5000;
+        double map_y = 3400;
+        double map3D_y = 2772;
+        if (!map.is2D()) {
+            map_y = map3D_y;
+        }
+        return new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
+                , e.getY() * map_y / mapContainer.getMaxHeight());
     }
 
     /**
