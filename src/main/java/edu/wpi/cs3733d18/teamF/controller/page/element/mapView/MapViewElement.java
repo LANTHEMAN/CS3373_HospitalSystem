@@ -25,7 +25,8 @@ public class MapViewElement extends PageElement {
     // used to see if the floor has changed to update the map drawn
     MapListener mapListener;
     ViewMode viewMode = ViewMode.VIEW;
-    EditMode editMode = EditMode.PAN;
+    //EditMode editMode = EditMode.PAN;
+    EditMode editMode = EditMode.EDITNODE;
     Point2D mousePressedPosition = new Point2D(0, 0);
     @FXML
     private GesturePane gesturePane;
