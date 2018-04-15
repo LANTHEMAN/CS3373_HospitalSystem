@@ -25,6 +25,7 @@ public class MapViewElement extends PageElement {
     // used to see if the floor has changed to update the map drawn
     MapListener mapListener;
     ViewMode viewMode = ViewMode.VIEW;
+    Point2D mousePressedPosition = new Point2D(0, 0);
     @FXML
     private GesturePane gesturePane;
     @FXML
@@ -116,12 +117,21 @@ public class MapViewElement extends PageElement {
             }
         });
 
+        mapContainer.setOnMousePressed(e -> {
+            mousePressedPosition = new Point2D(e.getSceneX(), e.getSceneY());
+        });
+
         mapContainer.setOnMouseClicked(e -> {
             double map_x = 5000;
             double map_y = 3400;
             double map3D_y = 2772;
             if (!map.is2D()) {
                 map_y = map3D_y;
+            }
+
+            // don't select new node or path when panning
+            if(mousePressedPosition.distance(new Point2D(e.getSceneX(), e.getSceneY())) > 25){
+                return;
             }
 
             Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
