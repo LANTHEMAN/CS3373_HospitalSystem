@@ -8,7 +8,6 @@ import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
 import edu.wpi.cs3733d18.teamF.gfx.impl.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
@@ -18,7 +17,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import net.kurobako.gesturefx.GesturePane;
 
-import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -60,10 +58,8 @@ public class MapViewElement extends PageElement {
 
         // draw the nodes
         mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
-
         // set the correct floor
         refreshFloorDrawn();
-
         // set default zoom
         gesturePane.zoomTo(2, new Point2D(600, 600));
 
@@ -84,25 +80,23 @@ public class MapViewElement extends PageElement {
             }
         });
 
+
         mapContainer.setOnMouseReleased(e -> {
+            draggingNode = false;
             if (!PermissionSingleton.getInstance().isAdmin() || viewMode == ViewMode.VIEW) {
                 return;
             }
 
-            draggingNode = false;
-
             // don't select new node or path when panning
-            if(mousePressedPosition.distance(new Point2D(e.getSceneX(), e.getSceneY())) > 25){
+            if (mousePressedPosition.distance(new Point2D(e.getSceneX(), e.getSceneY())) > 25) {
                 return;
             }
 
+            // mouse position on map
             Point2D mapPos = getMapPos(e);
+            boolean nodeIsSelected = isNodeSelected(mapPos);
 
-            HashSet<Node> nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
-                    , node.getPosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor())
-            );
-
-            if (nodes.size() > 0) {
+            if (nodeIsSelected) {
                 Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(),
                         node1 -> node1.getFloor().equals(map.getFloor()));
                 mapDrawController.selectNode(node);
@@ -123,68 +117,68 @@ public class MapViewElement extends PageElement {
 
         mapContainer.setOnMouseClicked(e -> {
             // don't select new node or path when panning
-            if(mousePressedPosition.distance(new Point2D(e.getSceneX(), e.getSceneY())) > 25){
+            if (mousePressedPosition.distance(new Point2D(e.getSceneX(), e.getSceneY())) > 25) {
                 return;
             }
 
-            // get the mouse position
+            // mouse position on map
             Point2D mapPos = getMapPos(e);
+            boolean nodeIsSelected = isNodeSelected(mapPos);
 
-            // if editing maps
-            HashSet<Node> nodes = new HashSet<>();
-            if (PermissionSingleton.getInstance().isAdmin() && viewMode == ViewMode.EDIT) {
-                if (map.is2D()) {
-                    nodes = map.getNodes(node -> new Point2D(node.getPosition().getX()
-                            , node.getPosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor()));
-                } else {
-                    nodes = map.getNodes(node -> new Point2D(node.getWireframePosition().getX()
-                            , node.getWireframePosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor()));
-                }
-            }
-            // not editing map
-            else {
-                nodes.add(map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor())));
-            }
+            // on single left click
+            if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 1) {
+                switch (viewMode) {
+                    case EDIT: {
+                        if(!nodeIsSelected){
+                            return;
+                        }
+                        // get the selected node
+                        Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node1 -> node1.getFloor().equals(map.getFloor()));
+                        if (viewMode == ViewMode.EDIT) {
+                            mapDrawController.selectNode(node);
+                        }
+                        selectedNodeEnd = node;
+                        modifyNode = node;
 
-
-            if (nodes.size() > 0 && e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 1) {
-                if (viewMode == ViewMode.VIEW) {
-                    Node src = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
-                    if ((map.is2D() ? mapPos.distance(src.getPosition()) : mapPos.distance(src.getWireframePosition())) < 120) {
-                        selectedNodeEnd = src;
-                        Path path = map.getPath(map.findNodeClosestTo(selectedNodeStart.getPosition().getX(), selectedNodeStart.getPosition().getY(), true), src);
-                        mapDrawController.showPath(path);
-                        listener.onNewPathSelected(path);
-                    } else {
-                        return;
+                        switch (editMode) {
+                            case ADDNODE:
+                            case REMNODE:
+                            case ADDEDGE:
+                            case REMEDGE:
+                            case MOVENODE:
+                            case PAN:
+                                break;
+                            case EDITNODE:
+                                listener.onUpdateModifyNodePane(false, map.is2D(), modifyNode);
+                                break;
+                        }
                     }
-                }
-
-                Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node1 -> node1.getFloor().equals(map.getFloor()));
-                if (viewMode == ViewMode.EDIT) {
-                    mapDrawController.selectNode(node);
-                }
-                selectedNodeEnd = node;
-                modifyNode = node;
-
-                listener.onNewDestinationNode(selectedNodeEnd);
-
-                if (PermissionSingleton.getInstance().isAdmin() && viewMode == ViewMode.EDIT) {
-                    listener.onUpdateModifyNodePane(false, map.is2D(), modifyNode);
-                } else {
-                    listener.onUpdateModifyNodePane(true, false, null);
-
+                    break;
+                    case VIEW: {
+                        // select a new destination if a node is close enough to the mouse
+                        Node dst = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
+                        if ((map.is2D() ? mapPos.distance(dst.getPosition()) : mapPos.distance(dst.getWireframePosition())) < 120 && selectedNodeStart != null) {
+                            selectedNodeEnd = dst;
+                            Path path = map.getPath(map.findNodeClosestTo(selectedNodeStart.getPosition().getX(), selectedNodeStart.getPosition().getY(), true), dst);
+                            mapDrawController.showPath(path);
+                            listener.onNewPathSelected(path);
+                            listener.onNewDestinationNode(selectedNodeEnd);
+                        } else {
+                            return;
+                        }
+                    }
+                    break;
                 }
             }
 
             if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 1) {
-                if (nodes.size() > 0 && viewMode == ViewMode.VIEW) {
+                if (nodeIsSelected && viewMode == ViewMode.VIEW) {
                     Node src = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
                     if ((map.is2D() ? mapPos.distance(src.getPosition()) : mapPos.distance(src.getWireframePosition())) > 120) {
                         return;
                     }
 
-                    selectedNodeStart = nodes.iterator().next();
+                    selectedNodeStart = src;
                     Path path = map.getPath(selectedNodeStart, selectedNodeEnd);
                     if (path.getNodes().size() < 2) {
                         if (map.getNeighbors(selectedNodeStart).size() > 0) {
@@ -204,7 +198,7 @@ public class MapViewElement extends PageElement {
                     return;
                 }
 
-                if (nodes.size() > 0 && viewMode == ViewMode.EDIT) {
+                if (nodeIsSelected && viewMode == ViewMode.EDIT) {
                     mapDrawController.unshowPath();
                     map.removeNode(map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor())));
                     selectedNodeEnd = null;
@@ -331,6 +325,8 @@ public class MapViewElement extends PageElement {
             mapDrawController.unshowEdges();
             mapDrawController.unshowPath();
             mapDrawController.unselectNode();
+            // hide the modify node pane
+            listener.onUpdateModifyNodePane(true, false, null);
         }
     }
 
@@ -368,15 +364,12 @@ public class MapViewElement extends PageElement {
         }
     }
 
-    public enum ViewMode {
-        EDIT, VIEW
-    }
-    public enum EditMode {
-        ADDNODE, REMNODE, ADDEDGE, REMEDGE, MOVENODE, EDITNODE, PAN
-    }
-
-    public void setEditMode(EditMode editMode){
+    public void setEditMode(EditMode editMode) {
         this.editMode = editMode;
+
+        // hide the modify node pane
+        listener.onUpdateModifyNodePane(true, false, null);
+
         switch (editMode) {
             case ADDNODE:
                 break;
@@ -389,6 +382,7 @@ public class MapViewElement extends PageElement {
             case MOVENODE:
                 break;
             case EDITNODE:
+                listener.onUpdateModifyNodePane(false, map.is2D(), modifyNode);
                 break;
             case PAN:
                 break;
@@ -396,7 +390,7 @@ public class MapViewElement extends PageElement {
 
     }
 
-    private Point2D getMapPos(MouseEvent e){
+    private Point2D getMapPos(MouseEvent e) {
         double map_x = 5000;
         double map_y = 3400;
         double map3D_y = 2772;
@@ -405,6 +399,24 @@ public class MapViewElement extends PageElement {
         }
         return new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
                 , e.getY() * map_y / mapContainer.getMaxHeight());
+    }
+
+    private boolean isNodeSelected(Point2D mapPos) {
+        if (map.is2D()) {
+            return map.getNodes(node -> new Point2D(node.getPosition().getX()
+                    , node.getPosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor())).size() > 0;
+        } else {
+            return map.getNodes(node -> new Point2D(node.getWireframePosition().getX()
+                    , node.getWireframePosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor())).size() > 0;
+        }
+    }
+
+    public enum ViewMode {
+        EDIT, VIEW
+    }
+
+    public enum EditMode {
+        ADDNODE, REMNODE, ADDEDGE, REMEDGE, MOVENODE, EDITNODE, PAN
     }
 
     /**
