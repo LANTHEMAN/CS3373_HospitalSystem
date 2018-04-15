@@ -67,6 +67,10 @@ public class PaneMapController extends PaneController implements Observer {
         refresh();
     }
 
+    public void unselectNode() {
+        mapDrawer.unselectNode();
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         refresh();

@@ -300,6 +300,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         Pair<MapViewElement, Pane> mapElementInfo = switcher.loadElement("mapView.fxml");
         mapViewElement = mapElementInfo.getKey();
         mapViewElement.initialize(this, map, switcher, mapElementPane);
+        // set default start location
+        mapViewElement.setSelectedNodeStart(map.findNodeClosestTo(1950,840));
+
         // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);
 
@@ -398,6 +401,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             if (loginDrawer.isShown()) {
                 // login in the user and close the drawer
                 if (PermissionSingleton.getInstance().login(loginUsername.getText(), loginPassword.getText())) {
+                    mapViewElement.getMapDrawController().unshowPath();
                     loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
                     if (PermissionSingleton.getInstance().getUserPrivilege().equals("Admin")) {
                         setAdminMenu();
@@ -568,8 +572,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     private void onLogOutBtn() {
+        mapViewElement.setViewMode(MapViewElement.ViewMode.VIEW);
         PermissionSingleton.getInstance().logout();
         loginDrawer.close();
+        gpaneNodeInfo.setVisible(false);
         onCancelDirectionsEvent();
         setCancelMenuEvent();
         serviceRequestList.animateList(false);
