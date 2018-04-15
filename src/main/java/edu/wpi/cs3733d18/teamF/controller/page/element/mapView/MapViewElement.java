@@ -222,7 +222,7 @@ public class MapViewElement extends PageElement {
                 if (!map.is2D() || !PermissionSingleton.getInstance().isAdmin() || viewMode == ViewMode.VIEW) {
                     return;
                 }
-                listener.onModifyNodePopup(new Point2D(e.getSceneX(), e.getSceneY())
+                listener.onNewNodePopup(new Point2D(e.getSceneX(), e.getSceneY())
                         , new Point2D(e.getX() * map_x / mapContainer.getMaxWidth(), (e.getY() * map_y / mapContainer.getMaxHeight())));
                 selectedNodeEnd = null;
             }

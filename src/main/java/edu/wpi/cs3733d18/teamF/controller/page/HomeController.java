@@ -1711,7 +1711,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     @Override
-    public void onModifyNodePopup(Point2D sceneLocation, Point2D nodeLocation) {
+    public void onNewNodePopup(Point2D sceneLocation, Point2D nodeLocation) {
         addLocationPopup.setTranslateX(sceneLocation.getX() - 90);
         addLocationPopup.setTranslateY(sceneLocation.getY() - 400);
         newNode_x.setEditable(false);
