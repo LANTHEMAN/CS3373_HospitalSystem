@@ -20,6 +20,16 @@ public class User {
         this.occupation = occupation;
     }
 
+    public User(String uname, String psword, String firstName, String lastName, String privilege, String occupation, boolean fromDatabase){
+        this.uname = uname;
+        // do it for the encryption
+        if(fromDatabase){ setAlreadyEncryptedPassword(psword);}
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.privilege = privilege;
+        this.occupation = occupation;
+    }
+
     public String getUname() {
         return uname;
     }
