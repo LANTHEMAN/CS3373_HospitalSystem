@@ -317,6 +317,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         // initialize fundamentals
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
+        MainTitle.setText("Brigham and Women's Hospital: Level 1");
 
         // initialize element
         // init mapView
