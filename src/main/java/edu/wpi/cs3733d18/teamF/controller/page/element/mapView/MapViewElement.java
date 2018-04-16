@@ -29,7 +29,7 @@ public class MapViewElement extends PageElement {
     private ViewMode viewMode = ViewMode.VIEW;
     // TODO turn back
     //EditMode editMode = EditMode.PAN;
-    private EditMode editMode = EditMode.EDITNODE;
+    private EditMode editMode = EditMode.MOVENODE;
     private Point2D mousePressedPosition = new Point2D(0, 0);
     @FXML
     private GesturePane gesturePane;
@@ -44,6 +44,7 @@ public class MapViewElement extends PageElement {
     private Node modifyNode = null;
     private boolean ctrlHeld = false;
     private boolean draggingNode;
+    private boolean nodeSelectedOnMousePressed = false;
     private Node heldNode;
     private PaneMapController mapDrawController;
     private String mapFloorDrawn;
@@ -52,11 +53,10 @@ public class MapViewElement extends PageElement {
     private MapViewListener listener;
 
     public void resetStartLocation() {
-        if(map.getNodes(node -> node.getNodeID().equals(startNodeID)).size() > 0){
+        if (map.getNodes(node -> node.getNodeID().equals(startNodeID)).size() > 0) {
             setSelectedNodeStart(map.getNodes(node -> node.getNodeID().equals(startNodeID)).iterator().next());
             map.setFloor(selectedNodeStart.getFloor());
-        }
-        else{
+        } else {
             setSelectedNodeStart(map.findNodeClosestTo(1950, 840, true, node -> node.getFloor().equals("01")));
         }
     }
@@ -129,8 +129,18 @@ public class MapViewElement extends PageElement {
         });
 
         mapContainer.setOnMousePressed(e -> {
-            mousePressedPosition = new Point2D(e.getSceneX(), e.getSceneY());
-        });
+                    mousePressedPosition = new Point2D(e.getSceneX(), e.getSceneY());
+                    Point2D mapPos = getMapPos(e);
+                    nodeSelectedOnMousePressed = isNodeSelected(mapPos);
+
+                    if(nodeSelectedOnMousePressed && editMode == EditMode.MOVENODE){
+                        gesturePane.setGestureEnabled(false);
+                    }
+                    else{
+                        gesturePane.setGestureEnabled(true);
+                    }
+                }
+        );
 
         mapContainer.setOnMouseClicked(e -> {
             // don't select new node or path when panning
@@ -248,7 +258,7 @@ public class MapViewElement extends PageElement {
 
         mapContainer.setOnMouseDragged(e -> {
             Point2D mapPos = getMapPos(e);
-            if (viewMode == ViewMode.EDIT && draggingNode && editMode == EditMode.MOVENODE) {
+            if (viewMode == ViewMode.EDIT && draggingNode && editMode == EditMode.MOVENODE && nodeSelectedOnMousePressed) {
                 heldNode.setPosition(mapPos);
             }
         });
