@@ -27,9 +27,7 @@ public class MapViewElement extends PageElement {
     // used to see if the floor has changed to update the map drawn
     private MapListener mapListener;
     private ViewMode viewMode = ViewMode.VIEW;
-    // TODO turn back
-    //EditMode editMode = EditMode.PAN;
-    private EditMode editMode = EditMode.MOVENODE;
+    EditMode editMode = EditMode.PAN;
     private Point2D mousePressedPosition = new Point2D(0, 0);
     @FXML
     private GesturePane gesturePane;
@@ -42,6 +40,9 @@ public class MapViewElement extends PageElement {
     private Node selectedNodeStart = null;
     private Node selectedNodeEnd = null;
     private Node modifyNode = null;
+
+    private Node selectEdgeNode = null;
+
     private boolean ctrlHeld = false;
     private boolean draggingNode;
     private boolean nodeSelectedOnMousePressed = false;
@@ -119,11 +120,15 @@ public class MapViewElement extends PageElement {
                 mapDrawController.selectNode(node);
 
                 if (e.getButton() == MouseButton.PRIMARY && ctrlHeld) {
-                    map.addEdge(node, selectedNodeEnd);
+                    if(!map.getNeighbors(node).contains(selectEdgeNode)){
+                        map.addEdge(node, selectedNodeEnd);
+                    }
                 }
 
                 if (e.getButton() == MouseButton.SECONDARY) {
-                    map.removeEdge(node, selectedNodeEnd);
+                    if(map.getNeighbors(node).contains(selectEdgeNode)){
+                        map.removeEdge(node, selectedNodeEnd);
+                    }
                 }
             }
         });
@@ -133,10 +138,9 @@ public class MapViewElement extends PageElement {
                     Point2D mapPos = getMapPos(e);
                     nodeSelectedOnMousePressed = isNodeSelected(mapPos);
 
-                    if(nodeSelectedOnMousePressed && editMode == EditMode.MOVENODE){
+                    if (nodeSelectedOnMousePressed && editMode == EditMode.MOVENODE) {
                         gesturePane.setGestureEnabled(false);
-                    }
-                    else{
+                    } else {
                         gesturePane.setGestureEnabled(true);
                     }
                 }
@@ -173,9 +177,26 @@ public class MapViewElement extends PageElement {
                                     selectedNodeEnd = null;
                                     break;
                                 case ADDEDGE:
-                                    break;
-                                case REMEDGE:
-                                    break;
+                                case REMEDGE: {
+                                    if(selectEdgeNode == null){
+                                        selectEdgeNode = node;
+                                    }
+                                    else if(selectEdgeNode == node){
+                                        selectEdgeNode = null;
+                                        mapDrawController.unselectNode();
+                                    }
+                                    else{
+                                        if(editMode == EditMode.ADDEDGE){
+                                            map.addEdge(selectEdgeNode, node);
+                                        }
+                                        else{
+                                            map.removeEdge(selectEdgeNode, node);
+                                        }
+                                        selectEdgeNode = null;
+                                        mapDrawController.unselectNode();
+                                    }
+                                }
+                                break;
                                 case MOVENODE:
                                     break;
                                 case PAN:
