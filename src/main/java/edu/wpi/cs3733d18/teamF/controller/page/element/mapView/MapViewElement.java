@@ -24,10 +24,10 @@ import java.util.Observer;
 public class MapViewElement extends PageElement {
     // TODO change this to default starting location
     String startNodeID = "FRETL00101";
+    EditMode editMode = EditMode.MOVENODE;
     // used to see if the floor has changed to update the map drawn
     private MapListener mapListener;
     private ViewMode viewMode = ViewMode.VIEW;
-    EditMode editMode = EditMode.PAN;
     private Point2D mousePressedPosition = new Point2D(0, 0);
     @FXML
     private GesturePane gesturePane;
@@ -120,13 +120,13 @@ public class MapViewElement extends PageElement {
                 mapDrawController.selectNode(node);
 
                 if (e.getButton() == MouseButton.PRIMARY && ctrlHeld) {
-                    if(!map.getNeighbors(node).contains(selectEdgeNode)){
+                    if (!map.getNeighbors(node).contains(selectEdgeNode)) {
                         map.addEdge(node, selectedNodeEnd);
                     }
                 }
 
                 if (e.getButton() == MouseButton.SECONDARY) {
-                    if(map.getNeighbors(node).contains(selectEdgeNode)){
+                    if (map.getNeighbors(node).contains(selectEdgeNode)) {
                         map.removeEdge(node, selectedNodeEnd);
                     }
                 }
@@ -178,18 +178,15 @@ public class MapViewElement extends PageElement {
                                     break;
                                 case ADDEDGE:
                                 case REMEDGE: {
-                                    if(selectEdgeNode == null){
+                                    if (selectEdgeNode == null) {
                                         selectEdgeNode = node;
-                                    }
-                                    else if(selectEdgeNode == node){
+                                    } else if (selectEdgeNode == node) {
                                         selectEdgeNode = null;
                                         mapDrawController.unselectNode();
-                                    }
-                                    else{
-                                        if(editMode == EditMode.ADDEDGE){
+                                    } else {
+                                        if (editMode == EditMode.ADDEDGE) {
                                             map.addEdge(selectEdgeNode, node);
-                                        }
-                                        else{
+                                        } else {
                                             map.removeEdge(selectEdgeNode, node);
                                         }
                                         selectEdgeNode = null;
@@ -267,8 +264,8 @@ public class MapViewElement extends PageElement {
 
             if (viewMode == ViewMode.EDIT && editMode == EditMode.MOVENODE) {
                 Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D());
-                double deltaX = mapPos.getX() - node.getPosition().getX();
-                double deltaY = mapPos.getY() - node.getPosition().getY();
+                double deltaX = mapPos.getX() - (map.is2D() ? node.getPosition().getX() : node.getWireframePosition().getX());
+                double deltaY = mapPos.getY() - (map.is2D() ? node.getPosition().getY(): node.getWireframePosition().getY());
                 draggingNode = false;
                 if (Math.sqrt((deltaX * deltaX) + (deltaY * deltaY)) < 20) {
                     draggingNode = true;
@@ -280,7 +277,12 @@ public class MapViewElement extends PageElement {
         mapContainer.setOnMouseDragged(e -> {
             Point2D mapPos = getMapPos(e);
             if (viewMode == ViewMode.EDIT && draggingNode && editMode == EditMode.MOVENODE && nodeSelectedOnMousePressed) {
-                heldNode.setPosition(mapPos);
+                if (map.is2D()) {
+                    heldNode.setPosition(mapPos);
+                } else {
+                    heldNode.setWireframePosition(mapPos);
+                }
+
             }
         });
     }
