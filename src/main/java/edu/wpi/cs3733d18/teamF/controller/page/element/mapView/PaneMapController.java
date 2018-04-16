@@ -69,6 +69,12 @@ public class PaneMapController extends PaneController implements Observer {
 
     public void unselectNode() {
         mapDrawer.unselectNode();
+        refresh();
+    }
+
+    void addDefaultStartNode(Node node){
+        mapDrawer.addDefaultStartNode(node);
+        refresh();
     }
 
     @Override

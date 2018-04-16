@@ -190,7 +190,7 @@ public class MapViewElement extends PageElement {
             }
 
             if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 1) {
-                if (nodeIsSelected && viewMode == ViewMode.VIEW) {
+                if (viewMode == ViewMode.VIEW) {
                     Node src = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
                     if ((map.is2D() ? mapPos.distance(src.getPosition()) : mapPos.distance(src.getWireframePosition())) > 120) {
                         return;
@@ -283,6 +283,7 @@ public class MapViewElement extends PageElement {
 
     public MapViewElement setSelectedNodeStart(Node selectedNodeStart) {
         this.selectedNodeStart = selectedNodeStart;
+        mapDrawController.addDefaultStartNode(selectedNodeStart);
         return this;
     }
 
