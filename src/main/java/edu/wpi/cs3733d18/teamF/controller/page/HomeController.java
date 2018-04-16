@@ -5,6 +5,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.controller.*;
+import edu.wpi.cs3733d18.teamF.controller.page.element.about.AboutElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.inbox.InboxElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewListener;
@@ -75,8 +76,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     Label religionRequiredRS, firstNameRequiredRS, lastNameRequiredRS, locationRequiredRS;
     MapViewElement mapViewElement;
+    AboutElement aboutElement;
     @FXML
     AnchorPane mapElementPane;
+    @FXML
+    AnchorPane aboutElementPane;
     /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
     //REMOVE WHEN YA DONT WANT THE HAPPY BDAY BUTTON
     /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
@@ -324,6 +328,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         Pair<MapViewElement, Pane> mapElementInfo = switcher.loadElement("mapView.fxml");
         mapViewElement = mapElementInfo.getKey();
         mapViewElement.initialize(this, map, switcher, mapElementPane);
+        // init about element
+        Pair<AboutElement, Pane> aboutElementInfo = switcher.loadElement("about.fxml");
+        aboutElement = aboutElementInfo.getKey();
+        aboutElement.initialize(aboutElementPane);
+
+        // TODO turn this line into a button
+        //aboutElement.hideElement();
 
 
         // init voice overlay
