@@ -76,7 +76,13 @@ public class UglyMapDrawer extends MapDrawable {
 
     @Override
     public void addDefaultStartNode(Node node) {
-        startNodeDefault = new StartNodeDrawer(node);
+        if(node == null){
+            startNodeDefault = null;
+        }
+        else{
+            startNodeDefault = new StartNodeDrawer(node);
+        }
+
     }
 
     @Override
@@ -115,8 +121,7 @@ public class UglyMapDrawer extends MapDrawable {
                 }
             }
             Node startNode = path.getNodes().get(0);
-            NodeDrawable startIconDrawer = new StartNodeDrawer();
-            startIconDrawer.update(startNode);
+            NodeDrawable startIconDrawer = new StartNodeDrawer(startNode);
             startIconDrawer.draw(pane);
 
             Node endNode = path.getNodes().get(path.getNodes().size() - 1);

@@ -17,10 +17,6 @@ public class StartNodeDrawer extends NodeDrawable {
         super(node);
     }
 
-    public StartNodeDrawer() {
-        super();
-    }
-
     @Override
     public void selectNode() {
         isSelected = true;

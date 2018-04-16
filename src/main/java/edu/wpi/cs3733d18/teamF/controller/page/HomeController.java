@@ -295,15 +295,12 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         // initialize fundamentals
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
-        map.setFloor("01");
 
         // initialize element
         // init mapView
         Pair<MapViewElement, Pane> mapElementInfo = switcher.loadElement("mapView.fxml");
         mapViewElement = mapElementInfo.getKey();
         mapViewElement.initialize(this, map, switcher, mapElementPane);
-        // set default start location
-        mapViewElement.setSelectedNodeStart(map.findNodeClosestTo(1950, 840));
 
         // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);

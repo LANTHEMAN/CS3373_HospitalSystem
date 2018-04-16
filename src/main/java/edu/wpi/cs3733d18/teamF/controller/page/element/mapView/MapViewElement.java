@@ -22,14 +22,14 @@ import java.util.Observer;
 
 
 public class MapViewElement extends PageElement {
+    // TODO change this to default starting location
+    String startNodeID = "FRETL00101";
     // used to see if the floor has changed to update the map drawn
     private MapListener mapListener;
     private ViewMode viewMode = ViewMode.VIEW;
-
-    private EditMode editMode = EditMode.REMNODE;
     // TODO turn back
     //EditMode editMode = EditMode.PAN;
-
+    private EditMode editMode = EditMode.EDITNODE;
     private Point2D mousePressedPosition = new Point2D(0, 0);
     @FXML
     private GesturePane gesturePane;
@@ -51,6 +51,17 @@ public class MapViewElement extends PageElement {
     private Map map;
     private MapViewListener listener;
 
+    public void resetStartLocation() {
+        if(map.getNodes(node -> node.getNodeID().equals(startNodeID)).size() > 0){
+            setSelectedNodeStart(map.getNodes(node -> node.getNodeID().equals(startNodeID)).iterator().next());
+            map.setFloor(selectedNodeStart.getFloor());
+        }
+        else{
+            setSelectedNodeStart(map.findNodeClosestTo(1950, 840, true, node -> node.getFloor().equals("01")));
+        }
+    }
+
+
     public void initialize(MapViewListener listener, Map map, PaneSwitcher switcher, AnchorPane sourcePane) {
         // initialize fundamentals
         this.listener = listener;
@@ -62,6 +73,8 @@ public class MapViewElement extends PageElement {
 
         // draw the nodes
         mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
+        // set default start location
+        resetStartLocation();
         // set the correct floor
         refreshFloorDrawn();
         // set default zoom
@@ -163,9 +176,8 @@ public class MapViewElement extends PageElement {
                                 default:
                                     break;
                             }
-                        }
-                        else {
-                            if(editMode == EditMode.ADDNODE){
+                        } else {
+                            if (editMode == EditMode.ADDNODE) {
                                 if (!map.is2D()) {
                                     return;
                                 }
@@ -220,18 +232,9 @@ public class MapViewElement extends PageElement {
         });
 
         mapContainer.setOnDragDetected(e -> {
-            double map_x = 5000;
-            double map_y = 3400;
-            double map3D_y = 2772;
-            if (!map.is2D()) {
-                map_y = map3D_y;
-            }
+            Point2D mapPos = getMapPos(e);
 
-            Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
-                    , e.getY() * map_y / mapContainer.getMaxHeight());
-
-
-            if (PermissionSingleton.getInstance().isAdmin()) {
+            if (viewMode == ViewMode.EDIT && editMode == EditMode.MOVENODE) {
                 Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D());
                 double deltaX = mapPos.getX() - node.getPosition().getX();
                 double deltaY = mapPos.getY() - node.getPosition().getY();
@@ -244,20 +247,9 @@ public class MapViewElement extends PageElement {
         });
 
         mapContainer.setOnMouseDragged(e -> {
-            double map_x = 5000;
-            double map_y = 3400;
-            double map3D_y = 2772;
-            if (!map.is2D()) {
-                map_y = map3D_y;
-            }
-
-            Point2D mapPos = new Point2D(e.getX() * map_x / mapContainer.getMaxWidth()
-                    , e.getY() * map_y / mapContainer.getMaxHeight());
-
-            if (PermissionSingleton.getInstance().isAdmin() && viewMode == ViewMode.EDIT) {
-                if (draggingNode) {
-                    heldNode.setPosition(mapPos);
-                }
+            Point2D mapPos = getMapPos(e);
+            if (viewMode == ViewMode.EDIT && draggingNode && editMode == EditMode.MOVENODE) {
+                heldNode.setPosition(mapPos);
             }
         });
     }
@@ -294,7 +286,6 @@ public class MapViewElement extends PageElement {
     }
 
     public Node getSelectedNodeEnd() {
-
         return selectedNodeEnd;
     }
 
@@ -318,11 +309,13 @@ public class MapViewElement extends PageElement {
             mapDrawController.showEdges();
             mapDrawController.unshowPath();
             mapDrawController.unselectNode();
+            mapDrawController.addDefaultStartNode(null);
         } else {
             mapDrawController.unshowNodes();
             mapDrawController.unshowEdges();
             mapDrawController.unshowPath();
             mapDrawController.unselectNode();
+            resetStartLocation();
             // hide unused popups
             listener.onUpdateModifyNodePane(true, false, null);
             listener.onHideNewNodePopup();
@@ -333,9 +326,9 @@ public class MapViewElement extends PageElement {
     public Path changePath(Node src, Node dst) {
         selectedNodeStart = src;
         selectedNodeEnd = dst;
-
         Path newPath = map.getPath(src, dst);
         mapDrawController.showPath(newPath);
+        mapDrawController.addDefaultStartNode(selectedNodeStart);
         return newPath;
     }
 
