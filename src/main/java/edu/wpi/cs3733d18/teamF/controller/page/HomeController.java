@@ -280,9 +280,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //                             //
     /////////////////////////////////
     @FXML
-    private Pane helpPane;
-    @FXML
-    private GridPane userInstructions, adminInstructions;
+    private AnchorPane helpPane;
     /////////////////////////////////
     //                             //
     //           Date/Time         //
@@ -976,13 +974,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     void onHelpPopup() {
-        if (PermissionSingleton.getInstance().isAdmin()) {
-            userInstructions.setVisible(false);
-            adminInstructions.setVisible(true);
-        } else {
-            adminInstructions.setVisible(false);
-            userInstructions.setVisible(true);
-        }
         helpPane.setVisible(true);
     }
 
