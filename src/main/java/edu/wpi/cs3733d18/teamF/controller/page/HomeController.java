@@ -1762,4 +1762,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         newNode_y.setText("" + (int) nodeLocation.getY());
         addLocationPopup.setVisible(true);
     }
+
+    @Override
+    public void onHideNewNodePopup() {
+        addLocationPopup.setVisible(false);
+    }
 }

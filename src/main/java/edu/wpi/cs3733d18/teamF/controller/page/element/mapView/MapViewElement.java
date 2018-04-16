@@ -23,11 +23,14 @@ import java.util.Observer;
 
 public class MapViewElement extends PageElement {
     // used to see if the floor has changed to update the map drawn
-    MapListener mapListener;
-    ViewMode viewMode = ViewMode.VIEW;
+    private MapListener mapListener;
+    private ViewMode viewMode = ViewMode.VIEW;
+
+    private EditMode editMode = EditMode.ADDNODE;
+    // TODO turn back
     //EditMode editMode = EditMode.PAN;
-    EditMode editMode = EditMode.EDITNODE;
-    Point2D mousePressedPosition = new Point2D(0, 0);
+
+    private Point2D mousePressedPosition = new Point2D(0, 0);
     @FXML
     private GesturePane gesturePane;
     @FXML
@@ -119,6 +122,7 @@ public class MapViewElement extends PageElement {
         mapContainer.setOnMouseClicked(e -> {
             // don't select new node or path when panning
             if (mousePressedPosition.distance(new Point2D(e.getSceneX(), e.getSceneY())) > 25) {
+                listener.onHideNewNodePopup();
                 return;
             }
 
@@ -130,29 +134,42 @@ public class MapViewElement extends PageElement {
             if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 1) {
                 switch (viewMode) {
                     case EDIT: {
-                        if(!nodeIsSelected){
-                            return;
-                        }
-                        // get the selected node
-                        Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node1 -> node1.getFloor().equals(map.getFloor()));
-                        if (viewMode == ViewMode.EDIT) {
-                            mapDrawController.selectNode(node);
-                        }
-                        selectedNodeEnd = node;
-                        modifyNode = node;
+                        if (nodeIsSelected) {
+                            // get the selected node
+                            Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node1 -> node1.getFloor().equals(map.getFloor()));
+                            if (viewMode == ViewMode.EDIT) {
+                                mapDrawController.selectNode(node);
+                            }
+                            selectedNodeEnd = node;
+                            modifyNode = node;
 
-                        switch (editMode) {
-                            case ADDNODE:
-                            case REMNODE:
-                            case ADDEDGE:
-                            case REMEDGE:
-                            case MOVENODE:
-                            case PAN:
-                                break;
-                            case EDITNODE:
-                                listener.onUpdateModifyNodePane(false, map.is2D(), modifyNode);
-                                break;
+                            switch (editMode) {
+                                case REMNODE:
+                                case ADDEDGE:
+                                case REMEDGE:
+                                case MOVENODE:
+                                case PAN:
+                                    break;
+                                case EDITNODE:
+                                    listener.onUpdateModifyNodePane(false, map.is2D(), modifyNode);
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
+                        else {
+                            if(editMode == EditMode.ADDNODE){
+                                if (!map.is2D()) {
+                                    return;
+                                }
+                                double map_x = 5000;
+                                double map_y = 3400;
+                                listener.onNewNodePopup(new Point2D(e.getSceneX(), e.getSceneY())
+                                        , new Point2D(e.getX() * map_x / mapContainer.getMaxWidth(), (e.getY() * map_y / mapContainer.getMaxHeight())));
+                                selectedNodeEnd = null;
+                            }
+                        }
+
                     }
                     break;
                     case VIEW: {
@@ -204,22 +221,6 @@ public class MapViewElement extends PageElement {
                     map.removeNode(map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor())));
                     selectedNodeEnd = null;
                 }
-            }
-            // create a new node
-            if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
-                if (!map.is2D() || !PermissionSingleton.getInstance().isAdmin() || viewMode == ViewMode.VIEW) {
-                    return;
-                }
-
-                double map_x = 5000;
-                double map_y = 3400;
-                double map3D_y = 2772;
-                if (!map.is2D()) {
-                    map_y = map3D_y;
-                }
-                listener.onNewNodePopup(new Point2D(e.getSceneX(), e.getSceneY())
-                        , new Point2D(e.getX() * map_x / mapContainer.getMaxWidth(), (e.getY() * map_y / mapContainer.getMaxHeight())));
-                selectedNodeEnd = null;
             }
         });
 
@@ -326,8 +327,9 @@ public class MapViewElement extends PageElement {
             mapDrawController.unshowEdges();
             mapDrawController.unshowPath();
             mapDrawController.unselectNode();
-            // hide the modify node pane
+            // hide unused popups
             listener.onUpdateModifyNodePane(true, false, null);
+            listener.onHideNewNodePopup();
         }
     }
 
@@ -368,8 +370,9 @@ public class MapViewElement extends PageElement {
     public void setEditMode(EditMode editMode) {
         this.editMode = editMode;
 
-        // hide the modify node pane
+        // hide all popups
         listener.onUpdateModifyNodePane(true, false, null);
+        listener.onHideNewNodePopup();
 
         switch (editMode) {
             case ADDNODE:
