@@ -128,25 +128,6 @@ public class Node extends Observable {
      */
     public void setPosition(Point2D position) {
         this.position = new Point3D(position.getX(), position.getY(), getHeight());
-
-        double transX = 1203.7;
-        double transY = 290.0;
-        double transXp = 3.94;
-        double transYp = 2.226;
-        double scaleX = 0.736;
-        double scaleY = 0.545;
-        double rotateAngle = 0.17;
-
-        double a = scaleX * cos(rotateAngle);
-        double b = -scaleY * sin(rotateAngle) * transXp;
-        double c = transX * scaleX * cos(rotateAngle) - transY * scaleY * sin(rotateAngle);
-        double d = scaleX * sin(rotateAngle) * transYp;
-        double e = scaleY * cos(rotateAngle);
-        double f = transX * scaleX * sin(rotateAngle) + transY * scaleY * cos(rotateAngle);
-
-        this.wireframePosition = new Point2D(a * position.getX() + b * position.getY() + c,
-                d * position.getX() + e * position.getY() + f);
-
         signalClassChanged();
     }
 
