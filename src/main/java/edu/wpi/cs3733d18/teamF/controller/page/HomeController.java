@@ -247,6 +247,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private JFXTextArea txtDirections;
     @FXML
     private Pane qrImage;
+    @FXML
+    private JFXCheckBox disableElevatorsBox;
+    @FXML
+    private JFXCheckBox disableStairsBox;
     //////////////////////////////
     //                          //
     //        Edit User         //
@@ -514,6 +518,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             } else if (cmd.equalsIgnoreCase("Activate")) {
                 // got a string saying that the activation command has been said
                 paneVoiceController.setVisibility(true);
+            } else if(cmd.equalsIgnoreCase("DisableElevators")){
+                map.disableElevators();
+
+            } else if(cmd.equalsIgnoreCase("DisableStairs")){
+                map.disableStairs();
             }
         }
         reloadMap();
@@ -799,6 +808,25 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         reloadMap();
     }
 
+    @FXML
+    void flipElevators(){
+        if(disableElevatorsBox.isSelected()) {
+            map.enableElevators();
+        } else{
+            map.disableElevators();
+        }
+
+    }
+
+    @FXML
+    void flipStairs(){
+        if(disableStairsBox.isSelected()) {
+            map.enableStairs();
+        } else{
+            map.disableStairs();
+        }
+
+    }
     @FXML
     void setSourceSearch() {
         searchLocation.setText(searchList.getSelectionModel().getSelectedItem().toString());
