@@ -519,10 +519,17 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                 // got a string saying that the activation command has been said
                 paneVoiceController.setVisibility(true);
             } else if(cmd.equalsIgnoreCase("DisableElevators")){
-                map.disableElevators();
-
+                disableElevatorsBox.setSelected(false);
+                mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
             } else if(cmd.equalsIgnoreCase("DisableStairs")){
-                map.disableStairs();
+                disableStairsBox.setSelected(false);
+                mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+            }else if(cmd.equalsIgnoreCase("EnableElevators")){
+                disableElevatorsBox.setSelected(true);
+                mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+            } else if(cmd.equalsIgnoreCase("EnableStairs")){
+                disableStairsBox.setSelected(true);
+                mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
             }
         }
         reloadMap();
