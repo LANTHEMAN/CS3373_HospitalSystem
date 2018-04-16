@@ -5,6 +5,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.controller.*;
+import edu.wpi.cs3733d18.teamF.controller.page.element.inbox.InboxElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewListener;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
@@ -288,6 +289,23 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private Label time;
     @FXML
     private Label date;
+    /////////////////////////////////
+    //                             //
+    //           Inbox             //
+    //                             //
+    /////////////////////////////////
+    InboxElement inboxElement;
+
+    /////////////////////////////////
+    //                             //
+    //           Map Editor        //
+    //                             //
+    /////////////////////////////////
+    @FXML
+    private JFXDrawer mapEditorDrawer;
+    @FXML
+    private HBox mapEditorBtns;
+
 
     /**
      * Constructor for this class
@@ -305,6 +323,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         Pair<MapViewElement, Pane> mapElementInfo = switcher.loadElement("mapView.fxml");
         mapViewElement = mapElementInfo.getKey();
         mapViewElement.initialize(this, map, switcher, mapElementPane);
+
 
         // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);
@@ -363,12 +382,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
 
         floorNode.addAnimatedNode(floorBtn);
-        floorNode.addAnimatedNode(l2);
-        floorNode.addAnimatedNode(l1);
-        floorNode.addAnimatedNode(groundFloor);
-        floorNode.addAnimatedNode(floor1);
-        floorNode.addAnimatedNode(floor2);
         floorNode.addAnimatedNode(floor3);
+        floorNode.addAnimatedNode(floor2);
+        floorNode.addAnimatedNode(floor1);
+        floorNode.addAnimatedNode(groundFloor);
+        floorNode.addAnimatedNode(l1);
+        floorNode.addAnimatedNode(l2);
+
+
+
+
 
 
         // set the hamburger menu on top left accordingly
@@ -390,6 +413,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         directionsDrawer.setSidePane(directionsBox);
         adminDrawer.setSidePane(adminBox);
         privilegeCombo.getItems().addAll(privilegeOptions);
+        mapEditorDrawer.setSidePane(mapEditorBtns);
 
         // login
         loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -592,6 +616,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         setCancelMenuEvent();
         serviceRequestList.animateList(false);
         serviceRequestList.animateList(false);
+        if(mapEditorDrawer.isShown()) {
+            mapEditorDrawer.close();
+        }
         setGuestMenu();
         if (algorithmsBox.isVisible()) {
             algorithmsBox.setVisible(false);
@@ -1160,6 +1187,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         onCancelDirectionsEvent();
         setCancelMenuEvent();
         mapViewElement.toggleEditorMode();
+        if(mapEditorDrawer.isShown()){
+            mapEditorDrawer.close();
+        }else {
+            mapEditorDrawer.open();
+        }
     }
 
 
@@ -1792,4 +1824,54 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     public void onHideNewNodePopup() {
         addLocationPopup.setVisible(false);
     }
+
+
+    @FXML
+    private void onInboxBtn(){
+        // initialize element
+        // init mapView
+        Pair<MapViewElement, Pane> mapElementInfo = switcher.loadElement("mapView.fxml");
+        mapViewElement = mapElementInfo.getKey();
+        mapViewElement.initialize(this, map, switcher, mapElementPane);
+
+        Pair<InboxElement, Pane> inboxElementInfo = switcher.loadElement("inbox.fxml");
+        inboxElement = inboxElementInfo.getKey();
+        inboxElement.initialize(switcher);
+    }
+
+    @FXML
+    private void onAddNode(){
+        mapViewElement.setEditMode(MapViewElement.EditMode.ADDNODE);
+    }
+
+    @FXML
+    private void onRemoveNode(){
+        mapViewElement.setEditMode(MapViewElement.EditMode.REMNODE);
+    }
+
+    @FXML
+    private void onAddEdge(){
+        mapViewElement.setEditMode(MapViewElement.EditMode.ADDEDGE);
+    }
+
+    @FXML
+    private void onRemoveEdge(){
+        mapViewElement.setEditMode(MapViewElement.EditMode.REMEDGE);
+    }
+
+    @FXML
+    private void onModify(){
+        mapViewElement.setEditMode(MapViewElement.EditMode.EDITNODE);
+    }
+
+    @FXML
+    private void onDragNode(){
+        mapViewElement.setEditMode(MapViewElement.EditMode.MOVENODE);
+    }
+
+    @FXML
+    private void onPan(){
+        mapViewElement.setEditMode(MapViewElement.EditMode.PAN);
+    }
+
 }

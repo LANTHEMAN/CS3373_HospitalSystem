@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.element.inbox.InboxElement">
+   <children>
+      <FontAwesomeIconView glyphName="TIMES" layoutX="574.0" layoutY="25.0" size="20" />
+      <FontAwesomeIconView glyphName="INBOX" layoutX="283.0" layoutY="42.0" size="40" />
+   </children>
+</AnchorPane>
