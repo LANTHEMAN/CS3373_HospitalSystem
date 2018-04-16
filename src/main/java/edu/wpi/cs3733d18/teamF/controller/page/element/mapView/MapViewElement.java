@@ -26,7 +26,7 @@ public class MapViewElement extends PageElement {
     private MapListener mapListener;
     private ViewMode viewMode = ViewMode.VIEW;
 
-    private EditMode editMode = EditMode.EDITNODE;
+    private EditMode editMode = EditMode.REMNODE;
     // TODO turn back
     //EditMode editMode = EditMode.PAN;
 
@@ -145,9 +145,16 @@ public class MapViewElement extends PageElement {
 
                             switch (editMode) {
                                 case REMNODE:
+                                    mapDrawController.unshowPath();
+                                    map.removeNode(map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), n -> n.getFloor().equals(map.getFloor())));
+                                    selectedNodeEnd = null;
+                                    break;
                                 case ADDEDGE:
+                                    break;
                                 case REMEDGE:
+                                    break;
                                 case MOVENODE:
+                                    break;
                                 case PAN:
                                     break;
                                 case EDITNODE:
@@ -210,18 +217,6 @@ public class MapViewElement extends PageElement {
                 }
             }
 
-            // remove a node
-            if (e.getButton() == MouseButton.SECONDARY && e.getClickCount() == 2) {
-                if (!map.is2D()) {
-                    return;
-                }
-
-                if (nodeIsSelected && viewMode == ViewMode.EDIT) {
-                    mapDrawController.unshowPath();
-                    map.removeNode(map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor())));
-                    selectedNodeEnd = null;
-                }
-            }
         });
 
         mapContainer.setOnDragDetected(e -> {
