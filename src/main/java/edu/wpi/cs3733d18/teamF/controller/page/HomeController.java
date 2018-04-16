@@ -1111,7 +1111,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         node.setBuilding(modNode_building.getSelectionModel().getSelectedItem().toString());
 
         if (node.getNodeType().equals("ELEV") || node.getNodeType().equals("STAI")
-                || newType.equals("EVEV") || newType.equals("STAI")) {
+                || newType.equals("ELEV") || newType.equals("STAI")) {
             return;
         }
 

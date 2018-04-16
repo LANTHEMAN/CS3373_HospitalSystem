@@ -26,7 +26,7 @@ public class MapViewElement extends PageElement {
     private MapListener mapListener;
     private ViewMode viewMode = ViewMode.VIEW;
 
-    private EditMode editMode = EditMode.ADDNODE;
+    private EditMode editMode = EditMode.EDITNODE;
     // TODO turn back
     //EditMode editMode = EditMode.PAN;
 
