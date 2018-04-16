@@ -334,8 +334,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         aboutElement.initialize(aboutElementPane);
 
         // TODO turn this line into a button
-        //aboutElement.hideElement();
-
+        aboutElement.hideElement();
 
         // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);
