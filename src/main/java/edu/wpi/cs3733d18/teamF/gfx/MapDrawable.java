@@ -33,4 +33,6 @@ public abstract class MapDrawable implements Drawable {
     public abstract void showEdges();
 
     public abstract void unshowEdges();
+
+    public abstract void addDefaultStartNode(Node node);
 }

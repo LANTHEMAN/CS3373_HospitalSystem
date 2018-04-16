@@ -1,8 +1,5 @@
 package edu.wpi.cs3733d18.teamF.gfx.impl;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.gfx.EdgeDrawable;
 import edu.wpi.cs3733d18.teamF.gfx.MapDrawable;
 import edu.wpi.cs3733d18.teamF.gfx.NodeDrawable;
@@ -31,10 +28,7 @@ public class UglyMapDrawer extends MapDrawable {
     private NodeDrawable stairDrawer = new StairNodeDrawer();
     private NodeDrawable restroomDrawer = new RestroomNodeDrawer();
     private NodeDrawable currNodeDrawable = nodeDrawer;
-
-    public UglyMapDrawer(Map map) {
-        super(map);
-    }
+    private NodeDrawable startNodeDefault = null;
 
     public UglyMapDrawer() {
         super();
@@ -81,6 +75,11 @@ public class UglyMapDrawer extends MapDrawable {
     }
 
     @Override
+    public void addDefaultStartNode(Node node) {
+        startNodeDefault = new StartNodeDrawer(node);
+    }
+
+    @Override
     public void draw(Pane pane) {
         Node selectedNode = null;
         if (selectedNodePos != null) {
@@ -89,10 +88,9 @@ public class UglyMapDrawer extends MapDrawable {
 
         if (showEdges) {
             for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(map.getFloor()))) {
-                if(edge.getNode1().getNodeType().equals("ELEV")&&edge.getNode2().getNodeType().equals("ELEV")){
+                if (edge.getNode1().getNodeType().equals("ELEV") && edge.getNode2().getNodeType().equals("ELEV")) {
                     continue;
-                }
-                else if(edge.getNode1().getNodeType().equals("STAI")&&edge.getNode2().getNodeType().equals("STAI")){
+                } else if (edge.getNode1().getNodeType().equals("STAI") && edge.getNode2().getNodeType().equals("STAI")) {
                     continue;
                 }
                 edgeDrawer.update(edge);
@@ -101,15 +99,14 @@ public class UglyMapDrawer extends MapDrawable {
         }
 
         if (path != null && path.getNodes().size() > 0) {
-            for(Edge edge : path.getEdges()){
-                if(!(edge.getNode1().getFloor().equals(edge.getNode2().getFloor()))){
-                    if(edge.getNode1().getFloor().equals(map.getFloor())){
+            for (Edge edge : path.getEdges()) {
+                if (!(edge.getNode1().getFloor().equals(edge.getNode2().getFloor()))) {
+                    if (edge.getNode1().getFloor().equals(map.getFloor())) {
                         Node node = edge.getNode1();
                         currNodeDrawable = getDrawable(node.getNodeType());
                         currNodeDrawable.update(node);
                         currNodeDrawable.draw(pane);
-                    }
-                    else if(edge.getNode2().getFloor().equals(map.getFloor())){
+                    } else if (edge.getNode2().getFloor().equals(map.getFloor())) {
                         Node node = edge.getNode2();
                         currNodeDrawable = getDrawable(node.getNodeType());
                         currNodeDrawable.update(node);
@@ -117,18 +114,23 @@ public class UglyMapDrawer extends MapDrawable {
                     }
                 }
             }
-            Node startNode  = path.getNodes().get(0);
+            Node startNode = path.getNodes().get(0);
             NodeDrawable startIconDrawer = new StartNodeDrawer();
             startIconDrawer.update(startNode);
             startIconDrawer.draw(pane);
 
-            Node endNode = path.getNodes().get(path.getNodes().size()-1);
+            Node endNode = path.getNodes().get(path.getNodes().size() - 1);
             NodeDrawable endIconDrawer = new EndNodeDrawer();
             endIconDrawer.update(endNode);
             endIconDrawer.draw(pane);
 
             pathDrawer.update(path);
             pathDrawer.draw(pane);
+        }
+        else{
+            if(startNodeDefault != null){
+                startNodeDefault.draw(pane);
+            }
         }
         for (Node node : map.getNodes(node -> node.getFloor().equals(map.getFloor()))) {
             currNodeDrawable = getDrawable(node.getNodeType());
@@ -145,8 +147,9 @@ public class UglyMapDrawer extends MapDrawable {
             }
         }
     }
+
     //TODO: Implement drawing for all node types
-    private NodeDrawable getDrawable(String type){
+    private NodeDrawable getDrawable(String type) {
         switch (type) {
             case "ELEV":
                 return elevatorDrawer;
@@ -166,12 +169,5 @@ public class UglyMapDrawer extends MapDrawable {
                 return nodeDrawer;
         }
     }
-    public void changePathType(boolean type){
-        if(type){
-            pathDrawer = pathDrawer3;
-        }
-        else {
-            pathDrawer = pathDrawer2;
-        }
-    }
+
 }
