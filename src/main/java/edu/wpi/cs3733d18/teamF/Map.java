@@ -390,10 +390,11 @@ public class Map extends Observable implements DatabaseItem, Observer {
 
             // create a new node
             Node newNode = new ExistingNodeBuilder()
+                    .setNodeID(newNodeID)
                     .setPosition(node.getPosition())
                     .setBuilding(node.getBuilding())
-                    .setNodeID(newNodeID)
                     .setShortName(node.getShortName())
+                    .setLongName(node.getLongName())
                     .setWireframePosition(node.getWireframePosition())
                     .build();
             createNode(newNode);

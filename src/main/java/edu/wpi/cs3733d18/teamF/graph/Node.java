@@ -260,5 +260,4 @@ public class Node extends Observable {
         this.setChanged();
         this.notifyObservers(arg);
     }
-
 }

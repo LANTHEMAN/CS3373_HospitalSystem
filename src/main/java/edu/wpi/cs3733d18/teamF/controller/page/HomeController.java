@@ -2,7 +2,6 @@ package edu.wpi.cs3733d18.teamF.controller.page;
 
 import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.controller.*;
@@ -26,7 +25,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -181,6 +179,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private GridPane gpaneNodeInfo;
     @FXML
     private TextField modNode_shortName, modNode_longName, modNode_x, modNode_y;
+    @FXML
+    private ComboBox modNode_type = new ComboBox<>(FXCollections.observableArrayList(NodeBuilder.getNodeTypes()));
+    @FXML
+    private ComboBox modNode_building = new ComboBox<>(FXCollections.observableArrayList(NodeBuilder.getBuildings()));
     ///////////////////////////////
     //      New Node Window      //
     ///////////////////////////////
@@ -301,7 +303,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         mapViewElement = mapElementInfo.getKey();
         mapViewElement.initialize(this, map, switcher, mapElementPane);
         // set default start location
-        mapViewElement.setSelectedNodeStart(map.findNodeClosestTo(1950,840));
+        mapViewElement.setSelectedNodeStart(map.findNodeClosestTo(1950, 840));
 
         // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);
@@ -310,6 +312,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         voice.addObserver(this);
         VoiceLauncher.getInstance().addObserver(voice);
 
+
+        // set up mod node panel
+        modNode_type.getItems().addAll(NodeBuilder.getNodeTypes());
+        modNode_building.getItems().addAll(NodeBuilder.getBuildings());
 
         // set up new node panel
         newNode_type.getItems().addAll(NodeBuilder.getNodeTypes());
@@ -1089,15 +1095,39 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     void onNodeModify() {
+        Node node = mapViewElement.getModifyNode();
+
         if (map.is2D()) {
-            mapViewElement.getModifyNode().setPosition(new Point2D(Double.parseDouble(modNode_x.getText())
+            node.setPosition(new Point2D(Double.parseDouble(modNode_x.getText())
                     , Double.parseDouble(modNode_y.getText())));
         } else {
-            mapViewElement.getModifyNode().setWireframePosition(new Point2D(Double.parseDouble(modNode_x.getText())
+            node.setWireframePosition(new Point2D(Double.parseDouble(modNode_x.getText())
                     , Double.parseDouble(modNode_y.getText())));
         }
-        mapViewElement.getModifyNode().setShortName(modNode_shortName.getText());
-        mapViewElement.getModifyNode().setLongName(modNode_longName.getText());
+        node.setShortName(modNode_shortName.getText());
+        node.setLongName(modNode_longName.getText());
+
+        String newType = modNode_type.getSelectionModel().getSelectedItem().toString();
+        node.setBuilding(modNode_building.getSelectionModel().getSelectedItem().toString());
+
+        if (node.getNodeType().equals("ELEV") || node.getNodeType().equals("STAI")
+                || newType.equals("EVEV") || newType.equals("STAI")) {
+            return;
+        }
+
+        int typeCount = 0;
+        try {
+            typeCount = map.getNodes()
+                    .stream()
+                    .filter(n -> n.getNodeType().equals(newType))
+                    .map(n -> n.getNodeID().substring(5, 8))
+                    .map(Integer::parseInt)
+                    .max(Integer::compare)
+                    .get();
+            typeCount++;
+        } catch (Exception e) {
+        }
+        node.setNodeType(newType, typeCount);
     }
 
     @FXML
@@ -1693,7 +1723,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @Override
     public void onUpdateModifyNodePane(boolean isHidden, boolean is2D, Node modifiedNode) {
-        if(isHidden){
+        if (isHidden) {
             gpaneNodeInfo.setVisible(false);
             return;
         }
@@ -1707,6 +1737,19 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
         modNode_shortName.setText(modifiedNode.getShortName());
         modNode_longName.setText(modifiedNode.getLongName());
+
+        modNode_type.getSelectionModel().select(modifiedNode.getNodeType());
+        modNode_building.getSelectionModel().select(modifiedNode.getBuilding());
+
+
+        if (modifiedNode.getNodeType().equals("ELEV")
+                || modifiedNode.getNodeType().equals("STAI")) {
+            // do not allow type modification
+            modNode_type.setDisable(true);
+        } else {
+            modNode_type.setDisable(false);
+        }
+
     }
 
     @Override
