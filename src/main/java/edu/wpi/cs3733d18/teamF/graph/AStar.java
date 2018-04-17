@@ -17,7 +17,7 @@ public class AStar implements PathFindingAlgorithm{
     public  Path getPath(Graph graph, Node source, Node destination) {
         // see if the destination exists or if src equals dst
         if (destination == null || source == null) {
-            throw new AssertionError();
+            return new Path(new ArrayList<>(), graph);
         } else if (source == destination) {
             ArrayList<Node> path = new ArrayList<>();
             path.add(source);
