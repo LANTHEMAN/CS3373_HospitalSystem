@@ -10,10 +10,7 @@ import javafx.scene.shape.Rectangle;
 public class ElevatorNodeDrawer extends NodeDrawable {
 
     private boolean isSelected = false;
-
-    public ElevatorNodeDrawer(Node node) {
-        super(node);
-    }
+    private boolean isHovered = false;
 
     public ElevatorNodeDrawer() {
         super();
@@ -27,16 +24,20 @@ public class ElevatorNodeDrawer extends NodeDrawable {
         double posX = is2D ? node.getPosition().getX() : node.getWireframePosition().getX();
         double posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
 
-        if(!isSelected){
-            Rectangle rectangle = new Rectangle(3,3,Color.GREEN);
-            rectangle.setX((posX * pane.getMaxWidth() / imageWidth)-(rectangle.getWidth()/2.f));
-            rectangle.setY((posY * pane.getMaxHeight() / imageHeight)-(rectangle.getHeight()/2.f));
+        if (isSelected) {
+            Rectangle rectangle = new Rectangle(4, 4, Color.LIGHTGREEN);
+            rectangle.setX((posX * pane.getMaxWidth() / imageWidth) - (rectangle.getWidth() / 2.f));
+            rectangle.setY((posY * pane.getMaxHeight() / imageHeight) - (rectangle.getHeight() / 2.f));
             pane.getChildren().add(rectangle);
-        }
-        else{
-            Rectangle rectangle = new Rectangle(4,4,Color.LIGHTGREEN);
-            rectangle.setX((posX * pane.getMaxWidth() / imageWidth)-(rectangle.getWidth()/2.f));
-            rectangle.setY((posY * pane.getMaxHeight() / imageHeight)-(rectangle.getHeight()/2.f));
+        } else if (isHovered) {
+            Rectangle rectangle = new Rectangle(5, 5, Color.GREENYELLOW);
+            rectangle.setX((posX * pane.getMaxWidth() / imageWidth) - (rectangle.getWidth() / 2.f));
+            rectangle.setY((posY * pane.getMaxHeight() / imageHeight) - (rectangle.getHeight() / 2.f));
+            pane.getChildren().add(rectangle);
+        } else {
+            Rectangle rectangle = new Rectangle(3, 3, Color.GREEN);
+            rectangle.setX((posX * pane.getMaxWidth() / imageWidth) - (rectangle.getWidth() / 2.f));
+            rectangle.setY((posY * pane.getMaxHeight() / imageHeight) - (rectangle.getHeight() / 2.f));
             pane.getChildren().add(rectangle);
         }
     }
@@ -49,5 +50,15 @@ public class ElevatorNodeDrawer extends NodeDrawable {
     @Override
     public void unselectNode() {
         isSelected = false;
+    }
+
+    @Override
+    public void hoverNode() {
+        isHovered = true;
+    }
+
+    @Override
+    public void unhoverNode() {
+        isHovered = false;
     }
 }
