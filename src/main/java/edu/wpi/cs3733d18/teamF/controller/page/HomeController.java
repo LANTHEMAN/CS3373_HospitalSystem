@@ -627,82 +627,94 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         loginBtn.setText("Login");
     }
 
+
+    ///////////////////////////////////////////
+    //                                       //
+    //          Floor Button Colors          //
+    //                                       //
+    ///////////////////////////////////////////
+
     private void changeFloorButtons(Path path) {
-        String first_floor = path.getNodes().get(0).getFloor();
-        String last_floor = path.getNodes().get(0).getFloor();
-        editButtonColor(first_floor, "GREEN");
+        greyOutFloorButtons();
+        String firstFloor = path.getNodes().get(0).getFloor();
+        String lastFloor = path.getNodes().get(0).getFloor();
+        setButtonColor(getFloorButton(firstFloor), "GREEN", "#042E58");
         for (int i = 0; i < path.getNodes().size(); i++) {
-            if (!path.getNodes().get(i).getFloor().equals(last_floor)) {
-                if (!last_floor.equals(first_floor)) {
-                    editButtonColor(last_floor, "GRAY");
+            String currFloor = path.getNodes().get(i).getFloor();
+            if (!currFloor.equals(lastFloor)) {
+                if (!lastFloor.equals(firstFloor)) {
+                    setButtonColor(getFloorButton(lastFloor), "#606060", "#042E58");
                 }
-                last_floor = path.getNodes().get(i).getFloor();
+                lastFloor = currFloor;
             }
         }
-        editButtonColor(last_floor, "RED");
+        setButtonColor(getFloorButton(lastFloor), "RED", "#042E58");
     }
 
-    private void editButtonColor(String floor, String color) {
-        JFXButton btn = l2;
+    private JFXButton getFloorButton(String floor) {
         switch (floor) {
-            case "L2":
-                btn = l2;
-                break;
-            case "L1":
-                btn = l1;
-                break;
-            case "0G":
-                btn = groundFloor;
-                break;
+            case "03":
+                return floor3;
+            case "02":
+                return floor2;
             case "01":
-                btn = floor1;
+                return floor1;
+            case "0G":
+                return  groundFloor;
+            case "L1":
+                return l1;
+            default: // case "L2"
+                return l2;
+        }
+    }
+
+    /*private void editButtonColor(String floor, String borderColor, String backgroundColor) {
+        JFXButton btn;
+        switch (floor) {
+            case "03":
+                btn = floor3;
                 break;
             case "02":
                 btn = floor2;
                 break;
-            case "03":
-                btn = floor3;
+            case "01":
+                btn = floor1;
+                break;
+            case "0G":
+                btn = groundFloor;
+                break;
+            case "L1":
+                btn = l1;
+                break;
+            default: // case "L2"
+                btn = l2;
                 break;
         }
-        switch (color) {
-            case "GREEN":
-                btn.setStyle("-fx-border-color: GREEN;" +
-                        " -fx-border-width: 5px;" +
-                        " -fx-border-radius: 100;" +
-                        " -fx-background-color: #042E58;" +
-                        " -fx-background-radius: 100;");
-                break;
-            case "GRAY":
-                btn.setStyle("-fx-border-color: #606060;" +
-                        " -fx-border-width: 5px;" +
-                        " -fx-border-radius: 100;" +
-                        " -fx-background-color: #042E58;" +
-                        " -fx-background-radius: 100;");
-                break;
-            case "RED":
-                btn.setStyle("-fx-border-color: RED;" +
-                        " -fx-border-width: 5px;" +
-                        " -fx-border-radius: 100;" +
-                        " -fx-background-color: #042E58;" +
-                        " -fx-background-radius: 100;");
-                break;
-        }
+        setButtonColor(btn, borderColor, backgroundColor);
+    }*/
+
+    private void resetFloorButtonColors() {
+        setAllButtonColors("#042E58", "#042E58");
     }
 
-    private void clearColors() {
-        resetButtonStyle(l2);
-        resetButtonStyle(l1);
-        resetButtonStyle(groundFloor);
-        resetButtonStyle(floor1);
-        resetButtonStyle(floor2);
-        resetButtonStyle(floor3);
+    private void greyOutFloorButtons() {
+        setAllButtonColors("#4f6d8a", "#4f6d8a");
     }
 
-    private void resetButtonStyle(JFXButton btn) {
-        btn.setStyle("-fx-border-color: #042E58;" +
+    private void  setAllButtonColors(String borderColor, String backgroundColor) {
+        setButtonColor(l2, borderColor, backgroundColor);
+        setButtonColor(l1, borderColor, backgroundColor);
+        setButtonColor(groundFloor, borderColor, backgroundColor);
+        setButtonColor(floor1, borderColor, backgroundColor);
+        setButtonColor(floor2, borderColor, backgroundColor);
+        setButtonColor(floor3, borderColor, backgroundColor);
+    }
+
+    private void setButtonColor(JFXButton btn, String borderColor, String backgroundColor) {
+        btn.setStyle("-fx-border-color: " + borderColor + ";" +
                 " -fx-border-width: 5px;" +
                 " -fx-border-radius: 100;" +
-                " -fx-background-color: #042E58;" +
+                " -fx-background-color: " + backgroundColor + ";" +
                 " -fx-background-radius: 100;");
     }
 
@@ -825,7 +837,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
         Path newPath = mapViewElement.swapSrcAndDst();
         displayTextDirections(newPath);
-        clearColors();
+        resetFloorButtonColors();
         changeFloorButtons(newPath);
 
         map.setFloor(mapViewElement.getSelectedNodeStart().getFloor());
@@ -913,7 +925,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             Path newPath = mapViewElement.changePath(sourceNode, destinationNode);
 
             displayTextDirections(newPath);
-            clearColors();
+            resetFloorButtonColors();
             changeFloorButtons(newPath);
 
             map.setFloor(sourceNode.getFloor());
@@ -1764,7 +1776,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @Override
     public void onNewPathSelected(Path path) {
         displayTextDirections(path);
-        clearColors();
+        resetFloorButtonColors();
         changeFloorButtons(path);
         floorNode.animateList(true);
         sourceLocation.setText(mapViewElement.getSelectedNodeStart().getLongName());
