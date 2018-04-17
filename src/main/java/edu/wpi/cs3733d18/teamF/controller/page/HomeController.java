@@ -311,17 +311,15 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         map = MapSingleton.getInstance().getMap();
         MainTitle.setText("Brigham and Women's Hospital: Level 1");
 
-        // initialize element
         // init mapView
         Pair<MapViewElement, Pane> mapElementInfo = switcher.loadElement("mapView.fxml");
         mapViewElement = mapElementInfo.getKey();
         mapViewElement.initialize(this, map, switcher, mapElementPane);
+
         // init about element
         Pair<AboutElement, Pane> aboutElementInfo = switcher.loadElement("about.fxml");
         aboutElement = aboutElementInfo.getKey();
         aboutElement.initialize(aboutElementPane);
-
-        // TODO turn this line into a button
         aboutElement.hideElement();
 
         // init voice overlay
@@ -972,6 +970,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         helpPane.setVisible(false);
     }
 
+    ////////////////////////////
+    //                        //
+    //       About Pane       //
+    //                        //
+    ////////////////////////////
+
+    @FXML
+    void onAboutPopup() {
+        aboutElement.showElement();
+    }
 
     //////////////////////////////////////////////
     //                                          //
