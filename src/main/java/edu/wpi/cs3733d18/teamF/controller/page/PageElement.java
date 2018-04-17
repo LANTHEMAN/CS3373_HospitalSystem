@@ -51,7 +51,7 @@ public abstract class PageElement {
         for (Node component : pane.getChildren()) {
             if (component instanceof Pane) {
                 //if the component is a container, scan its children
-                hideElement((Pane) component);
+                showElement((Pane) component);
                 component.setMouseTransparent(false);
                 component.setPickOnBounds(true);
                 component.setVisible(true);

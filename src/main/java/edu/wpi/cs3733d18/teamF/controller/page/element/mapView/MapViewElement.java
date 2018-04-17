@@ -17,6 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import net.kurobako.gesturefx.GesturePane;
 
+import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -223,6 +224,19 @@ public class MapViewElement extends PageElement {
                         // select a new destination if a node is close enough to the mouse
                         Node dst = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
                         if ((map.is2D() ? mapPos.distance(dst.getPosition()) : mapPos.distance(dst.getWireframePosition())) < 120 && selectedNodeStart != null) {
+                            if (mapDrawController.getDrawnPath() != null
+                                    && ( dst.getNodeType().equals("ELEV") || dst.getNodeType().equals("STAI"))
+                                    && mapDrawController.getDrawnPath().getNodes().contains(dst)) {
+                                // change floors
+                                HashSet<Node> neighborNodes = map.getNeighbors(dst);
+                                for (Node node : neighborNodes) {
+                                    if (!node.getFloor().equals(dst.getFloor()) && mapDrawController.getDrawnPath().getNodes().contains(node)) {
+                                        map.setFloor(node.getFloor());
+                                        listener.onFloorChanged();
+                                        return;
+                                    }
+                                }
+                            }
                             selectedNodeEnd = dst;
                             Path path = map.getPath(map.findNodeClosestTo(selectedNodeStart.getPosition().getX(), selectedNodeStart.getPosition().getY(), true), dst);
                             mapDrawController.showPath(path);
@@ -265,7 +279,7 @@ public class MapViewElement extends PageElement {
             if (viewMode == ViewMode.EDIT && editMode == EditMode.MOVENODE) {
                 Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D());
                 double deltaX = mapPos.getX() - (map.is2D() ? node.getPosition().getX() : node.getWireframePosition().getX());
-                double deltaY = mapPos.getY() - (map.is2D() ? node.getPosition().getY(): node.getWireframePosition().getY());
+                double deltaY = mapPos.getY() - (map.is2D() ? node.getPosition().getY() : node.getWireframePosition().getY());
                 draggingNode = false;
                 if (Math.sqrt((deltaX * deltaX) + (deltaY * deltaY)) < 20) {
                     draggingNode = true;

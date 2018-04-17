@@ -1,5 +1,7 @@
 package edu.wpi.cs3733d18.teamF.controller;
 
+import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
+import edu.wpi.cs3733d18.teamF.Main;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -83,6 +85,8 @@ public class PaneSwitcher {
         load(screen);
         Scene popScene = new Scene(panes.get(screen.fxmlFile));
         popup.setScene(popScene);
+        javafx.scene.image.Image image = new javafx.scene.image.Image(Main.class.getResource("Eevee.png").toExternalForm());
+        popup.getIcons().add(image);
         popup.show();
     }
 

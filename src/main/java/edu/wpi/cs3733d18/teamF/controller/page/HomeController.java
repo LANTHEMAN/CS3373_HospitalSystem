@@ -1812,6 +1812,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         addLocationPopup.setVisible(false);
     }
 
+    @Override
+    public void onFloorChanged() {
+
+    }
+
 
     @FXML
     private void onAddNode(){

@@ -14,7 +14,6 @@ public class AboutElement extends PageElement {
 
     public void initialize(AnchorPane sourcePane) {
         initElement(sourcePane, root);
-
         closeButton.setOnMouseClicked(e -> {
             hideElement();
         });
