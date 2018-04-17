@@ -13,6 +13,8 @@ import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
 import edu.wpi.cs3733d18.teamF.graph.*;
 import edu.wpi.cs3733d18.teamF.qr.qrConverter;
 import edu.wpi.cs3733d18.teamF.sr.*;
+import edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.Screensaver;
+import edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.State;
 import edu.wpi.cs3733d18.teamF.voice.VoiceCommandVerification;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.animation.Animation;
@@ -75,6 +77,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     Label religionRequiredRS, firstNameRequiredRS, lastNameRequiredRS, locationRequiredRS;
     MapViewElement mapViewElement;
     AboutElement aboutElement;
+    Screensaver screensaver;
     @FXML
     AnchorPane mapElementPane;
     @FXML
@@ -320,6 +323,14 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         aboutElement = aboutElementInfo.getKey();
         aboutElement.initialize(aboutElementPane);
         aboutElement.hideElement();
+
+        //init screensaver
+        Pair<Screensaver, Pane> screensaverInfo = switcher.loadElement("screensaver.fxml");
+        screensaver = screensaverInfo.getKey();
+        screensaver.initialize(screensaverPane);
+        screensaver.hideElement();
+
+        startScreensaver();
 
         // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);
@@ -1855,5 +1866,32 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private void onPan(){
         mapViewElement.setEditMode(MapViewElement.EditMode.PAN);
     }
+
+    private State savedState;
+    private State state;
+
+    public void saveState(){
+        state = new State(mapViewElement.getMapDrawController().getDrawnPath());
+    }
+
+    public void returnToState(State state){
+        this.state = state;
+    }
+
+    @FXML
+    private AnchorPane screensaverPane;
+
+    public void startScreensaver(){
+        screensaver.showElement();
+        screensaverPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
+
+    }
+
+
+    public void stopScreensaver(){
+        screensaverPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
+        screensaver.hideElement();
+    }
+
 
 }
