@@ -339,44 +339,24 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         newNode_type.getSelectionModel().selectFirst();
 
 
-        //floorBtn.setText("2");
         l2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            map.setFloor("L2");
-            MainTitle.setText("Brigham and Women's Hospital: Lower Level 2");
-            //floorNode.animateList(false);
-            reloadMap();
+            changeFloor("L2");
         });
         l1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            map.setFloor("L1");
-            MainTitle.setText("Brigham and Women's Hospital: Lower Level 1");
-            //floorNode.animateList(false);
-            reloadMap();
+            changeFloor("L1");
         });
         groundFloor.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            map.setFloor("0G");
-            MainTitle.setText("Brigham and Women's Hospital: Ground Floor");
-            //floorNode.animateList(false);
-            reloadMap();
+            changeFloor("0G");
         });
         floor1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            map.setFloor("01");
-            MainTitle.setText("Brigham and Women's Hospital: Level 1");
-            //floorNode.animateList(false);
-            reloadMap();
+            changeFloor("01");
         });
         floor2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            map.setFloor("02");
-            MainTitle.setText("Brigham and Women's Hospital: Level 2");
-            //floorNode.animateList(false);
-            reloadMap();
+            changeFloor("02");
         });
         floor3.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            map.setFloor("03");
-            MainTitle.setText("Brigham and Women's Hospital: Level 3");
-            //floorNode.animateList(false);
-            reloadMap();
+            changeFloor("03");
         });
-
 
         floorNode.addAnimatedNode(floorBtn);
         floorNode.addAnimatedNode(floor3);
@@ -385,9 +365,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         floorNode.addAnimatedNode(groundFloor);
         floorNode.addAnimatedNode(l1);
         floorNode.addAnimatedNode(l2);
-
-
-
 
 
 
@@ -1060,6 +1037,34 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         btn2D.setStyle("-fx-background-color:  #b6b8b9");
         btn3D.setButtonType(JFXButton.ButtonType.RAISED);
         btn3D.setStyle("-fx-background-color:  #f2f5f7");
+    }
+
+    private void changeFloor(String floor) {
+        //resetFloorButtonColors();
+        map.setFloor(floor);
+        JFXButton floorBtn = getFloorButton(floor);
+        switch (floor) {
+            case "03":
+                MainTitle.setText("Brigham and Women's Hospital: Level 3");
+                break;
+            case "02":
+                MainTitle.setText("Brigham and Women's Hospital: Level 2");
+                break;
+            case "01":
+                MainTitle.setText("Brigham and Women's Hospital: Level 1");
+                break;
+            case "0G":
+                MainTitle.setText("Brigham and Women's Hospital: Ground Floor");
+                break;
+            case "L1":
+                MainTitle.setText("Brigham and Women's Hospital: Lower Level 1");
+                break;
+            case "L2":
+                MainTitle.setText("Brigham and Women's Hospital: Lower Level 2");
+                break;
+        }
+        //floorNode.animateList(false);
+        reloadMap();
     }
 
     private void reloadMap() {
