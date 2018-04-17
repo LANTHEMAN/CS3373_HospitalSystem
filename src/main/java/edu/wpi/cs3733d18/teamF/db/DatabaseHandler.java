@@ -122,7 +122,7 @@ public class DatabaseHandler {
             connectionStatus = null;
         } catch (Exception e) {
             e.printStackTrace();
-            connectionStatus = e;
+            connectionStatus = new Exception("Database is currently being accessed by another instance of the program.  Please close all other instances before restarting the program.");
         }
     }
 

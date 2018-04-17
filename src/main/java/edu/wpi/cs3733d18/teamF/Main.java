@@ -71,6 +71,7 @@ public class Main extends Application {
         if(error != null) {
             ErrorSingleton.getInstance().setError(error);
             paneSwitcher.popup(Screens.Error);
+
         }
         else {
             // initial pane
