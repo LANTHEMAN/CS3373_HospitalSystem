@@ -634,9 +634,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
 
         loginBtn.setText("Login");
-        mapViewElement.getMapDrawController().unshowNodes();
-        mapViewElement.getMapDrawController().unshowEdges();
-
     }
 
     private void changeFloorButtons(Path path) {
@@ -822,8 +819,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             }
 
             Node selectedNode = n.iterator().next();
-            mapViewElement.setSelectedNodeStart(selectedNode);
-            mapViewElement.getMapDrawController().selectNode(selectedNode);
+            mapViewElement.setSelectedNodeEnd(selectedNode);
+            mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
             map.setFloor(selectedNode.getFloor());
             reloadMap();
         }
@@ -861,8 +858,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         } else{
             map.disableStairs();
         }
-
     }
+
     @FXML
     void setSourceSearch() {
         searchLocation.setText(searchList.getSelectionModel().getSelectedItem().toString());
