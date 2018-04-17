@@ -52,12 +52,12 @@
                     <children>
                         <JFXHamburger fx:id="hamburgerD" alignment="CENTER" fillWidth="false" layoutX="14.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
                         <FontAwesomeIconView fx:id="cancelDirections" fill="#f2f5f7" glyphName="TIMES" layoutX="263.0" layoutY="34.0" onMouseClicked="#onCancelDirectionsEvent" size="30" wrappingWidth="22.14285659790039" />
-                        <JFXTextField fx:id="sourceLocation" layoutX="54.0" layoutY="103.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Select Start" style="-fx-background-color: #f2f5f7;">
+                        <JFXTextField fx:id="sourceLocation" layoutX="54.0" layoutY="103.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="%SelectStart" style="-fx-background-color: #f2f5f7;">
                             <font>
                                 <Font name="Arial Bold" size="15.0" />
                             </font>
                         </JFXTextField>
-                        <JFXTextField fx:id="destinationLocation" layoutX="54.0" layoutY="169.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="Select Destination" style="-fx-background-color: #f2f5f7;">
+                        <JFXTextField fx:id="destinationLocation" layoutX="54.0" layoutY="169.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="%SelectDestination" style="-fx-background-color: #f2f5f7;">
                             <font>
                                 <Font name="Arial Bold" size="15.0" />
                             </font>
@@ -82,22 +82,22 @@
                         <Circle fill="WHITE" layoutX="31.0" layoutY="159.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
                         <Circle fill="WHITE" layoutX="31.0" layoutY="143.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
                         <Circle fill="WHITE" layoutX="31.0" layoutY="174.0" radius="4.0" stroke="#f2f5f7" strokeType="INSIDE" />
-                        <Text fill="WHITE" layoutX="96.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Directions">
+                        <Text fill="WHITE" layoutX="96.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%Directions">
                             <font>
                                 <Font name="Arial Bold" size="24.0" />
                             </font>
                         </Text>
-                        <JFXButton layoutX="202.0" layoutY="222.0" onAction="#onNavigate" style="-fx-background-color: #767878;" text="Navigate" textFill="WHITE">
+                        <JFXButton layoutX="202.0" layoutY="222.0" onAction="#onNavigate" style="-fx-background-color: #767878;" text="%Navigate" textFill="WHITE">
                             <font>
                                 <Font name="Arial Bold" size="15.0" />
                             </font>
                         </JFXButton>
-                  <JFXCheckBox fx:id="disableStairsBox" layoutX="16.0" layoutY="240.0" onMouseClicked="#flipStairs" selected="true" text="Use Stairs" textFill="WHITE">
+                  <JFXCheckBox fx:id="disableStairsBox" layoutX="16.0" layoutY="240.0" onMouseClicked="#flipStairs" selected="true" text="%UseStairs" textFill="WHITE">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
                      </font>
                   </JFXCheckBox>
-                  <JFXCheckBox fx:id="disableElevatorsBox" layoutX="16.0" layoutY="213.0" onMouseClicked="#flipElevators" selected="true" text="Use Elevators" textFill="WHITE">
+                  <JFXCheckBox fx:id="disableElevatorsBox" layoutX="16.0" layoutY="213.0" onMouseClicked="#flipElevators" selected="true" text="%UseElevators" textFill="WHITE">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
                      </font>
@@ -134,7 +134,7 @@
                 <Pane prefHeight="86.0" prefWidth="300.0">
                     <children>
                         <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" layoutX="251.0" layoutY="53.0" onMouseClicked="#setCancelMenuEvent" size="40" wrappingWidth="22.142844200134277" />
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="24.0" prefHeight="38.0" prefWidth="112.0" text="MENU">
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="24.0" prefHeight="38.0" prefWidth="112.0" text="%MENU">
                             <font>
                                 <Font name="System Bold" size="25.0" />
                             </font>
@@ -142,7 +142,7 @@
                     </children>
                 </Pane>
                 <JFXNodesList fx:id="serviceRequestList" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="152.0" prefWidth="300.0" spacing="150.0" />
-                <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onSearchServiceRequest" prefHeight="150.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Search Service Request" textFill="WHITE">
+                <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onSearchServiceRequest" prefHeight="150.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%SearchServiceRequest" textFill="WHITE">
                     <font>
                         <Font name="Arial" size="20.0" />
                     </font>
@@ -150,7 +150,7 @@
                         <FontAwesomeIconView glyphName="SEARCH" size="50" />
                     </graphic>
                 </JFXButton>
-                <JFXButton fx:id="mapEditorBtn" accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onMapEditor" prefHeight="150.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Map Editor" textFill="WHITE">
+                <JFXButton fx:id="mapEditorBtn" accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onMapEditor" prefHeight="150.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%MapEditor" textFill="WHITE">
                     <font>
                         <Font name="Arial" size="20.0" />
                     </font>
@@ -158,7 +158,7 @@
                         <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
                     </graphic>
                 </JFXButton>
-                <JFXButton fx:id="editUsersBtn" accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onEditUsers" prefHeight="150.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="Edit Users" textFill="WHITE">
+                <JFXButton fx:id="editUsersBtn" accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onEditUsers" prefHeight="150.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%EditUsers" textFill="WHITE">
                     <font>
                         <Font name="Arial" size="20.0" />
                     </font>
@@ -168,9 +168,9 @@
                 </JFXButton>
                 <HBox fx:id="algorithmsBox" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #616161;" visible="false">
                     <children>
-                        <JFXButton fx:id="aStar" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAStar" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #303030;" text="A-Star" textFill="WHITE" />
-                        <JFXButton fx:id="breathFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onBreathFirst" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #616161;" text="Breath Search" textFill="WHITE" />
-                        <JFXButton fx:id="depthFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDepthFirst" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #616161;" text="Depth Search" textFill="WHITE" />
+                        <JFXButton fx:id="aStar" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAStar" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #303030;" text="%AStar" textFill="WHITE" />
+                        <JFXButton fx:id="breathFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onBreathFirst" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #616161;" text="%BreadthSearch" textFill="WHITE" />
+                        <JFXButton fx:id="depthFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDepthFirst" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #616161;" text="%DepthSearch" textFill="WHITE" />
                     </children>
                 </HBox>
             </children>
@@ -180,7 +180,7 @@
                 <Pane prefHeight="87.0" prefWidth="250.0">
                     <children>
                         <FontAwesomeIconView fx:id="logoutCancel" fill="#f2f5f7" glyphName="TIMES" layoutX="6.0" layoutY="20.0" size="20" />
-                        <JFXButton fx:id="logoutBtn" buttonType="RAISED" contentDisplay="TOP" layoutX="61.0" layoutY="23.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onLogOutBtn" prefHeight="34.0" prefWidth="130.0" style="-fx-background-color: #f2f5f7;" text="Sign Out" textAlignment="CENTER">
+                        <JFXButton fx:id="logoutBtn" buttonType="RAISED" contentDisplay="TOP" layoutX="61.0" layoutY="23.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onLogOutBtn" prefHeight="34.0" prefWidth="130.0" style="-fx-background-color: #f2f5f7;" text="%SignOut" textAlignment="CENTER">
                             <font>
                                 <Font name="Arial Bold" size="15.0" />
                             </font>
@@ -189,22 +189,22 @@
                 </Pane>
             </children>
         </VBox>
-        <JFXButton fx:id="LI" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onLanguageInterpreter" prefHeight="150.0" prefWidth="300.0" style="-fx-background-color: #042E58;" text="Language Interpreter" textAlignment="CENTER" textFill="#f2f5f7" textOverrun="CLIP">
+        <JFXButton fx:id="LI" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onLanguageInterpreter" prefHeight="150.0" prefWidth="300.0" style="-fx-background-color: #042E58;" text="%LanguageInterpreter" textAlignment="CENTER" textFill="#f2f5f7" textOverrun="CLIP">
             <font>
                 <Font name="Arial Bold" size="15.0" />
             </font>
         </JFXButton>
-        <JFXButton fx:id="RS" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onReligiousServices" prefHeight="150.0" prefWidth="300.0" style="-fx-background-color: #042E58;" text="Religious Services" textAlignment="CENTER" textFill="#f2f5f7" textOverrun="CLIP">
+        <JFXButton fx:id="RS" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onReligiousServices" prefHeight="150.0" prefWidth="300.0" style="-fx-background-color: #042E58;" text="%ReligiousServices" textAlignment="CENTER" textFill="#f2f5f7" textOverrun="CLIP">
             <font>
                 <Font name="Arial Bold" size="15.0" />
             </font>
         </JFXButton>
-        <JFXButton fx:id="SR" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onSecurityRequest" prefHeight="150.0" prefWidth="300.0" style="-fx-background-color: #042E58;" text="Security Request" textAlignment="CENTER" textFill="#f2f5f7" textOverrun="CLIP">
+        <JFXButton fx:id="SR" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onSecurityRequest" prefHeight="150.0" prefWidth="300.0" style="-fx-background-color: #042E58;" text="%SecurityRequest" textAlignment="CENTER" textFill="#f2f5f7" textOverrun="CLIP">
             <font>
                 <Font name="Arial Bold" size="15.0" />
             </font>
         </JFXButton>
-        <JFXButton fx:id="newServiceRequest" accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" prefHeight="150.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="New Service Request" textFill="WHITE">
+        <JFXButton fx:id="newServiceRequest" accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" prefHeight="150.0" prefWidth="300.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%NewServiceRequest" textFill="WHITE">
             <font>
                 <Font name="Arial" size="20.0" />
             </font>
@@ -254,12 +254,12 @@
             <children>
                 <Pane prefHeight="80.0" prefWidth="233.0">
                     <children>
-                        <JFXTextField fx:id="loginUsername" layoutX="52.0" layoutY="13.0" prefWidth="150.0" promptText="Username" style="-fx-background-color: WHITE;">
+                        <JFXTextField fx:id="loginUsername" layoutX="52.0" layoutY="13.0" prefWidth="150.0" promptText="%Username" style="-fx-background-color: WHITE;">
                             <font>
                                 <Font name="Arial Bold" size="15.0" />
                             </font>
                         </JFXTextField>
-                        <JFXPasswordField fx:id="loginPassword" layoutX="52.0" layoutY="45.0" prefWidth="150.0" promptText="Password" style="-fx-background-color: WHITE;">
+                        <JFXPasswordField fx:id="loginPassword" layoutX="52.0" layoutY="45.0" prefWidth="150.0" promptText="%Password" style="-fx-background-color: WHITE;">
                             <font>
                                 <Font name="Arial Bold" size="15.0" />
                             </font>
@@ -288,12 +288,12 @@
                   <JFXDrawer fx:id="mapEditorDrawer" alignment="BOTTOM_CENTER" direction="BOTTOM" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="680.0" StackPane.alignment="BOTTOM_CENTER" />
                         <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="68.0" prefWidth="217.0" spacing="10.0" StackPane.alignment="BOTTOM_LEFT">
                             <children>
-                                <Label fx:id="time" text="Time">
+                                <Label fx:id="time" text="%Time">
                                     <font>
                                         <Font name="Arial Bold" size="16.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="date" text="Date">
+                                <Label fx:id="date" text="%Date">
                                     <font>
                                         <Font name="Arial Bold" size="16.0" />
                                     </font>
@@ -303,7 +303,7 @@
                         <HBox fx:id="searchBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" prefHeight="66.0" prefWidth="300.0" spacing="5.0" style="-fx-background-color: #042E58; -fx-background-radius: 10;" StackPane.alignment="TOP_LEFT">
                             <children>
                                 <JFXHamburger fx:id="hamburger" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" />
-                                <JFXTextField fx:id="searchLocation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="161.0" promptText="Type or click map" style="-fx-background-color: #f2f5f7;">
+                                <JFXTextField fx:id="searchLocation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="161.0" promptText="%TypeClickMap" style="-fx-background-color: #f2f5f7;">
                                     <font>
                                         <Font name="Arial Bold" size="15.0" />
                                     </font>
@@ -424,7 +424,7 @@
                         <Insets right="60.0" top="20.0" />
                     </GridPane.margin>
                 </JFXDrawer>
-                <JFXButton fx:id="loginBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="Login" textFill="#f2f5f7" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+                <JFXButton fx:id="loginBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="%Login" textFill="#f2f5f7" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                     <GridPane.margin>
                         <Insets right="20.0" top="20.0" />
                     </GridPane.margin>
@@ -467,7 +467,7 @@
                         <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Help Menu" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%HelpMenu" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                             <font>
                                 <Font name="Arial" size="18.0" />
                             </font>
@@ -486,45 +486,45 @@
                             </rowConstraints>
                             <children>
                                 <FontAwesomeIconView fill="#464646" glyphName="ARROWS" size="16" translateX="-80.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Move/Pan Map: " GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%MovePanMap" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                     <font>
                                         <Font name="Arial" size="18.0" />
                                     </font>
                                 </Text>
-                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Drag map to move" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%DragMapMove" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                                     <font>
                                         <Font name="Arial" size="18.0" />
                                     </font>
                                 </Text>
                                 <FontAwesomeIconView fill="#464646" glyphName="SEARCH" size="16" translateX="-60.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Zoom Map:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%ZoomMap" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                     <font>
                                         <Font name="Arial" size="18.0" />
                                     </font>
                                 </Text>
-                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Scroll to zoom" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%ScrollToZoom" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                     <font>
                                         <Font name="Arial" size="18.0" />
                                     </font>
                                 </Text>
                                 <FontAwesomeIconView fill="#464646" glyphName="HOME" size="16" translateX="-100.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Start Location: " GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%SelectStartLocation" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                     <font>
                                         <Font name="Arial" size="18.0" />
                                     </font>
                                 </Text>
-                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Right-Click on location" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%RightClickLocation" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                     <font>
                                         <Font name="Arial" size="18.0" />
                                     </font>
                                 </Text>
                                 <FontAwesomeIconView fill="#464646" glyphName="MAP_PIN" size="16" translateX="-95.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Select End Location:" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%SelectEndLocation" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                                     <font>
                                         <Font name="Arial" size="18.0" />
                                     </font>
                                 </Text>
-                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Left-Click on location" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%LeftClickLocation" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                     <font>
                                         <Font name="Arial" size="18.0" />
                                     </font>
@@ -541,33 +541,33 @@
                     <children>
                         <VBox alignment="CENTER" prefHeight="900.0" prefWidth="333.0" spacing="40.0">
                             <children>
-                                <Label text="Search Service Requests">
+                                <Label text="%SearchServiceRequests">
                                     <font>
                                         <Font size="20.0" />
                                     </font>
                                 </Label>
-                                <Label text="Filter Results">
+                                <Label text="%FilterResults">
                                     <font>
                                         <Font size="17.0" />
                                     </font>
                                 </Label>
                                 <JFXComboBox fx:id="filterType" onAction="#onFilterType" prefHeight="25.0" prefWidth="153.0" />
                                 <JFXComboBox fx:id="availableTypes" onAction="#onAvailableTypes" prefHeight="25.0" prefWidth="153.0" />
-                                <JFXButton buttonType="RAISED" onAction="#onClear" prefHeight="26.0" prefWidth="52.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Clear" textFill="WHITE" />
-                                <JFXButton buttonType="RAISED" onAction="#onSearch" prefHeight="84.0" prefWidth="149.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Search" textFill="WHITE" />
-                                <JFXButton buttonType="RAISED" onAction="#onCancelSearch" prefHeight="60.0" prefWidth="119.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Cancel" textFill="WHITE" />
+                                <JFXButton buttonType="RAISED" onAction="#onClear" prefHeight="26.0" prefWidth="52.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="%Clear" textFill="WHITE" />
+                                <JFXButton buttonType="RAISED" onAction="#onSearch" prefHeight="84.0" prefWidth="149.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="%Search" textFill="WHITE" />
+                                <JFXButton buttonType="RAISED" onAction="#onCancelSearch" prefHeight="60.0" prefWidth="119.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="%Cancel" textFill="WHITE" />
                             </children>
                         </VBox>
                         <TableView fx:id="searchResultTable" prefHeight="540.0" prefWidth="755.0">
                             <columns>
-                                <TableColumn fx:id="btnsCol" editable="false" minWidth="0.0" prefWidth="64.0" resizable="false" text="Choose" />
+                                <TableColumn fx:id="btnsCol" editable="false" minWidth="0.0" prefWidth="64.0" resizable="false" text="%Choose" />
                                 <TableColumn fx:id="idNumberCol" editable="false" minWidth="0.0" prefWidth="38.0" resizable="false" text="ID" />
-                                <TableColumn fx:id="requestTypeCol" editable="false" prefWidth="98.142822265625" resizable="false" text="Type" />
-                                <TableColumn fx:id="firstNameCol" editable="false" prefWidth="112.857177734375" resizable="false" text="First Name" />
-                                <TableColumn fx:id="lastNameCol" editable="false" prefWidth="105.14288330078125" resizable="false" text="Last Name" />
-                                <TableColumn fx:id="destinationCol" editable="false" prefWidth="108.85711669921875" resizable="false" text="Location" />
-                                <TableColumn fx:id="requestPriorityCol" editable="false" prefWidth="60.8570556640625" resizable="false" text="Priority" />
-                                <TableColumn fx:id="theStatusCol" editable="false" prefWidth="108.571533203125" resizable="false" text="Status" />
+                                <TableColumn fx:id="requestTypeCol" editable="false" prefWidth="98.142822265625" resizable="false" text="%Type" />
+                                <TableColumn fx:id="firstNameCol" editable="false" prefWidth="112.857177734375" resizable="false" text="%FirstName" />
+                                <TableColumn fx:id="lastNameCol" editable="false" prefWidth="105.14288330078125" resizable="false" text="%LastName" />
+                                <TableColumn fx:id="destinationCol" editable="false" prefWidth="108.85711669921875" resizable="false" text="%Location" />
+                                <TableColumn fx:id="requestPriorityCol" editable="false" prefWidth="60.8570556640625" resizable="false" text="%Priority" />
+                                <TableColumn fx:id="theStatusCol" editable="false" prefWidth="108.571533203125" resizable="false" text="%Status" />
                             </columns>
                         </TableView>
                     </children>
@@ -597,14 +597,14 @@
                                 <Font size="25.0" />
                             </font>
                         </Label>
-                        <Label fx:id="typeLabel" text="Type: Service Request" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Label fx:id="typeLabel" text="%TypeServiceRequest" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </Label>
                         <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <children>
-                                <Label alignment="CENTER" text="Patient Information" underline="true">
+                                <Label alignment="CENTER" text="%PatientInformation" underline="true">
                                     <font>
                                         <Font size="20.0" />
                                     </font>
@@ -623,12 +623,12 @@
                         </VBox>
                         <VBox GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                             <children>
-                                <Label text="Location" underline="true">
+                                <Label text="%Location" underline="true">
                                     <font>
                                         <Font size="20.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="locationLabel" text="location">
+                                <Label fx:id="locationLabel" text="%Location">
                                     <font>
                                         <Font size="16.0" />
                                     </font>
@@ -642,7 +642,7 @@
                                         <Font size="20.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="statusLabel" text="status">
+                                <Label fx:id="statusLabel" text="%Status">
                                     <font>
                                         <Font size="16.0" />
                                     </font>
@@ -650,27 +650,27 @@
                             </children>
                         </VBox>
                         <JFXTextArea fx:id="instructionsTextArea" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
-                        <Label text="Special Instructions" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                        <Label text="%SpecialInstructions" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </Label>
-                        <JFXButton buttonType="RAISED" onAction="#onCancelEdit" prefHeight="31.0" prefWidth="70.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Cancel" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
-                        <Label fx:id="completedByLabel" text="Completed By:" visible="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-                        <Label fx:id="usernameLabel" text="username" visible="false" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                        <JFXButton buttonType="RAISED" onAction="#onCancelEdit" prefHeight="31.0" prefWidth="70.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="%Cancel" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+                        <Label fx:id="completedByLabel" text="%CompletedBy" visible="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                        <Label fx:id="usernameLabel" text="%Username" visible="false" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                             <GridPane.margin>
                                 <Insets left="65.0" />
                             </GridPane.margin>
                         </Label>
-                        <JFXButton alignment="CENTER" buttonType="RAISED" onAction="#onSubmitEdit" prefHeight="31.0" prefWidth="70.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="Submit" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                        <JFXButton alignment="CENTER" buttonType="RAISED" onAction="#onSubmitEdit" prefHeight="31.0" prefWidth="70.0" ripplerFill="#11119d" style="-fx-background-color: #5264ae;" text="%Submit" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
                         <JFXTextField fx:id="usernameSearch" alignment="BOTTOM_LEFT" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
                         <JFXListView fx:id="usernameList" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="76.0" prefWidth="239.0" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
-                        <Label text="Assign to: " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                        <Label text="%AssignTo" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
                             <font>
                                 <Font size="20.0" />
                             </font>
                         </Label>
-                        <JFXCheckBox fx:id="completeCheck" maxHeight="-Infinity" maxWidth="-Infinity" text="Complete" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <JFXCheckBox fx:id="completeCheck" maxHeight="-Infinity" maxWidth="-Infinity" text="%Complete" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                     </children>
                 </GridPane>
             </children>
@@ -682,14 +682,14 @@
                         <Pane prefHeight="543.0" prefWidth="328.0">
                             <children>
                                 <FontAwesomeIconView glyphName="USER" layoutX="182.0" layoutY="47.0" size="40.0" />
-                                <Label layoutX="33.0" layoutY="18.0" text="Search Users">
+                                <Label layoutX="33.0" layoutY="18.0" text="%SearchUsers">
                                     <font>
                                         <Font size="22.0" />
                                     </font>
                                 </Label>
                                 <JFXTextField fx:id="userTextField" layoutX="61.0" layoutY="193.0" />
-                                <JFXButton buttonType="RAISED" layoutX="97.0" layoutY="437.0" onAction="#onCancelEditUser" prefHeight="41.0" prefWidth="62.0" style="-fx-background-color: #606060;" text="Cancel" />
-                                <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutX="75.0" layoutY="299.0" onAction="#onNewUserEvent" prefHeight="76.0" prefWidth="107.0" style="-fx-background-color: #606060;" text="New User">
+                                <JFXButton buttonType="RAISED" layoutX="97.0" layoutY="437.0" onAction="#onCancelEditUser" prefHeight="41.0" prefWidth="62.0" style="-fx-background-color: #606060;" text="%Cancel" />
+                                <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutX="75.0" layoutY="299.0" onAction="#onNewUserEvent" prefHeight="76.0" prefWidth="107.0" style="-fx-background-color: #606060;" text="%NewUser">
                                     <graphic>
                                         <FontAwesomeIconView glyphName="USER" size="20" />
                                     </graphic>
@@ -699,12 +699,12 @@
                         </Pane>
                         <TableView fx:id="searchUserResultTable" prefHeight="900.0" prefWidth="701.0">
                             <columns>
-                                <TableColumn fx:id="chooseCol" editable="false" minWidth="0.0" prefWidth="64.0" resizable="false" text="Choose" />
-                                <TableColumn fx:id="usernameCol" editable="false" minWidth="0.0" prefWidth="109.0" resizable="false" text="Username" />
-                                <TableColumn fx:id="firstNameUserCol" editable="false" prefWidth="111.28570556640625" resizable="false" text="First Name" />
-                                <TableColumn fx:id="lastNameUserCol" editable="false" prefWidth="114.5714111328125" resizable="false" text="Last Name" />
-                                <TableColumn fx:id="privilegeCol" editable="false" prefWidth="120.71429443359375" resizable="false" text="Privilege" />
-                                <TableColumn fx:id="occupationCol" editable="false" prefWidth="106.142822265625" resizable="false" text="Occupation" />
+                                <TableColumn fx:id="chooseCol" editable="false" minWidth="0.0" prefWidth="64.0" resizable="false" text="%Choose" />
+                                <TableColumn fx:id="usernameCol" editable="false" minWidth="0.0" prefWidth="109.0" resizable="false" text="%Username" />
+                                <TableColumn fx:id="firstNameUserCol" editable="false" prefWidth="111.28570556640625" resizable="false" text="%FirstName" />
+                                <TableColumn fx:id="lastNameUserCol" editable="false" prefWidth="114.5714111328125" resizable="false" text="%LastName" />
+                                <TableColumn fx:id="privilegeCol" editable="false" prefWidth="120.71429443359375" resizable="false" text="%Privilege" />
+                                <TableColumn fx:id="occupationCol" editable="false" prefWidth="106.142822265625" resizable="false" text="%Occupation" />
                             </columns>
                         </TableView>
                     </children>
@@ -728,25 +728,25 @@
                 <RowConstraints maxHeight="182.0" minHeight="10.0" prefHeight="178.41131591796875" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Short Name:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%ShortName" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                     <font>
                         <Font size="20.0" />
                     </font>
                 </Text>
                 <TextField fx:id="modNode_shortName" layoutX="195.0" layoutY="169.0" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                <Text fill="#fffbfb" layoutX="65.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Long Name:" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <Text fill="#fffbfb" layoutX="65.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%LongName" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <font>
                         <Font size="20.0" />
                     </font>
                 </Text>
                 <TextField fx:id="modNode_longName" layoutX="10.0" layoutY="16.0" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Type:" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%Type" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                     <font>
                         <Font size="20.0" />
                     </font>
                 </Text>
                 <ComboBox fx:id="modNode_type" maxWidth="100.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Building:" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%Building" GridPane.halignment="CENTER" GridPane.rowIndex="4">
                     <font>
                         <Font size="20.0" />
                     </font>
@@ -764,12 +764,12 @@
                     </font>
                 </Text>
                 <TextField fx:id="modNode_y" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-                <JFXButton mnemonicParsing="false" onAction="#onNodeModify" text="Modify Node" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                <JFXButton mnemonicParsing="false" onAction="#onNodeModify" text="%ModifyNode" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                     <font>
                         <Font size="20.0" />
                     </font>
                 </JFXButton>
-                <JFXButton mnemonicParsing="false" onAction="#onModificationCancel" text="Cancel" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                <JFXButton mnemonicParsing="false" onAction="#onModificationCancel" text="%Cancel" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                     <font>
                         <Font size="20.0" />
                     </font>
@@ -778,43 +778,43 @@
         </GridPane>
         <AnchorPane fx:id="newUserPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="463.0" prefWidth="638.0" style="-fx-background-color: WHITE;" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <children>
-                <Label fx:id="userLabel" alignment="CENTER" layoutX="292.0" layoutY="27.0" text="User" textAlignment="CENTER">
+                <Label fx:id="userLabel" alignment="CENTER" layoutX="292.0" layoutY="27.0" text="%User" textAlignment="CENTER">
                     <font>
                         <Font size="27.0" />
                     </font>
                 </Label>
                 <Line endX="500.0" layoutX="119.0" layoutY="322.0" startX="-100.0" />
-                <Label layoutX="20.0" layoutY="338.0" text="Service Requests">
+                <Label layoutX="20.0" layoutY="338.0" text="%ServiceRequest">
                     <font>
                         <Font size="18.0" />
                     </font>
                 </Label>
-                <JFXCheckBox fx:id="languageCheck" layoutX="70.0" layoutY="380.0" text="Language Interpreter" />
-                <JFXCheckBox fx:id="religiousCheck" layoutX="280.0" layoutY="380.0" text="Religious Services" />
-                <JFXCheckBox fx:id="securityCheck" layoutX="490.0" layoutY="380.0" text="Security Request" />
-                <JFXButton buttonType="RAISED" layoutX="568.0" layoutY="424.0" onAction="#onSubmitUser" style="-fx-background-color: #042E58;" text="Submit" textFill="WHITE" />
-                <JFXButton buttonType="RAISED" layoutX="20.0" layoutY="424.0" onAction="#onCancelUser" style="-fx-background-color: #042E58;" text="Cancel" textFill="WHITE" />
-                <Label layoutX="32.0" layoutY="120.0" text="Username:">
+                <JFXCheckBox fx:id="languageCheck" layoutX="70.0" layoutY="380.0" text="%LanguageInterpreter" />
+                <JFXCheckBox fx:id="religiousCheck" layoutX="280.0" layoutY="380.0" text="%ReligiousServices" />
+                <JFXCheckBox fx:id="securityCheck" layoutX="490.0" layoutY="380.0" text="%SecurityRequest" />
+                <JFXButton buttonType="RAISED" layoutX="568.0" layoutY="424.0" onAction="#onSubmitUser" style="-fx-background-color: #042E58;" text="%Submit" textFill="WHITE" />
+                <JFXButton buttonType="RAISED" layoutX="20.0" layoutY="424.0" onAction="#onCancelUser" style="-fx-background-color: #042E58;" text="%Cancel" textFill="WHITE" />
+                <Label layoutX="32.0" layoutY="120.0" text="%Username">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Label layoutX="32.0" layoutY="180.0" text="First Name:">
+                <Label layoutX="32.0" layoutY="180.0" text="%FirstName">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Label layoutX="32.0" layoutY="240.0" text="Last Name:">
+                <Label layoutX="32.0" layoutY="240.0" text="%LastName">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Label layoutX="340.0" layoutY="180.0" text="Occupation:">
+                <Label layoutX="340.0" layoutY="180.0" text="%Occupation">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Label layoutX="340.0" layoutY="240.0" text="Privilege:">
+                <Label layoutX="340.0" layoutY="240.0" text="%Privilege">
                     <font>
                         <Font size="14.0" />
                     </font>
@@ -824,12 +824,12 @@
                 <JFXTextField fx:id="lnameField" alignment="BOTTOM_LEFT" layoutX="101.0" layoutY="238.0" />
                 <JFXTextField fx:id="occupationField" alignment="BOTTOM_LEFT" layoutX="415.0" layoutY="180.0" />
                 <JFXComboBox fx:id="privilegeCombo" layoutX="399.0" layoutY="240.0" onAction="#onPrivilegeBox" prefHeight="25.0" prefWidth="126.0" />
-                <Label layoutX="340.0" layoutY="120.0" text="Password:">
+                <Label layoutX="340.0" layoutY="120.0" text="%Password">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <JFXTextField fx:id="passwordField" alignment="BOTTOM_LEFT" layoutX="402.0" layoutY="118.0" promptText="Change Password" />
+                <JFXTextField fx:id="passwordField" alignment="BOTTOM_LEFT" layoutX="402.0" layoutY="118.0" promptText="%ChangePassword" />
             </children>
         </AnchorPane>
         <AnchorPane fx:id="languageInterpreterPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="393.0" prefWidth="629.0" style="-fx-background-color: WHITE;" visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
@@ -880,13 +880,13 @@
             <children>
                 <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
                     <children>
-                        <Text layoutX="62.0" layoutY="48.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Request" />
-                        <Label layoutX="18.0" layoutY="66.0" text="Priority" />
-                        <Label layoutX="18.0" layoutY="133.0" text="Location" />
+                        <Text layoutX="62.0" layoutY="48.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%SecurityRequest" />
+                        <Label layoutX="18.0" layoutY="66.0" text="%Priority" />
+                        <Label layoutX="18.0" layoutY="133.0" text="%Location" />
                     <Label fx:id="securityLocationRequired" layoutX="221.0" layoutY="133.0" text="%RequiredField" textFill="RED" visible="false" />
-                        <Label layoutX="28.0" layoutY="179.0" scaleX="1.2" scaleY="1.2" scaleZ="1.2" text="Special Instructions" />
-                        <JFXButton buttonType="RAISED" layoutX="27.0" layoutY="347.0" onAction="#onCancelSecurity" prefHeight="31.0" prefWidth="104.0" style="-fx-background-color: #042e58;" text="Cancel" textFill="#f5f2f2" />
-                        <JFXButton buttonType="RAISED" layoutX="506.0" layoutY="347.0" onAction="#onSubmitSecurity" prefHeight="31.0" prefWidth="104.0" style="-fx-background-color: #042e58;" text="Submit Request" textFill="#fff2f2" />
+                        <Label layoutX="28.0" layoutY="179.0" scaleX="1.2" scaleY="1.2" scaleZ="1.2" text="%SpecialInstructions" />
+                        <JFXButton buttonType="RAISED" layoutX="27.0" layoutY="347.0" onAction="#onCancelSecurity" prefHeight="31.0" prefWidth="104.0" style="-fx-background-color: #042e58;" text="%Cancel" textFill="#f5f2f2" />
+                        <JFXButton buttonType="RAISED" layoutX="506.0" layoutY="347.0" onAction="#onSubmitSecurity" prefHeight="31.0" prefWidth="104.0" style="-fx-background-color: #042e58;" text="%SubmitRequest" textFill="#fff2f2" />
                         <RadioButton layoutX="61.0" layoutY="98.0" mnemonicParsing="false" selected="true" text="1">
                             <toggleGroup>
                                 <ToggleGroup fx:id="securityToggle" />
