@@ -57,9 +57,11 @@ public class MapViewElement extends PageElement {
     public void resetStartLocation() {
         if (map.getNodes(node -> node.getNodeID().equals(startNodeID)).size() > 0) {
             setSelectedNodeStart(map.getNodes(node -> node.getNodeID().equals(startNodeID)).iterator().next());
+            setSelectedNodeEnd(map.getNodes(node -> node.getNodeID().equals(startNodeID)).iterator().next());
             map.setFloor(selectedNodeStart.getFloor());
         } else {
             setSelectedNodeStart(map.findNodeClosestTo(1950, 840, true, node -> node.getFloor().equals("01")));
+            setSelectedNodeEnd(map.findNodeClosestTo(1950, 840, true, node -> node.getFloor().equals("01")));
         }
     }
 
