@@ -6,7 +6,6 @@ import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.controller.*;
 import edu.wpi.cs3733d18.teamF.controller.page.element.about.AboutElement;
-import edu.wpi.cs3733d18.teamF.controller.page.element.inbox.InboxElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewListener;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
@@ -281,9 +280,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //                             //
     /////////////////////////////////
     @FXML
-    private Pane helpPane;
-    @FXML
-    private GridPane userInstructions, adminInstructions;
+    private AnchorPane helpPane;
     /////////////////////////////////
     //                             //
     //           Date/Time         //
@@ -293,12 +290,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private Label time;
     @FXML
     private Label date;
-    /////////////////////////////////
-    //                             //
-    //           Inbox             //
-    //                             //
-    /////////////////////////////////
-    InboxElement inboxElement;
 
     /////////////////////////////////
     //                             //
@@ -982,13 +973,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     void onHelpPopup() {
-        if (PermissionSingleton.getInstance().isAdmin()) {
-            userInstructions.setVisible(false);
-            adminInstructions.setVisible(true);
-        } else {
-            adminInstructions.setVisible(false);
-            userInstructions.setVisible(true);
-        }
         helpPane.setVisible(true);
     }
 
@@ -1843,19 +1827,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         addLocationPopup.setVisible(false);
     }
 
-
-    @FXML
-    private void onInboxBtn(){
-        // initialize element
-        // init mapView
-        Pair<MapViewElement, Pane> mapElementInfo = switcher.loadElement("mapView.fxml");
-        mapViewElement = mapElementInfo.getKey();
-        mapViewElement.initialize(this, map, switcher, mapElementPane);
-
-        Pair<InboxElement, Pane> inboxElementInfo = switcher.loadElement("inbox.fxml");
-        inboxElement = inboxElementInfo.getKey();
-        inboxElement.initialize(switcher);
-    }
 
     @FXML
     private void onAddNode(){
