@@ -19,12 +19,14 @@ public abstract class PageElement {
     public void hideElement() {
         root.setMouseTransparent(true);
         root.setPickOnBounds(false);
+        root.setVisible(false);
         hideElement(root);
     }
 
     public void showElement() {
         root.setMouseTransparent(false);
         root.setPickOnBounds(true);
+        root.setVisible(true);
         showElement(root);
     }
 
@@ -35,6 +37,7 @@ public abstract class PageElement {
                 hideElement((Pane) component);
                 component.setMouseTransparent(true);
                 component.setPickOnBounds(false);
+                component.setVisible(false);
 
             } else {
                 component.setVisible(false);
@@ -51,6 +54,7 @@ public abstract class PageElement {
                 hideElement((Pane) component);
                 component.setMouseTransparent(false);
                 component.setPickOnBounds(true);
+                component.setVisible(true);
             } else {
                 component.setVisible(true);
                 component.setMouseTransparent(false);

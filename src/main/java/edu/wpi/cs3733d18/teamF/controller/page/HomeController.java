@@ -513,7 +513,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         );
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
-
     }
 
     @Override

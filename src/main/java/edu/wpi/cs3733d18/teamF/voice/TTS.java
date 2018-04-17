@@ -7,20 +7,20 @@ public class TTS {
     private Voice voice;
     private VoiceManager voiceManager = VoiceManager.getInstance();
 
-    public TTS(){
+    public TTS() {
         setVoice("kevin16");
     }
 
-    public void setVoice(String voiceName){
+    public void setVoice(String voiceName) {
         voice = voiceManager.getVoice(voiceName);
         try {
             voice.allocate();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void speak(String toSay){
-        voice.speak(toSay);
+    public void speak(String toSay) {
+        new Thread(() -> voice.speak(toSay)).start();
     }
 }

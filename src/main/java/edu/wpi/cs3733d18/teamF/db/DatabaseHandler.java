@@ -1,5 +1,7 @@
 package edu.wpi.cs3733d18.teamF.db;
 
+import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -10,6 +12,7 @@ public class DatabaseHandler {
     private String databaseURL = "jdbc:derby:database;create=true";
     private Connection connection = null;
     private HashSet<DatabaseItem> trackedItems = new HashSet<>();
+    private Exception connectionStatus;
 
     public DatabaseHandler() {
         connectToDatabase();
@@ -116,9 +119,14 @@ public class DatabaseHandler {
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
             connection = DriverManager.getConnection(databaseURL);
+            connectionStatus = null;
         } catch (Exception e) {
             e.printStackTrace();
+            connectionStatus = new Exception("Database is currently being accessed by another instance of the program.  Please close all other instances before restarting the program.");
         }
     }
 
+    public Exception isConnected() {
+        return connectionStatus;
+    }
 }

@@ -74,7 +74,7 @@ public class Path {
 
             double angle = getAngle(previousNode, currentNode, nextNode);
 
-            dist += previousNode.displacementTo(currentNode);
+            dist += previousNode.displacementTo(currentNode)/7.f;
 
             if(currentNode.getNodeType().equals("ELEV") && nextNode.getNodeType().equals("ELEV")){
                 directions.add("Take Elevator to floor: " + nextNode.getFloor());
