@@ -316,7 +316,10 @@
                                 <FontAwesomeIconView fx:id="directionsArrow" fill="#f2f5f7" glyphName="ARROW_RIGHT" onMouseClicked="#onArrowEvent" size="25" wrappingWidth="22.14285659790039" />
                             </children>
                         </HBox>
-                        <Pane fx:id="voicePane" pickOnBounds="false" prefHeight="148.0" prefWidth="1280.0" />
+                        <Pane fx:id="voicePane" pickOnBounds="false" prefHeight="148.0" prefWidth="1280.0">
+                     <children>
+                        <FontAwesomeIconView fill="#727272" glyphName="LANGUAGE" layoutX="1223.0" layoutY="579.0" size="50" />
+                     </children></Pane>
                     </children>
                 </StackPane>
                 <Text fx:id="MainTitle" fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%BrighamTitleSecondFloor" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -902,6 +905,5 @@
                 </AnchorPane>
             </children>
         </VBox>
-        <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
     </children>
 </GridPane>
