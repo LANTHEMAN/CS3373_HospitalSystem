@@ -80,10 +80,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     AnchorPane mapElementPane;
     @FXML
     AnchorPane aboutElementPane;
-    /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-    //REMOVE WHEN YA DONT WANT THE HAPPY BDAY BUTTON
-    /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-    TTS justinTTS = new TTS();
+
     private PaneSwitcher switcher;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
     ///////////////////////////////
@@ -594,9 +591,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
     }
 
-    public void onBirthday() {
-        justinTTS.speak("happy birthday to you, happy birthday to you, happy birthday dear justin, happy birthday you yaaaaaaaay");
-    }
 
     // will shake the password field back and forth
     private void shakePasswordField(JFXPasswordField passwordField) {
