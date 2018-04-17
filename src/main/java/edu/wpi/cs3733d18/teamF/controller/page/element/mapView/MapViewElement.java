@@ -57,9 +57,11 @@ public class MapViewElement extends PageElement {
     public void resetStartLocation() {
         if (map.getNodes(node -> node.getNodeID().equals(startNodeID)).size() > 0) {
             setSelectedNodeStart(map.getNodes(node -> node.getNodeID().equals(startNodeID)).iterator().next());
+            setSelectedNodeEnd(map.getNodes(node -> node.getNodeID().equals(startNodeID)).iterator().next());
             map.setFloor(selectedNodeStart.getFloor());
         } else {
             setSelectedNodeStart(map.findNodeClosestTo(1950, 840, true, node -> node.getFloor().equals("01")));
+            setSelectedNodeEnd(map.findNodeClosestTo(1950, 840, true, node -> node.getFloor().equals("01")));
         }
     }
 
@@ -96,6 +98,27 @@ public class MapViewElement extends PageElement {
                     selectedNodeEnd = null;
                 }
                 ctrlHeld = false;
+            }
+        });
+
+        mapContainer.setOnMouseMoved(e -> {
+            Point2D mapPos = getMapPos(e);
+            boolean nodeIsSelected = isNodeSelected(mapPos);
+            if (nodeIsSelected) {
+                Node node = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(),
+                        node1 -> node1.getFloor().equals(map.getFloor()));
+                if (!(mapDrawController.getDrawnPath() != null
+                        && mapDrawController.getDrawnPath().getNodes().contains(node)
+                        && (node.getNodeType().equals("ELEV") || node.getNodeType().equals("STAI")))) {
+                    return;
+                }
+                if (!mapDrawController.isHoveringNode(node)) {
+                    mapDrawController.hoverNode(node);
+                }
+            } else {
+                if (!mapDrawController.isHoveringNode(null)) {
+                    mapDrawController.unhoverNode();
+                }
             }
         });
 
@@ -225,7 +248,7 @@ public class MapViewElement extends PageElement {
                         Node dst = map.findNodeClosestTo(mapPos.getX(), mapPos.getY(), map.is2D(), node -> node.getFloor().equals(map.getFloor()));
                         if ((map.is2D() ? mapPos.distance(dst.getPosition()) : mapPos.distance(dst.getWireframePosition())) < 120 && selectedNodeStart != null) {
                             if (mapDrawController.getDrawnPath() != null
-                                    && ( dst.getNodeType().equals("ELEV") || dst.getNodeType().equals("STAI"))
+                                    && (dst.getNodeType().equals("ELEV") || dst.getNodeType().equals("STAI"))
                                     && mapDrawController.getDrawnPath().getNodes().contains(dst)) {
                                 // change floors
                                 HashSet<Node> neighborNodes = map.getNeighbors(dst);
@@ -467,6 +490,7 @@ public class MapViewElement extends PageElement {
         public void update(Observable o, Object arg) {
             if (!mapFloorDrawn.equals(map.getFloor()) || isMap2D != map.is2D()) {
                 refreshFloorDrawn();
+                mapDrawController.refreshPath();
             }
         }
     }
