@@ -14,6 +14,7 @@ public class PaneMapController extends PaneController implements Observer {
 
     private MapDrawable mapDrawer;
     public Path drawnPath = null;
+    Node hoveredNode = null;
 
     PaneMapController(Pane root, Map map, MapDrawable mapDrawer) {
         super(root);
@@ -37,16 +38,23 @@ public class PaneMapController extends PaneController implements Observer {
         refresh();
     }
 
+    public void refreshPath(){
+        if(drawnPath == null){
+            return;
+        }
+        mapDrawer.redrawPath(drawnPath);
+        refresh();
+    }
+
     public void showPath(Path path){
         mapDrawer.showPath(path);
         this.drawnPath = path;
-
         if(path.getNodes().size() > 0){
             addDefaultStartNode(path.getNodes().get(0));
         }
-
         refresh();
     }
+
     public void unshowPath(){
         mapDrawer.unshowPath();
         this.drawnPath = null;
@@ -86,6 +94,25 @@ public class PaneMapController extends PaneController implements Observer {
         mapDrawer.addDefaultStartNode(node);
         refresh();
     }
+
+    void hoverNode(Node node){
+        if(hoveredNode == node){
+            return;
+        }
+        hoveredNode = node;
+        mapDrawer.hoverNode(node);
+        refresh();
+    }
+    void unhoverNode(){
+        hoveredNode = null;
+        mapDrawer.unhoverNode();
+        refresh();
+    }
+
+    boolean isHoveringNode(Node node){
+        return node == hoveredNode;
+    }
+
 
     @Override
     public void update(Observable o, Object arg) {

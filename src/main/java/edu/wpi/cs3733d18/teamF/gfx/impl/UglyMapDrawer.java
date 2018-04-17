@@ -9,18 +9,17 @@ import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
 public class UglyMapDrawer extends MapDrawable {
 
+    boolean redrawPath = true;
     private Point2D selectedNodePos = null;
+    private Point2D hoveredNodePos = null;
     private Path path = null;
     private boolean showNodes = false;
     private boolean showEdges = false;
-
     private EdgeDrawable edgeDrawer = new LineEdgeDrawer();
     private NodeDrawable nodeDrawer = new CircleNodeDrawer();
-    private PathDrawable pathDrawer2 = new StalePathDrawer(new LineEdgeDrawer(Color.DEEPPINK));
     private PathDrawable pathDrawer3 = new DynamicPathDrawer();
     private PathDrawable pathDrawer = pathDrawer3;
     private NodeDrawable elevatorDrawer = new ElevatorNodeDrawer();
@@ -29,6 +28,7 @@ public class UglyMapDrawer extends MapDrawable {
     private NodeDrawable restroomDrawer = new RestroomNodeDrawer();
     private NodeDrawable currNodeDrawable = nodeDrawer;
     private NodeDrawable startNodeDefault = null;
+    private Pane pathPane = new Pane();
 
     public UglyMapDrawer() {
         super();
@@ -46,11 +46,21 @@ public class UglyMapDrawer extends MapDrawable {
 
     @Override
     public void showPath(Path path) {
+        if (this.path != path) {
+            redrawPath = true;
+        }
         this.path = path;
     }
 
     @Override
+    public void redrawPath(Path path) {
+        this.path = path;
+        redrawPath = true;
+    }
+
+    @Override
     public void unshowPath() {
+        redrawPath = true;
         path = null;
     }
 
@@ -76,20 +86,33 @@ public class UglyMapDrawer extends MapDrawable {
 
     @Override
     public void addDefaultStartNode(Node node) {
-        if(node == null){
+        if (node == null) {
             startNodeDefault = null;
-        }
-        else{
+        } else {
             startNodeDefault = new StartNodeDrawer(node);
         }
 
     }
 
     @Override
+    public void hoverNode(Node node) {
+        hoveredNodePos = new Point2D(node.getPosition().getX(), node.getPosition().getY());
+    }
+
+    @Override
+    public void unhoverNode() {
+        hoveredNodePos = null;
+    }
+
+    @Override
     public void draw(Pane pane) {
         Node selectedNode = null;
+        Node hoveredNode = null;
         if (selectedNodePos != null) {
             selectedNode = map.findNodeClosestTo(selectedNodePos.getX(), selectedNodePos.getY(), true);
+        }
+        if (hoveredNodePos != null) {
+            hoveredNode = map.findNodeClosestTo(hoveredNodePos.getX(), hoveredNodePos.getY(), true);
         }
 
         if (showEdges) {
@@ -109,52 +132,65 @@ public class UglyMapDrawer extends MapDrawable {
                 if (!(edge.getNode1().getFloor().equals(edge.getNode2().getFloor()))) {
                     if (edge.getNode1().getFloor().equals(map.getFloor())) {
                         Node node = edge.getNode1();
-                        currNodeDrawable = getDrawable(node.getNodeType());
+                        currNodeDrawable = getDrawer(node.getNodeType());
                         currNodeDrawable.update(node);
                         currNodeDrawable.draw(pane);
                     } else if (edge.getNode2().getFloor().equals(map.getFloor())) {
                         Node node = edge.getNode2();
-                        currNodeDrawable = getDrawable(node.getNodeType());
+                        currNodeDrawable = getDrawer(node.getNodeType());
                         currNodeDrawable.update(node);
                         currNodeDrawable.draw(pane);
                     }
                 }
             }
-            Node startNode = path.getNodes().get(0);
-            NodeDrawable startIconDrawer = new StartNodeDrawer(startNode);
-            startIconDrawer.draw(pane);
 
-            Node endNode = path.getNodes().get(path.getNodes().size() - 1);
-            NodeDrawable endIconDrawer = new EndNodeDrawer();
-            endIconDrawer.update(endNode);
-            endIconDrawer.draw(pane);
+            pane.getChildren().add(pathPane);
+            pathPane.maxWidthProperty().bind(pane.maxWidthProperty());
+            pathPane.maxHeightProperty().bind(pane.maxHeightProperty());
+            if (redrawPath) {
+                pathPane.getChildren().clear();
 
-            pathDrawer.update(path);
-            pathDrawer.draw(pane);
-        }
-        else{
-            if(startNodeDefault != null){
+                Node startNode = path.getNodes().get(0);
+                NodeDrawable startIconDrawer = new StartNodeDrawer(startNode);
+                startIconDrawer.draw(pathPane);
+
+                Node endNode = path.getNodes().get(path.getNodes().size() - 1);
+                NodeDrawable endIconDrawer = new EndNodeDrawer();
+                endIconDrawer.update(endNode);
+                endIconDrawer.draw(pathPane);
+
+                pathDrawer.update(path);
+                pathDrawer.draw(pathPane);
+                redrawPath = false;
+            }
+
+        } else {
+            if (startNodeDefault != null) {
                 startNodeDefault.draw(pane);
             }
         }
         for (Node node : map.getNodes(node -> node.getFloor().equals(map.getFloor()))) {
-            currNodeDrawable = getDrawable(node.getNodeType());
+            currNodeDrawable = getDrawer(node.getNodeType());
             currNodeDrawable.update(node);
             if (selectedNode == node) {
                 currNodeDrawable.selectNode();
+            } else if (hoveredNode == node) {
+                currNodeDrawable.hoverNode();
             } else if (!showNodes) {
                 continue;
             }
             currNodeDrawable.draw(pane);
             if (selectedNode == node) {
                 currNodeDrawable.unselectNode();
-
+            } else if (hoveredNode == node) {
+                currNodeDrawable.unhoverNode();
             }
         }
     }
 
+
     //TODO: Implement drawing for all node types
-    private NodeDrawable getDrawable(String type) {
+    private NodeDrawable getDrawer(String type) {
         switch (type) {
             case "ELEV":
                 return elevatorDrawer;
