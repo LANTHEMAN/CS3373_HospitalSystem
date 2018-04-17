@@ -5,9 +5,11 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.NodeDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Node;
+import javafx.animation.TranslateTransition;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
 public class EndNodeDrawer extends NodeDrawable {
 
@@ -50,5 +52,10 @@ public class EndNodeDrawer extends NodeDrawable {
         end.setFill(Color.RED);
         end.setVisible(true);
         pane.getChildren().add(end);
+
+        TranslateTransition dropEnd = new TranslateTransition(Duration.seconds(0.15), end);
+        dropEnd.setFromY(end.getTranslateY() - 10);
+        dropEnd.setToY(end.getTranslateY());
+        dropEnd.play();
     }
 }

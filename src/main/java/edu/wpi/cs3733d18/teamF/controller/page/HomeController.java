@@ -668,31 +668,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
     }
 
-    /*private void editButtonColor(String floor, String borderColor, String backgroundColor) {
-        JFXButton btn;
-        switch (floor) {
-            case "03":
-                btn = floor3;
-                break;
-            case "02":
-                btn = floor2;
-                break;
-            case "01":
-                btn = floor1;
-                break;
-            case "0G":
-                btn = groundFloor;
-                break;
-            case "L1":
-                btn = l1;
-                break;
-            default: // case "L2"
-                btn = l2;
-                break;
-        }
-        setButtonColor(btn, borderColor, backgroundColor);
-    }*/
-
     private void resetFloorButtonColors() {
         setAllButtonColors("#042E58", "#042E58");
     }
