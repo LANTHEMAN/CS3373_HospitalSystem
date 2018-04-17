@@ -255,7 +255,7 @@ public class MapViewElement extends PageElement {
                                 for (Node node : neighborNodes) {
                                     if (!node.getFloor().equals(dst.getFloor()) && mapDrawController.getDrawnPath().getNodes().contains(node)) {
                                         map.setFloor(node.getFloor());
-                                        listener.onFloorChanged();
+                                        listener.onFloorRefresh();
                                         return;
                                     }
                                 }

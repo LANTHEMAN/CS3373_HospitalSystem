@@ -13,7 +13,6 @@ import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
 import edu.wpi.cs3733d18.teamF.graph.*;
 import edu.wpi.cs3733d18.teamF.qr.qrConverter;
 import edu.wpi.cs3733d18.teamF.sr.*;
-import edu.wpi.cs3733d18.teamF.voice.TTS;
 import edu.wpi.cs3733d18.teamF.voice.VoiceCommandVerification;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.animation.Animation;
@@ -529,7 +528,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
             }
         }
-        reloadMap();
+        onFloorRefresh();
     }
 
     // will filter the given ListView for the given input String
@@ -777,7 +776,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             mapViewElement.setSelectedNodeEnd(selectedNode);
             mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
             map.setFloor(selectedNode.getFloor());
-            reloadMap();
+            onFloorRefresh();
         }
     }
 
@@ -793,7 +792,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         changeFloorButtons(newPath);
 
         map.setFloor(mapViewElement.getSelectedNodeStart().getFloor());
-        reloadMap();
+        onFloorRefresh();
     }
 
     @FXML
@@ -803,7 +802,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         } else{
             map.disableElevators();
         }
-        mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+        onFloorRefresh();
     }
 
     @FXML
@@ -813,7 +812,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         } else{
             map.disableStairs();
         }
-        mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+        onFloorRefresh();
     }
 
     @FXML
@@ -882,7 +881,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             changeFloorButtons(newPath);
 
             map.setFloor(sourceNode.getFloor());
-            reloadMap();
+            onFloorRefresh();
         }
     }
 
@@ -1022,7 +1021,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     void on2D() {
         map.setIs2D(true);
-        reloadMap();
+        onFloorRefresh();
         btn2D.setButtonType(JFXButton.ButtonType.RAISED);
         btn2D.setStyle("-fx-background-color:  #f2f5f7");
         btn3D.setButtonType(JFXButton.ButtonType.FLAT);
@@ -1033,7 +1032,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     void on3D() {
         map.setIs2D(false);
-        reloadMap();
+        onFloorRefresh();
         btn2D.setButtonType(JFXButton.ButtonType.FLAT);
         btn2D.setStyle("-fx-background-color:  #b6b8b9");
         btn3D.setButtonType(JFXButton.ButtonType.RAISED);
@@ -1065,14 +1064,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                 break;
         }
         //floorNode.animateList(false);
-        reloadMap();
     }
-
-    private void reloadMap() {
-        int index;
-
-    }
-
 
     //////////////////////////////
     //                          //
@@ -1819,8 +1811,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     @Override
-    public void onFloorChanged() {
-
+    public void onFloorRefresh() {
+        mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+        Path newPath = mapViewElement.getMapDrawController().getDrawnPath();
+        displayTextDirections(newPath);
+        resetFloorButtonColors();
+        changeFloorButtons(newPath);
+        changeFloor(map.getFloor());
     }
 
 
