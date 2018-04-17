@@ -366,7 +366,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         floorNode.addAnimatedNode(l2);
 
 
-
         // set the hamburger menu on top left accordingly
         if (PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
             setGuestMenu();
@@ -514,16 +513,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             } else if (cmd.equalsIgnoreCase("Activate")) {
                 // got a string saying that the activation command has been said
                 paneVoiceController.setVisibility(true);
-            } else if(cmd.equalsIgnoreCase("DisableElevators")){
+            } else if (cmd.equalsIgnoreCase("DisableElevators")) {
                 disableElevatorsBox.setSelected(false);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            } else if(cmd.equalsIgnoreCase("DisableStairs")){
+            } else if (cmd.equalsIgnoreCase("DisableStairs")) {
                 disableStairsBox.setSelected(false);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            }else if(cmd.equalsIgnoreCase("EnableElevators")){
+            } else if (cmd.equalsIgnoreCase("EnableElevators")) {
                 disableElevatorsBox.setSelected(true);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            } else if(cmd.equalsIgnoreCase("EnableStairs")){
+            } else if (cmd.equalsIgnoreCase("EnableStairs")) {
                 disableStairsBox.setSelected(true);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
             }
@@ -592,7 +591,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         setCancelMenuEvent();
         serviceRequestList.animateList(false);
         serviceRequestList.animateList(false);
-        if(mapEditorDrawer.isShown()) {
+        if (mapEditorDrawer.isShown()) {
             mapEditorDrawer.close();
         }
         setGuestMenu();
@@ -636,7 +635,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             case "01":
                 return floor1;
             case "0G":
-                return  groundFloor;
+                return groundFloor;
             case "L1":
                 return l1;
             default: // case "L2"
@@ -652,7 +651,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         setAllButtonColors("#4f6d8a", "#4f6d8a");
     }
 
-    private void  setAllButtonColors(String borderColor, String backgroundColor) {
+    private void setAllButtonColors(String borderColor, String backgroundColor) {
         setButtonColor(l2, borderColor, backgroundColor);
         setButtonColor(l1, borderColor, backgroundColor);
         setButtonColor(groundFloor, borderColor, backgroundColor);
@@ -796,20 +795,20 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     @FXML
-    void flipElevators(){
-        if(disableElevatorsBox.isSelected()) {
+    void flipElevators() {
+        if (disableElevatorsBox.isSelected()) {
             map.enableElevators();
-        } else{
+        } else {
             map.disableElevators();
         }
         onFloorRefresh();
     }
 
     @FXML
-    void flipStairs(){
-        if(disableStairsBox.isSelected()) {
+    void flipStairs() {
+        if (disableStairsBox.isSelected()) {
             map.enableStairs();
-        } else{
+        } else {
             map.disableStairs();
         }
         onFloorRefresh();
@@ -1172,9 +1171,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         onCancelDirectionsEvent();
         setCancelMenuEvent();
         mapViewElement.toggleEditorMode();
-        if(mapEditorDrawer.isShown()){
+        if (mapEditorDrawer.isShown()) {
             mapEditorDrawer.close();
-        }else {
+        } else {
             mapEditorDrawer.open();
         }
     }
@@ -1822,38 +1821,43 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
 
     @FXML
-    private void onAddNode(){
+    private void onAddNode() {
         mapViewElement.setEditMode(MapViewElement.EditMode.ADDNODE);
     }
 
     @FXML
-    private void onRemoveNode(){
+    private void onRemoveNode() {
         mapViewElement.setEditMode(MapViewElement.EditMode.REMNODE);
     }
 
     @FXML
-    private void onAddEdge(){
+    private void onAddEdge() {
         mapViewElement.setEditMode(MapViewElement.EditMode.ADDEDGE);
     }
 
     @FXML
-    private void onRemoveEdge(){
+    private void onRemoveEdge() {
         mapViewElement.setEditMode(MapViewElement.EditMode.REMEDGE);
     }
 
     @FXML
-    private void onModify(){
+    private void onModify() {
         mapViewElement.setEditMode(MapViewElement.EditMode.EDITNODE);
     }
 
     @FXML
-    private void onDragNode(){
+    private void onDragNode() {
         mapViewElement.setEditMode(MapViewElement.EditMode.MOVENODE);
     }
 
     @FXML
-    private void onPan(){
+    private void onPan() {
         mapViewElement.setEditMode(MapViewElement.EditMode.PAN);
+    }
+
+    @FXML
+    private void onChangeKioskLocation() {
+        mapViewElement.updateHomeLocation();
     }
 
 }

@@ -69,7 +69,7 @@ public class StartNodeDrawer extends NodeDrawable {
             startText.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 10);
 
             startText.setText(node.getShortName());
-            startText.setPrefColumnCount((node.getShortName().length()/4)*3);
+            startText.setPrefColumnCount(node.getShortName().length());
             startText.setAlignment(Pos.CENTER);
             startText.setStyle("-fx-background-color: green; " +
                     "-fx-border-color: black; " +

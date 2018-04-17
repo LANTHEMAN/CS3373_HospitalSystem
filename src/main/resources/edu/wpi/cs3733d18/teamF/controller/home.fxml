@@ -37,7 +37,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
+<GridPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="256.0" />
         <ColumnConstraints />
@@ -778,6 +778,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="82.02838134765625" minHeight="0.0" prefHeight="34.58868408203125" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="82.02838134765625" minHeight="10.0" prefHeight="34.58868408203125" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="182.0" minHeight="10.0" prefHeight="178.41131591796875" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
@@ -827,6 +828,11 @@
                         <Font size="20.0" />
                     </font>
                 </JFXButton>
+            <JFXButton alignment="CENTER" maxWidth="400.0" minWidth="300.0" mnemonicParsing="false" onAction="#onChangeKioskLocation" prefHeight="44.0" prefWidth="400.0" text="%SetKioskLocation" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="8">
+               <font>
+                  <Font size="20.0" />
+               </font></JFXButton>
+              <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.rowIndex="8" GridPane.rowSpan="2147483647" />
             </children>
         </GridPane>
         <AnchorPane fx:id="newUserPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="463.0" prefWidth="638.0" style="-fx-background-color: WHITE;" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -956,6 +962,5 @@
                 </AnchorPane>
             </children>
         </VBox>
-        <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
     </children>
 </GridPane>
