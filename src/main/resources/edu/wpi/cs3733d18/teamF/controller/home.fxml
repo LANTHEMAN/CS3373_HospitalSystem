@@ -270,7 +270,6 @@
             </children>
         </VBox>
         <AnchorPane fx:id="mapElementPane" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
-        <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
         <GridPane fx:id="leftGPane" alignment="BOTTOM_LEFT" pickOnBounds="false" prefHeight="687.0" prefWidth="811.0" GridPane.columnSpan="2">
             <columnConstraints>
                 <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
@@ -903,5 +902,6 @@
                 </AnchorPane>
             </children>
         </VBox>
+        <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
     </children>
 </GridPane>
