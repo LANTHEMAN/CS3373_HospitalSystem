@@ -950,6 +950,14 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     void onHelpPopup() {
         helpPane.setVisible(true);
+
+        VoiceLauncher.getInstance().pause();
+        edu.wpi.cs3733d18.teamF.api.ServiceRequest sr = new edu.wpi.cs3733d18.teamF.api.ServiceRequest();
+        try {
+            sr.run(0,0,1900,1000,null,null,null);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

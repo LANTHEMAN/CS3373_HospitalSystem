@@ -11,11 +11,18 @@ public class VoiceLauncher extends Observable implements Runnable {
 
     Configuration configuration = new Configuration();
     private boolean terminate = false;
+    LiveSpeechRecognizer recognize;
 
     private VoiceLauncher() {
         configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
         configuration.setDictionaryPath("3075.dic");
         configuration.setLanguageModelPath("3075.lm");
+
+        try {
+            recognize = new LiveSpeechRecognizer(configuration);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static VoiceLauncher getInstance() {
@@ -23,26 +30,22 @@ public class VoiceLauncher extends Observable implements Runnable {
     }
 
     public void run() {
-        try {
-            LiveSpeechRecognizer recognize = new LiveSpeechRecognizer(configuration);
 
-            recognize.startRecognition(true);
+        recognize.startRecognition(true);
 
-            //Create SpeechResult Object
-            SpeechResult result;
-            String command;
+        //Create SpeechResult Object
+        SpeechResult result;
+        String command;
 
-            //Checking if recognizer has recognized the speech
-            while ((result = recognize.getResult()) != null && !terminate) {
-                //Get the recognize speech
-                command = result.getHypothesis();
-                signalClassChanged(command);
-            }
-            recognize.stopRecognition();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        //Checking if recognizer has recognized the speech
+        while ((result = recognize.getResult()) != null && !terminate) {
+            //Get the recognize speech
+            command = result.getHypothesis();
+            signalClassChanged(command);
         }
+        recognize.stopRecognition();
+
+
     }
 
     private void signalClassChanged(Object args) {
@@ -52,6 +55,19 @@ public class VoiceLauncher extends Observable implements Runnable {
 
     public void terminate() {
         terminate = true;
+    }
+
+    public void pause() {
+        try {
+            recognize.stopRecognition();
+            recognize = null;
+            Thread.sleep(10);
+        } catch (Exception e) {
+        }
+    }
+
+    public void resume() {
+        recognize.startRecognition(true);
     }
 
     private static class LazyInitializer {
