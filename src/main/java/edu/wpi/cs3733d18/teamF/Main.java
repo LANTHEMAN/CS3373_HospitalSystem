@@ -2,6 +2,8 @@ package edu.wpi.cs3733d18.teamF;
 
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.Screens;
+import edu.wpi.cs3733d18.teamF.controller.page.ErrorController;
+import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.Comparator;
 
 public class Main extends Application {
@@ -36,6 +39,7 @@ public class Main extends Application {
             }
         } catch (IOException e) {
         }
+
 
         System.out.println("Initializing voice command");
 
@@ -62,15 +66,26 @@ public class Main extends Application {
 
         javafx.scene.image.Image image = new javafx.scene.image.Image(getClass().getResource("BWHIcon.png").toExternalForm());
         primaryStage.getIcons().add(image);
+        //database check
+        Exception error =  DatabaseSingleton.getInstance().getDbHandler().isConnected();
+        if(error != null) {
+            ErrorSingleton.getInstance().setError(error);
+            paneSwitcher.popup(Screens.Error);
 
-        // initial pane
-        paneSwitcher.switchTo(Screens.Home);
-
-        primaryStage.setTitle("Brigham and Women's Hospital");
-        primaryStage.setScene(scene);
-        primaryStage.setMaximized(true);
-        primaryStage.setFullScreen(true);
-        primaryStage.show();
+        }
+        else {
+            // initial pane
+            try {
+                paneSwitcher.switchTo(Screens.Home);
+                primaryStage.setTitle("Brigham and Women's Hospital");
+                primaryStage.setMaximized(true);
+                primaryStage.setFullScreen(true);
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 
