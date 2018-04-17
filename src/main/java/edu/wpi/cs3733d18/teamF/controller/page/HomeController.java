@@ -839,7 +839,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         } else{
             map.disableElevators();
         }
-
+        mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
     }
 
     @FXML
@@ -849,6 +849,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         } else{
             map.disableStairs();
         }
+        mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
     }
 
     @FXML
