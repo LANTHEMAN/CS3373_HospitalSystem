@@ -80,10 +80,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     AnchorPane mapElementPane;
     @FXML
     AnchorPane aboutElementPane;
-    /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-    //REMOVE WHEN YA DONT WANT THE HAPPY BDAY BUTTON
-    /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-    TTS justinTTS = new TTS();
+
     private PaneSwitcher switcher;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
     ///////////////////////////////
@@ -314,18 +311,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         map = MapSingleton.getInstance().getMap();
         MainTitle.setText("Brigham and Women's Hospital: Level 1");
 
-        // initialize element
         // init mapView
         Pair<MapViewElement, Pane> mapElementInfo = switcher.loadElement("mapView.fxml");
         mapViewElement = mapElementInfo.getKey();
         mapViewElement.initialize(this, map, switcher, mapElementPane);
+
         // init about element
         Pair<AboutElement, Pane> aboutElementInfo = switcher.loadElement("about.fxml");
         aboutElement = aboutElementInfo.getKey();
         aboutElement.initialize(aboutElementPane);
-
-        // TODO turn this line into a button
-        // aboutElement.hideElement();
+        aboutElement.hideElement();
 
         // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);
@@ -593,9 +588,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
     }
 
-    public void onBirthday() {
-        justinTTS.speak("happy birthday to you, happy birthday to you, happy birthday dear justin, happy birthday you yaaaaaaaay");
-    }
 
     // will shake the password field back and forth
     private void shakePasswordField(JFXPasswordField passwordField) {
@@ -633,9 +625,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
 
         loginBtn.setText("Login");
-        mapViewElement.getMapDrawController().unshowNodes();
-        mapViewElement.getMapDrawController().unshowEdges();
-
     }
 
     private void changeFloorButtons(Path path) {
@@ -821,8 +810,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             }
 
             Node selectedNode = n.iterator().next();
-            mapViewElement.setSelectedNodeStart(selectedNode);
-            mapViewElement.getMapDrawController().selectNode(selectedNode);
+            mapViewElement.setSelectedNodeEnd(selectedNode);
+            mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
             map.setFloor(selectedNode.getFloor());
             reloadMap();
         }
@@ -860,8 +849,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         } else{
             map.disableStairs();
         }
-
     }
+
     @FXML
     void setSourceSearch() {
         searchLocation.setText(searchList.getSelectionModel().getSelectedItem().toString());
@@ -980,6 +969,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         helpPane.setVisible(false);
     }
 
+    ////////////////////////////
+    //                        //
+    //       About Pane       //
+    //                        //
+    ////////////////////////////
+
+    @FXML
+    void onAboutPopup() {
+        aboutElement.showElement();
+    }
 
     //////////////////////////////////////////////
     //                                          //
@@ -1824,6 +1823,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @Override
     public void onHideNewNodePopup() {
         addLocationPopup.setVisible(false);
+    }
+
+    @Override
+    public void onFloorChanged() {
+
     }
 
 

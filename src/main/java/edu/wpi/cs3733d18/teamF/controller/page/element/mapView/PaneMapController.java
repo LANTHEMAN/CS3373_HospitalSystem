@@ -13,6 +13,7 @@ import java.util.Observer;
 public class PaneMapController extends PaneController implements Observer {
 
     private MapDrawable mapDrawer;
+    public Path drawnPath = null;
 
     PaneMapController(Pane root, Map map, MapDrawable mapDrawer) {
         super(root);
@@ -38,6 +39,7 @@ public class PaneMapController extends PaneController implements Observer {
 
     public void showPath(Path path){
         mapDrawer.showPath(path);
+        this.drawnPath = path;
 
         if(path.getNodes().size() > 0){
             addDefaultStartNode(path.getNodes().get(0));
@@ -47,7 +49,12 @@ public class PaneMapController extends PaneController implements Observer {
     }
     public void unshowPath(){
         mapDrawer.unshowPath();
+        this.drawnPath = null;
         refresh();
+    }
+
+    public Path getDrawnPath() {
+        return drawnPath;
     }
 
     public void showNodes() {

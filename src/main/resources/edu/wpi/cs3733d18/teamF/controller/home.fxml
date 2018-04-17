@@ -436,7 +436,7 @@
                 </JFXButton>
                 <JFXListView fx:id="searchList" maxHeight="200.0" maxWidth="300.0" onMouseClicked="#setSourceSearch" visible="false" GridPane.rowIndex="1" GridPane.valignment="TOP" />
                 <FontAwesomeIconView fill="#727272" glyphName="QUESTION" onMouseClicked="#onHelpPopup" size="50" translateX="-22.0" translateY="-70.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                <FontAwesomeIconView fill="#727272" glyphName="BIRTHDAY_CAKE" onMouseClicked="#onBirthday" size="50" translateX="-70.0" translateY="-70.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                <FontAwesomeIconView fill="#727272" glyphName="INFO" onMouseClicked="#onAboutPopup" size="45" textAlignment="CENTER" translateX="-75.0" translateY="-70.0" wrappingWidth="39.549333572387695" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                 <JFXNodesList fx:id="floorNode" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" spacing="10.0" style="-fx-background-radius: 100;" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                     <GridPane.margin>
                         <Insets right="20.0" top="50.0" />
