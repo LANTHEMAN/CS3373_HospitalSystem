@@ -151,7 +151,7 @@ public class UglyMapDrawer extends MapDrawable {
                     } else if (edge.getNode2().getFloor().equals(map.getFloor())) {
                         Node node = edge.getNode2();
                         currNodeDrawable = getPathNodeDrawer(node.getNodeType());
-                        if(node.compareFloors(edge.getNode2()) == -1){
+                        if(node.compareFloors(edge.getNode1()) == -1){
                             currNodeDrawable.setDirection(true);
                         }
                         else{
