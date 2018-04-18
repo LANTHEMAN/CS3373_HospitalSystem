@@ -1034,7 +1034,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     private void onBestFirst() {
-        MapSingleton.getInstance().getMap().setPathSelector(new DepthSearch());
+        MapSingleton.getInstance().getMap().setPathSelector(new BestFirst());
         aStar.setStyle("-fx-background-color: #616161");
         breathFirst.setStyle("-fx-background-color: #616161");
         depthFirst.setStyle("-fx-background-color: #616161");

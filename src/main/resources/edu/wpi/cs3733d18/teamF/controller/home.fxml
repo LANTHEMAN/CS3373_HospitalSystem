@@ -1021,8 +1021,8 @@
                       </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <JFXButton fx:id="breathFirst1" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onBreathFirst" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #616161;" text="%BestFirst" textFill="WHITE" />
-                        <JFXButton fx:id="breathFirst2" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onBreathFirst" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #616161;" text="Dijkstra" textFill="WHITE" />
+                        <JFXButton fx:id="bestFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onBestFirst" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #616161;" text="%BestFirst" textFill="WHITE" />
+                        <JFXButton fx:id="dijkstra" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDijkstra" prefHeight="48.0" prefWidth="100.0" style="-fx-background-color: #616161;" text="Dijkstra" textFill="WHITE" />
                      </children>
                   </HBox>
                </children>
