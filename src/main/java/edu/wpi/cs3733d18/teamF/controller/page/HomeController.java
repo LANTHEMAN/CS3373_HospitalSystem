@@ -155,6 +155,15 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private HBox algorithmsBox;
     @FXML
     private JFXButton aStar, depthFirst, breathFirst;
+    /////////////////////////////
+    //                         //
+    //         Language        //
+    //                         //
+    /////////////////////////////
+    @FXML
+    private JFXNodesList languageNode;
+    @FXML
+    private JFXButton languageBtn, english, french, spanish, chinese;
     /////////////////////////
     //                     //
     //         Map         //
@@ -374,6 +383,28 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         floorNode.addAnimatedNode(groundFloor);
         floorNode.addAnimatedNode(l1);
         floorNode.addAnimatedNode(l2);
+
+
+        english.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            onEnglish();
+        });
+        french.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            onFrench();
+        });
+        spanish.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            onSpanish();
+        });
+        chinese.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            onChinese();
+        });
+
+        languageNode.addAnimatedNode(languageBtn);
+        languageNode.addAnimatedNode(english);
+        languageNode.addAnimatedNode(french);
+        languageNode.addAnimatedNode(spanish);
+        languageNode.addAnimatedNode(chinese);
+        languageNode.setRotate(180);
+
 
 
         // set the hamburger menu on top left accordingly
@@ -1016,26 +1047,23 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //                         //
     /////////////////////////////
 
-    @FXML
-    void onEnglish() {
+
+    private void onEnglish() {
         switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("en", "US")),
                 Screens.Home);
     }
 
-    @FXML
-    void onFrench() {
+    private void onFrench() {
         switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("fr", "FR")),
                 Screens.Home);
     }
 
-    @FXML
-    void onSpanish() {
+    private void onSpanish() {
         switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("es", "ES")),
                 Screens.Home);
     }
 
-    @FXML
-    void onChinese() {
+    private void onChinese() {
         switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("zh", "CN"), new UTF8Control()),
                 Screens.Home);
     }
