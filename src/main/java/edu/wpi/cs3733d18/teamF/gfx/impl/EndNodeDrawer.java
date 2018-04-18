@@ -49,7 +49,7 @@ public class EndNodeDrawer extends NodeDrawable {
             return;
         }
         ImageView end  = new ImageView(Main.class.getResource("end-icon.png").toExternalForm());
-        end.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 85.5);
+        end.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 85);
         end.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 131);
 
         end.setScaleX(0.03);
