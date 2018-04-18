@@ -255,6 +255,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private JFXDrawer directionsDrawer;
     @FXML
     private JFXHamburger hamburgerD;
+
     @FXML
     private JFXTextArea txtDirections;
     @FXML
