@@ -26,6 +26,7 @@ public class UglyMapDrawer extends MapDrawable {
     private NodeDrawable exitDrawer = new ExitNodeDrawer();
     private NodeDrawable stairDrawer = new StairNodeDrawer();
     private NodeDrawable restroomDrawer = new RestroomNodeDrawer();
+    private NodeDrawable pathStairDrawer = new PathStairNodeDrawer();
     private NodeDrawable currNodeDrawable = nodeDrawer;
     private NodeDrawable startNodeDefault = null;
     private Pane pathPane = new Pane();
@@ -132,15 +133,40 @@ public class UglyMapDrawer extends MapDrawable {
                 if (!(edge.getNode1().getFloor().equals(edge.getNode2().getFloor()))) {
                     if (edge.getNode1().getFloor().equals(map.getFloor())) {
                         Node node = edge.getNode1();
-                        currNodeDrawable = getDrawer(node.getNodeType());
+                        currNodeDrawable = getPathNodeDrawer(node.getNodeType());
+                        if(node.compareFloors(edge.getNode2()) == -1){
+                            currNodeDrawable.setDirection(true);
+                        }
+                        else{
+                            currNodeDrawable.setDirection(false);
+                        }
                         currNodeDrawable.update(node);
+                        if (hoveredNode == node) {
+                            currNodeDrawable.hoverNode();
+                        }
                         currNodeDrawable.draw(pane);
+                        if (hoveredNode == node) {
+                            currNodeDrawable.unhoverNode();
+                        }
                     } else if (edge.getNode2().getFloor().equals(map.getFloor())) {
                         Node node = edge.getNode2();
-                        currNodeDrawable = getDrawer(node.getNodeType());
+                        currNodeDrawable = getPathNodeDrawer(node.getNodeType());
+                        if(node.compareFloors(edge.getNode2()) == -1){
+                            currNodeDrawable.setDirection(true);
+                        }
+                        else{
+                            currNodeDrawable.setDirection(false);
+                        }
                         currNodeDrawable.update(node);
+                        if (hoveredNode == node) {
+                            currNodeDrawable.hoverNode();
+                        }
                         currNodeDrawable.draw(pane);
+                        if (hoveredNode == node) {
+                            currNodeDrawable.unhoverNode();
+                        }
                     }
+
                 }
             }
 
@@ -174,16 +200,12 @@ public class UglyMapDrawer extends MapDrawable {
             currNodeDrawable.update(node);
             if (selectedNode == node) {
                 currNodeDrawable.selectNode();
-            } else if (hoveredNode == node) {
-                currNodeDrawable.hoverNode();
             } else if (!showNodes) {
                 continue;
             }
             currNodeDrawable.draw(pane);
             if (selectedNode == node) {
                 currNodeDrawable.unselectNode();
-            } else if (hoveredNode == node) {
-                currNodeDrawable.unhoverNode();
             }
         }
     }
@@ -207,6 +229,15 @@ public class UglyMapDrawer extends MapDrawable {
             case "RETL":    //shops, food, pay phone, areas that provide non-medical services for immediate payment
             case "SERV":    //hospital non-medical services, interpreters, shuttles, spiritual, library, patient financial, etc.
             default:    //will be hallways and anything not implemented
+                return nodeDrawer;
+        }
+    }
+    private NodeDrawable getPathNodeDrawer(String type) {
+        switch (type) {
+            case "ELEV":
+            case "STAI":
+                return pathStairDrawer;
+            default:
                 return nodeDrawer;
         }
     }
