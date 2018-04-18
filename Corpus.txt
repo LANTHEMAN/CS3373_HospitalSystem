@@ -26,3 +26,9 @@ Disable
 Weather Today
 Where
 Rap
+Language Interpreter
+Religious Services
+Security Request
+Create Service Request
+Search Service Request
+User Management
