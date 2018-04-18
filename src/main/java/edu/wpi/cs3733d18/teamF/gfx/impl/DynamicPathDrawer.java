@@ -50,6 +50,8 @@ public class DynamicPathDrawer extends PathDrawable {
             return;
         }
 
+
+        initAndDrawArrows(pane);
         for (Arrow arrow: arrows){
             if(isGrey){
                 arrow.view.setFill(Color.GRAY);
@@ -59,8 +61,6 @@ public class DynamicPathDrawer extends PathDrawable {
                 isGrey = !isGrey;
             }
         }
-        initAndDrawArrows(pane);
-
         // update each arrow's animation every timestep milliseconds
         timeline = new Timeline(new KeyFrame(Duration.millis(timestep), event -> {
             for (Arrow arrow : arrows) {
