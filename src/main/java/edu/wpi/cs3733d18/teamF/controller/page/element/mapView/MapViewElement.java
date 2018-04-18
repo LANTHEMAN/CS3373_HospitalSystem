@@ -184,9 +184,6 @@ public class MapViewElement extends PageElement {
         );
 
         mapContainer.setOnMouseClicked(e -> {
-
-//            System.out.println(gesturePane.targetPointAtViewportCentre());
-//            System.out.println(gesturePane.getCurrentScale());
             // don't select new node or path when panning
             if (mousePressedPosition.distance(new Point2D(e.getSceneX(), e.getSceneY())) > 25) {
                 listener.onHideNewNodePopup();
@@ -340,7 +337,7 @@ public class MapViewElement extends PageElement {
         });
 
         mapContainer.addEventHandler(Event.ANY, e->{
-            if(((gesturePane.targetPointAtViewportCentre().getX() > 427 || gesturePane.targetPointAtViewportCentre().getX() < 417) && (gesturePane.targetPointAtViewportCentre().getY() > 348 || gesturePane.targetPointAtViewportCentre().getY() < 230)) && gesturePane.getCurrentScale() >= 2.29){
+            if(((gesturePane.targetPointAtViewportCentre().getX() > 427 || gesturePane.targetPointAtViewportCentre().getX() < 417) && (gesturePane.targetPointAtViewportCentre().getY() > 348 || gesturePane.targetPointAtViewportCentre().getY() < 230)) && gesturePane.getCurrentScale() <= 2.3){
                 listener.onRefresh();
             }
         });

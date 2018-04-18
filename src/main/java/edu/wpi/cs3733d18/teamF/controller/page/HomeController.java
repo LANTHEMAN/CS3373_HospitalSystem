@@ -1935,10 +1935,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     public void returnToState(mapState state){
+        if(state == null) return;
+        System.out.println(state.getTarget());
+        System.out.println(state.getZoomAmount());
         if(state.getPath() != null)mapViewElement.getMapDrawController().showPath(state.getPath());
-//        mapViewElement.getGesturePane().setTarget(state.getTransformable());
         mapViewElement.getGesturePane().zoomTo(state.getZoomAmount(), state.getTarget());
-        mapViewElement.getGesturePane().viewportPointAt(state.getTarget());
     }
 
     public void returnToLastState(){
