@@ -962,5 +962,7 @@
                 </AnchorPane>
             </children>
         </VBox>
+        <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
+        <AnchorPane fx:id="screensaverPane" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
     </children>
 </GridPane>
