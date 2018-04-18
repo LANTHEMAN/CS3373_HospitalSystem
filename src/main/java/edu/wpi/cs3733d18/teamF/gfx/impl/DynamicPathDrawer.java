@@ -82,7 +82,7 @@ public class DynamicPathDrawer extends PathDrawable {
                 }
 
                 // party colors!
-                arrow.view.setFill(Color.color(Math.random(), Math.random(), Math.random()));
+                arrow.view.setFill(Color.color(.5 + .5 *Math.random(), .5 + .5*Math.random(), .5 + .5*Math.random()));
                 arrow.view.setVisible(true);
 
                 double angle = getAngleTo(src, dst);
