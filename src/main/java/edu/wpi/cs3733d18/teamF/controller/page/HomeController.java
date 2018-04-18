@@ -154,7 +154,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private HBox algorithmsBox;
     @FXML
-    private JFXButton aStar, depthFirst, breathFirst;
+    private JFXButton aStar, depthFirst, breathFirst, dijkstra, bestFirst;
     /////////////////////////////
     //                         //
     //         Language        //
@@ -172,7 +172,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private Map map;
     @FXML
     private Text MainTitle;
-
+    @FXML
+    private JFXButton addNodeBtn, remNodeBtn, addEdgeBtn, remEdgeBtn, modifyBtn, dragBtn, panBtn;
     ////////////////////////////////
     //                            //
     //         Map Builder        //
@@ -320,11 +321,29 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     public void initialize(PaneSwitcher switcher) {
         adminDrawer.setDisable(true);
         directionsDrawer.setDisable(true);
+        mapEditorDrawer.setDisable(true);
+        loginDrawer.setDisable(true);
         // initialize fundamentals
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
         resetFloorButtonBorders();
         changeFloor("01");
+
+
+        switch (switcher.resFac.getResources().getLocale().getCountry()) {
+            case "FR":
+                setButtonBackgroundColor(french,  "#436282");
+                break;
+            case "ES":
+                setButtonBackgroundColor(spanish,  "#436282");
+                break;
+            case "CN":
+                setButtonBackgroundColor(chinese,  "#436282");
+                break;
+            default: // case "US"
+                setButtonBackgroundColor(english,  "#436282");
+                break;
+        }
 
         // init mapView
         Pair<MapViewElement, Pane> mapElementInfo = switcher.loadElement("mapView.fxml");
@@ -458,6 +477,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                         setGuestMenu();
                     }
                     loginDrawer.close();
+                    loginDrawer.setDisable(true);
                     loginUsername.setText("");
                     loginPassword.setText("");
 
@@ -468,15 +488,18 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
             } else {
                 loginDrawer.open();
+                loginDrawer.setDisable(false);
             }
         });
 
         loginCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             loginDrawer.close();
+            loginDrawer.setDisable(true);
         });
 
         logoutCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             loginDrawer.close();
+            loginDrawer.setDisable(true);
         });
 
 
@@ -630,6 +653,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         mapViewElement.setViewMode(MapViewElement.ViewMode.VIEW);
         PermissionSingleton.getInstance().logout();
         loginDrawer.close();
+        loginDrawer.setDisable(true);
         gpaneNodeInfo.setVisible(false);
         onCancelDirectionsEvent();
         setCancelMenuEvent();
@@ -637,6 +661,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         serviceRequestList.animateList(false);
         if (mapEditorDrawer.isShown()) {
             mapEditorDrawer.close();
+            mapEditorDrawer.setDisable(true);
         }
         setGuestMenu();
         if (algorithmsBox.isVisible()) {
@@ -647,11 +672,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
 
-    ///////////////////////////////////////////
-    //                                       //
-    //          Floor Button Colors          //
-    //                                       //
-    ///////////////////////////////////////////
+    /////////////////////////////////////
+    //                                 //
+    //          Button Colors          //
+    //                                 //
+    /////////////////////////////////////
 
     private void changeFloorButtons(Path path) {
         resetFloorButtonBorders();
@@ -708,6 +733,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         setButtonBackgroundColor(floor1, "#042E58");
         setButtonBackgroundColor(floor2, "#042E58");
         setButtonBackgroundColor(floor3, "#042E58");
+    }
+
+    private void resetEditorButtonBackgrounds() {
+        setButtonBackgroundColor(addNodeBtn, "#042E58");
+        setButtonBackgroundColor(remNodeBtn, "#042E58");
+        setButtonBackgroundColor(addEdgeBtn, "#042E58");
+        setButtonBackgroundColor(remEdgeBtn, "#042E58");
+        setButtonBackgroundColor(modifyBtn, "#042E58");
+        setButtonBackgroundColor(dragBtn, "#042E58");
+        setButtonBackgroundColor(panBtn, "#042E58");
     }
 
     private String modifyStyle(String style, String feature, String replace) {
@@ -964,6 +999,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         aStar.setStyle("-fx-background-color: #303030");
         breathFirst.setStyle("-fx-background-color: #616161");
         depthFirst.setStyle("-fx-background-color: #616161");
+        dijkstra.setStyle("-fx-background-color: #616161");
+        bestFirst.setStyle("-fx-background-color: #616161");
     }
 
     @FXML
@@ -972,6 +1009,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         aStar.setStyle("-fx-background-color: #616161");
         breathFirst.setStyle("-fx-background-color: #303030");
         depthFirst.setStyle("-fx-background-color: #616161");
+        dijkstra.setStyle("-fx-background-color: #616161");
+        bestFirst.setStyle("-fx-background-color: #616161");
     }
 
     @FXML
@@ -980,6 +1019,28 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         aStar.setStyle("-fx-background-color: #616161");
         breathFirst.setStyle("-fx-background-color: #616161");
         depthFirst.setStyle("-fx-background-color: #303030");
+        dijkstra.setStyle("-fx-background-color: #616161");
+        bestFirst.setStyle("-fx-background-color: #616161");
+    }
+
+    @FXML
+    private void onDijkstra() {
+        MapSingleton.getInstance().getMap().setPathSelector(new Dijkstra());
+        aStar.setStyle("-fx-background-color: #616161");
+        breathFirst.setStyle("-fx-background-color: #616161");
+        depthFirst.setStyle("-fx-background-color: #616161");
+        dijkstra.setStyle("-fx-background-color: #303030");
+        bestFirst.setStyle("-fx-background-color: #616161");
+    }
+
+    @FXML
+    private void onBestFirst() {
+        MapSingleton.getInstance().getMap().setPathSelector(new BestFirst());
+        aStar.setStyle("-fx-background-color: #616161");
+        breathFirst.setStyle("-fx-background-color: #616161");
+        depthFirst.setStyle("-fx-background-color: #616161");
+        dijkstra.setStyle("-fx-background-color: #616161");
+        bestFirst.setStyle("-fx-background-color: #303030");
     }
 
 
@@ -992,6 +1053,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     void onHelpPopup() {
         helpPane.setVisible(true);
+
+        edu.wpi.cs3733d18.teamF.api.ServiceRequest.injectObservable(VoiceLauncher.getInstance());
+        edu.wpi.cs3733d18.teamF.api.ServiceRequest sr = new edu.wpi.cs3733d18.teamF.api.ServiceRequest();
+        sr.run(0,0,1900,1000,null,null,null);
     }
 
     @FXML
@@ -1240,8 +1305,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         mapViewElement.toggleEditorMode();
         if (mapEditorDrawer.isShown()) {
             mapEditorDrawer.close();
+            mapEditorDrawer.setDisable(true);
         } else {
             mapEditorDrawer.open();
+            mapEditorDrawer.setDisable(false);
         }
     }
 
@@ -1836,6 +1903,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             return;
         }
         gpaneNodeInfo.setVisible(true);
+
+        if(modifiedNode == null){
+            return;
+        }
         if (map.is2D()) {
             modNode_x.setText(String.valueOf(modifiedNode.getPosition().getX()));
             modNode_y.setText(String.valueOf(modifiedNode.getPosition().getY()));
@@ -1857,7 +1928,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         } else {
             modNode_type.setDisable(false);
         }
-
     }
 
     @Override
@@ -1889,37 +1959,51 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
 
     @FXML
-    private void onAddNode() {
+    private void onAddNode(){
+        resetEditorButtonBackgrounds();
+        setButtonBackgroundColor(addNodeBtn,"#436282");
         mapViewElement.setEditMode(MapViewElement.EditMode.ADDNODE);
     }
 
     @FXML
-    private void onRemoveNode() {
+    private void onRemoveNode(){
+        resetEditorButtonBackgrounds();
+        setButtonBackgroundColor(remNodeBtn,"#436282");
         mapViewElement.setEditMode(MapViewElement.EditMode.REMNODE);
     }
 
     @FXML
-    private void onAddEdge() {
+    private void onAddEdge(){
+        resetEditorButtonBackgrounds();
+        setButtonBackgroundColor(addEdgeBtn,"#436282");
         mapViewElement.setEditMode(MapViewElement.EditMode.ADDEDGE);
     }
 
     @FXML
-    private void onRemoveEdge() {
+    private void onRemoveEdge(){
+        resetEditorButtonBackgrounds();
+        setButtonBackgroundColor(remEdgeBtn,"#436282");
         mapViewElement.setEditMode(MapViewElement.EditMode.REMEDGE);
     }
 
     @FXML
-    private void onModify() {
+    private void onModify(){
+        resetEditorButtonBackgrounds();
+        setButtonBackgroundColor(modifyBtn,"#436282");
         mapViewElement.setEditMode(MapViewElement.EditMode.EDITNODE);
     }
 
     @FXML
-    private void onDragNode() {
+    private void onDragNode(){
+        resetEditorButtonBackgrounds();
+        setButtonBackgroundColor(dragBtn,"#436282");
         mapViewElement.setEditMode(MapViewElement.EditMode.MOVENODE);
     }
 
     @FXML
-    private void onPan() {
+    private void onPan(){
+        resetEditorButtonBackgrounds();
+        setButtonBackgroundColor(panBtn,"#436282");
         mapViewElement.setEditMode(MapViewElement.EditMode.PAN);
     }
 

@@ -1,5 +1,6 @@
 package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
+import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
@@ -337,6 +338,7 @@ public class MapViewElement extends PageElement {
     }
 
     public Path changePathDestination(Node destinationNode) {
+        selectedNodeEnd = destinationNode;
         Path path = map.getPath(selectedNodeStart, destinationNode);
         mapDrawController.showPath(path);
         return path;
