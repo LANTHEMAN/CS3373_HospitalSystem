@@ -3,11 +3,14 @@ package edu.wpi.cs3733d18.teamF.gfx.impl;
 import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733d18.teamF.Main;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.NodeDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -45,13 +48,12 @@ public class EndNodeDrawer extends NodeDrawable {
         if (!node.getFloor().equals(MapSingleton.getInstance().getMap().getFloor())) {
             return;
         }
-        FontAwesomeIconView end = new FontAwesomeIconView(FontAwesomeIcon.MAP_PIN);
-        end.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 3.4);
-        end.setTranslateY((posY * pane.getMaxHeight() / imageHeight) + 1.7);
+        ImageView end  = new ImageView(Main.class.getResource("end-icon.png").toExternalForm());
+        end.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 85);
+        end.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 131);
 
-        end.setScaleX(0.5);
-        end.setScaleY(0.5);
-        end.setFill(Color.RED);
+        end.setScaleX(0.03);
+        end.setScaleY(0.03);
         end.setVisible(true);
         pane.getChildren().add(end);
 
