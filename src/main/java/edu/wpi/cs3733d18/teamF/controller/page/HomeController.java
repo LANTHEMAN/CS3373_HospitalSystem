@@ -320,6 +320,22 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         resetFloorButtonBorders();
         changeFloor("01");
 
+
+        switch (switcher.resFac.getResources().getLocale().getCountry()) {
+            case "FR":
+                setButtonBackgroundColor(french,  "#436282");
+                break;
+            case "ES":
+                setButtonBackgroundColor(spanish,  "#436282");
+                break;
+            case "CN":
+                setButtonBackgroundColor(chinese,  "#436282");
+                break;
+            default: // case "US"
+                setButtonBackgroundColor(english,  "#436282");
+                break;
+        }
+
         // init mapView
         Pair<MapViewElement, Pane> mapElementInfo = switcher.loadElement("mapView.fxml");
         mapViewElement = mapElementInfo.getKey();
@@ -634,11 +650,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
 
-    ///////////////////////////////////////////
-    //                                       //
-    //          Floor Button Colors          //
-    //                                       //
-    ///////////////////////////////////////////
+    /////////////////////////////////////
+    //                                 //
+    //          Button Colors          //
+    //                                 //
+    /////////////////////////////////////
 
     private void changeFloorButtons(Path path) {
         resetFloorButtonBorders();
