@@ -13,6 +13,14 @@ public class Screensaver extends PageElement{
         initElement(sourcePane, root);
     }
 
+    public void start(){
+        showElement();
+        root.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
 
+    }
+
+    public void stop(){
+        hideElement();
+    }
 
 }

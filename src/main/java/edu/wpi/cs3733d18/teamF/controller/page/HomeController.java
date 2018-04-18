@@ -330,8 +330,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         screensaver.initialize(screensaverPane);
         screensaver.hideElement();
 
-        startScreensaver();
-
         // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);
 
@@ -1880,18 +1878,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     private AnchorPane screensaverPane;
-
-    public void startScreensaver(){
-        screensaver.showElement();
-        screensaverPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
-
-    }
-
-
-    public void stopScreensaver(){
-        screensaverPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
-        screensaver.hideElement();
-    }
 
 
 }
