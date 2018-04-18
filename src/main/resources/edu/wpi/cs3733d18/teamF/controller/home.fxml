@@ -37,7 +37,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
+<GridPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="256.0" />
         <ColumnConstraints />
@@ -301,6 +301,62 @@
                 <Font name="Arial Bold" size="26.0" />
             </font>
         </JFXButton>
+      <JFXButton fx:id="languageBtn" buttonType="RAISED" layoutX="10.0" layoutY="330.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="#f2f5f7" textOverrun="CLIP">
+         <font>
+            <Font name="Arial Bold" size="13.0" />
+         </font>
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="LANGUAGE" size="45" textAlignment="CENTER" translateX="4.0" translateY="2.0" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="english" buttonType="RAISED" layoutX="10.0" layoutY="330.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text="English" textFill="#f2f5f7" textOverrun="CLIP">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" scaleY="1.3" translateX="3.0">
+               <image>
+                  <Image url="@Flags/American_Flag.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="french" buttonType="RAISED" layoutX="10.0" layoutY="330.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text="French" textFill="#f2f5f7" textOverrun="CLIP">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" translateX="3.0">
+               <image>
+                  <Image url="@Flags/French_Flag.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="spanish" buttonType="RAISED" layoutX="10.0" layoutY="330.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text="Spanish" textFill="#f2f5f7" textOverrun="CLIP">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" translateX="3.0">
+               <image>
+                  <Image url="@Flags/Spanish_Flag.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="chinese" buttonType="RAISED" layoutX="10.0" layoutY="330.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text="Chinese" textFill="#f2f5f7" textOverrun="CLIP">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" translateX="3.0">
+               <image>
+                  <Image url="@Flags/Chinese_Flag.jpg" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
         <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0" style="-fx-background-color: #042E58;" visible="false">
             <children>
                 <Pane prefHeight="80.0" prefWidth="233.0">
@@ -496,6 +552,7 @@
                         <Insets right="20.0" top="50.0" />
                     </GridPane.margin>
                 </JFXNodesList>
+            <JFXNodesList fx:id="languageNode" alignment="CENTER" fillWidth="false" layoutX="1190.0" layoutY="123.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" spacing="10.0" style="-fx-background-radius: 100;" translateX="-140.0" translateY="-10.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                 <JFXButton fx:id="btn3D" onAction="#on3D" prefHeight="60.0" prefWidth="60.0" ripplerFill="BLACK" style="-fx-background-color: #b6b8b9;" text="3D" textFill="#2c2c2c" translateX="-5.0" translateY="-5.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                     <font>
                         <Font size="20.0" />
@@ -778,6 +835,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="82.02838134765625" minHeight="0.0" prefHeight="34.58868408203125" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="82.02838134765625" minHeight="10.0" prefHeight="34.58868408203125" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="182.0" minHeight="10.0" prefHeight="178.41131591796875" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
@@ -827,6 +885,11 @@
                         <Font size="20.0" />
                     </font>
                 </JFXButton>
+            <JFXButton alignment="CENTER" maxWidth="400.0" minWidth="300.0" mnemonicParsing="false" onAction="#onChangeKioskLocation" prefHeight="44.0" prefWidth="400.0" text="%SetKioskLocation" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="8">
+               <font>
+                  <Font size="20.0" />
+               </font></JFXButton>
+              <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.rowIndex="8" GridPane.rowSpan="2147483647" />
             </children>
         </GridPane>
         <AnchorPane fx:id="newUserPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="463.0" prefWidth="638.0" style="-fx-background-color: WHITE;" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -957,5 +1020,6 @@
             </children>
         </VBox>
         <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
+        <AnchorPane fx:id="screensaverPane" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
     </children>
 </GridPane>

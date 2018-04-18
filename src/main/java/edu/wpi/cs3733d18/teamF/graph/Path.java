@@ -66,6 +66,10 @@ public class Path {
 
         double dist = 0;
 
+        if(nodes.size() == 0){
+            return directions;
+        }
+
         for (int nodeIndex = 1; nodeIndex < this.nodes.size() - 1; nodeIndex++) {
 
             Node previousNode = this.getNodes().get(nodeIndex - 1);

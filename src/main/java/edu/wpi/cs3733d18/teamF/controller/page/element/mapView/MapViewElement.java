@@ -54,12 +54,21 @@ public class MapViewElement extends PageElement {
     private Map map;
     private MapViewListener listener;
 
+    public void updateHomeLocation() {
+        if (modifyNode == null) {
+            return;
+        }
+        startNodeID = modifyNode.getNodeID();
+    }
+
     public void resetStartLocation() {
         if (map.getNodes(node -> node.getNodeID().equals(startNodeID)).size() > 0) {
             setSelectedNodeStart(map.getNodes(node -> node.getNodeID().equals(startNodeID)).iterator().next());
+            setSelectedNodeEnd(map.getNodes(node -> node.getNodeID().equals(startNodeID)).iterator().next());
             map.setFloor(selectedNodeStart.getFloor());
         } else {
             setSelectedNodeStart(map.findNodeClosestTo(1950, 840, true, node -> node.getFloor().equals("01")));
+            setSelectedNodeEnd(map.findNodeClosestTo(1950, 840, true, node -> node.getFloor().equals("01")));
         }
     }
 
@@ -107,7 +116,12 @@ public class MapViewElement extends PageElement {
                         node1 -> node1.getFloor().equals(map.getFloor()));
                 if (!(mapDrawController.getDrawnPath() != null
                         && mapDrawController.getDrawnPath().getNodes().contains(node)
-                        && (node.getNodeType().equals("ELEV") || node.getNodeType().equals("STAI")))) {
+                        && (node.getNodeType().equals("ELEV") || node.getNodeType().equals("STAI"))
+                        && map.getNeighbors(node)
+                        .stream()
+                        .filter(node1 -> mapDrawController.getDrawnPath().getNodes().contains(node1))
+                        .filter(node1 -> !node1.getFloor().equals(node.getFloor()))
+                        .toArray().length > 0)) {
                     return;
                 }
                 if (!mapDrawController.isHoveringNode(node)) {
@@ -253,7 +267,7 @@ public class MapViewElement extends PageElement {
                                 for (Node node : neighborNodes) {
                                     if (!node.getFloor().equals(dst.getFloor()) && mapDrawController.getDrawnPath().getNodes().contains(node)) {
                                         map.setFloor(node.getFloor());
-                                        listener.onFloorChanged();
+                                        listener.onFloorRefresh();
                                         return;
                                     }
                                 }

@@ -13,7 +13,8 @@ import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
 import edu.wpi.cs3733d18.teamF.graph.*;
 import edu.wpi.cs3733d18.teamF.qr.qrConverter;
 import edu.wpi.cs3733d18.teamF.sr.*;
-import edu.wpi.cs3733d18.teamF.voice.TTS;
+import edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.Screensaver;
+import edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.State;
 import edu.wpi.cs3733d18.teamF.voice.VoiceCommandVerification;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.animation.Animation;
@@ -76,6 +77,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     Label religionRequiredRS, firstNameRequiredRS, lastNameRequiredRS, locationRequiredRS;
     MapViewElement mapViewElement;
     AboutElement aboutElement;
+    Screensaver screensaver;
     @FXML
     AnchorPane mapElementPane;
     @FXML
@@ -153,6 +155,15 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private HBox algorithmsBox;
     @FXML
     private JFXButton aStar, depthFirst, breathFirst;
+    /////////////////////////////
+    //                         //
+    //         Language        //
+    //                         //
+    /////////////////////////////
+    @FXML
+    private JFXNodesList languageNode;
+    @FXML
+    private JFXButton languageBtn, english, french, spanish, chinese;
     /////////////////////////
     //                     //
     //         Map         //
@@ -309,7 +320,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         // initialize fundamentals
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
-        MainTitle.setText("Brigham and Women's Hospital: Level 1");
+        resetFloorButtonBorders();
+        changeFloor("01");
 
         // init mapView
         Pair<MapViewElement, Pane> mapElementInfo = switcher.loadElement("mapView.fxml");
@@ -321,6 +333,12 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         aboutElement = aboutElementInfo.getKey();
         aboutElement.initialize(aboutElementPane);
         aboutElement.hideElement();
+
+        //init screensaver
+        Pair<Screensaver, Pane> screensaverInfo = switcher.loadElement("screensaver.fxml");
+        screensaver = screensaverInfo.getKey();
+        screensaver.initialize(screensaverPane);
+        screensaver.hideElement();
 
         // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);
@@ -339,44 +357,24 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         newNode_type.getSelectionModel().selectFirst();
 
 
-        //floorBtn.setText("2");
         l2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            map.setFloor("L2");
-            MainTitle.setText("Brigham and Women's Hospital: Lower Level 2");
-            //floorNode.animateList(false);
-            reloadMap();
+            changeFloor("L2");
         });
         l1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            map.setFloor("L1");
-            MainTitle.setText("Brigham and Women's Hospital: Lower Level 1");
-            //floorNode.animateList(false);
-            reloadMap();
+            changeFloor("L1");
         });
         groundFloor.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            map.setFloor("0G");
-            MainTitle.setText("Brigham and Women's Hospital: Ground Floor");
-            //floorNode.animateList(false);
-            reloadMap();
+            changeFloor("0G");
         });
         floor1.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            map.setFloor("01");
-            MainTitle.setText("Brigham and Women's Hospital: Level 1");
-            //floorNode.animateList(false);
-            reloadMap();
+            changeFloor("01");
         });
         floor2.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            map.setFloor("02");
-            MainTitle.setText("Brigham and Women's Hospital: Level 2");
-            //floorNode.animateList(false);
-            reloadMap();
+            changeFloor("02");
         });
         floor3.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            map.setFloor("03");
-            MainTitle.setText("Brigham and Women's Hospital: Level 3");
-            //floorNode.animateList(false);
-            reloadMap();
+            changeFloor("03");
         });
-
 
         floorNode.addAnimatedNode(floorBtn);
         floorNode.addAnimatedNode(floor3);
@@ -387,7 +385,25 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         floorNode.addAnimatedNode(l2);
 
 
+        english.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            onEnglish();
+        });
+        french.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            onFrench();
+        });
+        spanish.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            onSpanish();
+        });
+        chinese.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            onChinese();
+        });
 
+        languageNode.addAnimatedNode(languageBtn);
+        languageNode.addAnimatedNode(english);
+        languageNode.addAnimatedNode(french);
+        languageNode.addAnimatedNode(spanish);
+        languageNode.addAnimatedNode(chinese);
+        languageNode.setRotate(180);
 
 
 
@@ -538,21 +554,21 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             } else if (cmd.equalsIgnoreCase("Activate")) {
                 // got a string saying that the activation command has been said
                 paneVoiceController.setVisibility(true);
-            } else if(cmd.equalsIgnoreCase("DisableElevators")){
+            } else if (cmd.equalsIgnoreCase("DisableElevators")) {
                 disableElevatorsBox.setSelected(false);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            } else if(cmd.equalsIgnoreCase("DisableStairs")){
+            } else if (cmd.equalsIgnoreCase("DisableStairs")) {
                 disableStairsBox.setSelected(false);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            }else if(cmd.equalsIgnoreCase("EnableElevators")){
+            } else if (cmd.equalsIgnoreCase("EnableElevators")) {
                 disableElevatorsBox.setSelected(true);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            } else if(cmd.equalsIgnoreCase("EnableStairs")){
+            } else if (cmd.equalsIgnoreCase("EnableStairs")) {
                 disableStairsBox.setSelected(true);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
             }
         }
-        reloadMap();
+        onFloorRefresh();
     }
 
     // will filter the given ListView for the given input String
@@ -616,7 +632,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         setCancelMenuEvent();
         serviceRequestList.animateList(false);
         serviceRequestList.animateList(false);
-        if(mapEditorDrawer.isShown()) {
+        if (mapEditorDrawer.isShown()) {
             mapEditorDrawer.close();
         }
         setGuestMenu();
@@ -635,20 +651,21 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     ///////////////////////////////////////////
 
     private void changeFloorButtons(Path path) {
-        greyOutFloorButtons();
+        resetFloorButtonBorders();
+        //greyOutFloorButtons();
         String firstFloor = path.getNodes().get(0).getFloor();
         String lastFloor = path.getNodes().get(0).getFloor();
-        setButtonColor(getFloorButton(firstFloor), "GREEN", "#042E58");
+        setButtonBorderColor(getFloorButton(firstFloor), "GREEN");
         for (int i = 0; i < path.getNodes().size(); i++) {
             String currFloor = path.getNodes().get(i).getFloor();
             if (!currFloor.equals(lastFloor)) {
                 if (!lastFloor.equals(firstFloor)) {
-                    setButtonColor(getFloorButton(lastFloor), "#606060", "#042E58");
+                    setButtonBorderColor(getFloorButton(lastFloor), "#606060");
                 }
                 lastFloor = currFloor;
             }
         }
-        setButtonColor(getFloorButton(lastFloor), "RED", "#042E58");
+        setButtonBorderColor(getFloorButton(lastFloor), "RED");
     }
 
     private JFXButton getFloorButton(String floor) {
@@ -660,7 +677,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             case "01":
                 return floor1;
             case "0G":
-                return  groundFloor;
+                return groundFloor;
             case "L1":
                 return l1;
             default: // case "L2"
@@ -668,30 +685,49 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
     }
 
-    private void resetFloorButtonColors() {
-        setAllButtonColors("#042E58", "#042E58");
+    private void resetFloorButtonBorders() {
+        setAllFloorButtonBorders("#042E58");
     }
 
-    private void greyOutFloorButtons() {
-        setAllButtonColors("#4f6d8a", "#4f6d8a");
+    private void setAllFloorButtonBorders(String borderColor) {
+        setButtonBorderColor(l2, borderColor);
+        setButtonBorderColor(l1, borderColor);
+        setButtonBorderColor(groundFloor, borderColor);
+        setButtonBorderColor(floor1, borderColor);
+        setButtonBorderColor(floor2, borderColor);
+        setButtonBorderColor(floor3, borderColor);
     }
 
-    private void  setAllButtonColors(String borderColor, String backgroundColor) {
-        setButtonColor(l2, borderColor, backgroundColor);
-        setButtonColor(l1, borderColor, backgroundColor);
-        setButtonColor(groundFloor, borderColor, backgroundColor);
-        setButtonColor(floor1, borderColor, backgroundColor);
-        setButtonColor(floor2, borderColor, backgroundColor);
-        setButtonColor(floor3, borderColor, backgroundColor);
+    private void resetFloorButtonBackgrounds() {
+        setButtonBackgroundColor(l2, "#042E58");
+        setButtonBackgroundColor(l1, "#042E58");
+        setButtonBackgroundColor(groundFloor, "#042E58");
+        setButtonBackgroundColor(floor1, "#042E58");
+        setButtonBackgroundColor(floor2, "#042E58");
+        setButtonBackgroundColor(floor3, "#042E58");
     }
 
-    private void setButtonColor(JFXButton btn, String borderColor, String backgroundColor) {
-        btn.setStyle("-fx-border-color: " + borderColor + ";" +
-                " -fx-border-width: 5px;" +
-                " -fx-border-radius: 100;" +
-                " -fx-background-color: " + backgroundColor + ";" +
-                " -fx-background-radius: 100;");
+    private String modifyStyle(String style, String feature, String replace) {
+        int index = style.indexOf(feature);
+        if (index != -1) {
+            String section = style.substring(index);
+            String start = style.substring(0, index + feature.length());
+            String end = section.substring(section.indexOf(";"));
+            style = start + replace + end;
+        } else {
+            style = style + " " + feature + replace + ";";
+        }
+        return style;
     }
+
+    private void setButtonBorderColor(JFXButton btn, String borderColor) {
+        btn.setStyle(modifyStyle(btn.getStyle(), "-fx-border-color: ", borderColor));
+    }
+
+    private void setButtonBackgroundColor(JFXButton btn, String backgroundColor) {
+        btn.setStyle(modifyStyle(btn.getStyle(), "-fx-background-color: ", backgroundColor));
+    }
+
 
     /////////////////////////////////
     //                             //
@@ -800,7 +836,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             mapViewElement.setSelectedNodeEnd(selectedNode);
             mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
             map.setFloor(selectedNode.getFloor());
-            reloadMap();
+            onFloorRefresh();
         }
     }
 
@@ -812,30 +848,31 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
         Path newPath = mapViewElement.swapSrcAndDst();
         displayTextDirections(newPath);
-        resetFloorButtonColors();
+        resetFloorButtonBorders();
         changeFloorButtons(newPath);
 
         map.setFloor(mapViewElement.getSelectedNodeStart().getFloor());
-        reloadMap();
+        onFloorRefresh();
     }
 
     @FXML
-    void flipElevators(){
-        if(disableElevatorsBox.isSelected()) {
+    void flipElevators() {
+        if (disableElevatorsBox.isSelected()) {
             map.enableElevators();
-        } else{
+        } else {
             map.disableElevators();
         }
-
+        onFloorRefresh();
     }
 
     @FXML
-    void flipStairs(){
-        if(disableStairsBox.isSelected()) {
+    void flipStairs() {
+        if (disableStairsBox.isSelected()) {
             map.enableStairs();
-        } else{
+        } else {
             map.disableStairs();
         }
+        onFloorRefresh();
     }
 
     @FXML
@@ -900,11 +937,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             Path newPath = mapViewElement.changePath(sourceNode, destinationNode);
 
             displayTextDirections(newPath);
-            resetFloorButtonColors();
+            resetFloorButtonBorders();
             changeFloorButtons(newPath);
 
             map.setFloor(sourceNode.getFloor());
-            reloadMap();
+            onFloorRefresh();
         }
     }
 
@@ -1010,26 +1047,23 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //                         //
     /////////////////////////////
 
-    @FXML
-    void onEnglish() {
+
+    private void onEnglish() {
         switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("en", "US")),
                 Screens.Home);
     }
 
-    @FXML
-    void onFrench() {
+    private void onFrench() {
         switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("fr", "FR")),
                 Screens.Home);
     }
 
-    @FXML
-    void onSpanish() {
+    private void onSpanish() {
         switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("es", "ES")),
                 Screens.Home);
     }
 
-    @FXML
-    void onChinese() {
+    private void onChinese() {
         switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("zh", "CN"), new UTF8Control()),
                 Screens.Home);
     }
@@ -1044,7 +1078,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     void on2D() {
         map.setIs2D(true);
-        reloadMap();
+        onFloorRefresh();
         btn2D.setButtonType(JFXButton.ButtonType.RAISED);
         btn2D.setStyle("-fx-background-color:  #f2f5f7");
         btn3D.setButtonType(JFXButton.ButtonType.FLAT);
@@ -1055,16 +1089,40 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     void on3D() {
         map.setIs2D(false);
-        reloadMap();
+        onFloorRefresh();
         btn2D.setButtonType(JFXButton.ButtonType.FLAT);
         btn2D.setStyle("-fx-background-color:  #b6b8b9");
         btn3D.setButtonType(JFXButton.ButtonType.RAISED);
         btn3D.setStyle("-fx-background-color:  #f2f5f7");
     }
 
-    private void reloadMap() {
-        int index;
+    private void changeFloor(String floor) {
+        resetFloorButtonBackgrounds();
 
+        map.setFloor(floor);
+        JFXButton floorBtn = getFloorButton(floor);
+        setButtonBackgroundColor(floorBtn,  "#436282");
+
+        switch (floor) {
+            case "03":
+                MainTitle.setText("Brigham and Women's Hospital: Level 3");
+                break;
+            case "02":
+                MainTitle.setText("Brigham and Women's Hospital: Level 2");
+                break;
+            case "01":
+                MainTitle.setText("Brigham and Women's Hospital: Level 1");
+                break;
+            case "0G":
+                MainTitle.setText("Brigham and Women's Hospital: Ground Floor");
+                break;
+            case "L1":
+                MainTitle.setText("Brigham and Women's Hospital: Lower Level 1");
+                break;
+            case "L2":
+                MainTitle.setText("Brigham and Women's Hospital: Lower Level 2");
+                break;
+        }
     }
 
 
@@ -1174,9 +1232,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         onCancelDirectionsEvent();
         setCancelMenuEvent();
         mapViewElement.toggleEditorMode();
-        if(mapEditorDrawer.isShown()){
+        if (mapEditorDrawer.isShown()) {
             mapEditorDrawer.close();
-        }else {
+        } else {
             mapEditorDrawer.open();
         }
     }
@@ -1751,7 +1809,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @Override
     public void onNewPathSelected(Path path) {
         displayTextDirections(path);
-        resetFloorButtonColors();
+        resetFloorButtonBorders();
         changeFloorButtons(path);
         floorNode.animateList(true);
         sourceLocation.setText(mapViewElement.getSelectedNodeStart().getLongName());
@@ -1813,44 +1871,70 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     @Override
-    public void onFloorChanged() {
-
+    public void onFloorRefresh() {
+        mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+        Path newPath = mapViewElement.getMapDrawController().getDrawnPath();
+        displayTextDirections(newPath);
+        resetFloorButtonBorders();
+        resetFloorButtonBackgrounds();
+        changeFloorButtons(newPath);
+        changeFloor(map.getFloor());
     }
 
 
     @FXML
-    private void onAddNode(){
+    private void onAddNode() {
         mapViewElement.setEditMode(MapViewElement.EditMode.ADDNODE);
     }
 
     @FXML
-    private void onRemoveNode(){
+    private void onRemoveNode() {
         mapViewElement.setEditMode(MapViewElement.EditMode.REMNODE);
     }
 
     @FXML
-    private void onAddEdge(){
+    private void onAddEdge() {
         mapViewElement.setEditMode(MapViewElement.EditMode.ADDEDGE);
     }
 
     @FXML
-    private void onRemoveEdge(){
+    private void onRemoveEdge() {
         mapViewElement.setEditMode(MapViewElement.EditMode.REMEDGE);
     }
 
     @FXML
-    private void onModify(){
+    private void onModify() {
         mapViewElement.setEditMode(MapViewElement.EditMode.EDITNODE);
     }
 
     @FXML
-    private void onDragNode(){
+    private void onDragNode() {
         mapViewElement.setEditMode(MapViewElement.EditMode.MOVENODE);
     }
 
     @FXML
-    private void onPan(){
+    private void onPan() {
         mapViewElement.setEditMode(MapViewElement.EditMode.PAN);
+    }
+
+    private State savedState;
+    private State state;
+
+    public void saveState(){
+        state = new State(mapViewElement.getMapDrawController().getDrawnPath());
+    }
+
+    public void returnToState(State state){
+        this.state = state;
+    }
+
+    @FXML
+    private AnchorPane screensaverPane;
+
+
+    @FXML
+    private void onChangeKioskLocation() {
+        mapViewElement.updateHomeLocation();
     }
 
 }
