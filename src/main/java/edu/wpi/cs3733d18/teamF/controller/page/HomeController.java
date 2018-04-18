@@ -506,20 +506,21 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         searchLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = searchLocation.getText();
             input = input.concat("" + e.getCharacter());
-            autoComplete(input, searchList, "Node", "longName");
+            filterHallAutoComplete(input, searchList);
+            //autoComplete(input, searchList, "Node", "longName"); // keep to check if new "hall" strings are ever made
         });
 
         sourceLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = sourceLocation.getText();
             input = input.concat("" + e.getCharacter());
-            autoComplete(input, directionsList, "Node", "longName");
+            filterHallAutoComplete(input, directionsList);
             sourceLocationActive = true;
         });
 
         destinationLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = destinationLocation.getText();
             input = input.concat("" + e.getCharacter());
-            autoComplete(input, directionsList, "Node", "longName");
+            filterHallAutoComplete(input, directionsList);
             sourceLocationActive = false;
         });
 
@@ -630,6 +631,40 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
     }
 
+    private void filterHallAutoComplete(String input, ListView listView) {
+        if (input.length() > 0) {
+            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery("SELECT longName FROM Node");
+            ArrayList<String> hallfreeStrings = new ArrayList<>();
+            ArrayList<String> acceptedHallStrings = new ArrayList<>();
+            acceptedHallStrings.add("Carrie M. Hall Conference Center Floor 2");
+
+            try {
+                while (resultSet.next()) {
+                    String name = resultSet.getString(1);
+                    if (name.toLowerCase().contains(input.toLowerCase()) &&
+                            (!name.toLowerCase().contains("hall") ||
+                                    acceptedHallStrings.contains(name))) {
+                        hallfreeStrings.add(name);
+                    }
+                }
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+            try {
+                if (hallfreeStrings.size() > 0) {
+                    ObservableList<String> list = FXCollections.observableArrayList(hallfreeStrings);
+                    listView.setItems(list);
+                    listView.setVisible(true);
+                } else {
+                    listView.setVisible(false);
+                }
+            } catch (Exception anyE) {
+                anyE.printStackTrace();
+            }
+        } else {
+            listView.setVisible(false);
+        }
+    }
 
     // will shake the password field back and forth
     private void shakePasswordField(JFXPasswordField passwordField) {
