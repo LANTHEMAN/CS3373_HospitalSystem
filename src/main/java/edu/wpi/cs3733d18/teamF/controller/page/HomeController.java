@@ -317,6 +317,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
      */
     @Override
     public void initialize(PaneSwitcher switcher) {
+        adminDrawer.setDisable(true);
+        directionsDrawer.setDisable(true);
         // initialize fundamentals
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
@@ -738,14 +740,18 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private void onHamburgerMenu() {
         if (adminDrawer.isHidden()) {
+            adminDrawer.setDisable(false);
             adminDrawer.open();
             adminDrawer.toFront();
         }
+        else{
+            adminDrawer.setDisable(true);
+        }
     }
-
     @FXML
     private void onArrowEvent() {
         if (directionsDrawer.isHidden()) {
+            directionsDrawer.setDisable(false);
             directionsDrawer.open();
             directionsDrawer.toFront();
             destinationLocation.setText(searchLocation.getText());
@@ -757,6 +763,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         if (adminDrawer.isShown()) {
             adminDrawer.close();
             adminDrawer.toBack();
+            adminDrawer.setDisable(true);
         }
         if (serviceRequestList.isExpanded()) {
             serviceRequestList.animateList(false);
