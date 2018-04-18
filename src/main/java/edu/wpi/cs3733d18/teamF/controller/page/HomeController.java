@@ -744,9 +744,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             adminDrawer.open();
             adminDrawer.toFront();
         }
-        else{
-            adminDrawer.setDisable(true);
-        }
     }
     @FXML
     private void onArrowEvent() {
@@ -920,6 +917,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         if (directionsDrawer.isShown()) {
             directionsDrawer.close();
             directionsDrawer.toBack();
+            directionsDrawer.setDisable(true);
             searchLocation.setText(destinationLocation.getText());
         }
     }
