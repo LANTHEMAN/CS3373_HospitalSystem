@@ -340,7 +340,7 @@ public class MapViewElement extends PageElement {
         });
 
         mapContainer.addEventHandler(Event.ANY, e->{
-            if((gesturePane.targetPointAtViewportCentre().getX() > 427 || gesturePane.targetPointAtViewportCentre().getX() < 417 || gesturePane.targetPointAtViewportCentre().getY() > 348 || gesturePane.targetPointAtViewportCentre().getY() < 230) && gesturePane.getCurrentScale() >= 2.25){
+            if(((gesturePane.targetPointAtViewportCentre().getX() > 427 || gesturePane.targetPointAtViewportCentre().getX() < 417) && (gesturePane.targetPointAtViewportCentre().getY() > 348 || gesturePane.targetPointAtViewportCentre().getY() < 230)) && gesturePane.getCurrentScale() >= 2.29){
                 listener.onRefresh();
             }
         });
