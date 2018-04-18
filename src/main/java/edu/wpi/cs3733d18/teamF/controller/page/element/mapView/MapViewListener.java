@@ -10,5 +10,5 @@ public interface MapViewListener {
     void onUpdateModifyNodePane(boolean isHidden, boolean is2D, Node modifiedNode);
     void onNewNodePopup(Point2D sceneLocation, Point2D nodeLocation);
     void onHideNewNodePopup();
-    void onFloorChanged();
+    void onFloorRefresh();
 }

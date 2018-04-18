@@ -3,6 +3,7 @@ package edu.wpi.cs3733d18.teamF.graph;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 
+import java.util.HashMap;
 import java.util.Observable;
 
 import static java.lang.Math.cos;
@@ -240,5 +241,26 @@ public class Node extends Observable {
     private void signalClassChanged(Object arg) {
         this.setChanged();
         this.notifyObservers(arg);
+    }
+
+    public int compareFloors(Node compNode){
+        if(floor.equals(compNode.floor)){
+            return 0;
+        }
+        else{
+            HashMap<String,Integer> floortoInt= new HashMap<String,Integer>();
+            floortoInt.put("L2",-2);
+            floortoInt.put("L1",-1);
+            floortoInt.put("0G",0);
+            floortoInt.put("01",1);
+            floortoInt.put("02",2);
+            floortoInt.put("03",3);
+            if(floortoInt.get(floor) < floortoInt.get(compNode.floor)){
+                return -1;
+            }
+            else {
+                return 1;
+            }
+        }
     }
 }

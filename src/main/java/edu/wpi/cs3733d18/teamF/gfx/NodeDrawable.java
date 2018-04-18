@@ -26,4 +26,12 @@ public abstract class NodeDrawable implements Drawable {
 
     public void unhoverNode() {
     }
+
+    public void setDirection(boolean b){
+
+    }
+
+    public void setType(boolean b){
+
+    }
 }

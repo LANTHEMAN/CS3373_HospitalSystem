@@ -13,6 +13,8 @@ import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
 import edu.wpi.cs3733d18.teamF.graph.*;
 import edu.wpi.cs3733d18.teamF.qr.qrConverter;
 import edu.wpi.cs3733d18.teamF.sr.*;
+import edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.Screensaver;
+import edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.State;
 import edu.wpi.cs3733d18.teamF.voice.VoiceCommandVerification;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.animation.Animation;
@@ -75,6 +77,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     Label religionRequiredRS, firstNameRequiredRS, lastNameRequiredRS, locationRequiredRS;
     MapViewElement mapViewElement;
     AboutElement aboutElement;
+    Screensaver screensaver;
     @FXML
     AnchorPane mapElementPane;
     @FXML
@@ -348,6 +351,12 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         aboutElement.initialize(aboutElementPane);
         aboutElement.hideElement();
 
+        //init screensaver
+        Pair<Screensaver, Pane> screensaverInfo = switcher.loadElement("screensaver.fxml");
+        screensaver = screensaverInfo.getKey();
+        screensaver.initialize(screensaverPane);
+        screensaver.hideElement();
+
         // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);
 
@@ -562,20 +571,21 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             } else if (cmd.equalsIgnoreCase("Activate")) {
                 // got a string saying that the activation command has been said
                 paneVoiceController.setVisibility(true);
-            } else if(cmd.equalsIgnoreCase("DisableElevators")){
+            } else if (cmd.equalsIgnoreCase("DisableElevators")) {
                 disableElevatorsBox.setSelected(false);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            } else if(cmd.equalsIgnoreCase("DisableStairs")){
+            } else if (cmd.equalsIgnoreCase("DisableStairs")) {
                 disableStairsBox.setSelected(false);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            }else if(cmd.equalsIgnoreCase("EnableElevators")){
+            } else if (cmd.equalsIgnoreCase("EnableElevators")) {
                 disableElevatorsBox.setSelected(true);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            } else if(cmd.equalsIgnoreCase("EnableStairs")){
+            } else if (cmd.equalsIgnoreCase("EnableStairs")) {
                 disableStairsBox.setSelected(true);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
             }
         }
+        onFloorRefresh();
     }
 
     // will filter the given ListView for the given input String
@@ -639,7 +649,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         setCancelMenuEvent();
         serviceRequestList.animateList(false);
         serviceRequestList.animateList(false);
-        if(mapEditorDrawer.isShown()) {
+        if (mapEditorDrawer.isShown()) {
             mapEditorDrawer.close();
         }
         setGuestMenu();
@@ -684,7 +694,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             case "01":
                 return floor1;
             case "0G":
-                return  groundFloor;
+                return groundFloor;
             case "L1":
                 return l1;
             default: // case "L2"
@@ -853,6 +863,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             mapViewElement.setSelectedNodeEnd(selectedNode);
             mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
             map.setFloor(selectedNode.getFloor());
+            onFloorRefresh();
         }
     }
 
@@ -868,26 +879,27 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         changeFloorButtons(newPath);
 
         map.setFloor(mapViewElement.getSelectedNodeStart().getFloor());
+        onFloorRefresh();
     }
 
     @FXML
-    void flipElevators(){
-        if(disableElevatorsBox.isSelected()) {
+    void flipElevators() {
+        if (disableElevatorsBox.isSelected()) {
             map.enableElevators();
-        } else{
+        } else {
             map.disableElevators();
         }
-        mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+        onFloorRefresh();
     }
 
     @FXML
-    void flipStairs(){
-        if(disableStairsBox.isSelected()) {
+    void flipStairs() {
+        if (disableStairsBox.isSelected()) {
             map.enableStairs();
-        } else{
+        } else {
             map.disableStairs();
         }
-        mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+        onFloorRefresh();
     }
 
     @FXML
@@ -956,6 +968,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             changeFloorButtons(newPath);
 
             map.setFloor(sourceNode.getFloor());
+            onFloorRefresh();
         }
     }
 
@@ -1000,6 +1013,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     void onHelpPopup() {
         helpPane.setVisible(true);
+
+        edu.wpi.cs3733d18.teamF.api.ServiceRequest.injectObservable(VoiceLauncher.getInstance());
+        edu.wpi.cs3733d18.teamF.api.ServiceRequest sr = new edu.wpi.cs3733d18.teamF.api.ServiceRequest();
+        sr.run(0,0,1900,1000,null,null,null);
     }
 
     @FXML
@@ -1092,6 +1109,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     void on2D() {
         map.setIs2D(true);
+        onFloorRefresh();
         btn2D.setButtonType(JFXButton.ButtonType.RAISED);
         btn2D.setStyle("-fx-background-color:  #f2f5f7");
         btn3D.setButtonType(JFXButton.ButtonType.FLAT);
@@ -1102,6 +1120,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     void on3D() {
         map.setIs2D(false);
+        onFloorRefresh();
         btn2D.setButtonType(JFXButton.ButtonType.FLAT);
         btn2D.setStyle("-fx-background-color:  #b6b8b9");
         btn3D.setButtonType(JFXButton.ButtonType.RAISED);
@@ -1244,9 +1263,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         onCancelDirectionsEvent();
         setCancelMenuEvent();
         mapViewElement.toggleEditorMode();
-        if(mapEditorDrawer.isShown()){
+        if (mapEditorDrawer.isShown()) {
             mapEditorDrawer.close();
-        }else {
+        } else {
             mapEditorDrawer.open();
         }
     }
@@ -1886,8 +1905,14 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     @Override
-    public void onFloorChanged() {
-
+    public void onFloorRefresh() {
+        mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+        Path newPath = mapViewElement.getMapDrawController().getDrawnPath();
+        displayTextDirections(newPath);
+        resetFloorButtonBorders();
+        resetFloorButtonBackgrounds();
+        changeFloorButtons(newPath);
+        changeFloor(map.getFloor());
     }
 
 
@@ -1938,6 +1963,26 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         resetEditorButtonBackgrounds();
         setButtonBackgroundColor(panBtn,"#436282");
         mapViewElement.setEditMode(MapViewElement.EditMode.PAN);
+    }
+
+    private State savedState;
+    private State state;
+
+    public void saveState(){
+        state = new State(mapViewElement.getMapDrawController().getDrawnPath());
+    }
+
+    public void returnToState(State state){
+        this.state = state;
+    }
+
+    @FXML
+    private AnchorPane screensaverPane;
+
+
+    @FXML
+    private void onChangeKioskLocation() {
+        mapViewElement.updateHomeLocation();
     }
 
 }

@@ -55,6 +55,13 @@ public class MapViewElement extends PageElement {
     private Map map;
     private MapViewListener listener;
 
+    public void updateHomeLocation() {
+        if (modifyNode == null) {
+            return;
+        }
+        startNodeID = modifyNode.getNodeID();
+    }
+
     public void resetStartLocation() {
         if (map.getNodes(node -> node.getNodeID().equals(startNodeID)).size() > 0) {
             setSelectedNodeStart(map.getNodes(node -> node.getNodeID().equals(startNodeID)).iterator().next());
@@ -110,7 +117,12 @@ public class MapViewElement extends PageElement {
                         node1 -> node1.getFloor().equals(map.getFloor()));
                 if (!(mapDrawController.getDrawnPath() != null
                         && mapDrawController.getDrawnPath().getNodes().contains(node)
-                        && (node.getNodeType().equals("ELEV") || node.getNodeType().equals("STAI")))) {
+                        && (node.getNodeType().equals("ELEV") || node.getNodeType().equals("STAI"))
+                        && map.getNeighbors(node)
+                        .stream()
+                        .filter(node1 -> mapDrawController.getDrawnPath().getNodes().contains(node1))
+                        .filter(node1 -> !node1.getFloor().equals(node.getFloor()))
+                        .toArray().length > 0)) {
                     return;
                 }
                 if (!mapDrawController.isHoveringNode(node)) {
@@ -256,7 +268,7 @@ public class MapViewElement extends PageElement {
                                 for (Node node : neighborNodes) {
                                     if (!node.getFloor().equals(dst.getFloor()) && mapDrawController.getDrawnPath().getNodes().contains(node)) {
                                         map.setFloor(node.getFloor());
-                                        listener.onFloorChanged();
+                                        listener.onFloorRefresh();
                                         return;
                                     }
                                 }
@@ -326,6 +338,7 @@ public class MapViewElement extends PageElement {
     }
 
     public Path changePathDestination(Node destinationNode) {
+        selectedNodeEnd = destinationNode;
         Path path = map.getPath(selectedNodeStart, destinationNode);
         mapDrawController.showPath(path);
         return path;

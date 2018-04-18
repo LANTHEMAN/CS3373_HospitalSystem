@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.sun.javafx.font.Glyph;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733d18.teamF.Main;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.NodeDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Node;
@@ -11,6 +12,7 @@ import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.LabeledBuilder;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -46,16 +48,12 @@ public class StartNodeDrawer extends NodeDrawable {
             return;
         }
 
-        double iconPosX = (posX * pane.getMaxWidth() / imageWidth)-5.5;
-        double iconPosY = (posY * pane.getMaxHeight() / imageHeight)+3.5;
+        ImageView start  = new ImageView(Main.class.getResource("start-icon.png").toExternalForm());
+        start.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 85);
+        start.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 131);
 
-        FontAwesomeIconView start = new FontAwesomeIconView(FontAwesomeIcon.HOME);
-        start.setTranslateX(iconPosX);
-        start.setTranslateY(iconPosY);
-
-        start.setScaleX(0.5);
-        start.setScaleY(0.5);
-        start.setFill(Color.GREEN);
+        start.setScaleX(0.03);
+        start.setScaleY(0.03);
         start.setVisible(true);
         pane.getChildren().add(start);
 
@@ -69,7 +67,7 @@ public class StartNodeDrawer extends NodeDrawable {
             startText.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 10);
 
             startText.setText(node.getShortName());
-            startText.setPrefColumnCount((node.getShortName().length()/4)*3);
+            startText.setPrefColumnCount(node.getShortName().length());
             startText.setAlignment(Pos.CENTER);
             startText.setStyle("-fx-background-color: green; " +
                     "-fx-border-color: black; " +
