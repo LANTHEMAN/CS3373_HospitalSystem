@@ -168,7 +168,7 @@
         </VBox>
       <HBox fx:id="mapEditorBtns" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="680.0" spacing="15.0" style="-fx-background-color: rgba(0,0,0,0.5); -fx-background-radius: 10;">
          <children>
-            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAddNode" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
+            <JFXButton fx:id="addNodeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAddNode" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
                      <image>
@@ -176,7 +176,7 @@
                      </image>
                   </ImageView>
                </graphic></JFXButton>
-            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onRemoveNode" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
+            <JFXButton fx:id="remNodeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onRemoveNode" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
                      <image>
@@ -184,7 +184,7 @@
                      </image>
                   </ImageView>
                </graphic></JFXButton>
-            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAddEdge" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
+            <JFXButton fx:id="addEdgeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAddEdge" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
                      <image>
@@ -192,7 +192,7 @@
                      </image>
                   </ImageView>
                </graphic></JFXButton>
-            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onRemoveEdge" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
+            <JFXButton fx:id="remEdgeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onRemoveEdge" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
                      <image>
@@ -200,7 +200,7 @@
                      </image>
                   </ImageView>
                </graphic></JFXButton>
-            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onModify" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
+            <JFXButton fx:id="modifyBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onModify" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
                      <image>
@@ -208,7 +208,7 @@
                      </image>
                   </ImageView>
                </graphic></JFXButton>
-            <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDragNode" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
+            <JFXButton fx:id="dragBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDragNode" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
                      <image>
@@ -216,7 +216,7 @@
                      </image>
                   </ImageView>
                </graphic></JFXButton>
-            <JFXButton ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onPan" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE" textOverrun="CLIP">
+            <JFXButton fx:id="panBtn" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onPan" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE" textOverrun="CLIP">
                <graphic>
                   <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
                      <image>

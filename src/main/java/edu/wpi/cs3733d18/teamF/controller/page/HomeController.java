@@ -169,7 +169,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private Map map;
     @FXML
     private Text MainTitle;
-
+    @FXML
+    private JFXButton addNodeBtn, remNodeBtn, addEdgeBtn, remEdgeBtn, modifyBtn, dragBtn, panBtn;
     ////////////////////////////////
     //                            //
     //         Map Builder        //
@@ -711,6 +712,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         setButtonBackgroundColor(floor1, "#042E58");
         setButtonBackgroundColor(floor2, "#042E58");
         setButtonBackgroundColor(floor3, "#042E58");
+    }
+
+    private void resetEditorButtonBackgrounds() {
+        setButtonBackgroundColor(addNodeBtn, "#042E58");
+        setButtonBackgroundColor(remNodeBtn, "#042E58");
+        setButtonBackgroundColor(addEdgeBtn, "#042E58");
+        setButtonBackgroundColor(remEdgeBtn, "#042E58");
+        setButtonBackgroundColor(modifyBtn, "#042E58");
+        setButtonBackgroundColor(dragBtn, "#042E58");
+        setButtonBackgroundColor(panBtn, "#042E58");
     }
 
     private String modifyStyle(String style, String feature, String replace) {
@@ -1831,6 +1842,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             return;
         }
         gpaneNodeInfo.setVisible(true);
+
+        if(modifiedNode == null){
+            return;
+        }
         if (map.is2D()) {
             modNode_x.setText(String.valueOf(modifiedNode.getPosition().getX()));
             modNode_y.setText(String.valueOf(modifiedNode.getPosition().getY()));
@@ -1852,7 +1867,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         } else {
             modNode_type.setDisable(false);
         }
-
     }
 
     @Override
@@ -1879,36 +1893,50 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     private void onAddNode(){
+        resetEditorButtonBackgrounds();
+        setButtonBackgroundColor(addNodeBtn,"#436282");
         mapViewElement.setEditMode(MapViewElement.EditMode.ADDNODE);
     }
 
     @FXML
     private void onRemoveNode(){
+        resetEditorButtonBackgrounds();
+        setButtonBackgroundColor(remNodeBtn,"#436282");
         mapViewElement.setEditMode(MapViewElement.EditMode.REMNODE);
     }
 
     @FXML
     private void onAddEdge(){
+        resetEditorButtonBackgrounds();
+        setButtonBackgroundColor(addEdgeBtn,"#436282");
         mapViewElement.setEditMode(MapViewElement.EditMode.ADDEDGE);
     }
 
     @FXML
     private void onRemoveEdge(){
+        resetEditorButtonBackgrounds();
+        setButtonBackgroundColor(remEdgeBtn,"#436282");
         mapViewElement.setEditMode(MapViewElement.EditMode.REMEDGE);
     }
 
     @FXML
     private void onModify(){
+        resetEditorButtonBackgrounds();
+        setButtonBackgroundColor(modifyBtn,"#436282");
         mapViewElement.setEditMode(MapViewElement.EditMode.EDITNODE);
     }
 
     @FXML
     private void onDragNode(){
+        resetEditorButtonBackgrounds();
+        setButtonBackgroundColor(dragBtn,"#436282");
         mapViewElement.setEditMode(MapViewElement.EditMode.MOVENODE);
     }
 
     @FXML
     private void onPan(){
+        resetEditorButtonBackgrounds();
+        setButtonBackgroundColor(panBtn,"#436282");
         mapViewElement.setEditMode(MapViewElement.EditMode.PAN);
     }
 
