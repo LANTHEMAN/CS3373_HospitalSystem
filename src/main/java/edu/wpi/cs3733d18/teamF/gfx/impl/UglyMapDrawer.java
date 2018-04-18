@@ -26,7 +26,7 @@ public class UglyMapDrawer extends MapDrawable {
     private NodeDrawable exitDrawer = new ExitNodeDrawer();
     private NodeDrawable stairDrawer = new StairNodeDrawer();
     private NodeDrawable restroomDrawer = new RestroomNodeDrawer();
-    private NodeDrawable pathStairDrawer = new PathStairNodeDrawer();
+    private NodeDrawable pathNodeDrawer = new PathNodeDrawer();
     private NodeDrawable currNodeDrawable = nodeDrawer;
     private NodeDrawable startNodeDefault = null;
     private Pane pathPane = new Pane();
@@ -235,8 +235,11 @@ public class UglyMapDrawer extends MapDrawable {
     private NodeDrawable getPathNodeDrawer(String type) {
         switch (type) {
             case "ELEV":
+                pathNodeDrawer.setType(false);
+                return pathNodeDrawer;
             case "STAI":
-                return pathStairDrawer;
+                pathNodeDrawer.setType(true);
+                return pathNodeDrawer;
             default:
                 return nodeDrawer;
         }

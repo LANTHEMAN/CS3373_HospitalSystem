@@ -1,9 +1,5 @@
 package edu.wpi.cs3733d18.teamF.gfx.impl;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import de.jensd.fx.glyphs.octicons.OctIcon;
-import de.jensd.fx.glyphs.octicons.OctIconView;
 import edu.wpi.cs3733d18.teamF.Main;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.NodeDrawable;
@@ -11,22 +7,24 @@ import edu.wpi.cs3733d18.teamF.graph.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
-public class PathStairNodeDrawer extends NodeDrawable {
+
+public class PathNodeDrawer extends NodeDrawable {
 
     private boolean isSelected = false;
     private boolean isHovered = false;
     private javafx.scene.image.Image upStair = new javafx.scene.image.Image(Main.class.getResource("up-stairs.png").toExternalForm());
     private javafx.scene.image.Image downStair = new javafx.scene.image.Image(Main.class.getResource("down-stairs.png").toExternalForm());
+    private javafx.scene.image.Image upElevator = new javafx.scene.image.Image(Main.class.getResource("up-elevator.png").toExternalForm());
+    private javafx.scene.image.Image downElevator = new javafx.scene.image.Image(Main.class.getResource("down-elevator.png").toExternalForm());
     private boolean direction = true;
+    private boolean type = true;
 
-    public PathStairNodeDrawer(Node node) {
+    public PathNodeDrawer(Node node) {
         super(node);
     }
 
-    public PathStairNodeDrawer() {
+    public PathNodeDrawer() {
         super();
     }
 
@@ -55,6 +53,9 @@ public class PathStairNodeDrawer extends NodeDrawable {
         isHovered = false;
     }
 
+    public void setType(boolean type){
+        this.type = type;
+    }
     @Override
     public void draw(Pane pane) {
         boolean is2D = MapSingleton.getInstance().getMap().is2D();
@@ -66,28 +67,51 @@ public class PathStairNodeDrawer extends NodeDrawable {
             return;
         }
         Image currIcon;
-        if(direction) {
-            currIcon = upStair;
+        if(type) {
+            if (direction) {
+                currIcon = upStair;
+            } else {
+                currIcon = downStair;
+            }
         }
-        else {
-            currIcon = downStair;
+        else{
+            if (direction) {
+                currIcon = upElevator;
+            } else {
+                currIcon = downElevator;
+            }
         }
         ImageView icon = new ImageView(currIcon);
 
         if (isHovered) {
-            icon.setTranslateX((posX * pane.getMaxWidth() / imageWidth)-112.5);
-            icon.setTranslateY((posY * pane.getMaxHeight() / imageHeight)-114);
-
-            icon.setScaleX(0.02);
-            icon.setScaleY(0.02);
+            if(type) {
+                icon.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 112.5);
+                icon.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 114);
+                icon.setScaleX(0.02);
+                icon.setScaleY(0.02);
+            }
+            else
+            {
+                icon.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 87.5);
+                icon.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 128);
+                icon.setScaleX(0.04);
+                icon.setScaleY(0.04);
+            }
             icon.setVisible(true);
             pane.getChildren().add(icon);
         } else {
-            icon.setTranslateX((posX * pane.getMaxWidth() / imageWidth)-112.5);
-            icon.setTranslateY((posY * pane.getMaxHeight() / imageHeight)-114);
-
-            icon.setScaleX(0.015);
-            icon.setScaleY(0.015);
+            if(type) {
+                icon.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 112.5);
+                icon.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 114);
+                icon.setScaleX(0.015);
+                icon.setScaleY(0.015);
+            }
+            else{
+                icon.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 87.5);
+                icon.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 128);
+                icon.setScaleX(0.03);
+                icon.setScaleY(0.03);
+            }
             icon.setVisible(true);
             pane.getChildren().add(icon);
         }
