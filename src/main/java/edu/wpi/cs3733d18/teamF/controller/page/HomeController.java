@@ -154,7 +154,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private HBox algorithmsBox;
     @FXML
-    private JFXButton aStar, depthFirst, breathFirst;
+    private JFXButton aStar, depthFirst, breathFirst, dijkstra, bestFirst;
     /////////////////////////////
     //                         //
     //         Language        //
@@ -985,6 +985,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         aStar.setStyle("-fx-background-color: #303030");
         breathFirst.setStyle("-fx-background-color: #616161");
         depthFirst.setStyle("-fx-background-color: #616161");
+        dijkstra.setStyle("-fx-background-color: #616161");
+        bestFirst.setStyle("-fx-background-color: #616161");
     }
 
     @FXML
@@ -993,6 +995,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         aStar.setStyle("-fx-background-color: #616161");
         breathFirst.setStyle("-fx-background-color: #303030");
         depthFirst.setStyle("-fx-background-color: #616161");
+        dijkstra.setStyle("-fx-background-color: #616161");
+        bestFirst.setStyle("-fx-background-color: #616161");
     }
 
     @FXML
@@ -1001,6 +1005,28 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         aStar.setStyle("-fx-background-color: #616161");
         breathFirst.setStyle("-fx-background-color: #616161");
         depthFirst.setStyle("-fx-background-color: #303030");
+        dijkstra.setStyle("-fx-background-color: #616161");
+        bestFirst.setStyle("-fx-background-color: #616161");
+    }
+
+    @FXML
+    private void onDijkstra() {
+        MapSingleton.getInstance().getMap().setPathSelector(new Dijkstra());
+        aStar.setStyle("-fx-background-color: #616161");
+        breathFirst.setStyle("-fx-background-color: #616161");
+        depthFirst.setStyle("-fx-background-color: #616161");
+        dijkstra.setStyle("-fx-background-color: #303030");
+        bestFirst.setStyle("-fx-background-color: #616161");
+    }
+
+    @FXML
+    private void onBestFirst() {
+        MapSingleton.getInstance().getMap().setPathSelector(new DepthSearch());
+        aStar.setStyle("-fx-background-color: #616161");
+        breathFirst.setStyle("-fx-background-color: #616161");
+        depthFirst.setStyle("-fx-background-color: #616161");
+        dijkstra.setStyle("-fx-background-color: #616161");
+        bestFirst.setStyle("-fx-background-color: #303030");
     }
 
 
