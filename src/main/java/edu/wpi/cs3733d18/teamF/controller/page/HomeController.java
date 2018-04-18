@@ -320,6 +320,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     public void initialize(PaneSwitcher switcher) {
         adminDrawer.setDisable(true);
         directionsDrawer.setDisable(true);
+        mapEditorDrawer.setDisable(true);
+        loginDrawer.setDisable(true);
         // initialize fundamentals
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
@@ -474,6 +476,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                         setGuestMenu();
                     }
                     loginDrawer.close();
+                    loginDrawer.setDisable(true);
                     loginUsername.setText("");
                     loginPassword.setText("");
 
@@ -484,15 +487,18 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
             } else {
                 loginDrawer.open();
+                loginDrawer.setDisable(false);
             }
         });
 
         loginCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             loginDrawer.close();
+            loginDrawer.setDisable(true);
         });
 
         logoutCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             loginDrawer.close();
+            loginDrawer.setDisable(true);
         });
 
 
@@ -646,6 +652,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         mapViewElement.setViewMode(MapViewElement.ViewMode.VIEW);
         PermissionSingleton.getInstance().logout();
         loginDrawer.close();
+        loginDrawer.setDisable(true);
         gpaneNodeInfo.setVisible(false);
         onCancelDirectionsEvent();
         setCancelMenuEvent();
@@ -653,6 +660,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         serviceRequestList.animateList(false);
         if (mapEditorDrawer.isShown()) {
             mapEditorDrawer.close();
+            mapEditorDrawer.setDisable(true);
         }
         setGuestMenu();
         if (algorithmsBox.isVisible()) {
@@ -1270,8 +1278,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         mapViewElement.toggleEditorMode();
         if (mapEditorDrawer.isShown()) {
             mapEditorDrawer.close();
+            mapEditorDrawer.setDisable(true);
         } else {
             mapEditorDrawer.open();
+            mapEditorDrawer.setDisable(false);
         }
     }
 
