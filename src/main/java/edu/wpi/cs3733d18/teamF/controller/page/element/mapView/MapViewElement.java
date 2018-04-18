@@ -337,6 +337,7 @@ public class MapViewElement extends PageElement {
     }
 
     public Path changePathDestination(Node destinationNode) {
+        selectedNodeEnd = destinationNode;
         Path path = map.getPath(selectedNodeStart, destinationNode);
         mapDrawController.showPath(path);
         return path;
