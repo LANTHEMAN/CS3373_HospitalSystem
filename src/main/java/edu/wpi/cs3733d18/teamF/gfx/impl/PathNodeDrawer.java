@@ -87,8 +87,8 @@ public class PathNodeDrawer extends NodeDrawable {
             if(type) {
                 icon.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 112.5);
                 icon.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 114);
-                icon.setScaleX(0.02);
-                icon.setScaleY(0.02);
+                icon.setScaleX(0.03);
+                icon.setScaleY(0.03);
             }
             else
             {
@@ -103,8 +103,8 @@ public class PathNodeDrawer extends NodeDrawable {
             if(type) {
                 icon.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 112.5);
                 icon.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 114);
-                icon.setScaleX(0.015);
-                icon.setScaleY(0.015);
+                icon.setScaleX(0.02);
+                icon.setScaleY(0.02);
             }
             else{
                 icon.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 87.5);
