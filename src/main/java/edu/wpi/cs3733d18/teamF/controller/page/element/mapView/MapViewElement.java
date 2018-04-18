@@ -8,6 +8,7 @@ import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
 import edu.wpi.cs3733d18.teamF.gfx.impl.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
@@ -81,6 +82,7 @@ public class MapViewElement extends PageElement {
         mapFloorDrawn = map.getFloor();
         isMap2D = map.is2D();
         initElement(sourcePane, root);
+        sourcePane.autosize();
 
         // draw the nodes
         mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
@@ -90,7 +92,6 @@ public class MapViewElement extends PageElement {
         refreshFloorDrawn();
         // set default zoom
         gesturePane.zoomTo(2, new Point2D(600, 600));
-
         // disable gesturePane when ctrl is held
         switcher.getScene().setOnKeyPressed(ke -> {
             if (ke.isControlDown()) {
@@ -183,6 +184,9 @@ public class MapViewElement extends PageElement {
         );
 
         mapContainer.setOnMouseClicked(e -> {
+
+//            System.out.println(gesturePane.targetPointAtViewportCentre());
+//            System.out.println(gesturePane.getCurrentScale());
             // don't select new node or path when panning
             if (mousePressedPosition.distance(new Point2D(e.getSceneX(), e.getSceneY())) > 25) {
                 listener.onHideNewNodePopup();
@@ -334,6 +338,12 @@ public class MapViewElement extends PageElement {
 
             }
         });
+
+        mapContainer.addEventHandler(Event.ANY, e->{
+            if((gesturePane.targetPointAtViewportCentre().getX() > 427 || gesturePane.targetPointAtViewportCentre().getX() < 417 || gesturePane.targetPointAtViewportCentre().getY() > 348 || gesturePane.targetPointAtViewportCentre().getY() < 230) && gesturePane.getCurrentScale() >= 2.25){
+                listener.onRefresh();
+            }
+        });
     }
 
     public Path changePathDestination(Node destinationNode) {
@@ -476,6 +486,8 @@ public class MapViewElement extends PageElement {
                 , e.getY() * map_y / mapContainer.getMaxHeight());
     }
 
+
+
     private boolean isNodeSelected(Point2D mapPos) {
         if (map.is2D()) {
             return map.getNodes(node -> new Point2D(node.getPosition().getX()
@@ -505,5 +517,9 @@ public class MapViewElement extends PageElement {
                 mapDrawController.refreshPath();
             }
         }
+    }
+
+    public GesturePane getGesturePane() {
+        return gesturePane;
     }
 }
