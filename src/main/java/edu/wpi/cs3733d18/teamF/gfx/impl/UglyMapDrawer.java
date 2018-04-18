@@ -176,6 +176,9 @@ public class UglyMapDrawer extends MapDrawable {
             if (redrawPath) {
                 pathPane.getChildren().clear();
 
+                pathDrawer.update(path);
+                pathDrawer.draw(pathPane);
+
                 Node startNode = path.getNodes().get(0);
                 NodeDrawable startIconDrawer = new StartNodeDrawer(startNode);
                 startIconDrawer.draw(pathPane);
@@ -184,9 +187,6 @@ public class UglyMapDrawer extends MapDrawable {
                 NodeDrawable endIconDrawer = new EndNodeDrawer();
                 endIconDrawer.update(endNode);
                 endIconDrawer.draw(pathPane);
-
-                pathDrawer.update(path);
-                pathDrawer.draw(pathPane);
                 redrawPath = false;
             }
 
