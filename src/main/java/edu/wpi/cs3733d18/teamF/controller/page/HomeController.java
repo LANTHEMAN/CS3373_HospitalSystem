@@ -234,6 +234,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private JFXListView searchList, directionsList;
     private boolean sourceLocationActive = false;
+    private ArrayList<String> acceptedHallStrings = new ArrayList<>();
     /////////////////////////////////
     //                             //
     //          Hamburger          //
@@ -503,23 +504,27 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         });
 
 
+        // the strngs that should not be filtered out of the autocomplete
+        acceptedHallStrings.add("Carrie M. Hall Conference Center Floor 2");
+
         searchLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = searchLocation.getText();
             input = input.concat("" + e.getCharacter());
-            autoComplete(input, searchList, "Node", "longName");
+            filterHallAutoComplete(input, searchList);
+            //autoComplete(input, searchList, "Node", "longName"); // keep to check if new "hall" strings are ever made
         });
 
         sourceLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = sourceLocation.getText();
             input = input.concat("" + e.getCharacter());
-            autoComplete(input, directionsList, "Node", "longName");
+            filterHallAutoComplete(input, directionsList);
             sourceLocationActive = true;
         });
 
         destinationLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = destinationLocation.getText();
             input = input.concat("" + e.getCharacter());
-            autoComplete(input, directionsList, "Node", "longName");
+            filterHallAutoComplete(input, directionsList);
             sourceLocationActive = false;
         });
 
@@ -630,6 +635,38 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
     }
 
+    private void filterHallAutoComplete(String input, ListView listView) {
+        if (input.length() > 0) {
+            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery("SELECT longName FROM Node");
+            ArrayList<String> hallfreeStrings = new ArrayList<>();
+
+            try {
+                while (resultSet.next()) {
+                    String name = resultSet.getString(1);
+                    if (name.toLowerCase().contains(input.toLowerCase()) &&
+                            (!name.toLowerCase().contains("hall") ||
+                                    acceptedHallStrings.contains(name))) {
+                        hallfreeStrings.add(name);
+                    }
+                }
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+            try {
+                if (hallfreeStrings.size() > 0) {
+                    ObservableList<String> list = FXCollections.observableArrayList(hallfreeStrings);
+                    listView.setItems(list);
+                    listView.setVisible(true);
+                } else {
+                    listView.setVisible(false);
+                }
+            } catch (Exception anyE) {
+                anyE.printStackTrace();
+            }
+        } else {
+            listView.setVisible(false);
+        }
+    }
 
     // will shake the password field back and forth
     private void shakePasswordField(JFXPasswordField passwordField) {
@@ -1885,15 +1922,32 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         resetFloorButtonBorders();
         changeFloorButtons(path);
         floorNode.animateList(true);
-        sourceLocation.setText(mapViewElement.getSelectedNodeStart().getLongName());
-        searchLocation.setText(mapViewElement.getSelectedNodeEnd().getLongName());
-        destinationLocation.setText(mapViewElement.getSelectedNodeEnd().getLongName());
+
+        String hallFreeStart = mapViewElement.getSelectedNodeStart().getLongName();
+        if (hallFreeStart.toLowerCase().contains("hall") &&
+                !acceptedHallStrings.contains(hallFreeStart)) {
+            hallFreeStart = "Hallway";
+        }
+
+        String hallFreeEnd = mapViewElement.getSelectedNodeEnd().getLongName();
+        if (hallFreeEnd.toLowerCase().contains("hall") &&
+                !acceptedHallStrings.contains(hallFreeEnd)) {
+            hallFreeEnd = "Hallway";
+        }
+        sourceLocation.setText(hallFreeStart);
+        searchLocation.setText(hallFreeEnd);
+        destinationLocation.setText(hallFreeEnd);
     }
 
     @Override
     public void onNewDestinationNode(Node node) {
-        searchLocation.setText(node.getLongName());
-        destinationLocation.setText(node.getLongName());
+        String hallFree = node.getLongName();
+        if (hallFree.toLowerCase().contains("hall") &&
+                !acceptedHallStrings.contains(hallFree)) {
+            hallFree = "Hallway";
+        }
+        searchLocation.setText(hallFree);
+        destinationLocation.setText(hallFree);
     }
 
     @Override
