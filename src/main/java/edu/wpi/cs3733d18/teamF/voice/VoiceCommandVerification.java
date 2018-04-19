@@ -85,15 +85,19 @@ public class VoiceCommandVerification extends Observable implements Observer {
 
                 } else if (command.contains("STAIRS") && command.contains("DISABLE")) {
                     map.disableStairs();
+                    signalClassChanged("DisableStairs");
                     voice.speak("Stairs are now disabled for path finding");
                 } else if (command.contains("STAIRS") && command.contains("ENABLE")) {
                     map.enableStairs();
+                    signalClassChanged("EnableStairs");
                     voice.speak("Stairs are now enabled for path finding");
                 } else if (command.contains("ELEVATOR") && command.contains("DISABLE")) {
                     map.disableElevators();
+                    signalClassChanged("DisableElevators");
                     voice.speak("Elevators are now disabled for path finding");
                 } else if (command.contains("ELEVATOR") && command.contains("ENABLE")) {
                     map.enableElevators();
+                    signalClassChanged("EnableStairs");
                     voice.speak("Elevators are now enabled for path finding");
                 } else if (command.contains("WEATHER")) {
                     YahooWeatherService service = null;

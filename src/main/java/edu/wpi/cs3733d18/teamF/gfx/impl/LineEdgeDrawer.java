@@ -19,6 +19,7 @@ public class LineEdgeDrawer extends EdgeDrawable {
     public LineEdgeDrawer() {
         super();
     }
+
     public LineEdgeDrawer(Paint color) {
         super();
         this.color = color;

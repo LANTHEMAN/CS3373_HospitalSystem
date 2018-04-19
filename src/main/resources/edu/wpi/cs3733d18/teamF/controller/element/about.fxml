@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXToolbar?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="root" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #D3D3D3;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.element.about.AboutElement">
+   <children>
+      <GridPane layoutX="367.0" layoutY="141.0" prefHeight="522.0" prefWidth="1080.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="150.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="513.0" vgrow="ALWAYS" />
+          <RowConstraints maxHeight="208.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane alignment="CENTER" prefHeight="426.0" prefWidth="1080.0" GridPane.vgrow="ALWAYS">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="NEVER" maxWidth="535.0" minWidth="10.0" prefWidth="21.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="1060.0" minWidth="10.0" prefWidth="1047.0" />
+                  <ColumnConstraints hgrow="NEVER" maxWidth="1060.0" minWidth="10.0" prefWidth="23.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="1.0" minHeight="10.0" prefHeight="1.0" vgrow="ALWAYS" />
+                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="43.0" prefHeight="45.0" vgrow="NEVER" />
+                  <RowConstraints maxHeight="30.0" minHeight="0.0" prefHeight="16.0" vgrow="ALWAYS" />
+                <RowConstraints maxHeight="371.0" minHeight="10.0" prefHeight="311.0" vgrow="NEVER" />
+                  <RowConstraints maxHeight="150.0" minHeight="0.0" prefHeight="28.0" vgrow="ALWAYS" />
+                  <RowConstraints maxHeight="114.0" minHeight="10.0" prefHeight="57.0" vgrow="NEVER" />
+                  <RowConstraints maxHeight="20.0" minHeight="0.0" prefHeight="12.0" vgrow="ALWAYS" />
+                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="44.0" vgrow="NEVER" />
+                  <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+              </rowConstraints>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Team Members" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="31.0" />
+                     </font>
+                  </Text>
+                  <Label alignment="TOP_LEFT" blendMode="DARKEN" prefHeight="345.0" prefWidth="597.0" text="Team Coach: Cory Tapply &#10;Lead Software Engineer: Matthew Kaminski &#10;Assistant Lead Software Engineer: Peter Maida &#10;Assistant Lead Software Engineer: Alex Tavares &#10;Project Manager: Jake Scheide &#10;Assistant Project Manager: Adam Sargent &#10;Scrum Master: Tyler Dubuke &#10;Product Owner: Eric Chiem &#10;Test Engineer: Lanhao Mao &#10;Documentation Analyst: Justin Amevor" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <cursor>
+                        <Cursor fx:constant="TEXT" />
+                     </cursor>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label text="We would like to give a special thanks to Brigham and Women’s Faulkner Hospital Andrew Shinn for his time and input!" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Label>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="This application was made by Team Fenrir for CS3733-D18 Software Engineering instructed by Proffesor. Wilson Wong, &#10;Worcester Poltechnic Institute computer Science Department" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
+      <GridPane layoutY="1.0" prefHeight="139.0" prefWidth="1280.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <JFXToolbar prefHeight="93.0" prefWidth="1280.0" style="-fx-background-color: #4885ed;">
+               <left>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="        About Team F" wrappingWidth="679.6513671875" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="FontAwesome Regular" size="50.0" />
+                     </font>
+                  </Text>
+               </left>
+            </JFXToolbar>
+            <FontAwesomeIconView fx:id="closeButton" boundsType="VISUAL" fill="WHITE" glyphName="TIMES" size="40" translateX="-12.0" translateY="12.0" wrappingWidth="22.0" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.valignment="TOP" GridPane.vgrow="NEVER" />
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

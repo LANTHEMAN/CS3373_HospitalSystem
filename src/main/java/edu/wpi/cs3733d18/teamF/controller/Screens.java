@@ -5,7 +5,7 @@ import edu.wpi.cs3733d18.teamF.controller.page.*;
 public class Screens {
 
     public static final Screen Home = new Screen("home.fxml", HomeController.class);
-
+    public static final Screen Error = new Screen("error.fxml", ErrorController.class);
 
     static class Screen {
         public final String fxmlFile;

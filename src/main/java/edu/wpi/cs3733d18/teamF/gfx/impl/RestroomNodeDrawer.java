@@ -29,6 +29,7 @@ public class RestroomNodeDrawer extends NodeDrawable {
         isSelected = false;
     }
 
+
     @Override
     public void draw(Pane pane) {
         boolean is2D = MapSingleton.getInstance().getMap().is2D();

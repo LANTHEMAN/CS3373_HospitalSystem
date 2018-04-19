@@ -1,5 +1,6 @@
 package edu.wpi.cs3733d18.teamF.gfx;
 
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
@@ -41,6 +42,19 @@ public abstract class PaneController {
     protected final void draw(){
         for (Drawable drawable : drawables) {
             drawable.draw(root);
+        }
+        setUnclickable(root);
+    }
+
+    private void setUnclickable(Pane parent) {
+        for (Node component : parent.getChildren()) {
+            if (component instanceof Pane) {
+                //if the component is a container, scan its children
+                setUnclickable((Pane) component);
+            } else {
+                component.setMouseTransparent(true);
+                component.setPickOnBounds(false);
+            }
         }
     }
 

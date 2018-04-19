@@ -3,6 +3,7 @@ package edu.wpi.cs3733d18.teamF.graph;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 
+import java.util.HashMap;
 import java.util.Observable;
 
 import static java.lang.Math.cos;
@@ -128,25 +129,6 @@ public class Node extends Observable {
      */
     public void setPosition(Point2D position) {
         this.position = new Point3D(position.getX(), position.getY(), getHeight());
-
-        double transX = 1203.7;
-        double transY = 290.0;
-        double transXp = 3.94;
-        double transYp = 2.226;
-        double scaleX = 0.736;
-        double scaleY = 0.545;
-        double rotateAngle = 0.17;
-
-        double a = scaleX * cos(rotateAngle);
-        double b = -scaleY * sin(rotateAngle) * transXp;
-        double c = transX * scaleX * cos(rotateAngle) - transY * scaleY * sin(rotateAngle);
-        double d = scaleX * sin(rotateAngle) * transYp;
-        double e = scaleY * cos(rotateAngle);
-        double f = transX * scaleX * sin(rotateAngle) + transY * scaleY * cos(rotateAngle);
-
-        this.wireframePosition = new Point2D(a * position.getX() + b * position.getY() + c,
-                d * position.getX() + e * position.getY() + f);
-
         signalClassChanged();
     }
 
@@ -261,4 +243,24 @@ public class Node extends Observable {
         this.notifyObservers(arg);
     }
 
+    public int compareFloors(Node compNode){
+        if(floor.equals(compNode.floor)){
+            return 0;
+        }
+        else{
+            HashMap<String,Integer> floortoInt= new HashMap<String,Integer>();
+            floortoInt.put("L2",-2);
+            floortoInt.put("L1",-1);
+            floortoInt.put("0G",0);
+            floortoInt.put("01",1);
+            floortoInt.put("02",2);
+            floortoInt.put("03",3);
+            if(floortoInt.get(floor) < floortoInt.get(compNode.floor)){
+                return -1;
+            }
+            else {
+                return 1;
+            }
+        }
+    }
 }

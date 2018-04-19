@@ -44,6 +44,9 @@ public abstract class NodeBuilder<T> {
     public static HashSet<String> getFloors(){
         return new HashSet<>(Arrays.asList("03", "02", "01", "0G", "L1", "L2"));
     }
+    public static HashSet<String> getBuildings(){
+        return new HashSet<>(Arrays.asList("5 Francis", "15 Francis", "45 Francis", "Shapiro", "CONF", "BTM", "Tower"));
+    }
 
     /**
      * @param position the position of this node

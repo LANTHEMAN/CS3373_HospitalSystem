@@ -28,7 +28,7 @@ public class DynamicPathDrawer extends PathDrawable {
     private ArrayList<Arrow> arrows = new ArrayList<>();
     // how often, in milliseconds, between timeline updates
     private int timestep = 300;
-
+    boolean isGrey = false;
     /**
      * This ctor takes no parameters, it must be updated with a new Path using the {@link #update(Path)} function.
      */
@@ -50,8 +50,17 @@ public class DynamicPathDrawer extends PathDrawable {
             return;
         }
 
-        initAndDrawArrows(pane);
 
+        initAndDrawArrows(pane);
+        for (Arrow arrow: arrows){
+            if(isGrey){
+                arrow.view.setFill(Color.GRAY);
+                isGrey = !isGrey;
+            } else {
+                arrow.view.setFill(Color.BLACK);
+                isGrey = !isGrey;
+            }
+        }
         // update each arrow's animation every timestep milliseconds
         timeline = new Timeline(new KeyFrame(Duration.millis(timestep), event -> {
             for (Arrow arrow : arrows) {
@@ -82,7 +91,7 @@ public class DynamicPathDrawer extends PathDrawable {
                 }
 
                 // party colors!
-                arrow.view.setFill(Color.color(Math.random(), Math.random(), Math.random()));
+                //arrow.view.setFill(Color.color(.5 + .5 *Math.random(), .5 + .5*Math.random(), .5 + .5*Math.random()));
                 arrow.view.setVisible(true);
 
                 double angle = getAngleTo(src, dst);

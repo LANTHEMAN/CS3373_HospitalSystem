@@ -66,6 +66,10 @@ public class Path {
 
         double dist = 0;
 
+        if (nodes.size() == 0) {
+            return directions;
+        }
+
         for (int nodeIndex = 1; nodeIndex < this.nodes.size() - 1; nodeIndex++) {
 
             Node previousNode = this.getNodes().get(nodeIndex - 1);
@@ -74,26 +78,26 @@ public class Path {
 
             double angle = getAngle(previousNode, currentNode, nextNode);
 
-            dist += previousNode.displacementTo(currentNode);
+            dist += previousNode.displacementTo(currentNode) / 7.f;
 
-            if(currentNode.getNodeType().equals("ELEV") && nextNode.getNodeType().equals("ELEV")){
+            if (currentNode.getNodeType().equals("ELEV") && nextNode.getNodeType().equals("ELEV")) {
                 directions.add("Take Elevator to floor: " + nextNode.getFloor());
                 continue;
-            }else if(currentNode.getNodeType().equals("STAI") && nextNode.getNodeType().equals("ELEV")){
+            } else if (currentNode.getNodeType().equals("STAI") && nextNode.getNodeType().equals("ELEV")) {
                 directions.add("Take Stairs to floor: " + nextNode.getFloor());
                 continue;
             }
 
             if (angle < -30) {
                 directions.add(String.format("Walk straight for %.0f feet", dist));
-                if(currentNode.getNodeType().equals("HALL"))
+                if (currentNode.getNodeType().equals("HALL"))
                     directions.add("Turn Left");
                 else
                     directions.add("Turn Left at " + currentNode.getShortName());
                 dist = 0;
             } else if (angle > 30) {
                 directions.add(String.format("Walk straight for %.0f feet", dist));
-                if(currentNode.getNodeType().equals("HALL"))
+                if (currentNode.getNodeType().equals("HALL"))
                     directions.add("Turn Right");
                 else
                     directions.add("Turn Right at " + currentNode.getShortName());
@@ -101,8 +105,10 @@ public class Path {
             }
         }
 
-        directions.add(String.format("Walk straight for %.0f feet", nodes.get(nodes.size()-2).displacementTo(nodes.get(nodes.size()-1)) + dist));
-        directions.add("Arrive at " + nodes.get(nodes.size()-1).getShortName());
+        if (nodes.size() > 1) {
+            directions.add(String.format("Walk straight for %.0f feet", nodes.get(nodes.size() - 2).displacementTo(nodes.get(nodes.size() - 1)) + dist));
+            directions.add("Arrive at " + nodes.get(nodes.size() - 1).getShortName());
+        }
 
         return directions;
     }
@@ -121,7 +127,7 @@ public class Path {
         return Math.toDegrees(Math.atan2(det, dot));
     }
 
-    public double getUnweightedLength(){
+    public double getUnweightedLength() {
         return edges.stream()
                 .map(Edge::getDistance)
                 .mapToDouble(value -> value)
