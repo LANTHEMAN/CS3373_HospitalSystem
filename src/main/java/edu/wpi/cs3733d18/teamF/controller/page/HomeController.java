@@ -158,7 +158,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private JFXListView searchList, directionsList;
     private boolean sourceLocationActive = false;
-    private ArrayList<String> acceptedHallStrings = new ArrayList<>();
     /////////////////////////////////
     //                             //
     //          Hamburger          //
@@ -428,14 +427,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         });
 
 
-        // the strngs that should not be filtered out of the autocomplete
-        acceptedHallStrings.add("Carrie M. Hall Conference Center Floor 2");
-
         searchLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = searchLocation.getText();
             input = input.concat("" + e.getCharacter());
             filterHallAutoComplete(input, searchList);
-            //autoComplete(input, searchList, "Node", "longName"); // keep to check if new "hall" strings are ever made
         });
 
         sourceLocation.setOnKeyTyped((KeyEvent e) -> {
@@ -553,17 +548,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     private void filterHallAutoComplete(String input, ListView listView) {
         if (input.length() > 0) {
-            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery("SELECT longName FROM Node");
+            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery("SELECT longName FROM Node WHERE nodeType != 'HALL' AND UPPER(longName) LIKE UPPER('%" + input + "%')");
             ArrayList<String> hallfreeStrings = new ArrayList<>();
 
             try {
                 while (resultSet.next()) {
                     String name = resultSet.getString(1);
-                    if (name.toLowerCase().contains(input.toLowerCase()) &&
-                            (!name.toLowerCase().contains("hall") ||
-                                    acceptedHallStrings.contains(name))) {
-                        hallfreeStrings.add(name);
-                    }
+                    hallfreeStrings.add(name);
                 }
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();
@@ -1450,14 +1441,12 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         floorNode.animateList(true);
 
         String hallFreeStart = mapViewElement.getSelectedNodeStart().getLongName();
-        if (hallFreeStart.toLowerCase().contains("hall") &&
-                !acceptedHallStrings.contains(hallFreeStart)) {
+        if (mapViewElement.getSelectedNodeStart().getNodeType().equals("HALL")) {
             hallFreeStart = "Hallway";
         }
 
         String hallFreeEnd = mapViewElement.getSelectedNodeEnd().getLongName();
-        if (hallFreeEnd.toLowerCase().contains("hall") &&
-                !acceptedHallStrings.contains(hallFreeEnd)) {
+        if (mapViewElement.getSelectedNodeEnd().getNodeType().equals("HALL")) {
             hallFreeEnd = "Hallway";
         }
         sourceLocation.setText(hallFreeStart);
@@ -1468,8 +1457,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @Override
     public void onNewDestinationNode(Node node) {
         String hallFree = node.getLongName();
-        if (hallFree.toLowerCase().contains("hall") &&
-                !acceptedHallStrings.contains(hallFree)) {
+        if (node.getNodeType().equals("HALL")) {
             hallFree = "Hallway";
         }
         searchLocation.setText(hallFree);
