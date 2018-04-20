@@ -1,7 +1,9 @@
 package edu.wpi.cs3733d18.teamF.controller;
 
+import edu.wpi.cs3733d18.teamF.api.sr.ServiceRequestSingleton;
 import edu.wpi.cs3733d18.teamF.db.DatabaseHandler;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
+import edu.wpi.cs3733d18.teamF.sr.SynchronizationSingleton;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -101,7 +103,10 @@ public class PermissionSingleton {
     }
 
     public void removeUser(User u) {
-        String sql = "DELETE FROM HUser WHERE username = '" + u.getUname() + "'";
+        String sql = "DELETE FROM Inbox WHERE username = '" + u.getUname() + "'";
+        dbHandler.runAction(sql);
+        SynchronizationSingleton.getInstance().removeUserPermissions(u.getUname());
+        sql = "DELETE FROM HUser WHERE username = '" + u.getUname() + "'";
         dbHandler.runAction(sql);
         sql = "SELECT * FROM HUser";
         ResultSet resultSet = PermissionSingleton.getInstance().dbHandler.runQuery(sql);

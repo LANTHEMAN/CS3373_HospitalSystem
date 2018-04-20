@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
+import edu.wpi.cs3733d18.teamF.api.sr.ServiceRequestSingleton;
 import edu.wpi.cs3733d18.teamF.controller.*;
 import edu.wpi.cs3733d18.teamF.controller.page.element.about.AboutElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewElement;
@@ -207,6 +208,18 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private JFXTextField usernameField, passwordField, fnameField, lnameField, occupationField;
     @FXML
     private JFXComboBox privilegeCombo;
+    @FXML
+    private JFXButton deleteUserBtn;
+    @FXML
+    private Label userFNameRequired;
+    @FXML
+    private Label userLNameRequired;
+    @FXML
+    private Label userUNameRequired;
+    @FXML
+    private Label userORequired;
+    @FXML
+    private Label usernameTaken;
     /////////////////////////////////
     //                             //
     //           Help Pane         //
@@ -1217,6 +1230,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         privilegeCombo.getSelectionModel().clearSelection();
         editUserPane.setVisible(false);
         newUserPane.setVisible(true);
+        userFNameRequired.setVisible(false);
+        userLNameRequired.setVisible(false);
+        userUNameRequired.setVisible(false);
+        userORequired.setVisible(false);
+        usernameTaken.setVisible(false);
     }
 
     private void displayInUserTable(ArrayList<User> users) {
@@ -1275,13 +1293,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         userLabel.setText("Edit User");
         editedUser = e;
         newUser = false;
+        deleteUserBtn.setVisible(true);
         usernameField.setText(e.getUname());
         //passwordField.setText(e.getPsword());
         fnameField.setText(e.getFirstName());
         lnameField.setText(e.getLastName());
         occupationField.setText(e.getOccupation());
         privilegeCombo.getSelectionModel().select(e.getPrivilege());
-        /*
         if (ServiceRequestSingleton.getInstance().isInTable(e.getUname(), "LanguageInterpreter")) {
             languageCheck.setSelected(true);
         } else {
@@ -1297,8 +1315,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         } else {
             securityCheck.setSelected(false);
         }
-        */
-
+        userFNameRequired.setVisible(false);
+        userLNameRequired.setVisible(false);
+        userUNameRequired.setVisible(false);
+        userORequired.setVisible(false);
+        usernameTaken.setVisible(false);
         editUserPane.setVisible(false);
         newUserPane.setVisible(true);
     }
@@ -1310,6 +1331,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         setCancelMenuEvent();
         userTextField.clear();
         searchUserResultTable.getItems().clear();
+        onUserManagement();
         editUserPane.setVisible(true);
     }
 
@@ -1318,10 +1340,44 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private void onSubmitUser() {
         String username;
+        int requiredFields = 0;
+        if (fnameField.getText() == null || fnameField.getText().trim().isEmpty()) {
+            userFNameRequired.setVisible(true);
+            requiredFields++;
+        }else{
+            userFNameRequired.setVisible(false);
+        }
+        if (lnameField.getText() == null || lnameField.getText().trim().isEmpty()) {
+            userLNameRequired.setVisible(true);
+            requiredFields++;
+        }else{
+            userLNameRequired.setVisible(false);
+        }
+        if (usernameField.getText() == null || usernameField.getText().trim().isEmpty()) {
+            usernameTaken.setVisible(false);
+            userUNameRequired.setVisible(true);
+            requiredFields++;
+        }else{
+            userUNameRequired.setVisible(false);
+        }
+        if (occupationField.getText() == null || occupationField.getText().trim().isEmpty()) {
+            userORequired.setVisible(true);
+            requiredFields++;
+        }else{
+            userORequired.setVisible(false);
+        }
         if (newUser) {
             username = usernameField.getText();
+            if(PermissionSingleton.getInstance().userExist(username)){
+                userUNameRequired.setVisible(false);
+                usernameTaken.setVisible(true);
+                return;
+            }
         } else {
             username = editedUser.getUname();
+        }
+        if(requiredFields > 0){
+            return;
         }
         String password = passwordField.getText();
         String firstName = fnameField.getText();
@@ -1337,7 +1393,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         } else {
             PermissionSingleton.getInstance().updateUser(temp);
         }
-        /*
+
         if (ServiceRequestSingleton.getInstance().isInTable(username, "LanguageInterpreter")) {
             if (!languageServices) {
                 ServiceRequestSingleton.getInstance().removeUsernameLanguageInterpreter(username);
@@ -1367,9 +1423,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                 ServiceRequestSingleton.getInstance().addUsernameSecurityRequest(username);
             }
         }
-        */
+
         newUserPane.setVisible(false);
         onEditUsers();
+        onUserManagement();
+        if(deleteUserBtn.isVisible()){
+            deleteUserBtn.setVisible(false);
+        }
     }
 
     @FXML
@@ -1385,13 +1445,53 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     public void onCancelUser() {
         newUserPane.setVisible(false);
         editUserPane.setVisible(true);
+        if(deleteUserBtn.isVisible()){
+            deleteUserBtn.setVisible(false);
+        }
         onEditUsers();
+        onUserManagement();
+    }
+
+    @FXML
+    public void onDeleteUser(){
+        newUserPane.setVisible(false);
+        editUserPane.setVisible(true);
+        deleteUserBtn.setVisible(false);
+        PermissionSingleton.getInstance().removeUser(editedUser);
+        onEditUsers();
+        editedUser = null;
+    }
+
+    @FXML
+    public void onUserManagement(){
+        ArrayList<User> allUsers = new ArrayList<>();
+        String sql = "SELECT * FROM HUser";
+        ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
+        try {
+            while (resultSet.next()) {
+
+                String username = resultSet.getString(1);
+                String password = resultSet.getString(2);
+                String firstname = resultSet.getString(3);
+                String lastname = resultSet.getString(4);
+                String privilege = resultSet.getString(5);
+                String occupation = resultSet.getString(6);
+                User temp = new User(username, password, firstname, lastname, privilege, occupation);
+                allUsers.add(temp);
+
+
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        userTextField.clear();
+        displayInUserTable(allUsers);
     }
 
 
     ////////////////////////////////////////
     //                                    //
-    //       Service Requeat              //
+    //       Service Request              //
     //                                    //
     ////////////////////////////////////////
 
