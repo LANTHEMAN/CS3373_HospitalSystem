@@ -52,8 +52,6 @@ public class FaceLauncher {
 
             for(String key : unameFace.keySet()){
 
-                System.out.println(key + " " + unameFace.get(key));
-
                 String val = unameFace.get(key);
 
                 StringEntity reqEntity = new StringEntity("{\"faceId1\": \""+ val +"\"," +
@@ -66,7 +64,6 @@ public class FaceLauncher {
 
                 if (entity != null) {
                     String jsonString = EntityUtils.toString(entity).trim();
-                    System.out.println(jsonString);
 
                     if(jsonString.substring(15, 19).equals("true")){
                         return key;
