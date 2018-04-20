@@ -1,6 +1,7 @@
 package edu.wpi.cs3733d18.teamF.controller.page;
 
 import com.jfoenix.controls.*;
+import com.jfoenix.svg.SVGGlyph;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
@@ -23,13 +24,21 @@ import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.Pair;
@@ -182,7 +191,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private JFXHamburger hamburgerD;
 
     @FXML
-    private JFXTextArea txtDirections;
+    private TextFlow txtDirections;
     @FXML
     private Pane qrImage;
     @FXML
@@ -373,6 +382,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         adminDrawer.setSidePane(adminBox);
         privilegeCombo.getItems().addAll(privilegeOptions);
         mapEditorDrawer.setSidePane(mapEditorBtns);
+
 
         // login
         loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -838,6 +848,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     private void displayTextDirections(Path route) {
+        txtDirections.getChildren().clear();
         List<String> directions = route.makeTextDirections();
 
         StringBuilder sb = new StringBuilder();
@@ -847,8 +858,32 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                 sb.append("\n");
             }
             sb.append(text);
+
+            ImageView iv;
+
+            if (text.toLowerCase().contains("straight")) {
+                //straight image
+                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/Eevee.png", 25, 25, true, true));
+                txtDirections.getChildren().add(iv);
+            } else if (text.toLowerCase().contains("left")) {
+                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/left-turn.png", 25, 25, true, true));
+                txtDirections.getChildren().add(iv);
+            } else if (text.toLowerCase().contains("right")) {
+                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/right-turn.png", 25, 25, true, true));
+                txtDirections.getChildren().add(iv);
+            } else if (text.toLowerCase().contains("arrive")) {
+                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/Eevee.png", 25, 25, true, true));
+                txtDirections.getChildren().add(iv);
+            } else {
+                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/Eevee.png", 25, 25, true, true));
+                txtDirections.getChildren().add(iv);
+            }
+
+            Text t = new Text(" " + text + "\n ");
+            t.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+            t.setFill(Color.GRAY);
+            txtDirections.getChildren().add(t);
         }
-        txtDirections.setText(sb.toString());
         qrConverter qr = new qrConverter(sb.toString());
         qrImage.getChildren().add(qr.getQrView());
     }
