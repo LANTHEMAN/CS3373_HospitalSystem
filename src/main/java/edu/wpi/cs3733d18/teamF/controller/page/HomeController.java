@@ -1,6 +1,7 @@
 package edu.wpi.cs3733d18.teamF.controller.page;
 
 import com.jfoenix.controls.*;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
@@ -188,7 +189,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private JFXHamburger hamburgerD;
 
     @FXML
-    private Text directionsDistance, directionsTime;
+    private FontAwesomeIconView imgDistance, imgTime;
+    @FXML
+    private Text txtDistance, txtTime;
     @FXML
     private TextFlow txtDirections;
     @FXML
@@ -851,13 +854,17 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         List<String> directions = route.makeTextDirections();
 
         txtDirections.getChildren().clear();
-        
+
         if (directions.isEmpty()) {
-            directionsDistance.setVisible(false);
-            directionsTime.setVisible(false);
+            imgDistance.setVisible(false);
+            imgTime.setVisible(false);
+            txtDistance.setVisible(false);
+            txtTime.setVisible(false);
         } else {
-            directionsDistance.setVisible(true);
-            directionsTime.setVisible(true);
+            imgDistance.setVisible(true);
+            imgTime.setVisible(true);
+            txtDistance.setVisible(true);
+            txtTime.setVisible(true);
         }
 
         StringBuilder sb = new StringBuilder();
@@ -870,17 +877,22 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             sb.append(text);
 
             ImageView iv;
+            FontAwesomeIconView x;
 
             if (text.toLowerCase().contains("straight")) {
                 //straight image
                 iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/Eevee.png", 20, 20, true, true));
                 txtDirections.getChildren().add(iv);
             } else if (text.toLowerCase().contains("left")) {
-                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/left-turn.png", 20, 20, true, true));
-                txtDirections.getChildren().add(iv);
+                x = new FontAwesomeIconView(FontAwesomeIcon.REPLY);
+                x.setGlyphSize(15);
+                x.setFill(Color.WHITE);
+                txtDirections.getChildren().add(x);
             } else if (text.toLowerCase().contains("right")) {
-                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/right-turn.png", 20, 20, true, true));
-                txtDirections.getChildren().add(iv);
+                x = new FontAwesomeIconView(FontAwesomeIcon.SHARE);
+                x.setGlyphSize(15);
+                x.setFill(Color.WHITE);
+                txtDirections.getChildren().add(x);
             } else if (text.toLowerCase().contains("arrive")) {
                 iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/end-icon.png", 20, 20, true, true));
                 txtDirections.getChildren().add(iv);

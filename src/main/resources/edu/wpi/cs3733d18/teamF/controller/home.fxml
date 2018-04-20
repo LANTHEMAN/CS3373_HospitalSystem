@@ -165,19 +165,21 @@
                 </Pane>
                 <Pane prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: #042E58;">
                     <children>
-                  <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="189.0" prefWidth="300.0" style="-fx-background-color: #042E58;" stylesheets="@scrollStyleSheet.css" translateY="40.0">
+                  <FontAwesomeIconView fx:id="imgDistance" fill="WHITE" glyphName="MAP" size="30" translateX="20.0" translateY="10.0" visible="false" />
+                  <FontAwesomeIconView fx:id="imgTime" fill="WHITE" glyphName="CLOCK_ALT" size="30" translateX="150.0" translateY="10.0" visible="false" />
+                  <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="189.0" prefWidth="300.0" style="-fx-background-color: #042E58;" stylesheets="@scrollStyleSheet.css" translateY="25.0">
                      <content>
                         <TextFlow fx:id="txtDirections" lineSpacing="3.0" prefHeight="187.0" prefWidth="298.0" style="-fx-background-color: #042E58;" />
                      </content>
                   </ScrollPane>
                         <JFXListView fx:id="directionsList" onMouseClicked="#setDirectionLocation" prefHeight="189.0" prefWidth="300.0" visible="false" />
                         <Pane fx:id="qrImage" layoutX="22.0" layoutY="220.0" prefHeight="256.0" prefWidth="256.0" />
-                  <Text fx:id="directionsDistance" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Distance:" translateX="20.0">
+                  <Text fx:id="txtDistance" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="20 feet" translateX="60.0" translateY="10.0" visible="false">
                      <font>
                         <Font name="Arial Bold" size="16.0" />
                      </font>
                   </Text>
-                  <Text fx:id="directionsTime" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Travel Time:" translateX="20.0" translateY="20.0">
+                  <Text fx:id="txtTime" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="3 minutes" translateX="200.0" translateY="10.0" visible="false">
                      <font>
                         <Font name="Arial Bold" size="16.0" />
                      </font>
