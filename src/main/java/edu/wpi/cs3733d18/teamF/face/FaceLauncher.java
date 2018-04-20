@@ -28,7 +28,6 @@ public class FaceLauncher {
     public static final String compareBase = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/verify";
     HttpClient httpclient = new DefaultHttpClient();
     Webcam webcam = Webcam.getDefault();
-    private String TylerID = "0c39c6a5-6293-4ccd-af1a-b86e42d2fc73";
 
     public FaceLauncher(){}
 
