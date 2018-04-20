@@ -9,6 +9,7 @@ import edu.wpi.cs3733d18.teamF.controller.page.element.about.AboutElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewListener;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
+import edu.wpi.cs3733d18.teamF.face.FaceLauncher;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
 import edu.wpi.cs3733d18.teamF.graph.*;
 import edu.wpi.cs3733d18.teamF.qr.qrConverter;
@@ -374,6 +375,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         privilegeCombo.getItems().addAll(privilegeOptions);
         mapEditorDrawer.setSidePane(mapEditorBtns);
 
+
+        //TODO fix this shit and make it pretty @MATT
         // login
         loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             if (PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
@@ -410,7 +413,29 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                     shakePasswordField(loginPassword);
                 }
 
-            } else {
+            } else if(PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")){
+                FaceLauncher launcher = new FaceLauncher();
+                if(PermissionSingleton.getInstance().forceLogin(launcher.getEmployeeName(launcher.getCameraFaceID()))){
+                    mapViewElement.getMapDrawController().unshowPath();
+                    loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
+
+                    if (PermissionSingleton.getInstance().getUserPrivilege().equals("Admin")) {
+                        setAdminMenu();
+                    } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
+                        setStaffMenu();
+                    } else {
+                        setGuestMenu();
+                    }
+
+                    loginDrawer.close();
+                    loginDrawer.setDisable(true);
+                    loginUsername.setText("");
+                    loginPassword.setText("");
+                }else {
+                    loginDrawer.open();
+                    loginDrawer.setDisable(false);
+                }
+            }else{
                 loginDrawer.open();
                 loginDrawer.setDisable(false);
             }
@@ -989,15 +1014,15 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             try {
                 ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
                 while (resultSet.next()) {
-
                     String username = resultSet.getString(1);
                     String password = resultSet.getString(2);
                     String firstname = resultSet.getString(3);
                     String lastname = resultSet.getString(4);
                     String privilege = resultSet.getString(5);
                     String occupation = resultSet.getString(6);
-                    User temp = new User(username, password, firstname, lastname, privilege, occupation);
-                    String searchString = username + password + firstname + lastname + privilege + occupation;
+                    String faceID = resultSet.getString(7);
+                    User temp = new User(username, password, firstname, lastname, privilege, occupation, faceID);
+                    String searchString = username + password + firstname + lastname + privilege + occupation + faceID;
                     if (searchString.toLowerCase().contains(input.toLowerCase())) {
                         autoCompleteUser.add(temp);
                     }
@@ -1360,7 +1385,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         boolean religiousServices = religiousCheck.isSelected();
         boolean securityRequest = securityCheck.isSelected();
 
-        User temp = new User(username, password, firstName, lastName, privilegeChoice, occupation);
+        //TODO getFaceID
+
+        User temp = new User(username, password, firstName, lastName, privilegeChoice, occupation, "");
         if (newUser) {
             PermissionSingleton.getInstance().addUser(temp);
         } else {

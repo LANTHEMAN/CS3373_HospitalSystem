@@ -1,11 +1,18 @@
 package edu.wpi.cs3733d18.teamF.face;
 
+import java.io.File;
 import java.net.URI;
+import java.util.HashMap;
 
+import com.github.sarxos.webcam.Webcam;
+import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
+import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -13,34 +20,25 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.imageio.ImageIO;
+
 public class FaceLauncher {
-    // **********************************************
-    // *** Update or verify the following values. ***
-    // **********************************************
-
-    // Replace the subscriptionKey string value with your valid subscription key.
     public static final String subscriptionKey = "a5c0adfe4de64971af317d784209a2d2";
-
-    // Replace or verify the region.
-    //
-    // You must use the same region in your REST API call as you used to obtain your subscription keys.
-    // For example, if you obtained your subscription keys from the westus region, replace
-    // "westcentralus" in the URI below with "westus".
-    //
-    // NOTE: Free trial subscription keys are generated in the westcentralus region, so if you are using
-    // a free trial subscription key, you should not need to change this region.
     public static final String uriBase = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect";
-
+    public static final String compareBase = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/verify";
     HttpClient httpclient = new DefaultHttpClient();
+    Webcam webcam = Webcam.getDefault();
+    private String TylerID = "0c39c6a5-6293-4ccd-af1a-b86e42d2fc73";
 
-    public void run() {
+    public FaceLauncher(){}
+
+    public String getEmployeeName(String faceID){
         try {
-            URIBuilder builder = new URIBuilder(uriBase);
+            URIBuilder builder = new URIBuilder(compareBase);
 
             // Request parameters. All of them are optional.
             builder.setParameter("returnFaceId", "true");
             builder.setParameter("returnFaceLandmarks", "false");
-            builder.setParameter("returnFaceAttributes", "age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise");
 
             // Prepare the URI for the REST API call.
             URI uri = builder.build();
@@ -50,32 +48,83 @@ public class FaceLauncher {
             request.setHeader("Content-Type", "application/json");
             request.setHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
 
+            HashMap<String, String> unameFace = PermissionSingleton.getInstance().getUserAndFace();
+
+            for(String key : unameFace.keySet()){
+
+                System.out.println(key + " " + unameFace.get(key));
+
+                String val = unameFace.get(key);
+
+                StringEntity reqEntity = new StringEntity("{\"faceId1\": \""+ val +"\"," +
+                        "\"faceId2\": \"" + faceID + "\"}");
+                request.setEntity(reqEntity);
+
+                // Execute the REST API call and get the response entity.
+                HttpResponse response = httpclient.execute(request);
+                HttpEntity entity = response.getEntity();
+
+                if (entity != null) {
+                    String jsonString = EntityUtils.toString(entity).trim();
+                    System.out.println(jsonString);
+
+                    if(jsonString.substring(15, 19).equals("true")){
+                        return key;
+                    }
+                }
+            }
+            return "false";
+
+        } catch (Exception e) {
+            // Display error message.
+            System.out.println(e.getMessage());
+            return "false";
+        }
+    }
+
+    public String getCameraFaceID() {
+        try {
+            URIBuilder builder = new URIBuilder(uriBase);
+
+            // Request parameters. All of them are optional.
+            builder.setParameter("returnFaceId", "true");
+            builder.setParameter("returnFaceLandmarks", "false");
+
+            // Prepare the URI for the REST API call.
+            URI uri = builder.build();
+            HttpPost request = new HttpPost(uri);
+
+            // Request headers.
+            request.setHeader("Content-Type", "application/octet-stream");
+            request.setHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
+
+            webcam.open();
+            ImageIO.write(webcam.getImage(), "PNG", new File("curFace.png"));
+            webcam.close();
+
             // Request body.
-            StringEntity reqEntity = new StringEntity("{\"url\":\"https://upload.wikimedia.org/wikipedia/commons/c/c3/RH_Louise_Lillian_Gish.jpg\"}");
+            File file = new File("curFace.png");
+            FileEntity reqEntity = new FileEntity(file, ContentType.APPLICATION_OCTET_STREAM);
             request.setEntity(reqEntity);
 
             // Execute the REST API call and get the response entity.
             HttpResponse response = httpclient.execute(request);
             HttpEntity entity = response.getEntity();
 
-            if (entity != null) {
-                // Format and display the JSON response.
-                System.out.println("REST Response:\n");
+            file.delete();
 
+            if (entity != null) {
                 String jsonString = EntityUtils.toString(entity).trim();
-                if (jsonString.charAt(0) == '[') {
-                    JSONArray jsonArray = new JSONArray(jsonString);
-                    System.out.println(jsonArray.toString(2));
-                } else if (jsonString.charAt(0) == '{') {
-                    JSONObject jsonObject = new JSONObject(jsonString);
-                    System.out.println(jsonObject.toString(2));
-                } else {
-                    System.out.println(jsonString);
-                }
+                String newFaceID = jsonString.substring(12, 48);
+
+                return newFaceID;
+            }else{
+                return "";
             }
         } catch (Exception e) {
             // Display error message.
             System.out.println(e.getMessage());
+            return "";
         }
     }
 }

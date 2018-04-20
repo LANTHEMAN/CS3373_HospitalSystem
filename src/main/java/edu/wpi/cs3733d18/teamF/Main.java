@@ -2,9 +2,7 @@ package edu.wpi.cs3733d18.teamF;
 
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.Screens;
-import edu.wpi.cs3733d18.teamF.controller.page.ErrorController;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
-import edu.wpi.cs3733d18.teamF.face.FaceLauncher;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -22,10 +20,7 @@ import java.util.Comparator;
 public class Main extends Application {
     public static void main(String[] args) throws IOException, InterruptedException, JAXBException {
 
-        FaceLauncher face = new FaceLauncher();
-        face.run();
-
-        /*long fileSize = 0;
+        long fileSize = 0;
         // get rid of the database folder if its empty
         try {
             fileSize = Files.find(Paths.get("database"), 3
@@ -52,7 +47,7 @@ public class Main extends Application {
         launch(args);
 
         VoiceLauncher.getInstance().terminate();
-        t.join();*/
+        t.join();
     }
 
     @Override

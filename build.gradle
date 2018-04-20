@@ -48,7 +48,9 @@ dependencies {
             [group: 'org.mobicents.external.freetts', name: 'cmudict04', version: '1.2.2'],
             [group: 'com.github.matkam7', name: 'CS3733-D18-teamF-SR-API', version: 'v0.1.5'],
             [group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.2.4'],
-            [group: 'org.json', name: 'json', version: '20170516']
+            [group: 'org.json', name: 'json', version: '20170516'],
+            [group: 'org.bytedeco', name: 'javacv', version: '1.4.1'],
+            [group: 'com.github.sarxos', name: 'webcam-capture', version: '0.3.12']
     )
 }
 
@@ -68,5 +70,5 @@ jar {
     manifest {
         attributes 'Main-Class': 'edu.wpi.cs3733d18.teamF.Main'
     }
-    from configurations.runtime.collect { zipTree(it) }
+        from configurations.runtime.collect { zipTree(it) }
 }

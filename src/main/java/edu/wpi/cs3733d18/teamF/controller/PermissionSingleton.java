@@ -5,6 +5,8 @@ import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PermissionSingleton {
     DatabaseHandler dbHandler;
@@ -20,7 +22,7 @@ public class PermissionSingleton {
         currUser = "Guest";
 
         if (!userExist("admin")) {
-            addUser(new User("admin", "admin", "Admin", "Default", "Admin", "Admin"));
+            addUser(new User("admin", "admin", "Admin", "Default", "Admin", "Admin", ""));
             /*
             if (!ServiceRequestSingleton.getInstance().isInTable("admin", "LanguageInterpreter")) {
                 ServiceRequestSingleton.getInstance().addUsernameLanguageInterpreter("admin");
@@ -28,6 +30,11 @@ public class PermissionSingleton {
                 ServiceRequestSingleton.getInstance().addUsernameSecurityRequest("admin");
             }
             */
+        }
+
+        if(!userExist("tdubuke")){
+            addUser(new User("tdubuke", "password", "Tyler", "Dubuke",
+                    "Admin", "IT", "0c39c6a5-6293-4ccd-af1a-b86e42d2fc73"));
         }
 
         if (!userExist("staff")) {
@@ -78,6 +85,17 @@ public class PermissionSingleton {
         return false;
     }
 
+    public boolean forceLogin(String uname){
+        for (User u : pmanage.users) {
+            if (u.uname.equals(uname)) {
+                userPrivilege = getPrivilege(u.getType());
+                currUser = uname;
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void logout() {
         userPrivilege = Privilege.GUEST;
         currUser = "Guest";
@@ -96,6 +114,7 @@ public class PermissionSingleton {
                 + "', '" + u.getLastName()
                 + "', '" + u.getPrivilege()
                 + "', '" + u.getOccupation()
+                + "', '" + u.getFaceID()
                 + "')";
         dbHandler.runAction(sql);
     }
@@ -148,6 +167,14 @@ public class PermissionSingleton {
         public static final String GUEST = "Guest";
         public static final String ADMIN = "Admin";
         public static final String STAFF = "Staff";
+    }
+
+    public HashMap<String, String> getUserAndFace(){
+        HashMap<String, String> unameFace = new HashMap<>();
+        for(User u : PermissionSingleton.getInstance().getPermissionManager().users){
+            unameFace.put(u.uname, u.getFaceID());
+        }
+        return unameFace;
     }
 
     public String getUserPrivilege() {
