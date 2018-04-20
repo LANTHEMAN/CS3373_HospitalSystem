@@ -1,7 +1,6 @@
 package edu.wpi.cs3733d18.teamF.controller.page;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.svg.SVGGlyph;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.Map;
 import edu.wpi.cs3733d18.teamF.MapSingleton;
@@ -24,9 +23,7 @@ import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -190,6 +187,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private JFXHamburger hamburgerD;
 
+    @FXML
+    private Text directionsDistance, directionsTime;
     @FXML
     private TextFlow txtDirections;
     @FXML
@@ -848,10 +847,21 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     private void displayTextDirections(Path route) {
-        txtDirections.getChildren().clear();
+
         List<String> directions = route.makeTextDirections();
 
+        txtDirections.getChildren().clear();
+        
+        if (directions.isEmpty()) {
+            directionsDistance.setVisible(false);
+            directionsTime.setVisible(false);
+        } else {
+            directionsDistance.setVisible(true);
+            directionsTime.setVisible(true);
+        }
+
         StringBuilder sb = new StringBuilder();
+
         for (String text : directions) {
 
             if (sb.length() > 0) {
@@ -863,25 +873,25 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
             if (text.toLowerCase().contains("straight")) {
                 //straight image
-                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/Eevee.png", 25, 25, true, true));
+                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/Eevee.png", 20, 20, true, true));
                 txtDirections.getChildren().add(iv);
             } else if (text.toLowerCase().contains("left")) {
-                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/left-turn.png", 25, 25, true, true));
+                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/left-turn.png", 20, 20, true, true));
                 txtDirections.getChildren().add(iv);
             } else if (text.toLowerCase().contains("right")) {
-                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/right-turn.png", 25, 25, true, true));
+                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/right-turn.png", 20, 20, true, true));
                 txtDirections.getChildren().add(iv);
             } else if (text.toLowerCase().contains("arrive")) {
-                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/Eevee.png", 25, 25, true, true));
+                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/end-icon.png", 20, 20, true, true));
                 txtDirections.getChildren().add(iv);
             } else {
-                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/Eevee.png", 25, 25, true, true));
+                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/Eevee.png", 20, 20, true, true));
                 txtDirections.getChildren().add(iv);
             }
 
             Text t = new Text(" " + text + "\n ");
-            t.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-            t.setFill(Color.GRAY);
+            t.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            t.setFill(Color.WHITE);
             txtDirections.getChildren().add(t);
         }
         qrConverter qr = new qrConverter(sb.toString());

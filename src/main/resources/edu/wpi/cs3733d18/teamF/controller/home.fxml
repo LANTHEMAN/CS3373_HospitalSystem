@@ -163,15 +163,25 @@
                   </JFXCheckBox>
                     </children>
                 </Pane>
-                <Pane prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: WHITE;">
+                <Pane prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: #042E58;">
                     <children>
-                  <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="189.0" prefWidth="300.0" stylesheets="@scrollStyleSheet.css">
+                  <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="189.0" prefWidth="300.0" style="-fx-background-color: #042E58;" stylesheets="@scrollStyleSheet.css" translateY="40.0">
                      <content>
-                        <TextFlow fx:id="txtDirections" prefHeight="187.0" prefWidth="298.0" />
+                        <TextFlow fx:id="txtDirections" lineSpacing="3.0" prefHeight="187.0" prefWidth="298.0" style="-fx-background-color: #042E58;" />
                      </content>
                   </ScrollPane>
                         <JFXListView fx:id="directionsList" onMouseClicked="#setDirectionLocation" prefHeight="189.0" prefWidth="300.0" visible="false" />
                         <Pane fx:id="qrImage" layoutX="22.0" layoutY="220.0" prefHeight="256.0" prefWidth="256.0" />
+                  <Text fx:id="directionsDistance" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Distance:" translateX="20.0">
+                     <font>
+                        <Font name="Arial Bold" size="16.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="directionsTime" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Travel Time:" translateX="20.0" translateY="20.0">
+                     <font>
+                        <Font name="Arial Bold" size="16.0" />
+                     </font>
+                  </Text>
                     </children>
                 </Pane>
             </children>
