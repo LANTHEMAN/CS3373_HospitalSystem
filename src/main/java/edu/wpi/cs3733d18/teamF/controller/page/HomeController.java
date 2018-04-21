@@ -22,10 +22,13 @@ import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -182,7 +185,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private JFXHamburger hamburgerD;
 
     @FXML
+    private GridPane txtDirectionsPane;
+
+    @FXML
     private JFXTextArea txtDirections;
+
     @FXML
     private Pane qrImage;
     @FXML
@@ -840,6 +847,43 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private void displayTextDirections(Path route) {
         List<String> directions = route.makeTextDirections();
 
+        txtDirectionsPane.getChildren().clear();
+
+        txtDirectionsPane.addColumn(0);
+        txtDirectionsPane.addColumn(1);
+
+        if(!directions.isEmpty()){
+            for(int i = 0; i < directions.size(); i++){
+                String direction = directions.get(i);
+
+                txtDirectionsPane.addRow(i);
+
+                String imageSrc = "";
+                if(direction.contains("Elevator up"))imageSrc = "edu/wpi/cs3733d18/teamF/up-elevator.png";
+                else if(direction.contains("Elevator down"))imageSrc = "edu/wpi/cs3733d18/teamF/down-elevator.png";
+                else if(direction.contains("Stairs up"))imageSrc = "edu/wpi/cs3733d18/teamF/up-stairs.png";
+                else if(direction.contains("Stairs down"))imageSrc = "edu/wpi/cs3733d18/teamF/down-stairs.png";
+//            else if(direction.contains("Turn left"))imageSrc = "left-turn.png";
+//            else if(direction.contains("Turn right"))imageSrc = "right-turn.png";
+
+                if(!imageSrc.isEmpty()){
+                    Image image = new Image(imageSrc);
+                    ImageView directionImage = new ImageView();
+                    directionImage.setImage(image);
+                    directionImage.setFitHeight(30);
+                    directionImage.setFitWidth(30);
+                    txtDirectionsPane.add(directionImage, 0, i);
+
+                }
+
+                TextArea directionText = new TextArea();
+                directionText.setText(direction);
+                txtDirectionsPane.add(directionText, 1, i);
+            }
+
+        }
+
+
         StringBuilder sb = new StringBuilder();
         for (String text : directions) {
 
@@ -848,7 +892,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             }
             sb.append(text);
         }
-        txtDirections.setText(sb.toString());
+
         qrConverter qr = new qrConverter(sb.toString());
         qrImage.getChildren().add(qr.getQrView());
     }

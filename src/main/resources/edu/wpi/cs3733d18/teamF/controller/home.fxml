@@ -162,7 +162,7 @@
                   </JFXCheckBox>
                     </children>
                 </Pane>
-                <Pane prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: WHITE;">
+                <GridPane fx:id="txtDirectionsPane" prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: WHITE;">
                     <children>
                         <JFXTextArea fx:id="txtDirections" editable="false" focusColor="#ffffff00" layoutX="17.0" layoutY="-1.0" prefHeight="198.0" prefWidth="284.0" unFocusColor="#ffffff00">
                             <font>
@@ -172,7 +172,7 @@
                         <JFXListView fx:id="directionsList" onMouseClicked="#setDirectionLocation" prefHeight="189.0" prefWidth="300.0" visible="false" />
                         <Pane fx:id="qrImage" layoutX="22.0" layoutY="220.0" prefHeight="256.0" prefWidth="256.0" />
                     </children>
-                </Pane>
+                </GridPane>
             </children>
         </VBox>
       <HBox fx:id="mapEditorBtns" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="680.0" spacing="15.0" style="-fx-background-color: rgba(0,0,0,0.5); -fx-background-radius: 10;">
