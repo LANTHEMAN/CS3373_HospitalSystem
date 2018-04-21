@@ -1,5 +1,6 @@
 package edu.wpi.cs3733d18.teamF;
 
+import edu.wpi.cs3733d18.teamF.controller.ErrorSingleton;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.Screens;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;

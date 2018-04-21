@@ -1,5 +1,7 @@
 package edu.wpi.cs3733d18.teamF.graph;
 
+import edu.wpi.cs3733d18.teamF.graph.pathfinding.BestFirst;
+import edu.wpi.cs3733d18.teamF.graph.pathfinding.SearchTemplate;
 import javafx.geometry.Point2D;
 import org.junit.Test;
 

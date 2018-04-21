@@ -1,12 +1,11 @@
 package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
-import com.jfoenix.controls.JFXButton;
-import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
-import edu.wpi.cs3733d18.teamF.Map;
+import edu.wpi.cs3733d18.teamF.gfx.ImageCacheSingleton;
+import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
-import edu.wpi.cs3733d18.teamF.gfx.impl.UglyMapDrawer;
+import edu.wpi.cs3733d18.teamF.gfx.impl.map.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
 import javafx.fxml.FXML;
