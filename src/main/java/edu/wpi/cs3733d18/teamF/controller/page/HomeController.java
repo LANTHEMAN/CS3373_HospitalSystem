@@ -25,6 +25,7 @@ import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
@@ -460,7 +461,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                 loginDrawer.open();
                 loginDrawer.setDisable(false);
             }
-        });
+        }); 
 
         loginCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             loginDrawer.close();

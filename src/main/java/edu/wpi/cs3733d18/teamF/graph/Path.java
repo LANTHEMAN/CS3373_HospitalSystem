@@ -83,10 +83,18 @@ public class Path {
             dist += previousNode.displacementTo(currentNode) / 7.f;
 
             if (currentNode.getNodeType().equals("ELEV") && nextNode.getNodeType().equals("ELEV")) {
-                directions.add("Take Elevator to floor: " + nextNode.getFloor());
+                if(floorToInt(currentNode) > floorToInt(nextNode)){
+                    directions.add("Take Elevator up to floor: " + nextNode.getFloor());
+                }else{
+                    directions.add("Take Elevator down to floor: " + nextNode.getFloor());
+                }
                 continue;
             } else if (currentNode.getNodeType().equals("STAI") && nextNode.getNodeType().equals("STAI")) {
-                directions.add("Take Stairs to floor: " + nextNode.getFloor());
+                if(floorToInt(currentNode) > floorToInt(nextNode)){
+                    directions.add("Take Stairs up to floor: " + nextNode.getFloor());
+                }else{
+                    directions.add("Take Stairs down to floor: " + nextNode.getFloor());
+                }
                 continue;
             }
 
@@ -127,6 +135,22 @@ public class Path {
         double det = v1X * v2Y - v1Y * v2X;
 
         return Math.toDegrees(Math.atan2(det, dot));
+    }
+
+    public int floorToInt(Node node){
+        switch (node.getFloor()){
+            case "L2":
+                return -2;
+            case "L1":
+                return -1;
+            case "G":
+                return 0;
+            case "1":
+                return 1;
+            case "2":
+                return 2;
+        }
+        return -255;
     }
 
     public double getUnweightedLength() {
