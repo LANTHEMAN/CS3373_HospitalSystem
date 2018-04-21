@@ -868,6 +868,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
 
         StringBuilder sb = new StringBuilder();
+        int feet = 0;
 
         for (String text : directions) {
 
@@ -876,38 +877,67 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             }
             sb.append(text);
 
-            ImageView iv;
-            FontAwesomeIconView x;
-
             if (text.toLowerCase().contains("straight")) {
-                //straight image
-                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/Eevee.png", 20, 20, true, true));
-                txtDirections.getChildren().add(iv);
+                FontAwesomeIconView arrow = new FontAwesomeIconView(FontAwesomeIcon.LONG_ARROW_UP);
+                arrow.setGlyphSize(15);
+                arrow.setFill(Color.WHITE);
+                txtDirections.getChildren().add(arrow);
             } else if (text.toLowerCase().contains("left")) {
-                x = new FontAwesomeIconView(FontAwesomeIcon.REPLY);
-                x.setGlyphSize(15);
-                x.setFill(Color.WHITE);
-                txtDirections.getChildren().add(x);
+                FontAwesomeIconView arrow = new FontAwesomeIconView(FontAwesomeIcon.REPLY);
+                arrow.setGlyphSize(15);
+                arrow.setFill(Color.WHITE);
+                txtDirections.getChildren().add(arrow);
             } else if (text.toLowerCase().contains("right")) {
-                x = new FontAwesomeIconView(FontAwesomeIcon.SHARE);
-                x.setGlyphSize(15);
-                x.setFill(Color.WHITE);
-                txtDirections.getChildren().add(x);
+                FontAwesomeIconView arrow = new FontAwesomeIconView(FontAwesomeIcon.SHARE);
+                arrow.setGlyphSize(15);
+                arrow.setFill(Color.WHITE);
+                txtDirections.getChildren().add(arrow);
+            } else if (text.toLowerCase().contains("take elevator")) {
+                ImageView elevator = new ImageView(new Image("edu/wpi/cs3733d18/teamF/up-elevator.png", 20, 20, true, true));
+                txtDirections.getChildren().add(elevator);
+            } else if (text.toLowerCase().contains("take stairs")) {
+                ImageView stairs = new ImageView(new Image("edu/wpi/cs3733d18/teamF/up-stairs.png", 20, 20, true, true));
+                txtDirections.getChildren().add(stairs);
+            } else if (text.toLowerCase().contains("begin")) {
+                ImageView pin = new ImageView(new Image("edu/wpi/cs3733d18/teamF/start-icon.png", 20, 20, true, true));
+                txtDirections.getChildren().add(pin);
             } else if (text.toLowerCase().contains("arrive")) {
-                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/end-icon.png", 20, 20, true, true));
-                txtDirections.getChildren().add(iv);
+                ImageView pin = new ImageView(new Image("edu/wpi/cs3733d18/teamF/end-icon.png", 20, 20, true, true));
+                txtDirections.getChildren().add(pin);
             } else {
-                iv = new ImageView(new Image("edu/wpi/cs3733d18/teamF/Eevee.png", 20, 20, true, true));
-                txtDirections.getChildren().add(iv);
+                ImageView eevee = new ImageView(new Image("edu/wpi/cs3733d18/teamF/Eevee.png", 20, 20, true, true));
+                txtDirections.getChildren().add(eevee);
             }
 
-            Text t = new Text(" " + text + "\n ");
-            t.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-            t.setFill(Color.WHITE);
-            txtDirections.getChildren().add(t);
+            Text direction = new Text(" " + text + "\n ");
+            direction.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            direction.setFill(Color.WHITE);
+            txtDirections.getChildren().add(direction);
+
+            feet += findDistance(direction.getText());
         }
+
+        txtDistance.setText(feet + " feet");
+        double time = ((int) (10 * feet / 246.6)) / 10.0;
+        txtTime.setText(time + " minutes"); // average walking speed of 4.11 feet per second
         qrConverter qr = new qrConverter(sb.toString());
         qrImage.getChildren().add(qr.getQrView());
+    }
+
+    private int findDistance(String direction) {
+        if (direction.contains("feet")) {
+            String number = direction.substring(0, direction.indexOf("feet") - 1);
+            int i;
+            for (i = number.length() - 1; i >= 0; i--) {
+                if (number.charAt(i) == ' ') {
+                    break;
+                }
+            }
+            number = number.substring(i+1);
+            return Integer.parseInt(number);
+        } else {
+            return 0;
+        }
     }
 
     @FXML

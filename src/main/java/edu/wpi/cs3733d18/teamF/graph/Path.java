@@ -70,6 +70,8 @@ public class Path {
             return directions;
         }
 
+        directions.add("Begin at " + this.getNodes().get(0).getShortName());
+
         for (int nodeIndex = 1; nodeIndex < this.nodes.size() - 1; nodeIndex++) {
 
             Node previousNode = this.getNodes().get(nodeIndex - 1);
@@ -83,7 +85,7 @@ public class Path {
             if (currentNode.getNodeType().equals("ELEV") && nextNode.getNodeType().equals("ELEV")) {
                 directions.add("Take Elevator to floor: " + nextNode.getFloor());
                 continue;
-            } else if (currentNode.getNodeType().equals("STAI") && nextNode.getNodeType().equals("ELEV")) {
+            } else if (currentNode.getNodeType().equals("STAI") && nextNode.getNodeType().equals("STAI")) {
                 directions.add("Take Stairs to floor: " + nextNode.getFloor());
                 continue;
             }
