@@ -9,6 +9,7 @@ import edu.wpi.cs3733d18.teamF.controller.*;
 import edu.wpi.cs3733d18.teamF.controller.page.element.about.AboutElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewListener;
+import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.mapState;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.face.FaceLauncher;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
@@ -16,7 +17,6 @@ import edu.wpi.cs3733d18.teamF.graph.*;
 import edu.wpi.cs3733d18.teamF.graph.pathfinding.*;
 import edu.wpi.cs3733d18.teamF.qr.qrConverter;
 import edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.Screensaver;
-import edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.State;
 import edu.wpi.cs3733d18.teamF.voice.VoiceCommandVerification;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.animation.Animation;
@@ -42,6 +42,7 @@ import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.Pair;
+import net.kurobako.gesturefx.AffineEvent;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -344,25 +345,33 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         floorNode.addAnimatedNode(l2);
 
 
-        english.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            onEnglish();
-        });
-        french.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            onFrench();
-        });
-        spanish.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            onSpanish();
-        });
-        chinese.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            onChinese();
-        });
-
         languageNode.addAnimatedNode(languageBtn);
         languageNode.addAnimatedNode(english);
         languageNode.addAnimatedNode(french);
         languageNode.addAnimatedNode(spanish);
         languageNode.addAnimatedNode(chinese);
         languageNode.setRotate(180);
+
+        english.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            saveState();
+            onEnglish();
+            returnToLastState();
+        });
+        french.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            saveState();
+            onFrench();
+            returnToLastState();
+        });
+        spanish.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            saveState();
+            onSpanish();
+            returnToLastState();
+        });
+        chinese.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            saveState();
+            onChinese();
+            returnToLastState();
+        });
 
 
 
@@ -1689,15 +1698,33 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         mapViewElement.setEditMode(MapViewElement.EditMode.PAN);
     }
 
-    private State savedState;
-    private State state;
+    private static mapState savedState;
+    private mapState state;
 
     public void saveState(){
-        state = new State(mapViewElement.getMapDrawController().getDrawnPath());
+        this.savedState = new mapState(mapViewElement.getMapDrawController().getDrawnPath(), mapViewElement.getGesturePane().getCurrentScale(), mapViewElement.getGesturePane().targetPointAtViewportCentre());
+//        this.savedState = new mapState(mapViewElement.getMapDrawController().getDrawnPath(), mapViewElement.getGesturePane().getTarget());
     }
 
-    public void returnToState(State state){
-        this.state = state;
+    public void returnToState(mapState state){
+        if(state == null) return;
+        System.out.println(state.getTarget());
+        System.out.println(state.getZoomAmount());
+        if(state.getPath() != null)mapViewElement.getMapDrawController().showPath(state.getPath());
+        mapViewElement.getGesturePane().zoomTo(state.getZoomAmount(), state.getTarget());
+    }
+
+    public void returnToLastState(){
+        returnToState(savedState);
+    }
+
+    public mapState getLastState(){
+        return savedState;
+    }
+
+    @Override
+    public void onRefresh() {
+        returnToLastState();
     }
 
     @FXML

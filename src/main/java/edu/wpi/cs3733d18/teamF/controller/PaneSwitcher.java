@@ -74,9 +74,11 @@ public class PaneSwitcher {
         // reset the resource package
         resFac.setResources(resource);
         // reload the given screen
-        panes.clear();
-        load(screen);
-        scene.setRoot(panes.get(screen.fxmlFile));
+
+        switchTo(screen);
+//        panes.clear();
+//        load(screen);
+//        scene.setRoot(panes.get(screen.fxmlFile));
     }
 
     public void popup(Screens.Screen screen) {
