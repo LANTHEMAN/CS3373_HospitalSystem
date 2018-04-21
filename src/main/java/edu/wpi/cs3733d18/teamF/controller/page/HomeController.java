@@ -421,7 +421,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                 loginDrawer.open();
                 loginDrawer.setDisable(false);
             }
-        });
+        }); 
 
         loginCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             loginDrawer.close();
