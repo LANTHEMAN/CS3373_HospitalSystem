@@ -83,14 +83,16 @@ public class Path {
             dist += previousNode.displacementTo(currentNode) / 7.f;
 
             if (currentNode.getNodeType().equals("ELEV") && nextNode.getNodeType().equals("ELEV")) {
-                if(floorToInt(currentNode) > floorToInt(nextNode)){
+                System.out.println(currentNode.getFloor() + " to " + nextNode.getFloor());
+                if(floorToInt(currentNode) < floorToInt(nextNode)){
                     directions.add("Take elevator up to floor: " + nextNode.getFloor());
                 }else{
                     directions.add("Take elevator down to floor: " + nextNode.getFloor());
                 }
                 continue;
             } else if (currentNode.getNodeType().equals("STAI") && nextNode.getNodeType().equals("STAI")) {
-                if(floorToInt(currentNode) > floorToInt(nextNode)){
+                System.out.println(currentNode.getFloor() + " to " + nextNode.getFloor());
+                if(floorToInt(currentNode) < floorToInt(nextNode)){
                     directions.add("Take stairs up to floor: " + nextNode.getFloor());
                 }else{
                     directions.add("Take stairs down to floor: " + nextNode.getFloor());
@@ -145,10 +147,12 @@ public class Path {
                 return -1;
             case "G":
                 return 0;
-            case "1":
+            case "01":
                 return 1;
-            case "2":
+            case "02":
                 return 2;
+            case "03":
+                return 3;
         }
         return -255;
     }
