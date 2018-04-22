@@ -27,6 +27,7 @@ public class UglyMapDrawer extends MapDrawable {
     private NodeDrawable stairDrawer = new StairNodeDrawer();
     private NodeDrawable restroomDrawer = new RestroomNodeDrawer();
     private NodeDrawable pathNodeDrawer = new PathNodeDrawer();
+    private NodeDrawable pacman = new PacmanNodeTest();
     private NodeDrawable currNodeDrawable = nodeDrawer;
     private NodeDrawable startNodeDefault = null;
     private Pane pathPane = new Pane();
@@ -217,7 +218,7 @@ public class UglyMapDrawer extends MapDrawable {
             case "ELEV":
                 return elevatorDrawer;
             case "EXIT":    //exits or entrances
-                return exitDrawer;
+                return pacman;
             case "STAI":    //stairs
                 return stairDrawer;
             case "REST":    //restroom
