@@ -27,6 +27,7 @@ import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
@@ -452,7 +453,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                     loginDrawer.setDisable(false);
                 }
             }
-        });
+        }); 
 
         loginCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             loginDrawer.close();
@@ -965,11 +966,17 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                 arrow.setGlyphSize(15);
                 arrow.setFill(Color.WHITE);
                 txtDirections.getChildren().add(arrow);
-            } else if (text.toLowerCase().contains("take elevator")) {
+            } else if (text.toLowerCase().contains("take elevator up")) {
                 ImageView elevator = new ImageView(new Image("edu/wpi/cs3733d18/teamF/up-elevator.png", 20, 20, true, true));
                 txtDirections.getChildren().add(elevator);
-            } else if (text.toLowerCase().contains("take stairs")) {
+            } else if (text.toLowerCase().contains("take elevator down")) {
+                ImageView elevator = new ImageView(new Image("edu/wpi/cs3733d18/teamF/down-elevator.png", 20, 20, true, true));
+                txtDirections.getChildren().add(elevator);
+            } else if (text.toLowerCase().contains("take stairs up")) {
                 ImageView stairs = new ImageView(new Image("edu/wpi/cs3733d18/teamF/up-stairs.png", 20, 20, true, true));
+                txtDirections.getChildren().add(stairs);
+            } else if (text.toLowerCase().contains("take stairs down")) {
+                ImageView stairs = new ImageView(new Image("edu/wpi/cs3733d18/teamF/down-stairs.png", 20, 20, true, true));
                 txtDirections.getChildren().add(stairs);
             } else if (text.toLowerCase().contains("begin")) {
                 ImageView pin = new ImageView(new Image("edu/wpi/cs3733d18/teamF/start-icon.png", 20, 20, true, true));

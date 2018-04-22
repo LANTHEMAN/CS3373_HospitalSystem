@@ -117,7 +117,7 @@ public class MapViewElement extends PageElement {
                         node1 -> node1.getFloor().equals(map.getFloor()));
                 if (!(mapDrawController.getDrawnPath() != null
                         && mapDrawController.getDrawnPath().getNodes().contains(node)
-                        && (node.getNodeType().equals("ELEV") || node.getNodeType().equals("STAI"))
+                            && (node.getNodeType().equals("ELEV") || node.getNodeType().equals("STAI"))
                         && map.getNeighbors(node)
                         .stream()
                         .filter(node1 -> mapDrawController.getDrawnPath().getNodes().contains(node1))
