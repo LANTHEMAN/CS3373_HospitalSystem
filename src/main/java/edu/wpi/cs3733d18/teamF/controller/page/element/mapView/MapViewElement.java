@@ -1,11 +1,18 @@
 package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
-import edu.wpi.cs3733d18.teamF.gfx.ImageCacheSingleton;
-import edu.wpi.cs3733d18.teamF.graph.Map;
+import com.lynden.gmapsfx.GoogleMapView;
+import com.lynden.gmapsfx.javascript.event.GMapMouseEvent;
+import com.lynden.gmapsfx.javascript.event.UIEventType;
+import com.lynden.gmapsfx.javascript.object.GoogleMap;
+import com.lynden.gmapsfx.javascript.object.LatLong;
+import com.lynden.gmapsfx.javascript.object.MapOptions;
+import com.lynden.gmapsfx.javascript.object.MapTypeIdEnum;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
+import edu.wpi.cs3733d18.teamF.gfx.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.impl.map.UglyMapDrawer;
+import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
 import javafx.event.Event;
@@ -21,7 +28,6 @@ import net.kurobako.gesturefx.GesturePane;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
-
 
 public class MapViewElement extends PageElement {
     // TODO change this to default starting location
@@ -39,6 +45,7 @@ public class MapViewElement extends PageElement {
     private Pane mapContainer;
     @FXML
     private AnchorPane root;
+
     private Node selectedNodeStart = null;
     private Node selectedNodeEnd = null;
     private Node modifyNode = null;
@@ -336,8 +343,8 @@ public class MapViewElement extends PageElement {
             }
         });
 
-        mapContainer.addEventHandler(Event.ANY, e->{
-            if(((gesturePane.targetPointAtViewportCentre().getX() > 427 || gesturePane.targetPointAtViewportCentre().getX() < 417) && (gesturePane.targetPointAtViewportCentre().getY() > 348 || gesturePane.targetPointAtViewportCentre().getY() < 230)) && gesturePane.getCurrentScale() <= 2.3){
+        mapContainer.addEventHandler(Event.ANY, e -> {
+            if (((gesturePane.targetPointAtViewportCentre().getX() > 427 || gesturePane.targetPointAtViewportCentre().getX() < 417) && (gesturePane.targetPointAtViewportCentre().getY() > 348 || gesturePane.targetPointAtViewportCentre().getY() < 230)) && gesturePane.getCurrentScale() <= 2.3) {
                 listener.onRefresh();
             }
         });
@@ -485,7 +492,6 @@ public class MapViewElement extends PageElement {
     }
 
 
-
     private boolean isNodeSelected(Point2D mapPos) {
         if (map.is2D()) {
             return map.getNodes(node -> new Point2D(node.getPosition().getX()
@@ -494,6 +500,10 @@ public class MapViewElement extends PageElement {
             return map.getNodes(node -> new Point2D(node.getWireframePosition().getX()
                     , node.getWireframePosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor())).size() > 0;
         }
+    }
+
+    public GesturePane getGesturePane() {
+        return gesturePane;
     }
 
     public enum ViewMode {
@@ -515,9 +525,5 @@ public class MapViewElement extends PageElement {
                 mapDrawController.refreshPath();
             }
         }
-    }
-
-    public GesturePane getGesturePane() {
-        return gesturePane;
     }
 }

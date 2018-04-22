@@ -51,7 +51,8 @@ dependencies {
             [group: 'com.github.sarxos', name: 'webcam-capture', version: '0.3.12'],
             [group: 'org.bytedeco', name: 'javacv', version: '1.4.1'],
             [group: 'com.github.matkam7', name: 'CS3733-D18-teamF-SR-API', version: 'v0.1.5'],
-            [group: "com.twilio.sdk", name: "twilio", version: "7.17.+"]
+            [group: "com.twilio.sdk", name: "twilio", version: "7.17.+"],
+            [group: "com.github.rterp", name: "GMapsFX", version: "GMapsFX-2.12.0"]
     )
 }
 
