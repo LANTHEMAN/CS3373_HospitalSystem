@@ -29,9 +29,14 @@ public class FaceLauncher {
     public static final String uriBase = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect";
     public static final String compareBase = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/verify";
     HttpClient httpclient = new DefaultHttpClient();
-    Webcam webcam = Webcam.getDefault();
+    Webcam webcam;
 
     public FaceLauncher() {
+        try {
+            webcam = Webcam.getDefault(5000);
+        }catch(Exception e) {
+            System.out.println("Webcam timeout, no webcam found");
+        }
     }
 
     public String getEmployeeName(String faceID) {
