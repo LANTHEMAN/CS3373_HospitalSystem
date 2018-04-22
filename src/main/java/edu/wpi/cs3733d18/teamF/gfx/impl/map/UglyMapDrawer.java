@@ -110,6 +110,8 @@ public class UglyMapDrawer extends MapDrawable {
 
     @Override
     public void draw(Pane pane) {
+        boolean is2D = map.is2D();
+
         Node selectedNode = null;
         Node hoveredNode = null;
         if (selectedNodePos != null) {
@@ -133,44 +135,46 @@ public class UglyMapDrawer extends MapDrawable {
 
         if (path != null && path.getNodes().size() > 0) {
             for (Edge edge : path.getEdges()) {
-                if (!(edge.getNode1().getFloor().equals(edge.getNode2().getFloor()))) {
-                    if (edge.getNode1().getFloor().equals(map.getFloor())) {
-                        Node node = edge.getNode1();
-                        currNodeDrawable = getPathNodeDrawer(node.getNodeType());
-                        if(node.compareFloors(edge.getNode2()) == -1){
-                            currNodeDrawable.setDirection(true);
+                    if (!(edge.getNode1().getFloor().equals(edge.getNode2().getFloor()))) {
+                        if (edge.getNode1().getFloor().equals(map.getFloor()) || !is2D) {
+                            Node node = edge.getNode1();
+                            currNodeDrawable = getPathNodeDrawer(node.getNodeType());
+                            if(node.compareFloors(edge.getNode2()) == -1){
+                                currNodeDrawable.setDirection(true);
+                            }
+                            else{
+                                currNodeDrawable.setDirection(false);
+                            }
+                            currNodeDrawable.update(node);
+                            if (hoveredNode == node) {
+                                currNodeDrawable.hoverNode();
+                            }
+                            currNodeDrawable.draw(pane);
+                            if (hoveredNode == node) {
+                                currNodeDrawable.unhoverNode();
+                            }
                         }
-                        else{
-                            currNodeDrawable.setDirection(false);
+                        if (edge.getNode2().getFloor().equals(map.getFloor())  || !is2D) {
+                            Node node = edge.getNode2();
+                            currNodeDrawable = getPathNodeDrawer(node.getNodeType());
+                            if(node.compareFloors(edge.getNode1()) == -1){
+                                currNodeDrawable.setDirection(true);
+                            }
+                            else{
+                                currNodeDrawable.setDirection(false);
+                            }
+                            currNodeDrawable.update(node);
+                            if (hoveredNode == node) {
+                                currNodeDrawable.hoverNode();
+                            }
+                            currNodeDrawable.draw(pane);
+                            if (hoveredNode == node) {
+                                currNodeDrawable.unhoverNode();
+                            }
                         }
-                        currNodeDrawable.update(node);
-                        if (hoveredNode == node) {
-                            currNodeDrawable.hoverNode();
-                        }
-                        currNodeDrawable.draw(pane);
-                        if (hoveredNode == node) {
-                            currNodeDrawable.unhoverNode();
-                        }
-                    } else if (edge.getNode2().getFloor().equals(map.getFloor())) {
-                        Node node = edge.getNode2();
-                        currNodeDrawable = getPathNodeDrawer(node.getNodeType());
-                        if(node.compareFloors(edge.getNode1()) == -1){
-                            currNodeDrawable.setDirection(true);
-                        }
-                        else{
-                            currNodeDrawable.setDirection(false);
-                        }
-                        currNodeDrawable.update(node);
-                        if (hoveredNode == node) {
-                            currNodeDrawable.hoverNode();
-                        }
-                        currNodeDrawable.draw(pane);
-                        if (hoveredNode == node) {
-                            currNodeDrawable.unhoverNode();
-                        }
+
                     }
 
-                }
             }
 
             pane.getChildren().add(pathPane);
