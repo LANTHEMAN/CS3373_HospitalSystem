@@ -1,6 +1,6 @@
-package edu.wpi.cs3733d18.teamF.gfx.impl;
+package edu.wpi.cs3733d18.teamF.gfx.impl.node;
 
-import edu.wpi.cs3733d18.teamF.MapSingleton;
+import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.NodeDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import javafx.scene.layout.Pane;

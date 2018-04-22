@@ -1,5 +1,7 @@
 package edu.wpi.cs3733d18.teamF.graph;
 
+import edu.wpi.cs3733d18.teamF.graph.pathfinding.BreathSearch;
+import edu.wpi.cs3733d18.teamF.graph.pathfinding.PathFindingAlgorithm;
 import javafx.geometry.Point2D;
 import org.junit.Test;
 

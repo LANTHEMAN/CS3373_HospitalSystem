@@ -1,9 +1,10 @@
-package edu.wpi.cs3733d18.teamF;
+package edu.wpi.cs3733d18.teamF.graph;
 
 import edu.wpi.cs3733d18.teamF.db.DatabaseHandler;
 import edu.wpi.cs3733d18.teamF.db.DatabaseItem;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
-import edu.wpi.cs3733d18.teamF.graph.*;
+import edu.wpi.cs3733d18.teamF.graph.pathfinding.AStar;
+import edu.wpi.cs3733d18.teamF.graph.pathfinding.PathFindingAlgorithm;
 import javafx.geometry.Point2D;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -26,16 +27,9 @@ public class Map extends Observable implements DatabaseItem, Observer {
     private DatabaseHandler dbHandler;
     private Graph graph;
     private String floor = "02";
-    // TODO change to enumeration
     private boolean is2D = true;
-
     private boolean stairsDisabled = false;
     private boolean elevatorsDisabled = false;
-
-    public void setPathSelector(PathFindingAlgorithm pathSelector) {
-        this.pathSelector = pathSelector;
-    }
-
     private PathFindingAlgorithm pathSelector = new AStar();
 
     public Map() {
@@ -46,6 +40,10 @@ public class Map extends Observable implements DatabaseItem, Observer {
     public Map(DatabaseHandler dbHandler) {
         graph = new Graph();
         this.dbHandler = dbHandler;
+    }
+
+    public void setPathSelector(PathFindingAlgorithm pathSelector) {
+        this.pathSelector = pathSelector;
     }
 
     public String getFloor() {
@@ -250,7 +248,7 @@ public class Map extends Observable implements DatabaseItem, Observer {
         return findNodeClosestTo(x1, y1, is2D, Objects::nonNull);
     }
 
-    public Node findNodeClosestTo(Node node, HashSet<Node> nodes){
+    public Node findNodeClosestTo(Node node, HashSet<Node> nodes) {
         double closestDistance = Double.MAX_VALUE;
         Node closestNode = null;
         for (Node n : nodes) {
