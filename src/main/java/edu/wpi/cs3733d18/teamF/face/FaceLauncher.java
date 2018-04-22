@@ -3,10 +3,12 @@ package edu.wpi.cs3733d18.teamF.face;
 import java.io.File;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.concurrent.TimeoutException;
 
 import com.github.sarxos.webcam.Webcam;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
+import javafx.scene.image.Image;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -29,9 +31,10 @@ public class FaceLauncher {
     HttpClient httpclient = new DefaultHttpClient();
     Webcam webcam = Webcam.getDefault();
 
-    public FaceLauncher(){}
+    public FaceLauncher() {
+    }
 
-    public String getEmployeeName(String faceID){
+    public String getEmployeeName(String faceID) {
         try {
             URIBuilder builder = new URIBuilder(compareBase);
 
@@ -49,11 +52,11 @@ public class FaceLauncher {
 
             HashMap<String, String> unameFace = PermissionSingleton.getInstance().getUserAndFace();
 
-            for(String key : unameFace.keySet()){
+            for (String key : unameFace.keySet()) {
 
                 String val = unameFace.get(key);
 
-                StringEntity reqEntity = new StringEntity("{\"faceId1\": \""+ val +"\"," +
+                StringEntity reqEntity = new StringEntity("{\"faceId1\": \"" + val + "\"," +
                         "\"faceId2\": \"" + faceID + "\"}");
                 request.setEntity(reqEntity);
 
@@ -64,7 +67,7 @@ public class FaceLauncher {
                 if (entity != null) {
                     String jsonString = EntityUtils.toString(entity).trim();
 
-                    if(jsonString.substring(15, 19).equals("true")){
+                    if (jsonString.substring(15, 19).equals("true")) {
                         return key;
                     }
                 }
@@ -94,33 +97,35 @@ public class FaceLauncher {
             request.setHeader("Content-Type", "application/octet-stream");
             request.setHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
 
-            webcam.open();
-            ImageIO.write(webcam.getImage(), "PNG", new File("curFace.png"));
-            webcam.close();
+            File imageFile = new File("curFace.png");
 
-            // Request body.
-            File file = new File("curFace.png");
-            FileEntity reqEntity = new FileEntity(file, ContentType.APPLICATION_OCTET_STREAM);
+            if (!imageFile.exists()) {
+                webcam.open();
+                ImageIO.write(webcam.getImage(), "PNG", imageFile);
+                webcam.close();
+            }
+
+            FileEntity reqEntity = new FileEntity(imageFile, ContentType.APPLICATION_OCTET_STREAM);
             request.setEntity(reqEntity);
 
             // Execute the REST API call and get the response entity.
             HttpResponse response = httpclient.execute(request);
             HttpEntity entity = response.getEntity();
 
-            file.delete();
+            imageFile.delete();
 
             if (entity != null) {
                 String jsonString = EntityUtils.toString(entity).trim();
                 String newFaceID = jsonString.substring(12, 48);
 
                 return newFaceID;
-            }else{
-                return "";
+            } else {
+                return "false";
             }
         } catch (Exception e) {
             // Display error message.
             System.out.println(e.getMessage());
-            return "";
+            return "false";
         }
     }
 }

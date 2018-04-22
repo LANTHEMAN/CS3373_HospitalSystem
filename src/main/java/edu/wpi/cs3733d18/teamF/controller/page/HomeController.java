@@ -1,5 +1,6 @@
 package edu.wpi.cs3733d18.teamF.controller.page;
 
+import com.github.sarxos.webcam.Webcam;
 import com.jfoenix.controls.*;
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.javascript.object.*;
@@ -26,6 +27,8 @@ import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
@@ -44,6 +47,10 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -257,6 +264,21 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private GoogleMap gmap;
     private boolean isGoogleMapViewEnabled = false;
 
+    /////////////////////////////////
+    //                             //
+    //     Facial Recognition      //
+    //                             //
+    /////////////////////////////////
+    FaceLauncher launcher = new FaceLauncher();
+    @FXML
+    private FontAwesomeIconView userIDCancel;
+    @FXML
+    private FontAwesomeIconView userIDSubmit;
+    @FXML
+    private ImageView userIDView;
+    @FXML
+    private JFXTextField faceIDField;
+
     /**
      * Constructor for this class
      *
@@ -405,9 +427,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         mapEditorDrawer.setSidePane(mapEditorBtns);
 
 
-        //TODO fix this shit and make it pretty @MATT
         // login
         loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+
+            // set text in login button
             if (PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
                 loginBox.setVisible(true);
                 loginDrawer.setSidePane(loginBox);
@@ -421,54 +444,27 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             }
 
             if (loginDrawer.isShown()) {
-                // login in the user and close the drawer
+                // if the drawer is out and the password and username match a user
                 if (PermissionSingleton.getInstance().login(loginUsername.getText(), loginPassword.getText())) {
-                    mapViewElement.getMapDrawController().unshowPath();
-                    loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
-                    if (PermissionSingleton.getInstance().getUserPrivilege().equals("Admin")) {
-                        setAdminMenu();
-                    } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
-                        setStaffMenu();
-                    } else {
-                        setGuestMenu();
-                    }
-                    loginDrawer.close();
-                    loginDrawer.setDisable(true);
-                    loginUsername.setText("");
-                    loginPassword.setText("");
-
+                    setLoggedIn();
                 } else {
                     loginPassword.setText("");
                     shakePasswordField(loginPassword);
                 }
-
-            } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
-                FaceLauncher launcher = new FaceLauncher();
-                if (PermissionSingleton.getInstance().forceLogin(launcher.getEmployeeName(launcher.getCameraFaceID()))) {
-                    mapViewElement.getMapDrawController().unshowPath();
-                    loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
-
-                    if (PermissionSingleton.getInstance().getUserPrivilege().equals("Admin")) {
-                        setAdminMenu();
-                    } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
-                        setStaffMenu();
+            } else {
+                if (PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) {
+                    if (PermissionSingleton.getInstance().forceLogin(launcher.getEmployeeName(launcher.getCameraFaceID()))) {
+                        setLoggedIn();
                     } else {
-                        setGuestMenu();
+                        loginDrawer.open();
+                        loginDrawer.setDisable(false);
                     }
-
-                    loginDrawer.close();
-                    loginDrawer.setDisable(true);
-                    loginUsername.setText("");
-                    loginPassword.setText("");
-                } else {
+                }else{
                     loginDrawer.open();
                     loginDrawer.setDisable(false);
                 }
-            } else {
-                loginDrawer.open();
-                loginDrawer.setDisable(false);
             }
-        });
+        }); 
 
         loginCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             loginDrawer.close();
@@ -508,6 +504,19 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             displayInUserTable(list);
         });
 
+        userIDCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) ->{
+            userIDView.setVisible(false);
+            userIDSubmit.setVisible(false);
+            userIDCancel.setVisible(false);
+        });
+
+        userIDSubmit.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) ->{
+            userIDView.setVisible(false);
+            userIDSubmit.setVisible(false);
+            userIDCancel.setVisible(false);
+            faceIDField.setText(launcher.getCameraFaceID());
+        });
+
 
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             Calendar cal = Calendar.getInstance();
@@ -525,6 +534,39 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         );
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
+    }
+
+    public void onCameraClicked() throws IOException {
+        Webcam webcam = Webcam.getDefault();
+        webcam.open();
+        BufferedImage bufferedImage = webcam.getImage();
+        ImageIO.write(bufferedImage, "PNG", new File("curFace.png"));
+        webcam.close();
+
+        userIDView.setVisible(true);
+        userIDCancel.setVisible(true);
+        userIDSubmit.setVisible(true);
+
+        Image imageFX = SwingFXUtils.toFXImage(bufferedImage, null);
+        userIDView.setImage(imageFX);
+    }
+
+    public void setLoggedIn() {
+        mapViewElement.getMapDrawController().unshowPath();
+        loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
+
+        if (PermissionSingleton.getInstance().getUserPrivilege().equals("Admin")) {
+            setAdminMenu();
+        } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
+            setStaffMenu();
+        } else {
+            setGuestMenu();
+        }
+
+        loginDrawer.close();
+        loginDrawer.setDisable(true);
+        loginUsername.setText("");
+        loginPassword.setText("");
     }
 
     @Override
@@ -941,11 +983,17 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                 arrow.setGlyphSize(15);
                 arrow.setFill(Color.WHITE);
                 txtDirections.getChildren().add(arrow);
-            } else if (text.toLowerCase().contains("take elevator")) {
+            } else if (text.toLowerCase().contains("take elevator up")) {
                 ImageView elevator = new ImageView(new Image("edu/wpi/cs3733d18/teamF/up-elevator.png", 20, 20, true, true));
                 txtDirections.getChildren().add(elevator);
-            } else if (text.toLowerCase().contains("take stairs")) {
+            } else if (text.toLowerCase().contains("take elevator down")) {
+                ImageView elevator = new ImageView(new Image("edu/wpi/cs3733d18/teamF/down-elevator.png", 20, 20, true, true));
+                txtDirections.getChildren().add(elevator);
+            } else if (text.toLowerCase().contains("take stairs up")) {
                 ImageView stairs = new ImageView(new Image("edu/wpi/cs3733d18/teamF/up-stairs.png", 20, 20, true, true));
+                txtDirections.getChildren().add(stairs);
+            } else if (text.toLowerCase().contains("take stairs down")) {
+                ImageView stairs = new ImageView(new Image("edu/wpi/cs3733d18/teamF/down-stairs.png", 20, 20, true, true));
                 txtDirections.getChildren().add(stairs);
             } else if (text.toLowerCase().contains("begin")) {
                 ImageView pin = new ImageView(new Image("edu/wpi/cs3733d18/teamF/start-icon.png", 20, 20, true, true));
@@ -1366,6 +1414,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         passwordField.clear();
         fnameField.clear();
         lnameField.clear();
+        faceIDField.clear();
         occupationField.clear();
         languageCheck.setSelected(false);
         religiousCheck.setSelected(false);
@@ -1459,6 +1508,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         editUserPane.setVisible(true);
     }
 
+
     @FXML
     private void onSubmitUser() {
         String username;
@@ -1471,13 +1521,12 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         String firstName = fnameField.getText();
         String lastName = lnameField.getText();
         String occupation = occupationField.getText();
+        String faceID = faceIDField.getText();
         boolean languageServices = languageCheck.isSelected();
         boolean religiousServices = religiousCheck.isSelected();
         boolean securityRequest = securityCheck.isSelected();
 
-        //TODO getFaceID
-
-        User temp = new User(username, password, firstName, lastName, privilegeChoice, occupation, "");
+        User temp = new User(username, password, firstName, lastName, privilegeChoice, occupation, faceID);
         if (newUser) {
             PermissionSingleton.getInstance().addUser(temp);
         } else {
@@ -1510,6 +1559,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         edu.wpi.cs3733d18.teamF.api.ServiceRequest sr = new edu.wpi.cs3733d18.teamF.api.ServiceRequest();
         sr.run(-1, -1, 1000, 631, null, null, null);
     }
+
 
     @Override
     public void onNewPathSelected(Path path) {
