@@ -36,7 +36,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<GridPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
+<GridPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="256.0" />
         <ColumnConstraints />
@@ -840,7 +840,7 @@
         </GridPane>
         <AnchorPane fx:id="newUserPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="463.0" prefWidth="638.0" style="-fx-background-color: WHITE;" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <children>
-                <Label fx:id="userLabel" alignment="CENTER" layoutX="292.0" layoutY="27.0" text="%User" textAlignment="CENTER">
+                <Label fx:id="userLabel" alignment="CENTER" layoutX="220.0" layoutY="27.0" prefWidth="200.0" text="%User" textAlignment="CENTER">
                     <font>
                         <Font size="27.0" />
                     </font>
@@ -856,42 +856,47 @@
                 <JFXCheckBox fx:id="securityCheck" layoutX="490.0" layoutY="380.0" text="%SecurityRequest" />
                 <JFXButton buttonType="RAISED" layoutX="568.0" layoutY="424.0" onAction="#onSubmitUser" style="-fx-background-color: #042E58;" text="%Submit" textFill="WHITE" />
                 <JFXButton buttonType="RAISED" layoutX="20.0" layoutY="424.0" onAction="#onCancelUser" style="-fx-background-color: #042E58;" text="%Cancel" textFill="WHITE" />
-                <Label layoutX="32.0" layoutY="120.0" text="%Username">
+                <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="90.0" prefWidth="100.0" text="%Username">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Label layoutX="32.0" layoutY="180.0" text="%FirstName">
+                <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="150.0" prefWidth="100.0" text="%FirstName">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Label layoutX="32.0" layoutY="240.0" text="%LastName">
+                <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="210.0" prefWidth="100.0" text="%LastName">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Label layoutX="340.0" layoutY="180.0" text="%Occupation">
+                <Label alignment="CENTER_RIGHT" layoutX="300.0" layoutY="150.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="100.0" text="%Occupation">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Label layoutX="340.0" layoutY="240.0" text="%Privilege">
+                <Label alignment="CENTER_RIGHT" layoutX="300.0" layoutY="210.0" prefWidth="100.0" text="%Privilege">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <JFXTextField fx:id="usernameField" alignment="BOTTOM_LEFT" editable="false" layoutX="101.0" layoutY="118.0" />
-                <JFXTextField fx:id="fnameField" alignment="BOTTOM_LEFT" layoutX="101.0" layoutY="178.0" />
-                <JFXTextField fx:id="lnameField" alignment="BOTTOM_LEFT" layoutX="101.0" layoutY="238.0" />
-                <JFXTextField fx:id="occupationField" alignment="BOTTOM_LEFT" layoutX="415.0" layoutY="180.0" />
-                <JFXComboBox fx:id="privilegeCombo" layoutX="399.0" layoutY="240.0" onAction="#onPrivilegeBox" prefHeight="25.0" prefWidth="126.0" />
-                <Label layoutX="340.0" layoutY="120.0" text="%Password">
+                <JFXTextField fx:id="usernameField" alignment="BOTTOM_LEFT" editable="false" layoutX="115.0" layoutY="88.0" prefWidth="150.0" />
+                <JFXTextField fx:id="fnameField" alignment="BOTTOM_LEFT" layoutX="115.0" layoutY="148.0" prefWidth="150.0" />
+                <JFXTextField fx:id="lnameField" alignment="BOTTOM_LEFT" layoutX="115.0" layoutY="208.0" prefWidth="150.0" />
+                <JFXTextField fx:id="occupationField" alignment="BOTTOM_LEFT" layoutX="410.0" layoutY="148.0" prefWidth="150.0" />
+                <JFXComboBox fx:id="privilegeCombo" layoutX="410.0" layoutY="210.0" onAction="#onPrivilegeBox" prefHeight="25.0" prefWidth="150.0" />
+                <Label alignment="CENTER_RIGHT" layoutX="300.0" layoutY="90.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="100.0" text="%Password">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <JFXTextField fx:id="passwordField" alignment="BOTTOM_LEFT" layoutX="402.0" layoutY="118.0" promptText="%ChangePassword" />
+                <JFXTextField fx:id="passwordField" alignment="BOTTOM_LEFT" layoutX="410.0" layoutY="88.0" prefWidth="150.0" promptText="%ChangePassword" />
+            <FontAwesomeIconView fx:id="cameraIcon" glyphName="CAMERA" layoutX="298.0" layoutY="295.0" onMouseClicked="#onCameraClicked" size="40" strokeType="OUTSIDE" strokeWidth="0.0" />
+            <JFXTextField fx:id="faceIDField" focusTraversable="false" layoutX="410.0" layoutY="270.0" prefWidth="150.0" visible="false" />
+            <ImageView fx:id="userIDView" fitHeight="463.0" fitWidth="638.0" pickOnBounds="true" visible="false" />
+            <FontAwesomeIconView fx:id="userIDSubmit" fill="WHITE" glyphName="CHECK" layoutX="600.0" layoutY="450.0" size="30" strokeType="OUTSIDE" strokeWidth="0.0" visible="false" />
+            <FontAwesomeIconView fx:id="userIDCancel" fill="WHITE" glyphName="TIMES" layoutX="570.0" layoutY="450.0" size="30" strokeType="OUTSIDE" strokeWidth="0.0" visible="false" />
             </children>
         </AnchorPane>
         <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
