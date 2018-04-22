@@ -1,6 +1,8 @@
 package edu.wpi.cs3733d18.teamF.controller;
 
 
+import org.opencv.face.Face;
+
 public class User {
     String uname;
     String firstName;
@@ -8,9 +10,10 @@ public class User {
     String privilege;
     String occupation;
     private String psword;
+    private String FaceID;
 
 
-    public User(String uname, String psword, String firstName, String lastName, String privilege, String occupation) {
+    public User(String uname, String psword, String firstName, String lastName, String privilege, String occupation, String FaceID) {
         this.uname = uname;
         // do it for the encryption
         setPsword(psword);
@@ -18,9 +21,10 @@ public class User {
         this.lastName = lastName;
         this.privilege = privilege;
         this.occupation = occupation;
+        this.FaceID = FaceID;
     }
 
-    public User(String uname, String psword, String firstName, String lastName, String privilege, String occupation, boolean fromDatabase){
+    public User(String uname, String psword, String firstName, String lastName, String privilege, String occupation, String FaceID, boolean fromDatabase){
         this.uname = uname;
         // do it for the encryption
         if(fromDatabase){ setAlreadyEncryptedPassword(psword);}
@@ -28,6 +32,7 @@ public class User {
         this.lastName = lastName;
         this.privilege = privilege;
         this.occupation = occupation;
+        this.FaceID = FaceID;
     }
 
     public String getUname() {
@@ -90,5 +95,12 @@ public class User {
         this.occupation = occupation;
     }
 
+    public void setFaceID(String faceID){
+        this.FaceID = faceID;
+    }
+
+    public String getFaceID(){
+        return this.FaceID;
+    }
 
 }

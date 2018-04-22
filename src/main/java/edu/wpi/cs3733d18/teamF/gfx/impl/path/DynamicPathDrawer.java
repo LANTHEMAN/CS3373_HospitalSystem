@@ -1,8 +1,8 @@
-package edu.wpi.cs3733d18.teamF.gfx.impl;
+package edu.wpi.cs3733d18.teamF.gfx.impl.path;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733d18.teamF.MapSingleton;
+import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.PathDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Edge;
 import edu.wpi.cs3733d18.teamF.graph.Node;
@@ -28,7 +28,6 @@ public class DynamicPathDrawer extends PathDrawable {
     private ArrayList<Arrow> arrows = new ArrayList<>();
     // how often, in milliseconds, between timeline updates
     private int timestep = 300;
-    boolean isGrey = false;
     /**
      * This ctor takes no parameters, it must be updated with a new Path using the {@link #update(Path)} function.
      */
@@ -52,18 +51,11 @@ public class DynamicPathDrawer extends PathDrawable {
 
 
         initAndDrawArrows(pane);
-        for (Arrow arrow: arrows){
-            if(isGrey){
-                arrow.view.setFill(Color.GRAY);
-                isGrey = !isGrey;
-            } else {
-                arrow.view.setFill(Color.BLACK);
-                isGrey = !isGrey;
-            }
-        }
         // update each arrow's animation every timestep milliseconds
         timeline = new Timeline(new KeyFrame(Duration.millis(timestep), event -> {
-            for (Arrow arrow : arrows) {
+            for (int i = 0; i < arrows.size(); i++) {
+                Arrow arrow  = arrows.get(i);
+
                 // set the speed of the arrows
                 arrow.progress += timestep / 10;
 
@@ -83,11 +75,26 @@ public class DynamicPathDrawer extends PathDrawable {
                 double distBetweenNodes = pathPos.getValue();
 
                 String mapFloor = MapSingleton.getInstance().getMap().getFloor();
-                if (!mapFloor.equals(src.getFloor()) || !mapFloor.equals(dst.getFloor())) {
-                    arrow.view.setVisible(false);
-                    arrow.prevX = null;
-                    arrow.prevY = null;
-                    continue;
+
+                boolean is2D = MapSingleton.getInstance().getMap().is2D();
+
+                if(is2D){
+                    if (!mapFloor.equals(src.getFloor()) || !mapFloor.equals(dst.getFloor())) {
+                        arrow.view.setVisible(false);
+                        arrow.prevX = null;
+                        arrow.prevY = null;
+                        continue;
+                    }
+                }else{
+                    if((src.getNodeType().equals("ELEV") && dst.getNodeType().equals("ELEV"))||(src.getNodeType().equals("STAI") && dst.getNodeType().equals("STAI"))){
+                        arrow.view.setFill(Color.RED);
+                    }else if(mapFloor.equals(src.getFloor()) && mapFloor.equals(dst.getFloor())){
+                        arrow.view.setFill(Color.GREEN);
+
+                    }else{
+                        if(i % 2 == 0)arrows.get(i).view.setFill(Color.GRAY);
+                        else arrows.get(i).view.setFill(Color.BLACK);
+                    }
                 }
 
                 // party colors!
@@ -232,6 +239,8 @@ public class DynamicPathDrawer extends PathDrawable {
         // create arrows distributed along the path
         for (int i = 0; i < divs; i++) {
             arrows.add(new Arrow(i * divDist));
+            if(i % 2 == 0)arrows.get(i).view.setFill(Color.GRAY);
+            else arrows.get(i).view.setFill(Color.BLACK);
         }
 
         // add the arrows to the pane

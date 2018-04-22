@@ -1,7 +1,7 @@
-package edu.wpi.cs3733d18.teamF.gfx.impl;
+package edu.wpi.cs3733d18.teamF.gfx.impl.node;
 
 import edu.wpi.cs3733d18.teamF.Main;
-import edu.wpi.cs3733d18.teamF.MapSingleton;
+import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.NodeDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import javafx.scene.image.Image;
@@ -63,9 +63,11 @@ public class PathNodeDrawer extends NodeDrawable {
         double imageHeight = is2D ? 3400 : 2772;
         double posX = is2D ? node.getPosition().getX() : node.getWireframePosition().getX();
         double posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
-        if(!node.getFloor().equals(MapSingleton.getInstance().getMap().getFloor())){
-            return;
+
+        if(!node.getFloor().equals(MapSingleton.getInstance().getMap().getFloor()) && is2D){
+                return;
         }
+
         Image currIcon;
         if(type) {
             if (direction) {

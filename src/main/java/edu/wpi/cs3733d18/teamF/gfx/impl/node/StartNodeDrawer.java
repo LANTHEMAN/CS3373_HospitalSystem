@@ -1,24 +1,13 @@
-package edu.wpi.cs3733d18.teamF.gfx.impl;
+package edu.wpi.cs3733d18.teamF.gfx.impl.node;
 
 import com.jfoenix.controls.JFXTextField;
-import com.sun.javafx.font.Glyph;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.Main;
-import edu.wpi.cs3733d18.teamF.MapSingleton;
+import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.NodeDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Node;
-import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.LabeledBuilder;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
-import javafx.util.Duration;
 
 public class StartNodeDrawer extends NodeDrawable {
     private boolean isSelected = false;
@@ -44,7 +33,7 @@ public class StartNodeDrawer extends NodeDrawable {
         double imageHeight = is2D ? 3400 : 2772;
         double posX = is2D ? node.getPosition().getX() : node.getWireframePosition().getX();
         double posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
-        if(!node.getFloor().equals(MapSingleton.getInstance().getMap().getFloor())){
+        if(!node.getFloor().equals(MapSingleton.getInstance().getMap().getFloor()) && is2D){
             return;
         }
 

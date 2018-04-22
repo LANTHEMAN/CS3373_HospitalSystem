@@ -1,6 +1,6 @@
-package edu.wpi.cs3733d18.teamF.gfx.impl;
+package edu.wpi.cs3733d18.teamF.gfx.impl.edge;
 
-import edu.wpi.cs3733d18.teamF.MapSingleton;
+import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.EdgeDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Edge;
 import javafx.scene.layout.Pane;

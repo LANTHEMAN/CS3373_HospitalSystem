@@ -1,6 +1,4 @@
-package edu.wpi.cs3733d18.teamF;
-
-import edu.wpi.cs3733d18.teamF.controller.page.ErrorController;
+package edu.wpi.cs3733d18.teamF.controller;
 
 public class ErrorSingleton {
     private Exception error;

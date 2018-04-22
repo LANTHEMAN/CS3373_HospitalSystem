@@ -1,14 +1,14 @@
 package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
-import com.jfoenix.controls.JFXButton;
-import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
-import edu.wpi.cs3733d18.teamF.Map;
+import edu.wpi.cs3733d18.teamF.gfx.ImageCacheSingleton;
+import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
-import edu.wpi.cs3733d18.teamF.gfx.impl.UglyMapDrawer;
+import edu.wpi.cs3733d18.teamF.gfx.impl.map.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
@@ -82,6 +82,7 @@ public class MapViewElement extends PageElement {
         mapFloorDrawn = map.getFloor();
         isMap2D = map.is2D();
         initElement(sourcePane, root);
+        sourcePane.autosize();
 
         // draw the nodes
         mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
@@ -91,7 +92,6 @@ public class MapViewElement extends PageElement {
         refreshFloorDrawn();
         // set default zoom
         gesturePane.zoomTo(2, new Point2D(600, 600));
-
         // disable gesturePane when ctrl is held
         switcher.getScene().setOnKeyPressed(ke -> {
             if (ke.isControlDown()) {
@@ -117,7 +117,7 @@ public class MapViewElement extends PageElement {
                         node1 -> node1.getFloor().equals(map.getFloor()));
                 if (!(mapDrawController.getDrawnPath() != null
                         && mapDrawController.getDrawnPath().getNodes().contains(node)
-                        && (node.getNodeType().equals("ELEV") || node.getNodeType().equals("STAI"))
+                            && (node.getNodeType().equals("ELEV") || node.getNodeType().equals("STAI"))
                         && map.getNeighbors(node)
                         .stream()
                         .filter(node1 -> mapDrawController.getDrawnPath().getNodes().contains(node1))
@@ -335,6 +335,12 @@ public class MapViewElement extends PageElement {
 
             }
         });
+
+        mapContainer.addEventHandler(Event.ANY, e->{
+            if(((gesturePane.targetPointAtViewportCentre().getX() > 427 || gesturePane.targetPointAtViewportCentre().getX() < 417) && (gesturePane.targetPointAtViewportCentre().getY() > 348 || gesturePane.targetPointAtViewportCentre().getY() < 230)) && gesturePane.getCurrentScale() <= 2.3){
+                listener.onRefresh();
+            }
+        });
     }
 
     public Path changePathDestination(Node destinationNode) {
@@ -478,6 +484,8 @@ public class MapViewElement extends PageElement {
                 , e.getY() * map_y / mapContainer.getMaxHeight());
     }
 
+
+
     private boolean isNodeSelected(Point2D mapPos) {
         if (map.is2D()) {
             return map.getNodes(node -> new Point2D(node.getPosition().getX()
@@ -507,5 +515,9 @@ public class MapViewElement extends PageElement {
                 mapDrawController.refreshPath();
             }
         }
+    }
+
+    public GesturePane getGesturePane() {
+        return gesturePane;
     }
 }

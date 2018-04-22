@@ -1,9 +1,13 @@
-package edu.wpi.cs3733d18.teamF.graph;
+package edu.wpi.cs3733d18.teamF.graph.pathfinding;
+
+import edu.wpi.cs3733d18.teamF.graph.Graph;
+import edu.wpi.cs3733d18.teamF.graph.Node;
+import edu.wpi.cs3733d18.teamF.graph.Path;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BreathSearch implements PathFindingAlgorithm{
+public class BreathSearch implements PathFindingAlgorithm {
     /**
      * Static function to determine the best route from one node to another
      * given a graph
@@ -13,7 +17,7 @@ public class BreathSearch implements PathFindingAlgorithm{
      * @param destination The destination node in the graph
      * @return An array of Nodes that represent a path through the graph
      */
-    public  Path getPath(Graph graph, Node source, Node destination) {
+    public Path getPath(Graph graph, Node source, Node destination) {
         // see if the destination exists or if src equals dst
         if (destination == null || source == null) {
             throw new AssertionError();

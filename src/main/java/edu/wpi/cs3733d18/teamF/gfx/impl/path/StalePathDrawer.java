@@ -1,4 +1,4 @@
-package edu.wpi.cs3733d18.teamF.gfx.impl;
+package edu.wpi.cs3733d18.teamF.gfx.impl.path;
 
 import edu.wpi.cs3733d18.teamF.gfx.EdgeDrawable;
 import edu.wpi.cs3733d18.teamF.gfx.PathDrawable;
