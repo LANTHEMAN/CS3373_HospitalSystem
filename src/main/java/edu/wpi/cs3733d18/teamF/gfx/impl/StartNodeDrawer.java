@@ -44,7 +44,7 @@ public class StartNodeDrawer extends NodeDrawable {
         double imageHeight = is2D ? 3400 : 2772;
         double posX = is2D ? node.getPosition().getX() : node.getWireframePosition().getX();
         double posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
-        if(!node.getFloor().equals(MapSingleton.getInstance().getMap().getFloor())){
+        if(!node.getFloor().equals(MapSingleton.getInstance().getMap().getFloor()) && is2D){
             return;
         }
 

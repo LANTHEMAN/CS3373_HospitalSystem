@@ -87,7 +87,10 @@ public class DynamicPathDrawer extends PathDrawable {
                     }
                 }else{
                     if((src.getNodeType().equals("ELEV") && dst.getNodeType().equals("ELEV"))||(src.getNodeType().equals("STAI") && dst.getNodeType().equals("STAI"))){
-                        arrow.view.setFill(Color.color(1, 0, 0));
+                        arrow.view.setFill(Color.RED);
+                    }else if(mapFloor.equals(src.getFloor()) && mapFloor.equals(dst.getFloor())){
+                        arrow.view.setFill(Color.GREEN);
+
                     }else{
                         if(i % 2 == 0)arrows.get(i).view.setFill(Color.GRAY);
                         else arrows.get(i).view.setFill(Color.BLACK);
