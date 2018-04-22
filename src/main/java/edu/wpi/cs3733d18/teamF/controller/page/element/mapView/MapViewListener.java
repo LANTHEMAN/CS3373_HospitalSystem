@@ -11,4 +11,5 @@ public interface MapViewListener {
     void onNewNodePopup(Point2D sceneLocation, Point2D nodeLocation);
     void onHideNewNodePopup();
     void onFloorRefresh();
+    void onRefresh();
 }

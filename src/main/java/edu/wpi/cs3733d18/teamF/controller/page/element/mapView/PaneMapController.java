@@ -1,6 +1,6 @@
 package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
-import edu.wpi.cs3733d18.teamF.Map;
+import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.gfx.MapDrawable;
 import edu.wpi.cs3733d18.teamF.gfx.PaneController;
 import edu.wpi.cs3733d18.teamF.graph.Node;

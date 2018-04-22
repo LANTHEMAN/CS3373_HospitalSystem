@@ -1,4 +1,8 @@
-package edu.wpi.cs3733d18.teamF.graph;
+package edu.wpi.cs3733d18.teamF.graph.pathfinding;
+
+import edu.wpi.cs3733d18.teamF.graph.Graph;
+import edu.wpi.cs3733d18.teamF.graph.Node;
+import edu.wpi.cs3733d18.teamF.graph.Path;
 
 import java.util.*;
 
@@ -14,7 +18,7 @@ public class AStar implements PathFindingAlgorithm{
      * @return An array of Nodes that represent a path through the graph
      */
 
-    public  Path getPath(Graph graph, Node source, Node destination) {
+    public Path getPath(Graph graph, Node source, Node destination) {
         // see if the destination exists or if src equals dst
         if (destination == null || source == null) {
             return new Path(new ArrayList<>(), graph);

@@ -1,10 +1,14 @@
-package edu.wpi.cs3733d18.teamF.graph;
+package edu.wpi.cs3733d18.teamF.graph.pathfinding;
+
+import edu.wpi.cs3733d18.teamF.graph.Graph;
+import edu.wpi.cs3733d18.teamF.graph.Node;
+import edu.wpi.cs3733d18.teamF.graph.Path;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
-public class DepthSearch implements PathFindingAlgorithm{
+public class DepthSearch implements PathFindingAlgorithm {
     /**
      * Static function to determine the best route from one node to another
      * given a graph
