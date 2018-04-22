@@ -17,8 +17,13 @@ public class PathNodeDrawer extends NodeDrawable {
     private javafx.scene.image.Image downStair = new javafx.scene.image.Image(Main.class.getResource("down-stairs.png").toExternalForm());
     private javafx.scene.image.Image upElevator = new javafx.scene.image.Image(Main.class.getResource("up-elevator.png").toExternalForm());
     private javafx.scene.image.Image downElevator = new javafx.scene.image.Image(Main.class.getResource("down-elevator.png").toExternalForm());
-    private boolean direction = true;
-    private boolean type = true;
+
+    public enum Direction{
+        UP, DOWN;
+    }
+
+    private Direction direction;
+    private String type;
 
     public PathNodeDrawer(Node node) {
         super(node);
@@ -28,8 +33,7 @@ public class PathNodeDrawer extends NodeDrawable {
         super();
     }
 
-    @Override
-    public void setDirection(boolean direction) {
+    public void setDirection(Direction direction) {
         this.direction = direction;
     }
 
@@ -53,9 +57,10 @@ public class PathNodeDrawer extends NodeDrawable {
         isHovered = false;
     }
 
-    public void setType(boolean type){
+    public void setType(String type){
         this.type = type;
     }
+
     @Override
     public void draw(Pane pane) {
         boolean is2D = MapSingleton.getInstance().getMap().is2D();
@@ -69,15 +74,15 @@ public class PathNodeDrawer extends NodeDrawable {
         }
 
         Image currIcon;
-        if(type) {
-            if (direction) {
+        if(type.equals(Node.Type.STAIR)) {
+            if (direction == Direction.UP) {
                 currIcon = upStair;
             } else {
                 currIcon = downStair;
             }
         }
         else{
-            if (direction) {
+            if (direction == Direction.UP) {
                 currIcon = upElevator;
             } else {
                 currIcon = downElevator;
@@ -86,7 +91,7 @@ public class PathNodeDrawer extends NodeDrawable {
         ImageView icon = new ImageView(currIcon);
 
         if (isHovered) {
-            if(type) {
+            if(type.equals(Node.Type.STAIR)) {
                 icon.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 112.5);
                 icon.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 114);
                 icon.setScaleX(0.03);
@@ -102,7 +107,7 @@ public class PathNodeDrawer extends NodeDrawable {
             icon.setVisible(true);
             pane.getChildren().add(icon);
         } else {
-            if(type) {
+            if(type.equals(Node.Type.STAIR)) {
                 icon.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 112.5);
                 icon.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 114);
                 icon.setScaleX(0.02);
