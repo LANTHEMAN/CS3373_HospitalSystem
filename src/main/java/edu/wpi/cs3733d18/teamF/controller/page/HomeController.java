@@ -1163,7 +1163,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                     String privilege = resultSet.getString(5);
                     String occupation = resultSet.getString(6);
                     String faceID = resultSet.getString(7);
-                    User temp = new User(username, password, firstname, lastname, privilege, occupation, faceID);
+                    User temp = new User(username, password, firstname, lastname, privilege, occupation, faceID, true);
                     String searchString = username + password + firstname + lastname + privilege + occupation + faceID;
                     if (searchString.toLowerCase().contains(input.toLowerCase())) {
                         autoCompleteUser.add(temp);
@@ -1473,9 +1473,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         editedUser = e;
         newUser = false;
         usernameField.setText(e.getUname());
-        //passwordField.setText(e.getPsword());
+        passwordField.clear();
         fnameField.setText(e.getFirstName());
         lnameField.setText(e.getLastName());
+        faceIDField.setText(e.getFaceID());
         occupationField.setText(e.getOccupation());
         privilegeCombo.getSelectionModel().select(e.getPrivilege());
         /*
@@ -1514,12 +1515,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private void onSubmitUser() {
         String username;
-        if (newUser) {
-            username = usernameField.getText();
-        } else {
-            username = editedUser.getUname();
-        }
-        String password = passwordField.getText();
+        String password;
         String firstName = fnameField.getText();
         String lastName = lnameField.getText();
         String occupation = occupationField.getText();
@@ -1528,12 +1524,26 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         boolean religiousServices = religiousCheck.isSelected();
         boolean securityRequest = securityCheck.isSelected();
 
-        User temp = new User(username, password, firstName, lastName, privilegeChoice, occupation, faceID);
+        User temp;
+
         if (newUser) {
+            username = usernameField.getText();
+            password = passwordField.getText();
+            temp = new User(username, password, firstName, lastName, privilegeChoice, occupation, faceID);
             PermissionSingleton.getInstance().addUser(temp);
         } else {
+            username = editedUser.getUname();
+            if(passwordField.getText().equals("")){
+                password = editedUser.getPsword();
+                temp = new User(username, password, firstName, lastName, privilegeChoice, occupation, faceID, true);
+            }else{
+                password = passwordField.getText();
+                temp = new User(username, password, firstName, lastName, privilegeChoice, occupation, faceID);
+            }
             PermissionSingleton.getInstance().updateUser(temp);
         }
+
+
         /*
         if (ServiceRequestSingleton.getInstance().isInTable(username, "LanguageInterpreter")) {
             if (!languageServices) {

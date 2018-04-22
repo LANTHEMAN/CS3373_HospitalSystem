@@ -133,6 +133,7 @@ public class PermissionSingleton {
                 + "', lastName = '" + u.getLastName()
                 + "', privilege = '" + u.getPrivilege()
                 + "', occupation = '" + u.getOccupation()
+                + "', faceID = '" + u.getFaceID()
                 + "' WHERE username = '" + u.getUname() + "'";
         dbHandler.runAction(sql);
         sql = "SELECT * FROM HUser";
