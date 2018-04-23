@@ -1,10 +1,8 @@
 package edu.wpi.cs3733d18.teamF.controller;
 
-import edu.wpi.cs3733d18.teamF.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.Main;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -76,9 +74,11 @@ public class PaneSwitcher {
         // reset the resource package
         resFac.setResources(resource);
         // reload the given screen
-        panes.clear();
-        load(screen);
-        scene.setRoot(panes.get(screen.fxmlFile));
+
+        switchTo(screen);
+//        panes.clear();
+//        load(screen);
+//        scene.setRoot(panes.get(screen.fxmlFile));
     }
 
     public void popup(Screens.Screen screen) {

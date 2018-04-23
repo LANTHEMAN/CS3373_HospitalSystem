@@ -70,6 +70,8 @@ public class Path {
             return directions;
         }
 
+        directions.add("Begin at " + this.getNodes().get(0).getShortName());
+
         for (int nodeIndex = 1; nodeIndex < this.nodes.size() - 1; nodeIndex++) {
 
             Node previousNode = this.getNodes().get(nodeIndex - 1);
@@ -81,17 +83,17 @@ public class Path {
             dist += previousNode.displacementTo(currentNode) / 7.f;
 
             if (currentNode.getNodeType().equals("ELEV") && nextNode.getNodeType().equals("ELEV")) {
-                if(floorToInt(currentNode) > floorToInt(nextNode)){
-                    directions.add("Take Elevator up to floor: " + nextNode.getFloor());
+                if(Node.floorToInt.get(currentNode.getFloor()) < Node.floorToInt.get(nextNode.getFloor())){
+                    directions.add("Take elevator up to floor: " + nextNode.getFloor());
                 }else{
-                    directions.add("Take Elevator down to floor: " + nextNode.getFloor());
+                    directions.add("Take elevator down to floor: " + nextNode.getFloor());
                 }
                 continue;
             } else if (currentNode.getNodeType().equals("STAI") && nextNode.getNodeType().equals("STAI")) {
-                if(floorToInt(currentNode) > floorToInt(nextNode)){
-                    directions.add("Take Stairs up to floor: " + nextNode.getFloor());
+                if(Node.floorToInt.get(currentNode.getFloor()) < Node.floorToInt.get(nextNode.getFloor())){
+                    directions.add("Take stairs up to floor: " + nextNode.getFloor());
                 }else{
-                    directions.add("Take Stairs down to floor: " + nextNode.getFloor());
+                    directions.add("Take stairs down to floor: " + nextNode.getFloor());
                 }
                 continue;
             }
@@ -99,16 +101,16 @@ public class Path {
             if (angle < -30) {
                 directions.add(String.format("Walk straight for %.0f feet", dist));
                 if (currentNode.getNodeType().equals("HALL"))
-                    directions.add("Turn Left");
+                    directions.add("Turn left");
                 else
-                    directions.add("Turn Left at " + currentNode.getShortName());
+                    directions.add("Turn left at " + currentNode.getShortName());
                 dist = 0;
             } else if (angle > 30) {
                 directions.add(String.format("Walk straight for %.0f feet", dist));
                 if (currentNode.getNodeType().equals("HALL"))
-                    directions.add("Turn Right");
+                    directions.add("Turn right");
                 else
-                    directions.add("Turn Right at " + currentNode.getShortName());
+                    directions.add("Turn right at " + currentNode.getShortName());
                 dist = 0;
             }
         }
@@ -133,22 +135,6 @@ public class Path {
         double det = v1X * v2Y - v1Y * v2X;
 
         return Math.toDegrees(Math.atan2(det, dot));
-    }
-
-    public int floorToInt(Node node){
-        switch (node.getFloor()){
-            case "L2":
-                return -2;
-            case "L1":
-                return -1;
-            case "G":
-                return 0;
-            case "1":
-                return 1;
-            case "2":
-                return 2;
-        }
-        return -255;
     }
 
     public double getUnweightedLength() {

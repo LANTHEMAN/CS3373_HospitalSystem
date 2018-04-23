@@ -1,6 +1,6 @@
 package edu.wpi.cs3733d18.teamF.gfx;
 
-import edu.wpi.cs3733d18.teamF.Map;
+import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
 
@@ -41,4 +41,6 @@ public abstract class MapDrawable implements Drawable {
     public abstract void hoverNode(Node node);
 
     public abstract void unhoverNode();
+
+    public abstract void update3DPathDisplay(boolean showAllFloors);
 }

@@ -4,5 +4,6 @@ Create Table HUser (
   firstName VARCHAR(20),
   lastName VARCHAR(20),
   privilege varchar(20),
-  occupation varchar(20)
+  occupation varchar(20),
+  faceID char(36)
 );

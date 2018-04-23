@@ -48,6 +48,7 @@ public class PermissionManager implements DatabaseItem {
                         u.setLastName(resultSet.getString(4));
                         u.setPrivilege(resultSet.getString(5));
                         u.setOccupation(resultSet.getString(6));
+                        u.setFaceID(resultSet.getString(7));
                     }
                 }
 
@@ -58,7 +59,8 @@ public class PermissionManager implements DatabaseItem {
                     String lastName = resultSet.getString(4);
                     String privilege = resultSet.getString(5);
                     String occupation = resultSet.getString(6);
-                    newUsers.add(new User(username, password, firstName, lastName, privilege, occupation, true));
+                    String faceID = resultSet.getString(7);
+                    newUsers.add(new User(username, password, firstName, lastName, privilege, occupation, faceID,true));
                 }
 
                 newUser = true;
