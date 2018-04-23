@@ -292,7 +292,7 @@ ELABS00201,2790.0,1290.0,01,45 Francis,LABS,Ambulatory X-Ray Floor 1,X-Ray 1,Tea
 EREST00101,2950.0,730.0,01,45 Francis,REST,Restroom G1 Floor 1,Restroom G1,Team E,2700.0,1505.0
 EREST00201,2985.0,980.0,01,45 Francis,REST,Restroom F1 Floor 1,Restroom F1,Team E,2640.0,1650.0
 EREST00301,2790.0,1190.0,01,45 Francis,REST,Restroom H1 Floor 1,Restroom H1,Team E,2420.0,1710.0
-ESTAI00101,2197.0,910.0,01,45 Francis,STAI,Staircase K1 Floor 1,Stair K1,Team E,2080.0,1390.0
+ESTAI00101,2197.0,910.0,01,45 Francis,STAI,Staircase K1 Floor 1,Stair K1,Team E,2088.1484,1398.4009
 ESTAI00201,2274.0,840.0,01,45 Francis,STAI,Staircase J1 Floor 1,Stair J1,Team E,2175.0,1375.0
 ESTAI00301,2790.0,1155.0,01,45 Francis,STAI,Staircase H1 Floor 1,Stair H1,Team E,2440.0,1690.0
 ESTAI00401,2605.0,1340.0,01,45 Francis,STAI,Staircase H2 Floor 1,Stair H2,Team E,2235.0,1735.0
@@ -585,7 +585,6 @@ FSERV0240G,1600.0,2919.0,0G,New Building,SERV,Infusion,Infusion,Team F,948.0,231
 FDEPT0360G,1550.0,2851.0,0G,New Building,DEPT,Infusion Waiting Room,Infusion Waiting Room,Team F,935.0,2266.0
 FHALL0600G,1600.0,2851.0,0G,New Building,HALL,Hallway Node 1,Hallway Node 1,Team F,968.0,2279.0
 FHALL0610G,1600.0,2727.0,0G,New Building,HALL,Hallway Node 2,Hallway Node 2,Team F,1015.0,2210.0
-FELEV00E0G,1523.0,2764.0,0G,Shapiro,ELEV,Elevator S1,Elevator S1,Team F,961.0,2193.0
 FDEPT0370G,1528.0,2539.0,0G,New Building,DEPT,Neuro Testing,Neuro Testing,Team F,1032.0,2092.0
 FDEPT0380G,1528.0,2513.0,0G,New Building,DEPT,Neuro Testing Waiting Room,Neuro Testing Waiting Room,Team F,1041.0,2079.0
 FSTAI00S0G,1621.0,2548.0,0G,New Building,STAI,Stairs S1,Stairs S1,Team F,1096.0,2123.0
@@ -594,3 +593,4 @@ FDEPT0400G,1599.0,2540.0,0G,New Building,DEPT,Hallway Node 3,Hallway Node 3,Team
 FEXIT0040G,1680.0,2459.0,0G,New Building,EXIT,BTM Exit,BTM Exit,Team F,1171.0,2092.0
 FHALL0620G,1681.0,2540.0,0G,New Building,HALL,Hallway Node 4,Hallway Node 4,Team F,1139.0,2134.0
 FHALL0630G,1521.0,2728.0,0G,New Building,HALL,Hallway Node 7,Hallway Node 7,Team F,960.0,2193.0
+FELEV00S0G,1523.0,2764.0,0G,New Building,ELEV,S,S,Team F,947.0,2212.0
