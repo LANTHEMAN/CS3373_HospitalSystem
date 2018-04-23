@@ -15,7 +15,8 @@ import javafx.scene.layout.Pane;
 
 public class UglyMapDrawer extends MapDrawable {
 
-    boolean redrawPath = true;
+    private boolean redrawPath = true;
+    private boolean drawPathOnAllFloors = false;
     private Point2D selectedNodePos = null;
     private Point2D hoveredNodePos = null;
     private Path path = null;
@@ -33,6 +34,7 @@ public class UglyMapDrawer extends MapDrawable {
     private NodeDrawable currNodeDrawable = nodeDrawer;
     private NodeDrawable startNodeDefault = null;
     private Pane pathPane = new Pane();
+
 
     public UglyMapDrawer() {
         super();
@@ -106,6 +108,12 @@ public class UglyMapDrawer extends MapDrawable {
     @Override
     public void unhoverNode() {
         hoveredNodePos = null;
+    }
+
+    @Override
+    public void update3DPathDisplay(boolean showAllFloors) {
+        redrawPath = true;
+        drawPathOnAllFloors = showAllFloors;
     }
 
     @Override

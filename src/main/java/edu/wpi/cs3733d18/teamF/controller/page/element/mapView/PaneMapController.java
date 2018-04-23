@@ -109,6 +109,11 @@ public class PaneMapController extends PaneController implements Observer {
         refresh();
     }
 
+    void update3DPathDisplay(boolean showAllFloors){
+        mapDrawer.update3DPathDisplay(showAllFloors);
+        refresh();
+    }
+
     boolean isHoveringNode(Node node){
         return node == hoveredNode;
     }
