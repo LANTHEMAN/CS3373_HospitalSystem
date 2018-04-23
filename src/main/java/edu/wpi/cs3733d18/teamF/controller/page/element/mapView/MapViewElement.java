@@ -1,12 +1,5 @@
 package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
-import com.lynden.gmapsfx.GoogleMapView;
-import com.lynden.gmapsfx.javascript.event.GMapMouseEvent;
-import com.lynden.gmapsfx.javascript.event.UIEventType;
-import com.lynden.gmapsfx.javascript.object.GoogleMap;
-import com.lynden.gmapsfx.javascript.object.LatLong;
-import com.lynden.gmapsfx.javascript.object.MapOptions;
-import com.lynden.gmapsfx.javascript.object.MapTypeIdEnum;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
@@ -33,6 +26,7 @@ public class MapViewElement extends PageElement {
     // TODO change this to default starting location
     String startNodeID = "FRETL00101";
     EditMode editMode = EditMode.MOVENODE;
+    boolean showAllFloors = false;
     // used to see if the floor has changed to update the map drawn
     private MapListener mapListener;
     private ViewMode viewMode = ViewMode.VIEW;
@@ -45,13 +39,10 @@ public class MapViewElement extends PageElement {
     private Pane mapContainer;
     @FXML
     private AnchorPane root;
-
     private Node selectedNodeStart = null;
     private Node selectedNodeEnd = null;
     private Node modifyNode = null;
-
     private Node selectEdgeNode = null;
-
     private boolean ctrlHeld = false;
     private boolean draggingNode;
     private boolean nodeSelectedOnMousePressed = false;
@@ -80,6 +71,17 @@ public class MapViewElement extends PageElement {
         }
     }
 
+    public void toggleShowAllFloors() {
+        update3DPathDisplay(!getShowAllFloors());
+    }
+
+    public boolean getShowAllFloors() {
+        return showAllFloors;
+    }
+
+    public void update3DPathDisplay(boolean showAllFloors) {
+        mapDrawController.update3DPathDisplay(showAllFloors);
+    }
 
     public void initialize(MapViewListener listener, Map map, PaneSwitcher switcher, AnchorPane sourcePane) {
         // initialize fundamentals
@@ -126,7 +128,7 @@ public class MapViewElement extends PageElement {
                         node1 -> node1.getFloor().equals(map.getFloor()));
                 if (!(mapDrawController.getDrawnPath() != null
                         && mapDrawController.getDrawnPath().getNodes().contains(node)
-                            && (node.getNodeType().equals("ELEV") || node.getNodeType().equals("STAI"))
+                        && (node.getNodeType().equals("ELEV") || node.getNodeType().equals("STAI"))
                         && map.getNeighbors(node)
                         .stream()
                         .filter(node1 -> mapDrawController.getDrawnPath().getNodes().contains(node1))

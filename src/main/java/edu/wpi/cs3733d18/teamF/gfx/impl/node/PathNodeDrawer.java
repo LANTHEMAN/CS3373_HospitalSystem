@@ -69,10 +69,6 @@ public class PathNodeDrawer extends NodeDrawable {
         double posX = is2D ? node.getPosition().getX() : node.getWireframePosition().getX();
         double posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
 
-        if(!node.getFloor().equals(MapSingleton.getInstance().getMap().getFloor())){
-                return;
-        }
-
         Image currIcon;
         if(type.equals(Node.Type.STAIR)) {
             if (direction == Direction.UP) {

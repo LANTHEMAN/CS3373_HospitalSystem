@@ -139,6 +139,7 @@ public class UglyMapDrawer extends MapDrawable {
             }
         }
 
+        // iterate over every node of the path, drawing all of the elevators
         if (path != null && path.getNodes().size() > 0) {
             for (int i = 0; i < path.getNodes().size(); i++) {
                 Node node = path.getNodes().get(i);
@@ -146,16 +147,19 @@ public class UglyMapDrawer extends MapDrawable {
                     String nodeType = node.getNodeType();
 
                     currNodeDrawable = pathNodeDrawer;
-                    ((PathNodeDrawer) pathNodeDrawer).setType(nodeType);
+                    // NOTE: PathNodeDrawer is for drawing elevators or stairs!
+                    // TODO change name
+                    PathNodeDrawer stairElevatorDrawer = (PathNodeDrawer) pathNodeDrawer;
+                    stairElevatorDrawer.setType(nodeType);
 
-                    Node linkedNode;
+                    Node linkedNode = null;
                     if (i > 0) {
                         if (path.getNodes().get(i - 1).getNodeType().equals(nodeType)) {
                             linkedNode = path.getNodes().get(i - 1);
                             if (node.compareFloors(linkedNode) == -1) {
-                                ((PathNodeDrawer) currNodeDrawable).setDirection(PathNodeDrawer.Direction.UP);
+                                stairElevatorDrawer.setDirection(PathNodeDrawer.Direction.UP);
                             } else {
-                                ((PathNodeDrawer) currNodeDrawable).setDirection(PathNodeDrawer.Direction.DOWN);
+                                stairElevatorDrawer.setDirection(PathNodeDrawer.Direction.DOWN);
                             }
                         }
                     }
@@ -163,17 +167,31 @@ public class UglyMapDrawer extends MapDrawable {
                         if (path.getNodes().get(i + 1).getNodeType().equals(nodeType)) {
                             linkedNode = path.getNodes().get(i + 1);
                             if (node.compareFloors(linkedNode) == -1) {
-                                ((PathNodeDrawer) currNodeDrawable).setDirection(PathNodeDrawer.Direction.UP);
+                                stairElevatorDrawer.setDirection(PathNodeDrawer.Direction.UP);
                             } else {
-                                ((PathNodeDrawer) currNodeDrawable).setDirection(PathNodeDrawer.Direction.DOWN);
+                                stairElevatorDrawer.setDirection(PathNodeDrawer.Direction.DOWN);
                             }
                         }
                     }
 
+                    // don't draw the elevator if it does not connect to another floor!
+                    if (linkedNode == null || (linkedNode.getFloor().equals(node.getFloor()))) {
+                        continue;
+                    }
+
+                    // only draw nodes on the current floor unless specified otherwise
+                    if (!node.getFloor().equals(map.getFloor()) && (!drawPathOnAllFloors || map.is2D())) {
+                        continue;
+                    }
+
                     currNodeDrawable.update(node);
-                    if (hoveredNode == node) currNodeDrawable.hoverNode();
+                    if (hoveredNode == node) {
+                        currNodeDrawable.hoverNode();
+                    }
                     currNodeDrawable.draw(pane);
-                    if (hoveredNode == node) currNodeDrawable.unhoverNode();
+                    if (hoveredNode == node) {
+                        currNodeDrawable.unhoverNode();
+                    }
 
                 }
             }
@@ -181,6 +199,13 @@ public class UglyMapDrawer extends MapDrawable {
             pane.getChildren().add(pathPane);
             pathPane.maxWidthProperty().bind(pane.maxWidthProperty());
             pathPane.maxHeightProperty().bind(pane.maxHeightProperty());
+
+            // dont draw the path if its empty
+            if(path.getEdges().size() == 0){
+                redrawPath = false;
+                pathPane.getChildren().clear();
+            }
+
             if (redrawPath) {
                 pathPane.getChildren().clear();
 
@@ -192,13 +217,17 @@ public class UglyMapDrawer extends MapDrawable {
                 pathDrawer.draw(pathPane);
 
                 Node startNode = path.getNodes().get(0);
-                NodeDrawable startIconDrawer = new StartNodeDrawer(startNode);
-                startIconDrawer.draw(pathPane);
+                if (startNode.getFloor().equals(map.getFloor()) || (!map.is2D() && drawPathOnAllFloors)) {
+                    NodeDrawable startIconDrawer = new StartNodeDrawer(startNode);
+                    startIconDrawer.draw(pathPane);
+                }
 
                 Node endNode = path.getNodes().get(path.getNodes().size() - 1);
-                NodeDrawable endIconDrawer = new EndNodeDrawer();
-                endIconDrawer.update(endNode);
-                endIconDrawer.draw(pathPane);
+                if (endNode.getFloor().equals(map.getFloor()) || (!map.is2D() && drawPathOnAllFloors)) {
+                    NodeDrawable endIconDrawer = new EndNodeDrawer(endNode);
+                    endIconDrawer.draw(pathPane);
+                }
+
                 redrawPath = false;
             }
 
@@ -207,6 +236,7 @@ public class UglyMapDrawer extends MapDrawable {
                 startNodeDefault.draw(pane);
             }
         }
+
         for (Node node : map.getNodes(node -> node.getFloor().equals(map.getFloor()))) {
             currNodeDrawable = getDrawer(node.getNodeType());
             currNodeDrawable.update(node);
