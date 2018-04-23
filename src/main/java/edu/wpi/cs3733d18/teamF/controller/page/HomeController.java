@@ -1004,15 +1004,17 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             } else if (text.toLowerCase().contains("left")) {
                 FontAwesomeIconView arrow = new FontAwesomeIconView(FontAwesomeIcon.REPLY);
                 arrow.setGlyphSize(15);
+                arrow.setScaleX(1.4);
                 arrow.setFill(Color.WHITE);
                 txtDirections.getChildren().add(arrow);
             } else if (text.toLowerCase().contains("right")) {
                 FontAwesomeIconView arrow = new FontAwesomeIconView(FontAwesomeIcon.SHARE);
                 arrow.setGlyphSize(15);
+                arrow.setScaleX(1.4);
                 arrow.setFill(Color.WHITE);
                 txtDirections.getChildren().add(arrow);
             } else if (text.toLowerCase().contains("take elevator up")) {
-                ImageView elevator = new ImageView(new Image("edu/wpi/cs3733d18/teamF/elevator.png", 20, 20, true, true));
+                ImageView elevator = new ImageView(new Image("edu/wpi/cs3733d18/teamF/up-elevator.png", 20, 20, true, true));
                 txtDirections.getChildren().add(elevator);
             } else if (text.toLowerCase().contains("take elevator down")) {
                 ImageView elevator = new ImageView(new Image("edu/wpi/cs3733d18/teamF/down-elevator.png", 20, 20, true, false));
