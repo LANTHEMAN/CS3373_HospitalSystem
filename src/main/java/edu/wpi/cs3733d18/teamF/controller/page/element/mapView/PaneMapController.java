@@ -37,15 +37,15 @@ public class PaneMapController extends PaneController implements Observer {
         draw();
     }
 
-    public Rectangle getPathBoundingBox() {
+    public Rectangle getPathBoundingBox(Path path) {
         Rectangle bBox = new Rectangle();
         double upperLeftX = 5000;
         double upperLeftY = 2772;
         double bottomRightX = 0;
         double bottomRightY = 0;
 
-        if (drawnPath != null) {
-            for (Node node : drawnPath.getNodes()) {
+        if (path != null && path.getNodes().size() > 0) {
+            for (Node node : path.getNodes()) {
                 if (node.getPosition().getX() < upperLeftX) {
                     upperLeftX = node.getPosition().getX();
                 }
@@ -69,7 +69,26 @@ public class PaneMapController extends PaneController implements Observer {
         bBox.height = (int) (bottomRightY - upperLeftY);
         bBox.width = (int) (bottomRightX - upperLeftX);
 
-        return bBox;
+        Rectangle scaledRect = new Rectangle();
+        scaledRect.width = (int) (bBox.getWidth() * 844.f/5000.f);
+        scaledRect.height = (int) (bBox.getHeight() * 578.f/3400.f);
+        scaledRect.x = (int) (bBox.getX() * 844.f/5000.f);
+        scaledRect.y = (int) (bBox.getY() * 578.f/3400.f);
+
+        double aspectRatio = 844.f/578.f;
+        double multiple = aspectRatio * scaledRect.getHeight()/scaledRect.getWidth();
+
+        if(multiple > 1){
+            double preWidth = scaledRect.getWidth();
+            scaledRect.width *= multiple;
+            scaledRect.x -= (scaledRect.getWidth() - preWidth)/2;
+        }else{
+            double preHeight = scaledRect.getHeight();
+            scaledRect.height *= (1/multiple);
+            scaledRect.y -= (scaledRect.getHeight() - preHeight)/2;
+        }
+
+        return scaledRect;
     }
 
     public void selectNode(Node node) {

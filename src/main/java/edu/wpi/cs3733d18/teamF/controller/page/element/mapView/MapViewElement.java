@@ -16,8 +16,10 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
+import java.awt.*;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
@@ -71,8 +73,23 @@ public class MapViewElement extends PageElement {
         }
     }
 
+    public void zoomToPath(Path path) {
+        Rectangle rect = getMapDrawController().getPathBoundingBox(path);
     public void toggleShowAllFloors() {
         update3DPathDisplay(!getShowAllFloors());
+    }
+
+        Point2D midPoint = new Point2D(rect.x + (rect.getWidth()/2.f), rect.y + (rect.getHeight()/2.f));
+
+        double scaleFactor = Math.floor((844.0 * 578.0)/(rect.getWidth() * rect.getHeight()));
+        if(scaleFactor > 10) scaleFactor = 10;
+        scaleFactor -= 3;
+
+        if (rect.getHeight() > 0 && rect.getWidth() > 0) {
+            //TODO make this pretty
+            getGesturePane().zoomTo(scaleFactor, midPoint);
+            getGesturePane().animate(Duration.millis(1000)).centreOn(midPoint);
+        }
     }
 
     public boolean getShowAllFloors() {
