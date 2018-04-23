@@ -19,7 +19,7 @@ public class Screensaver extends PageElement{
         sourcePane.setOnMouseClicked(this::wakeUp);
         sourcePane.setOnMouseMoved(this::wakeUp);
 
-        idleMonitor = new IdleMonitor(new Duration(3000), this::start);
+        idleMonitor = new IdleMonitor(new Duration(30000), this::start);
         idleMonitor.startMonitoring();
         idleMonitor.register(scene, Event.ANY);
     }
