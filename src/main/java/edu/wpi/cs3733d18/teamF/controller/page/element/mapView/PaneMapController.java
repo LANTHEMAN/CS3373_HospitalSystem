@@ -44,7 +44,7 @@ public class PaneMapController extends PaneController implements Observer {
         double bottomRightX = 0;
         double bottomRightY = 0;
 
-        if (path != null) {
+        if (path != null && path.getNodes().size() > 0) {
             for (Node node : path.getNodes()) {
                 if (node.getPosition().getX() < upperLeftX) {
                     upperLeftX = node.getPosition().getX();
