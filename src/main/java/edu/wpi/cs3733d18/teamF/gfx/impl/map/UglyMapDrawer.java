@@ -118,8 +118,6 @@ public class UglyMapDrawer extends MapDrawable {
 
     @Override
     public void draw(Pane pane) {
-        boolean is2D = map.is2D();
-
         Node selectedNode = null;
         Node hoveredNode = null;
         if (selectedNodePos != null) {
@@ -142,13 +140,13 @@ public class UglyMapDrawer extends MapDrawable {
         }
 
         if (path != null && path.getNodes().size() > 0) {
-            for(int i = 0; i < path.getNodes().size(); i++){
+            for (int i = 0; i < path.getNodes().size(); i++) {
                 Node node = path.getNodes().get(i);
-                if(node.getNodeType().equals(Node.Type.STAIR) || node.getNodeType().equals(Node.Type.ELEVATOR)) {
+                if (node.getNodeType().equals(Node.Type.STAIR) || node.getNodeType().equals(Node.Type.ELEVATOR)) {
                     String nodeType = node.getNodeType();
 
                     currNodeDrawable = pathNodeDrawer;
-                    ((PathNodeDrawer)pathNodeDrawer).setType(nodeType);
+                    ((PathNodeDrawer) pathNodeDrawer).setType(nodeType);
 
                     Node linkedNode;
                     if (i > 0) {
@@ -187,6 +185,10 @@ public class UglyMapDrawer extends MapDrawable {
                 pathPane.getChildren().clear();
 
                 pathDrawer.update(path);
+                if (pathDrawer instanceof DynamicPathDrawer) {
+                    DynamicPathDrawer dyPath = (DynamicPathDrawer) pathDrawer;
+                    dyPath.updateFloorSelection(drawPathOnAllFloors);
+                }
                 pathDrawer.draw(pathPane);
 
                 Node startNode = path.getNodes().get(0);

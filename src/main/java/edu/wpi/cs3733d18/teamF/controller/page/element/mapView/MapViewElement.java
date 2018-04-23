@@ -116,6 +116,8 @@ public class MapViewElement extends PageElement {
             }
         });
 
+        mapDrawController.update3DPathDisplay(true);
+
         mapContainer.setOnMouseMoved(e -> {
             Point2D mapPos = getMapPos(e);
             boolean nodeIsSelected = isNodeSelected(mapPos);
