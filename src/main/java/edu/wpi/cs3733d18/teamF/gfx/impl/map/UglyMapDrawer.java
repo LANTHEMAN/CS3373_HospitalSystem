@@ -131,9 +131,9 @@ public class UglyMapDrawer extends MapDrawable {
 
         if (showEdges) {
             for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(map.getFloor()))) {
-                if (edge.getNode1().getNodeType().equals("ELEV") && edge.getNode2().getNodeType().equals("ELEV")) {
+                if (edge.getNode1().getNodeType().equals(Node.Type.ELEVATOR) && edge.getNode2().getNodeType().equals(Node.Type.ELEVATOR)) {
                     continue;
-                } else if (edge.getNode1().getNodeType().equals("STAI") && edge.getNode2().getNodeType().equals("STAI")) {
+                } else if (edge.getNode1().getNodeType().equals(Node.Type.STAIR) && edge.getNode2().getNodeType().equals(Node.Type.STAIR)) {
                     continue;
                 }
                 edgeDrawer.update(edge);
@@ -142,47 +142,42 @@ public class UglyMapDrawer extends MapDrawable {
         }
 
         if (path != null && path.getNodes().size() > 0) {
-            for (Edge edge : path.getEdges()) {
-                    if (!(edge.getNode1().getFloor().equals(edge.getNode2().getFloor()))) {
-                        if (edge.getNode1().getFloor().equals(map.getFloor()) || !is2D) {
-                            Node node = edge.getNode1();
-                            currNodeDrawable = getPathNodeDrawer(node.getNodeType());
-                            if(node.compareFloors(edge.getNode2()) == -1){
-                                currNodeDrawable.setDirection(true);
-                            }
-                            else{
-                                currNodeDrawable.setDirection(false);
-                            }
-                            currNodeDrawable.update(node);
-                            if (hoveredNode == node) {
-                                currNodeDrawable.hoverNode();
-                            }
-                            currNodeDrawable.draw(pane);
-                            if (hoveredNode == node) {
-                                currNodeDrawable.unhoverNode();
-                            }
-                        }
-                        if (edge.getNode2().getFloor().equals(map.getFloor())  || !is2D) {
-                            Node node = edge.getNode2();
-                            currNodeDrawable = getPathNodeDrawer(node.getNodeType());
-                            if(node.compareFloors(edge.getNode1()) == -1){
-                                currNodeDrawable.setDirection(true);
-                            }
-                            else{
-                                currNodeDrawable.setDirection(false);
-                            }
-                            currNodeDrawable.update(node);
-                            if (hoveredNode == node) {
-                                currNodeDrawable.hoverNode();
-                            }
-                            currNodeDrawable.draw(pane);
-                            if (hoveredNode == node) {
-                                currNodeDrawable.unhoverNode();
-                            }
-                        }
+            for(int i = 0; i < path.getNodes().size(); i++){
+                Node node = path.getNodes().get(i);
+                if(node.getNodeType().equals(Node.Type.STAIR) || node.getNodeType().equals(Node.Type.ELEVATOR)) {
+                    String nodeType = node.getNodeType();
 
+                    currNodeDrawable = pathNodeDrawer;
+                    ((PathNodeDrawer)pathNodeDrawer).setType(nodeType);
+
+                    Node linkedNode;
+                    if (i > 0) {
+                        if (path.getNodes().get(i - 1).getNodeType().equals(nodeType)) {
+                            linkedNode = path.getNodes().get(i - 1);
+                            if (node.compareFloors(linkedNode) == -1) {
+                                ((PathNodeDrawer) currNodeDrawable).setDirection(PathNodeDrawer.Direction.UP);
+                            } else {
+                                ((PathNodeDrawer) currNodeDrawable).setDirection(PathNodeDrawer.Direction.DOWN);
+                            }
+                        }
+                    }
+                    if (i < path.getNodes().size() - 1) {
+                        if (path.getNodes().get(i + 1).getNodeType().equals(nodeType)) {
+                            linkedNode = path.getNodes().get(i + 1);
+                            if (node.compareFloors(linkedNode) == -1) {
+                                ((PathNodeDrawer) currNodeDrawable).setDirection(PathNodeDrawer.Direction.UP);
+                            } else {
+                                ((PathNodeDrawer) currNodeDrawable).setDirection(PathNodeDrawer.Direction.DOWN);
+                            }
+                        }
                     }
 
+                    currNodeDrawable.update(node);
+                    if (hoveredNode == node) currNodeDrawable.hoverNode();
+                    currNodeDrawable.draw(pane);
+                    if (hoveredNode == node) currNodeDrawable.unhoverNode();
+
+                }
             }
 
             pane.getChildren().add(pathPane);
@@ -244,18 +239,6 @@ public class UglyMapDrawer extends MapDrawable {
             case "RETL":    //shops, food, pay phone, areas that provide non-medical services for immediate payment
             case "SERV":    //hospital non-medical services, interpreters, shuttles, spiritual, library, patient financial, etc.
             default:    //will be hallways and anything not implemented
-                return nodeDrawer;
-        }
-    }
-    private NodeDrawable getPathNodeDrawer(String type) {
-        switch (type) {
-            case "ELEV":
-                pathNodeDrawer.setType(false);
-                return pathNodeDrawer;
-            case "STAI":
-                pathNodeDrawer.setType(true);
-                return pathNodeDrawer;
-            default:
                 return nodeDrawer;
         }
     }
