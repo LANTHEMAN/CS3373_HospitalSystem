@@ -73,11 +73,12 @@ public class MapViewElement extends PageElement {
         }
     }
 
-    public void zoomToPath(Path path) {
-        Rectangle rect = getMapDrawController().getPathBoundingBox(path);
     public void toggleShowAllFloors() {
         update3DPathDisplay(!getShowAllFloors());
     }
+
+    public void zoomToPath(Path path) {
+        Rectangle rect = getMapDrawController().getPathBoundingBox(path);
 
         Point2D midPoint = new Point2D(rect.x + (rect.getWidth()/2.f), rect.y + (rect.getHeight()/2.f));
 
