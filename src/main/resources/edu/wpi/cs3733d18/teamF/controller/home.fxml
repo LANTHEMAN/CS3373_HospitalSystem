@@ -159,9 +159,14 @@
                                 <Font name="Arial Bold" size="15.0" />
                             </font>
                         </JFXCheckBox>
+                  <JFXCheckBox fx:id="allFloors" layoutX="16.0" layoutY="265.0" selected="true" text="%AllFloors" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font>
+                  </JFXCheckBox>
                     </children>
                 </Pane>
-                <Pane prefHeight="520.0" prefWidth="300.0" style="-fx-background-color: #042E58;">
+                <Pane prefHeight="427.0" prefWidth="300.0" style="-fx-background-color: #042E58;">
                     <children>
                         <FontAwesomeIconView fx:id="imgDistance" fill="WHITE" glyphName="MAP" size="30" translateX="20.0" translateY="10.0" visible="false" />
                         <FontAwesomeIconView fx:id="imgTime" fill="WHITE" glyphName="CLOCK_ALT" size="30" translateX="150.0" translateY="10.0" visible="false" />
@@ -902,7 +907,7 @@
         </AnchorPane>
         <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
         <AnchorPane fx:id="screensaverPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
-        <GoogleMapView fx:id="googleMapView" prefHeight="578.0" prefWidth="844.0" />
+        <GoogleMapView fx:id="googleMapView" prefHeight="578.0" prefWidth="844.0" visible="false" />
         <FontAwesomeIconView fill="#727272" glyphName="MAP" size="45" textAlignment="CENTER" translateX="-22.0" translateY="-120.0" wrappingWidth="39.549333572387695" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
         <FontAwesomeIconView fill="#FFFFFF" glyphName="GOOGLE" onMouseClicked="#onGoogleMaps" size="35" textAlignment="CENTER" translateX="-20.0" translateY="-125.0" wrappingWidth="39.549333572387695" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
     </children>
