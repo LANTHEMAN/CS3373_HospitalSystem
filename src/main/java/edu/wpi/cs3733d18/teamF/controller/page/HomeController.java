@@ -209,9 +209,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private Pane qrImage;
     @FXML
-    private JFXCheckBox disableElevatorsBox;
-    @FXML
-    private JFXCheckBox disableStairsBox;
+    private FontAwesomeIconView elevatorBan, stairBan;
     //////////////////////////////
     //                          //
     //        Edit User         //
@@ -619,16 +617,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                 // got a string saying that the activation command has been said
                 paneVoiceController.setVisibility(true);
             } else if (cmd.equalsIgnoreCase("DisableElevators")) {
-                disableElevatorsBox.setSelected(false);
+                elevatorBan.setVisible(true);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
             } else if (cmd.equalsIgnoreCase("DisableStairs")) {
-                disableStairsBox.setSelected(false);
+                stairBan.setVisible(true);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
             } else if (cmd.equalsIgnoreCase("EnableElevators")) {
-                disableElevatorsBox.setSelected(true);
+                elevatorBan.setVisible(false);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
             } else if (cmd.equalsIgnoreCase("EnableStairs")) {
-                disableStairsBox.setSelected(true);
+                stairBan.setVisible(false);
                 mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
             }
         }
@@ -924,9 +922,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     void flipElevators() {
-        if (disableElevatorsBox.isSelected()) {
+        if (elevatorBan.isVisible()) {
+            elevatorBan.setVisible(false);
             map.enableElevators();
         } else {
+            elevatorBan.setVisible(true);
             map.disableElevators();
         }
         onFloorRefresh();
@@ -934,9 +934,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     void flipStairs() {
-        if (disableStairsBox.isSelected()) {
+        if (stairBan.isVisible()) {
+            stairBan.setVisible(false);
             map.enableStairs();
         } else {
+            stairBan.setVisible(true);
             map.disableStairs();
         }
         onFloorRefresh();

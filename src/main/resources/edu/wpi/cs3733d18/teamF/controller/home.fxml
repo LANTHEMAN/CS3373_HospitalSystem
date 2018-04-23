@@ -112,64 +112,66 @@
         </VBox>
         <VBox fx:id="directionsBox" alignment="TOP_CENTER" fillWidth="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" snapToPixel="false" style="-fx-background-color: #042E58;">
             <children>
-                <Pane prefHeight="332.0" prefWidth="300.0" style="-fx-background-color: #042E58;">
+                <Pane prefHeight="340.0" prefWidth="300.0" style="-fx-background-color: #042E58;">
                     <children>
                         <JFXHamburger fx:id="hamburgerD" alignment="CENTER" fillWidth="false" layoutX="14.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" styleClass="white-hamburger" stylesheets="@homeStyleSheet.css" />
+                        <Text fill="WHITE" layoutX="76.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%Directions">
+                            <font>
+                                <Font name="Arial Bold" size="24.0" />
+                            </font>
+                        </Text>
                         <FontAwesomeIconView fx:id="cancelDirections" fill="#f2f5f7" glyphName="TIMES" layoutX="263.0" layoutY="34.0" onMouseClicked="#onCancelDirectionsEvent" size="30" wrappingWidth="22.14285659790039" />
-                        <JFXTextField fx:id="sourceLocation" layoutX="54.0" layoutY="83.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="%SelectStart" style="-fx-background-color: #f2f5f7;">
+                        <JFXTextField fx:id="sourceLocation" layoutX="54.0" layoutY="63.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="%SelectStart" style="-fx-background-color: #f2f5f7;">
                             <font>
                                 <Font name="Arial Bold" size="15.0" />
                             </font>
                         </JFXTextField>
-                        <Pane layoutX="249.0" layoutY="113.0" onMouseClicked="#switchLocations" prefHeight="51.0" prefWidth="48.0">
+                        <Pane layoutX="249.0" layoutY="93.0" onMouseClicked="#switchLocations" prefHeight="51.0" prefWidth="48.0">
                             <children>
                                 <FontAwesomeIconView fill="WHITE" glyphName="ARROW_UP" size="30" translateY="25.0" wrappingWidth="22.142860293388367" />
                                 <FontAwesomeIconView fill="WHITE" glyphName="ARROW_DOWN" size="30" translateX="15.0" translateY="45.0" wrappingWidth="22.142860293388367" />
                             </children>
                         </Pane>
-                        <JFXTextField fx:id="destinationLocation" layoutX="54.0" layoutY="149.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="%SelectDestination" style="-fx-background-color: #f2f5f7;">
+                        <JFXTextField fx:id="destinationLocation" layoutX="54.0" layoutY="129.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="195.0" promptText="%SelectDestination" style="-fx-background-color: #f2f5f7;">
                             <font>
                                 <Font name="Arial Bold" size="15.0" />
                             </font>
                         </JFXTextField>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" translateY="90.0">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" translateY="70.0">
                             <image>
                                 <Image url="@../start-icon.png" />
                             </image>
                         </ImageView>
+                        <Circle fill="WHITE" layoutX="30.0" layoutY="108.0" radius="4.0" scaleX="0.7" scaleY="0.7" stroke="#f2f5f7" strokeType="INSIDE" />
+                        <Circle fill="WHITE" layoutX="30.0" layoutY="118.0" radius="4.0" scaleX="0.7" scaleY="0.7" stroke="#f2f5f7" strokeType="INSIDE" />
                         <Circle fill="WHITE" layoutX="30.0" layoutY="128.0" radius="4.0" scaleX="0.7" scaleY="0.7" stroke="#f2f5f7" strokeType="INSIDE" />
-                        <Circle fill="WHITE" layoutX="30.0" layoutY="138.0" radius="4.0" scaleX="0.7" scaleY="0.7" stroke="#f2f5f7" strokeType="INSIDE" />
-                        <Circle fill="WHITE" layoutX="30.0" layoutY="148.0" radius="4.0" scaleX="0.7" scaleY="0.7" stroke="#f2f5f7" strokeType="INSIDE" />
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" translateY="155.0">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" translateY="135.0">
                             <image>
                                 <Image url="@../end-icon.png" />
                             </image>
                         </ImageView>
-                        <Text fill="WHITE" layoutX="96.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%Directions">
-                            <font>
-                                <Font name="Arial Bold" size="24.0" />
-                            </font>
-                        </Text>
-                        <JFXButton layoutX="202.0" layoutY="202.0" onAction="#onNavigate" style="-fx-background-color: #767878;" text="%Navigate" textFill="WHITE">
-                            <font>
-                                <Font name="Arial Bold" size="15.0" />
-                            </font>
-                        </JFXButton>
-                        <JFXCheckBox fx:id="disableElevatorsBox" layoutX="16.0" layoutY="193.0" onMouseClicked="#flipElevators" selected="true" text="%UseElevators" textFill="WHITE">
-                            <font>
-                                <Font name="Arial Bold" size="15.0" />
-                            </font>
-                        </JFXCheckBox>
-                        <JFXCheckBox fx:id="disableStairsBox" layoutX="16.0" layoutY="220.0" onMouseClicked="#flipStairs" selected="true" text="%UseStairs" textFill="WHITE">
-                            <font>
-                                <Font name="Arial Bold" size="15.0" />
-                            </font>
-                        </JFXCheckBox>
-                  <JFXCheckBox fx:id="allFloors" layoutX="16.0" layoutY="245.0" selected="true" text="%AllFloors" textFill="WHITE">
+                  <ImageView fitHeight="93.0" fitWidth="40.0" onMouseClicked="#flipElevators" pickOnBounds="true" preserveRatio="true" translateX="80.0" translateY="180.0">
+                     <image>
+                        <Image url="@../elevator.png" />
+                     </image>
+                  </ImageView>
+                  <FontAwesomeIconView fx:id="elevatorBan" fill="#cf0000b2" glyphName="BAN" onMouseClicked="#flipElevators" size="75" translateX="68.0" translateY="239.0" visible="false" />
+                  <ImageView fitHeight="93.0" fitWidth="45.0" onMouseClicked="#flipStairs" pickOnBounds="true" preserveRatio="true" translateX="160.0" translateY="190.0">
+                     <image>
+                        <Image url="@../stairs.png" />
+                     </image>
+                  </ImageView>
+                  <FontAwesomeIconView fx:id="stairBan" fill="#cf0000b2" glyphName="BAN" onMouseClicked="#flipStairs" size="74" translateX="154.0" translateY="239.0" visible="false" />
+                  <JFXCheckBox fx:id="allFloors" layoutX="190.0" layoutY="250.0" prefHeight="18.0" prefWidth="113.0" selected="true" text="%AllFloors" textFill="WHITE">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
                      </font>
                   </JFXCheckBox>
+                        <JFXButton layoutX="100.0" layoutY="270.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onNavigate" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #767878;" text="%Navigate" textFill="WHITE">
+                            <font>
+                                <Font name="Arial Bold" size="15.0" />
+                            </font>
+                        </JFXButton>
                     </children>
                 </Pane>
                 <Pane prefHeight="427.0" prefWidth="300.0" style="-fx-background-color: #042E58;">
@@ -913,7 +915,7 @@
         </AnchorPane>
         <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
         <AnchorPane fx:id="screensaverPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
-        <GoogleMapView fx:id="googleMapView" prefHeight="578.0" prefWidth="844.0" />
+        <GoogleMapView fx:id="googleMapView" prefHeight="578.0" prefWidth="844.0" visible="false" />
         <FontAwesomeIconView fill="#727272" glyphName="MAP" size="45" textAlignment="CENTER" translateX="-22.0" translateY="-120.0" wrappingWidth="39.549333572387695" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
         <FontAwesomeIconView fill="#FFFFFF" glyphName="GOOGLE" onMouseClicked="#onGoogleMaps" size="35" textAlignment="CENTER" translateX="-20.0" translateY="-125.0" wrappingWidth="39.549333572387695" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
     </children>
