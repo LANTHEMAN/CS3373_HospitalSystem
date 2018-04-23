@@ -199,66 +199,78 @@
                 </Pane>
             </children>
         </VBox>
-        <HBox fx:id="mapEditorBtns" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="680.0" spacing="15.0" style="-fx-background-color: rgba(0,0,0,0.5); -fx-background-radius: 10;">
-            <children>
-                <JFXButton fx:id="addNodeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAddNode" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
-                    <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
-                            <image>
-                                <Image url="@MapBuilder/add-node.png" />
-                            </image>
-                        </ImageView>
-                    </graphic></JFXButton>
-                <JFXButton fx:id="remNodeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onRemoveNode" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
-                    <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
-                            <image>
-                                <Image url="@MapBuilder/remove-node.png" />
-                            </image>
-                        </ImageView>
-                    </graphic></JFXButton>
-                <JFXButton fx:id="addEdgeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAddEdge" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
-                    <graphic>
-                        <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
-                            <image>
-                                <Image url="@MapBuilder/add-edge.png" />
-                            </image>
-                        </ImageView>
-                    </graphic></JFXButton>
-                <JFXButton fx:id="remEdgeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onRemoveEdge" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
-                    <graphic>
-                        <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
-                            <image>
-                                <Image url="@MapBuilder/remove-edge.png" />
-                            </image>
-                        </ImageView>
-                    </graphic></JFXButton>
-                <JFXButton fx:id="modifyBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onModify" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
-                    <graphic>
-                        <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
-                            <image>
-                                <Image url="@MapBuilder/modify.png" />
-                            </image>
-                        </ImageView>
-                    </graphic></JFXButton>
-                <JFXButton fx:id="dragBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDragNode" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
-                    <graphic>
-                        <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
-                            <image>
-                                <Image url="@MapBuilder/drag-node.png" />
-                            </image>
-                        </ImageView>
-                    </graphic></JFXButton>
-                <JFXButton fx:id="panBtn" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onPan" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE" textOverrun="CLIP">
-                    <graphic>
-                        <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
-                            <image>
-                                <Image url="@MapBuilder/pan.png" />
-                            </image>
-                        </ImageView>
-                    </graphic></JFXButton>
-            </children>
-        </HBox>
+      <AnchorPane fx:id="mapEditorBtns" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="680.0">
+         <children>
+              <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="680.0" spacing="15.0" style="-fx-background-color: rgba(0,0,0,0.5); -fx-background-radius: 10; -fx-border-color: rgba(0,0,0,0);">
+                  <children>
+                      <JFXButton fx:id="addNodeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAddNode" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
+                          <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
+                                  <image>
+                                      <Image url="@MapBuilder/add-node.png" />
+                                  </image>
+                              </ImageView>
+                          </graphic>
+                  </JFXButton>
+                      <JFXButton fx:id="remNodeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onRemoveNode" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
+                          <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
+                                  <image>
+                                      <Image url="@MapBuilder/remove-node.png" />
+                                  </image>
+                              </ImageView>
+                          </graphic>
+                  </JFXButton>
+                      <JFXButton fx:id="addEdgeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAddEdge" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
+                          <graphic>
+                              <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
+                                  <image>
+                                      <Image url="@MapBuilder/add-edge.png" />
+                                  </image>
+                              </ImageView>
+                          </graphic>
+                  </JFXButton>
+                      <JFXButton fx:id="remEdgeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onRemoveEdge" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
+                          <graphic>
+                              <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
+                                  <image>
+                                      <Image url="@MapBuilder/remove-edge.png" />
+                                  </image>
+                              </ImageView>
+                          </graphic>
+                  </JFXButton>
+                      <JFXButton fx:id="modifyBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onModify" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
+                          <graphic>
+                              <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
+                                  <image>
+                                      <Image url="@MapBuilder/modify.png" />
+                                  </image>
+                              </ImageView>
+                          </graphic>
+                  </JFXButton>
+                      <JFXButton fx:id="dragBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDragNode" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
+                          <graphic>
+                              <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
+                                  <image>
+                                      <Image url="@MapBuilder/drag-node.png" />
+                                  </image>
+                              </ImageView>
+                          </graphic>
+                  </JFXButton>
+                      <JFXButton fx:id="panBtn" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onPan" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE" textOverrun="CLIP">
+                          <graphic>
+                              <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
+                                  <image>
+                                      <Image url="@MapBuilder/pan.png" />
+                                  </image>
+                              </ImageView>
+                          </graphic>
+                  </JFXButton>
+                  </children>
+              </HBox>
+            <FontAwesomeIconView fill="WHITE" glyphName="TIMES" onMouseClicked="#onMapEditor" translateX="662.0" translateY="15.0" />
+         </children>
+      </AnchorPane>
         <VBox fx:id="logoutBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0" style="-fx-background-color: #042E58;" visible="false">
             <children>
                 <Pane prefHeight="87.0" prefWidth="250.0">
@@ -401,7 +413,7 @@
                     <children>
                         <JFXDrawer fx:id="directionsDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefHeight="720.0" prefWidth="300.0" resizeContent="true" StackPane.alignment="CENTER_LEFT" />
                         <JFXDrawer fx:id="adminDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefWidth="300.0" resizeContent="true" StackPane.alignment="CENTER_LEFT" />
-                        <JFXDrawer fx:id="mapEditorDrawer" alignment="BOTTOM_CENTER" direction="BOTTOM" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="680.0" StackPane.alignment="BOTTOM_CENTER" />
+                        <JFXDrawer fx:id="mapEditorDrawer" alignment="BOTTOM_CENTER" direction="BOTTOM" maxHeight="-Infinity" maxWidth="-Infinity" overLayVisible="false" prefHeight="100.0" prefWidth="680.0" StackPane.alignment="BOTTOM_CENTER" />
                         <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="68.0" prefWidth="217.0" spacing="5.0" translateX="15.0" translateY="-5.0" StackPane.alignment="BOTTOM_LEFT">
                             <children>
                                 <Label fx:id="date" text="%Date">

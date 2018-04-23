@@ -48,6 +48,7 @@ import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.Pair;
+import sun.plugin.javascript.navig.Anchor;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -255,7 +256,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private JFXDrawer mapEditorDrawer;
     @FXML
-    private HBox mapEditorBtns;
+    private AnchorPane mapEditorBtns;
     private mapState state;
     @FXML
     private AnchorPane screensaverPane;
