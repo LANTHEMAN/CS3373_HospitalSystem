@@ -83,16 +83,14 @@ public class Path {
             dist += previousNode.displacementTo(currentNode) / 7.f;
 
             if (currentNode.getNodeType().equals("ELEV") && nextNode.getNodeType().equals("ELEV")) {
-                System.out.println(currentNode.getFloor() + " to " + nextNode.getFloor());
-                if(floorToInt(currentNode) < floorToInt(nextNode)){
+                if(Node.floorToInt.get(currentNode.getFloor()) < Node.floorToInt.get(nextNode.getFloor())){
                     directions.add("Take elevator up to floor: " + nextNode.getFloor());
                 }else{
                     directions.add("Take elevator down to floor: " + nextNode.getFloor());
                 }
                 continue;
             } else if (currentNode.getNodeType().equals("STAI") && nextNode.getNodeType().equals("STAI")) {
-                System.out.println(currentNode.getFloor() + " to " + nextNode.getFloor());
-                if(floorToInt(currentNode) < floorToInt(nextNode)){
+                if(Node.floorToInt.get(currentNode.getFloor()) < Node.floorToInt.get(nextNode.getFloor())){
                     directions.add("Take stairs up to floor: " + nextNode.getFloor());
                 }else{
                     directions.add("Take stairs down to floor: " + nextNode.getFloor());
@@ -137,24 +135,6 @@ public class Path {
         double det = v1X * v2Y - v1Y * v2X;
 
         return Math.toDegrees(Math.atan2(det, dot));
-    }
-
-    public int floorToInt(Node node){
-        switch (node.getFloor()){
-            case "L2":
-                return -2;
-            case "L1":
-                return -1;
-            case "G":
-                return 0;
-            case "01":
-                return 1;
-            case "02":
-                return 2;
-            case "03":
-                return 3;
-        }
-        return -255;
     }
 
     public double getUnweightedLength() {

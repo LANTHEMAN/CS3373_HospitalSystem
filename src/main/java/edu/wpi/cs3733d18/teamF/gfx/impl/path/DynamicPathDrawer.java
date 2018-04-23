@@ -2,9 +2,9 @@ package edu.wpi.cs3733d18.teamF.gfx.impl.path;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.PathDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Edge;
+import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
 import javafx.animation.*;
@@ -28,6 +28,9 @@ public class DynamicPathDrawer extends PathDrawable {
     private ArrayList<Arrow> arrows = new ArrayList<>();
     // how often, in milliseconds, between timeline updates
     private int timestep = 300;
+
+    private boolean drawPathOnAllFloors = false;
+
     /**
      * This ctor takes no parameters, it must be updated with a new Path using the {@link #update(Path)} function.
      */
@@ -49,82 +52,144 @@ public class DynamicPathDrawer extends PathDrawable {
             return;
         }
 
-
         initAndDrawArrows(pane);
-        // update each arrow's animation every timestep milliseconds
-        timeline = new Timeline(new KeyFrame(Duration.millis(timestep), event -> {
-            for (int i = 0; i < arrows.size(); i++) {
-                Arrow arrow  = arrows.get(i);
 
-                // set the speed of the arrows
-                arrow.progress += timestep / 10;
+        if (drawPathOnAllFloors) {
+            // update each arrow's animation every timestep milliseconds
+            timeline = new Timeline(new KeyFrame(Duration.millis(timestep), event -> {
+                for (int i = 0; i < arrows.size(); i++) {
+                    Arrow arrow = arrows.get(i);
 
-                Pair<Pair<Node, Node>, Double> pathPos = getPathPos(arrow.progress);
+                    // set the speed of the arrows
+                    arrow.progress += timestep / 10;
 
-                // if the arrow went off of the end of the path, bring it back to the beginning
-                if (pathPos == null) {
-                    arrow.progress -= path.getUnweightedLength();
-                    arrow.view.setVisible(false);
-                    arrow.prevX = null;
-                    arrow.prevY = null;
-                    continue;
+                    Pair<Pair<Node, Node>, Double> pathPos = getPathPos(arrow.progress);
+
+                    // if the arrow went off of the end of the path, bring it back to the beginning
+                    if (pathPos == null) {
+                        arrow.progress -= path.getUnweightedLength();
+                        arrow.view.setVisible(false);
+                        arrow.prevX = null;
+                        arrow.prevY = null;
+                        continue;
+                    }
+
+                    Node src = pathPos.getKey().getKey();
+                    Node dst = pathPos.getKey().getValue();
+                    double distBetweenNodes = pathPos.getValue();
+
+                    String mapFloor = MapSingleton.getInstance().getMap().getFloor();
+
+                    boolean is2D = MapSingleton.getInstance().getMap().is2D();
+
+                    if (is2D) {
+                        if (!mapFloor.equals(src.getFloor()) || !mapFloor.equals(dst.getFloor())) {
+                            arrow.view.setVisible(false);
+                            arrow.prevX = null;
+                            arrow.prevY = null;
+                            continue;
+                        }
+                    } else {
+                        if ((src.getNodeType().equals("ELEV") && dst.getNodeType().equals("ELEV")) || (src.getNodeType().equals("STAI") && dst.getNodeType().equals("STAI"))) {
+                            arrow.view.setFill(Color.RED);
+                        } else if (mapFloor.equals(src.getFloor()) && mapFloor.equals(dst.getFloor())) {
+                            arrow.view.setFill(Color.GREEN);
+
+                        } else {
+                            if (i % 2 == 0) arrows.get(i).view.setFill(Color.GRAY);
+                            else arrows.get(i).view.setFill(Color.BLACK);
+                        }
+                    }
+
+                    // party colors!
+                    //arrow.view.setFill(Color.color(.5 + .5 *Math.random(), .5 + .5*Math.random(), .5 + .5*Math.random()));
+                    arrow.view.setVisible(true);
+
+                    double angle = getAngleTo(src, dst);
+                    Point2D newPosition = getNewScreenPosition(src, dst, distBetweenNodes, pane);
+
+                    // save the previous position and angle of the arrow for interpolation
+                    if (arrow.prevX == null && arrow.prevY == null) {
+                        arrow.prevX = newPosition.getX();
+                        arrow.prevY = newPosition.getY();
+                        arrow.view.setTranslateX(arrow.prevX);
+                        arrow.view.setTranslateY(arrow.prevY);
+                        arrow.view.setRotate(angle);
+                    } else {
+                        arrow.prevX = arrow.view.getTranslateX();
+                        arrow.prevY = arrow.view.getTranslateY();
+                    }
+                    arrow.prevAngle = arrow.view.getRotate();
+
+                    interpolateArrow(arrow, newPosition, angle);
                 }
+            }));
 
-                Node src = pathPos.getKey().getKey();
-                Node dst = pathPos.getKey().getValue();
-                double distBetweenNodes = pathPos.getValue();
+            // start playing the animation
+            // the timeline will exist until the function {@link #update(Path)} is called to clear the drawable path
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+        } else {
+            // update each arrow's animation every timestep milliseconds
+            timeline = new Timeline(new KeyFrame(Duration.millis(timestep), event -> {
+                for (Arrow arrow : arrows) {
+                    // set the speed of the arrows
+                    arrow.progress += timestep / 10;
 
-                String mapFloor = MapSingleton.getInstance().getMap().getFloor();
+                    Pair<Pair<Node, Node>, Double> pathPos = getPathPos(arrow.progress);
 
-                boolean is2D = MapSingleton.getInstance().getMap().is2D();
+                    // if the arrow went off of the end of the path, bring it back to the beginning
+                    if (pathPos == null) {
+                        arrow.progress -= path.getUnweightedLength();
+                        arrow.view.setVisible(false);
+                        arrow.prevX = null;
+                        arrow.prevY = null;
+                        continue;
+                    }
 
-                if(is2D){
+                    Node src = pathPos.getKey().getKey();
+                    Node dst = pathPos.getKey().getValue();
+                    double distBetweenNodes = pathPos.getValue();
+
+                    String mapFloor = MapSingleton.getInstance().getMap().getFloor();
                     if (!mapFloor.equals(src.getFloor()) || !mapFloor.equals(dst.getFloor())) {
                         arrow.view.setVisible(false);
                         arrow.prevX = null;
                         arrow.prevY = null;
                         continue;
                     }
-                }else{
-                    if((src.getNodeType().equals("ELEV") && dst.getNodeType().equals("ELEV"))||(src.getNodeType().equals("STAI") && dst.getNodeType().equals("STAI"))){
-                        arrow.view.setFill(Color.RED);
-                    }else if(mapFloor.equals(src.getFloor()) && mapFloor.equals(dst.getFloor())){
-                        arrow.view.setFill(Color.GREEN);
 
-                    }else{
-                        if(i % 2 == 0)arrows.get(i).view.setFill(Color.GRAY);
-                        else arrows.get(i).view.setFill(Color.BLACK);
+                    // party colors!
+                    //arrow.view.setFill(Color.color(.5 + .5 *Math.random(), .5 + .5*Math.random(), .5 + .5*Math.random()));
+                    arrow.view.setVisible(true);
+
+                    double angle = getAngleTo(src, dst);
+                    Point2D newPosition = getNewScreenPosition(src, dst, distBetweenNodes, pane);
+
+                    // save the previous position and angle of the arrow for interpolation
+                    if (arrow.prevX == null && arrow.prevY == null) {
+                        arrow.prevX = newPosition.getX();
+                        arrow.prevY = newPosition.getY();
+                        arrow.view.setTranslateX(arrow.prevX);
+                        arrow.view.setTranslateY(arrow.prevY);
+                        arrow.view.setRotate(angle);
+                    } else {
+                        arrow.prevX = arrow.view.getTranslateX();
+                        arrow.prevY = arrow.view.getTranslateY();
                     }
+                    arrow.prevAngle = arrow.view.getRotate();
+
+                    interpolateArrow(arrow, newPosition, angle);
                 }
+            }));
 
-                // party colors!
-                //arrow.view.setFill(Color.color(.5 + .5 *Math.random(), .5 + .5*Math.random(), .5 + .5*Math.random()));
-                arrow.view.setVisible(true);
+            // start playing the animation
+            // the timeline will exist until the function {@link #update(Path)} is called to clear the drawable path
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+        }
 
-                double angle = getAngleTo(src, dst);
-                Point2D newPosition = getNewScreenPosition(src, dst, distBetweenNodes, pane);
 
-                // save the previous position and angle of the arrow for interpolation
-                if (arrow.prevX == null && arrow.prevY == null) {
-                    arrow.prevX = newPosition.getX();
-                    arrow.prevY = newPosition.getY();
-                    arrow.view.setTranslateX(arrow.prevX);
-                    arrow.view.setTranslateY(arrow.prevY);
-                    arrow.view.setRotate(angle);
-                } else {
-                    arrow.prevX = arrow.view.getTranslateX();
-                    arrow.prevY = arrow.view.getTranslateY();
-                }
-                arrow.prevAngle = arrow.view.getRotate();
-
-                interpolateArrow(arrow, newPosition, angle);
-            }
-        }));
-
-        // start playing the animation
-        // the timeline will exist until the function {@link #update(Path)} is called to clear the drawable path
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
     }
 
     /**
@@ -239,7 +304,7 @@ public class DynamicPathDrawer extends PathDrawable {
         // create arrows distributed along the path
         for (int i = 0; i < divs; i++) {
             arrows.add(new Arrow(i * divDist));
-            if(i % 2 == 0)arrows.get(i).view.setFill(Color.GRAY);
+            if (i % 2 == 0) arrows.get(i).view.setFill(Color.GRAY);
             else arrows.get(i).view.setFill(Color.BLACK);
         }
 
@@ -265,6 +330,10 @@ public class DynamicPathDrawer extends PathDrawable {
         if (timeline != null) {
             timeline.stop();
         }
+    }
+
+    public void updateFloorSelection(boolean drawPathOnAllFloors) {
+        this.drawPathOnAllFloors = drawPathOnAllFloors;
     }
 
     /**
