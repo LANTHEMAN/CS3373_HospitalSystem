@@ -32,6 +32,8 @@ import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -48,12 +50,15 @@ import javafx.util.Duration;
 import javafx.util.Pair;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 public class HomeController implements SwitchableController, Observer, MapViewListener {
     private static mapState savedState;
@@ -294,7 +299,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         this.switcher = switcher;
         map = MapSingleton.getInstance().getMap();
         resetFloorButtonBorders();
-        changeFloor("01");
 
         switch (switcher.resFac.getResources().getLocale().getCountry()) {
             case "FR":
@@ -315,6 +319,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         Pair<MapViewElement, Pane> mapElementInfo = switcher.loadElement("mapView.fxml");
         mapViewElement = mapElementInfo.getKey();
         mapViewElement.initialize(this, map, switcher, mapElementPane);
+
+        changeFloor("01");
+
         // google maps
         googleMapView.addMapInializedListener(this::configureMap);
         setGoogleMapViewEnabled(false);
@@ -459,12 +466,12 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                         loginDrawer.open();
                         loginDrawer.setDisable(false);
                     }
-                }else{
+                } else {
                     loginDrawer.open();
                     loginDrawer.setDisable(false);
                 }
             }
-        }); 
+        });
 
         loginCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             loginDrawer.close();
@@ -504,17 +511,17 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             displayInUserTable(list);
         });
 
-        userIDCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) ->{
+        userIDCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             userIDView.setVisible(false);
             userIDSubmit.setVisible(false);
             userIDCancel.setVisible(false);
         });
 
-        userIDSubmit.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) ->{
+        userIDSubmit.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             userIDView.setVisible(false);
             userIDSubmit.setVisible(false);
             userIDCancel.setVisible(false);
-            faceIDField.setText(launcher.getCameraFaceID());
+            faceIDField.setText(launcher.addFaceToList(usernameField.getText()));
         });
 
 
@@ -537,18 +544,26 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     public void onCameraClicked() throws IOException {
-        Webcam webcam = Webcam.getDefault();
-        webcam.open();
-        BufferedImage bufferedImage = webcam.getImage();
-        ImageIO.write(bufferedImage, "PNG", new File("curFace.png"));
-        webcam.close();
+        if(!usernameField.getText().equals("")) {
 
-        userIDView.setVisible(true);
-        userIDCancel.setVisible(true);
-        userIDSubmit.setVisible(true);
+            try {
+                Webcam webcam = Webcam.getDefault(5000);
+                webcam.open();
+                BufferedImage bufferedImage = webcam.getImage();
+                ImageIO.write(bufferedImage, "PNG", new File("curFace.png"));
+                webcam.close();
 
-        Image imageFX = SwingFXUtils.toFXImage(bufferedImage, null);
-        userIDView.setImage(imageFX);
+                userIDView.setVisible(true);
+                userIDCancel.setVisible(true);
+                userIDSubmit.setVisible(true);
+
+                Image imageFX = SwingFXUtils.toFXImage(bufferedImage, null);
+                userIDView.setImage(imageFX);
+            } catch(TimeoutException e){
+                System.out.println("Failed to load camera");
+            }
+        }
+        //TODO inform the user they need to enter a username first LOL
     }
 
     public void setLoggedIn() {
@@ -1253,6 +1268,18 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private void changeFloor(String floor) {
         resetFloorButtonBackgrounds();
 
+        Rectangle rect = mapViewElement.getMapDrawController().getPathBoundingBox();
+        double paneWidthScale = mapViewElement.getGesturePane().getWidth()/5000;
+        double paneHeightScale = mapViewElement.getGesturePane().getHeight()/2772;
+
+        if (rect.getHeight() > 0 && rect.getWidth() > 0) {
+            System.out.println(rect.getHeight() + ", " + rect.getWidth());
+            System.out.println(rect.x + ", " + rect.y);
+            mapViewElement.getGesturePane().zoomTo(4, new Point2D(((rect.x + (rect.getWidth()/2)) * paneWidthScale), ((rect.y + (rect.getHeight()/2)) * paneHeightScale)));
+            mapViewElement.getGesturePane().centreOn(new Point2D(((rect.x + (rect.getWidth()/2)) * paneWidthScale), ((rect.y + (rect.getHeight()/2)) * paneHeightScale)));
+            System.out.println(paneWidthScale + ", " + paneHeightScale);
+        }
+
         map.setFloor(floor);
         JFXButton floorBtn = getFloorButton(floor);
         setButtonBackgroundColor(floorBtn, "#436282");
@@ -1531,10 +1558,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             PermissionSingleton.getInstance().addUser(temp);
         } else {
             username = editedUser.getUname();
-            if(passwordField.getText().equals("")){
+            if (passwordField.getText().equals("")) {
                 password = editedUser.getPsword();
                 temp = new User(username, password, firstName, lastName, privilegeChoice, occupation, faceID, true);
-            }else{
+            } else {
                 password = passwordField.getText();
                 temp = new User(username, password, firstName, lastName, privilegeChoice, occupation, faceID);
             }

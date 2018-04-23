@@ -7,6 +7,10 @@ import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
 import javafx.scene.layout.Pane;
 
+import java.awt.Rectangle;
+
+import javafx.geometry.Point2D;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -33,29 +37,64 @@ public class PaneMapController extends PaneController implements Observer {
         draw();
     }
 
-    public void selectNode(Node node){
+    public Rectangle getPathBoundingBox() {
+        Rectangle bBox = new Rectangle();
+        double upperLeftX = 5000;
+        double upperLeftY = 2772;
+        double bottomRightX = 0;
+        double bottomRightY = 0;
+
+        if (drawnPath != null) {
+            for (Node node : drawnPath.getNodes()) {
+                if (node.getPosition().getX() < upperLeftX) {
+                    upperLeftX = node.getPosition().getX();
+                }
+
+                if (node.getPosition().getY() < upperLeftY) {
+                    upperLeftY = node.getPosition().getY();
+                }
+
+                if (node.getPosition().getX() > bottomRightX) {
+                    bottomRightX = node.getPosition().getX();
+                }
+
+                if (node.getPosition().getY() > bottomRightY) {
+                    bottomRightY = node.getPosition().getY();
+                }
+            }
+        }
+
+        bBox.x = (int) upperLeftX;
+        bBox.y = (int) upperLeftY;
+        bBox.height = (int) (bottomRightY - upperLeftY);
+        bBox.width = (int) (bottomRightX - upperLeftX);
+
+        return bBox;
+    }
+
+    public void selectNode(Node node) {
         mapDrawer.selectNode(node);
         refresh();
     }
 
-    public void refreshPath(){
-        if(drawnPath == null){
+    public void refreshPath() {
+        if (drawnPath == null) {
             return;
         }
         mapDrawer.redrawPath(drawnPath);
         refresh();
     }
 
-    public void showPath(Path path){
+    public void showPath(Path path) {
         mapDrawer.showPath(path);
         this.drawnPath = path;
-        if(path.getNodes().size() > 0){
+        if (path.getNodes().size() > 0) {
             addDefaultStartNode(path.getNodes().get(0));
         }
         refresh();
     }
 
-    public void unshowPath(){
+    public void unshowPath() {
         mapDrawer.unshowPath();
         this.drawnPath = null;
         refresh();
@@ -90,26 +129,27 @@ public class PaneMapController extends PaneController implements Observer {
         refresh();
     }
 
-    void addDefaultStartNode(Node node){
+    void addDefaultStartNode(Node node) {
         mapDrawer.addDefaultStartNode(node);
         refresh();
     }
 
-    void hoverNode(Node node){
-        if(hoveredNode == node){
+    void hoverNode(Node node) {
+        if (hoveredNode == node) {
             return;
         }
         hoveredNode = node;
         mapDrawer.hoverNode(node);
         refresh();
     }
-    void unhoverNode(){
+
+    void unhoverNode() {
         hoveredNode = null;
         mapDrawer.unhoverNode();
         refresh();
     }
 
-    boolean isHoveringNode(Node node){
+    boolean isHoveringNode(Node node) {
         return node == hoveredNode;
     }
 

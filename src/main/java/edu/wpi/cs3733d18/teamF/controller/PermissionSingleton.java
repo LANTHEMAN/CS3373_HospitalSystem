@@ -32,11 +32,6 @@ public class PermissionSingleton {
             */
         }
 
-        if(!userExist("tdubuke")){
-            addUser(new User("tdubuke", "password", "Tyler", "Dubuke",
-                    "Admin", "IT", "0c39c6a5-6293-4ccd-af1a-b86e42d2fc73"));
-        }
-
         if (!userExist("staff")) {
 
             /*addUser(new User("staff", "staff", "Staff", "Member", "Staff", "Nurse"));
