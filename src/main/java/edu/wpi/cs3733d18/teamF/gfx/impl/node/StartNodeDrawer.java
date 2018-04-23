@@ -6,6 +6,7 @@ import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.NodeDrawable;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
@@ -44,16 +45,15 @@ public class StartNodeDrawer extends NodeDrawable {
         pane.getChildren().add(start);
 
         if(!node.getNodeType().equals("HALL")) {
-            JFXTextField startText = new JFXTextField();
+            Label startText = new Label();
 
             startText.setPrefWidth(-1);
             startText.setPrefHeight(-1);
 
-            startText.setTranslateX((posX * pane.getMaxWidth() / imageWidth));
-            startText.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 10);
+            startText.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - node.getShortName().length() / 2);
+            startText.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 15);
 
             startText.setText(node.getShortName());
-            startText.setPrefColumnCount(node.getShortName().length());
             startText.setAlignment(Pos.CENTER);
             startText.setStyle("-fx-background-color: green; " +
                     "-fx-border-color: black; " +

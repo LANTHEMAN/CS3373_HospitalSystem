@@ -37,4 +37,8 @@ public class IdleMonitor {
     public void stopMonitoring() {
         idleTimeline.stop();
     }
+
+    public void register(Scene scene, EventType<? extends Event> eventType) {
+        scene.addEventFilter(eventType, userEventHandler);
+    }
 }

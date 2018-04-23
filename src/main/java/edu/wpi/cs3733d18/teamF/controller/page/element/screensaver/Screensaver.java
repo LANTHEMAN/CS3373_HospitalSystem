@@ -3,6 +3,7 @@ package edu.wpi.cs3733d18.teamF.controller.page.element.screensaver;
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
@@ -13,13 +14,14 @@ public class Screensaver extends PageElement{
 
     IdleMonitor idleMonitor;
 
-    public void initialize(AnchorPane sourcePane) {
+    public void initialize(AnchorPane sourcePane, Scene scene) {
         initElement(sourcePane, root);
         sourcePane.setOnMouseClicked(this::wakeUp);
         sourcePane.setOnMouseMoved(this::wakeUp);
 
-        idleMonitor = new IdleMonitor(new Duration(30000), this::start);
+        idleMonitor = new IdleMonitor(new Duration(3000), this::start);
         idleMonitor.startMonitoring();
+        idleMonitor.register(scene, Event.ANY);
     }
 
     public void start(){

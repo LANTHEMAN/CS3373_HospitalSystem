@@ -348,9 +348,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         //init screensaver
         Pair<Screensaver, Pane> screensaverInfo = switcher.loadElement("screensaver.fxml");
         screensaver = screensaverInfo.getKey();
-        screensaver.initialize(screensaverPane);
+        screensaver.initialize(screensaverPane, switcher.getScene());
         screensaver.hideElement();
-
         // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);
 
