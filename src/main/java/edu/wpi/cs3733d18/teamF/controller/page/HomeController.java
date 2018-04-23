@@ -542,12 +542,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             Calendar cal = Calendar.getInstance();
             int second = cal.get(Calendar.SECOND);
             int minute = cal.get(Calendar.MINUTE);
-            int hour = cal.get(Calendar.HOUR);
+            int hour = cal.get(Calendar.HOUR) % 12 + 1;
             int day = cal.get(Calendar.DAY_OF_MONTH);
-            int month = cal.get(Calendar.MONTH) + 1;
+            int month = cal.get(Calendar.MONTH) % 12 + 1;
             int year = cal.get(Calendar.YEAR);
-            //System.out.println(hour + ":" + (minute) + ":" + second);
-            time.setText(hour + ":" + (minute) + ":" + second);
+            time.setText(hour + ":" + String.format("%02d", minute) + ":" + String.format("%02d", second));
             date.setText(month + "/" + day + "/" + year);
         }),
                 new KeyFrame(Duration.seconds(1))
@@ -999,18 +998,17 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             if (text.toLowerCase().contains("straight")) {
                 FontAwesomeIconView arrow = new FontAwesomeIconView(FontAwesomeIcon.LONG_ARROW_UP);
                 arrow.setGlyphSize(15);
+                arrow.setScaleX(1.5);
                 arrow.setFill(Color.WHITE);
                 txtDirections.getChildren().add(arrow);
             } else if (text.toLowerCase().contains("left")) {
                 FontAwesomeIconView arrow = new FontAwesomeIconView(FontAwesomeIcon.REPLY);
                 arrow.setGlyphSize(15);
-                arrow.setScaleX(1.4);
                 arrow.setFill(Color.WHITE);
                 txtDirections.getChildren().add(arrow);
             } else if (text.toLowerCase().contains("right")) {
                 FontAwesomeIconView arrow = new FontAwesomeIconView(FontAwesomeIcon.SHARE);
                 arrow.setGlyphSize(15);
-                arrow.setScaleX(1.4);
                 arrow.setFill(Color.WHITE);
                 txtDirections.getChildren().add(arrow);
             } else if (text.toLowerCase().contains("take elevator up")) {

@@ -400,16 +400,16 @@
                         <JFXDrawer fx:id="directionsDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefHeight="720.0" prefWidth="300.0" resizeContent="true" StackPane.alignment="CENTER_LEFT" />
                         <JFXDrawer fx:id="adminDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefWidth="300.0" resizeContent="true" StackPane.alignment="CENTER_LEFT" />
                         <JFXDrawer fx:id="mapEditorDrawer" alignment="BOTTOM_CENTER" direction="BOTTOM" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="680.0" StackPane.alignment="BOTTOM_CENTER" />
-                        <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="68.0" prefWidth="217.0" spacing="10.0" StackPane.alignment="BOTTOM_LEFT">
+                        <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="68.0" prefWidth="217.0" spacing="5.0" translateX="15.0" translateY="-5.0" StackPane.alignment="BOTTOM_LEFT">
                             <children>
-                                <Label fx:id="time" text="%Time">
-                                    <font>
-                                        <Font name="Arial Bold" size="16.0" />
-                                    </font>
-                                </Label>
                                 <Label fx:id="date" text="%Date">
                                     <font>
-                                        <Font name="Arial Bold" size="16.0" />
+                                        <Font name="Arial Bold" size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="time" text="%Time">
+                                    <font>
+                                        <Font name="Arial Bold" size="18.0" />
                                     </font>
                                 </Label>
                             </children>
