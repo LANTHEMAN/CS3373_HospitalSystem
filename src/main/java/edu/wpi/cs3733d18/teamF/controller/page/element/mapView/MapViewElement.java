@@ -1,11 +1,11 @@
 package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
-import edu.wpi.cs3733d18.teamF.gfx.ImageCacheSingleton;
-import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
+import edu.wpi.cs3733d18.teamF.gfx.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.impl.map.UglyMapDrawer;
+import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
 import javafx.event.Event;
@@ -22,11 +22,11 @@ import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
 
-
 public class MapViewElement extends PageElement {
     // TODO change this to default starting location
     String startNodeID = "FRETL00101";
     EditMode editMode = EditMode.MOVENODE;
+    boolean showAllFloors = false;
     // used to see if the floor has changed to update the map drawn
     private MapListener mapListener;
     private ViewMode viewMode = ViewMode.VIEW;
@@ -42,9 +42,7 @@ public class MapViewElement extends PageElement {
     private Node selectedNodeStart = null;
     private Node selectedNodeEnd = null;
     private Node modifyNode = null;
-
     private Node selectEdgeNode = null;
-
     private boolean ctrlHeld = false;
     private boolean draggingNode;
     private boolean nodeSelectedOnMousePressed = false;
@@ -73,6 +71,17 @@ public class MapViewElement extends PageElement {
         }
     }
 
+    public void toggleShowAllFloors() {
+        update3DPathDisplay(!getShowAllFloors());
+    }
+
+    public boolean getShowAllFloors() {
+        return showAllFloors;
+    }
+
+    public void update3DPathDisplay(boolean showAllFloors) {
+        mapDrawController.update3DPathDisplay(showAllFloors);
+    }
 
     public void initialize(MapViewListener listener, Map map, PaneSwitcher switcher, AnchorPane sourcePane) {
         // initialize fundamentals
@@ -109,6 +118,8 @@ public class MapViewElement extends PageElement {
             }
         });
 
+        mapDrawController.update3DPathDisplay(true);
+
         mapContainer.setOnMouseMoved(e -> {
             Point2D mapPos = getMapPos(e);
             boolean nodeIsSelected = isNodeSelected(mapPos);
@@ -117,7 +128,7 @@ public class MapViewElement extends PageElement {
                         node1 -> node1.getFloor().equals(map.getFloor()));
                 if (!(mapDrawController.getDrawnPath() != null
                         && mapDrawController.getDrawnPath().getNodes().contains(node)
-                            && (node.getNodeType().equals("ELEV") || node.getNodeType().equals("STAI"))
+                        && (node.getNodeType().equals("ELEV") || node.getNodeType().equals("STAI"))
                         && map.getNeighbors(node)
                         .stream()
                         .filter(node1 -> mapDrawController.getDrawnPath().getNodes().contains(node1))
@@ -336,8 +347,8 @@ public class MapViewElement extends PageElement {
             }
         });
 
-        mapContainer.addEventHandler(Event.ANY, e->{
-            if(((gesturePane.targetPointAtViewportCentre().getX() > 427 || gesturePane.targetPointAtViewportCentre().getX() < 417) && (gesturePane.targetPointAtViewportCentre().getY() > 348 || gesturePane.targetPointAtViewportCentre().getY() < 230)) && gesturePane.getCurrentScale() <= 2.3){
+        mapContainer.addEventHandler(Event.ANY, e -> {
+            if (((gesturePane.targetPointAtViewportCentre().getX() > 427 || gesturePane.targetPointAtViewportCentre().getX() < 417) && (gesturePane.targetPointAtViewportCentre().getY() > 348 || gesturePane.targetPointAtViewportCentre().getY() < 230)) && gesturePane.getCurrentScale() <= 2.3) {
                 listener.onRefresh();
             }
         });
@@ -485,7 +496,6 @@ public class MapViewElement extends PageElement {
     }
 
 
-
     private boolean isNodeSelected(Point2D mapPos) {
         if (map.is2D()) {
             return map.getNodes(node -> new Point2D(node.getPosition().getX()
@@ -494,6 +504,10 @@ public class MapViewElement extends PageElement {
             return map.getNodes(node -> new Point2D(node.getWireframePosition().getX()
                     , node.getWireframePosition().getY()).distance(mapPos) < 8 && node.getFloor().equals(map.getFloor())).size() > 0;
         }
+    }
+
+    public GesturePane getGesturePane() {
+        return gesturePane;
     }
 
     public enum ViewMode {
@@ -515,9 +529,5 @@ public class MapViewElement extends PageElement {
                 mapDrawController.refreshPath();
             }
         }
-    }
-
-    public GesturePane getGesturePane() {
-        return gesturePane;
     }
 }

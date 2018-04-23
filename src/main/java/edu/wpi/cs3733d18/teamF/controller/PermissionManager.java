@@ -48,6 +48,7 @@ public class PermissionManager implements DatabaseItem {
                         u.setLastName(resultSet.getString(4));
                         u.setPrivilege(resultSet.getString(5));
                         u.setOccupation(resultSet.getString(6));
+                        u.setFaceID(resultSet.getString(7));
                     }
                 }
 

@@ -41,4 +41,6 @@ public abstract class MapDrawable implements Drawable {
     public abstract void hoverNode(Node node);
 
     public abstract void unhoverNode();
+
+    public abstract void update3DPathDisplay(boolean showAllFloors);
 }

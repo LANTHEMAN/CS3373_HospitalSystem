@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXToolbar?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.Cursor?>
@@ -25,8 +26,8 @@
          <children>
             <GridPane alignment="CENTER" prefHeight="426.0" prefWidth="1080.0" GridPane.vgrow="ALWAYS">
               <columnConstraints>
-                  <ColumnConstraints hgrow="NEVER" maxWidth="535.0" minWidth="10.0" prefWidth="21.0" />
-                <ColumnConstraints hgrow="NEVER" maxWidth="1060.0" minWidth="10.0" prefWidth="1047.0" />
+                  <ColumnConstraints hgrow="NEVER" maxWidth="535.0" minWidth="0.0" prefWidth="0.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="1060.0" minWidth="10.0" prefWidth="1060.0" />
                   <ColumnConstraints hgrow="NEVER" maxWidth="1060.0" minWidth="10.0" prefWidth="23.0" />
               </columnConstraints>
               <rowConstraints>
@@ -35,8 +36,8 @@
                   <RowConstraints maxHeight="30.0" minHeight="0.0" prefHeight="16.0" vgrow="ALWAYS" />
                 <RowConstraints maxHeight="371.0" minHeight="10.0" prefHeight="311.0" vgrow="NEVER" />
                   <RowConstraints maxHeight="150.0" minHeight="0.0" prefHeight="28.0" vgrow="ALWAYS" />
-                  <RowConstraints maxHeight="114.0" minHeight="10.0" prefHeight="57.0" vgrow="NEVER" />
-                  <RowConstraints maxHeight="20.0" minHeight="0.0" prefHeight="12.0" vgrow="ALWAYS" />
+                  <RowConstraints maxHeight="114.0" minHeight="10.0" prefHeight="43.0" vgrow="NEVER" />
+                  <RowConstraints maxHeight="48.0" minHeight="0.0" prefHeight="29.0" vgrow="ALWAYS" />
                 <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="44.0" vgrow="NEVER" />
                   <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
               </rowConstraints>
@@ -46,7 +47,7 @@
                         <Font size="31.0" />
                      </font>
                   </Text>
-                  <Label alignment="TOP_LEFT" blendMode="DARKEN" prefHeight="345.0" prefWidth="597.0" text="Team Coach: Cory Tapply &#10;Lead Software Engineer: Matthew Kaminski &#10;Assistant Lead Software Engineer: Peter Maida &#10;Assistant Lead Software Engineer: Alex Tavares &#10;Project Manager: Jake Scheide &#10;Assistant Project Manager: Adam Sargent &#10;Scrum Master: Tyler Dubuke &#10;Product Owner: Eric Chiem &#10;Test Engineer: Lanhao Mao &#10;Documentation Analyst: Justin Amevor" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <Label alignment="TOP_LEFT" blendMode="DARKEN" prefHeight="345.0" prefWidth="597.0" text="Team Coach: Cory Tapply &#10;Lead Software Engineer: Matthew Kaminski &#10;Assistant Lead Software Engineer: Peter Maida &#10;Assistant Lead Software Engineer: Alex Tavares &#10;Project Manager: Jake Scheide &#10;Assistant Project Manager: Adam Sargent &#10;Scrum Master/Assistant Lead Software Engineer: Tyler Dubuke &#10;Product Owner: Eric Chiem &#10;Test Engineer: Lanhao Mao &#10;Documentation Analyst/Assistant Project Manager: Justin Amevor" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <cursor>
                         <Cursor fx:constant="TEXT" />
                      </cursor>
@@ -54,12 +55,10 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label text="We would like to give a special thanks to Brigham and Women’s Faulkner Hospital Andrew Shinn for his time and input!" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7">
-                     <font>
-                        <Font size="19.0" />
-                     </font>
-                  </Label>
+                  <Label text="We would like to give a special thanks to Brigham and Women’s Faulkner Hospital Andrew Shinn for his time and input!" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="This application was made by Team Fenrir for CS3733-D18 Software Engineering instructed by Proffesor. Wilson Wong, &#10;Worcester Poltechnic Institute computer Science Department" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="           The Brigham &amp; Women’s Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes" textAlignment="CENTER" wrappingWidth="1022.876953125" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <JFXButton fx:id="creditsButton" buttonType="RAISED" style="-fx-background-color: #4885ed;" text="Credits" textFill="WHITE" translateX="975.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </children>
@@ -74,7 +73,7 @@
          <children>
             <JFXToolbar prefHeight="93.0" prefWidth="1280.0" style="-fx-background-color: #4885ed;">
                <left>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="        About Team F" wrappingWidth="679.6513671875" BorderPane.alignment="CENTER">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="        About Team F" wrappingWidth="679.6513671875" BorderPane.alignment="CENTER">
                      <font>
                         <Font name="FontAwesome Regular" size="50.0" />
                      </font>
@@ -84,5 +83,37 @@
             <FontAwesomeIconView fx:id="closeButton" boundsType="VISUAL" fill="WHITE" glyphName="TIMES" size="40" translateX="-12.0" translateY="12.0" wrappingWidth="22.0" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.valignment="TOP" GridPane.vgrow="NEVER" />
          </children>
       </GridPane>
+      <AnchorPane fx:id="creditsPage" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #D3D3D3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXToolbar layoutX="-1.0" layoutY="-2.0" prefHeight="139.0" prefWidth="1280.0" style="-fx-background-color: #4885ed;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
+               <left>
+                  <Text fill="WHITE" scaleX="5.0" scaleY="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Credits" translateX="110.0" BorderPane.alignment="CENTER" />
+               </left>
+               <top>
+                  <FontAwesomeIconView fx:id="closeCredits" fill="WHITE" glyphName="TIMES" scaleX="3.0" scaleY="3.0" text="" translateX="620.0" translateY="10.0" BorderPane.alignment="CENTER" />
+               </top>
+            </JFXToolbar>
+            <GridPane layoutX="115.0" layoutY="146.0" prefHeight="530.0" prefWidth="1057.0" AnchorPane.bottomAnchor="44.0" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="108.0" AnchorPane.topAnchor="146.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Text scaleX="2.0" scaleY="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="External API's" translateX="50.0" translateY="-250.0" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="FontAwesome Regular" size="15.0" />
+                     </font>
+                  </Text>
+                  <Text scaleX="2.0" scaleY="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Class API's" translateX="35.0" translateY="-250.0" />
+                  <Label prefHeight="580.0" prefWidth="471.0" text="1. junit&#10;2. jfoenix&#10;3.derby&#10;4.derbyclient&#10;5.derbytools&#10;6.yahoo-weather-java-api&#10;7.commons-csv&#10;8.commons-codec&#10;9.  gesturesfx&#10;10. fontawsomefx&#10;11.sphinx4-core&#10;12.sphinx4-data&#10;13. core&#10;14. freetts&#10;15. en_us&#10;16. cmu_us_kal&#10;17. cmu_time_kal&#10;18. cmu_time_awb&#10;19. cmulex&#10;20.cmutimelex&#10;21.cmudict04&#10;22.CS3733-D18-teamF-SR-API&#10;23.twilio" translateY="10.0" GridPane.columnIndex="1" />
+                  <Label text="Label" />
+                  <FontAwesomeIconView glyphName="LONG-ARROW-ALT-LEFT" scaleX="2.0" scaleY="2.0" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

@@ -15,7 +15,8 @@ import javafx.scene.layout.Pane;
 
 public class UglyMapDrawer extends MapDrawable {
 
-    boolean redrawPath = true;
+    private boolean redrawPath = true;
+    private boolean drawPathOnAllFloors = false;
     private Point2D selectedNodePos = null;
     private Point2D hoveredNodePos = null;
     private Path path = null;
@@ -34,6 +35,7 @@ public class UglyMapDrawer extends MapDrawable {
     private NodeDrawable currNodeDrawable = nodeDrawer;
     private NodeDrawable startNodeDefault = null;
     private Pane pathPane = new Pane();
+
 
     public UglyMapDrawer() {
         super();
@@ -110,9 +112,13 @@ public class UglyMapDrawer extends MapDrawable {
     }
 
     @Override
-    public void draw(Pane pane) {
-        boolean is2D = map.is2D();
+    public void update3DPathDisplay(boolean showAllFloors) {
+        redrawPath = true;
+        drawPathOnAllFloors = showAllFloors;
+    }
 
+    @Override
+    public void draw(Pane pane) {
         Node selectedNode = null;
         Node hoveredNode = null;
         if (selectedNodePos != null) {
@@ -124,9 +130,9 @@ public class UglyMapDrawer extends MapDrawable {
 
         if (showEdges) {
             for (Edge edge : map.getEdges(edge -> edge.getNode2().getFloor().equals(map.getFloor()))) {
-                if (edge.getNode1().getNodeType().equals("ELEV") && edge.getNode2().getNodeType().equals("ELEV")) {
+                if (edge.getNode1().getNodeType().equals(Node.Type.ELEVATOR) && edge.getNode2().getNodeType().equals(Node.Type.ELEVATOR)) {
                     continue;
-                } else if (edge.getNode1().getNodeType().equals("STAI") && edge.getNode2().getNodeType().equals("STAI")) {
+                } else if (edge.getNode1().getNodeType().equals(Node.Type.STAIR) && edge.getNode2().getNodeType().equals(Node.Type.STAIR)) {
                     continue;
                 }
                 edgeDrawer.update(edge);
@@ -134,67 +140,95 @@ public class UglyMapDrawer extends MapDrawable {
             }
         }
 
+        // iterate over every node of the path, drawing all of the elevators
         if (path != null && path.getNodes().size() > 0) {
-            for (Edge edge : path.getEdges()) {
-                    if (!(edge.getNode1().getFloor().equals(edge.getNode2().getFloor()))) {
-                        if (edge.getNode1().getFloor().equals(map.getFloor()) || !is2D) {
-                            Node node = edge.getNode1();
-                            currNodeDrawable = getPathNodeDrawer(node.getNodeType());
-                            if(node.compareFloors(edge.getNode2()) == -1){
-                                currNodeDrawable.setDirection(true);
-                            }
-                            else{
-                                currNodeDrawable.setDirection(false);
-                            }
-                            currNodeDrawable.update(node);
-                            if (hoveredNode == node) {
-                                currNodeDrawable.hoverNode();
-                            }
-                            currNodeDrawable.draw(pane);
-                            if (hoveredNode == node) {
-                                currNodeDrawable.unhoverNode();
-                            }
-                        }
-                        if (edge.getNode2().getFloor().equals(map.getFloor())  || !is2D) {
-                            Node node = edge.getNode2();
-                            currNodeDrawable = getPathNodeDrawer(node.getNodeType());
-                            if(node.compareFloors(edge.getNode1()) == -1){
-                                currNodeDrawable.setDirection(true);
-                            }
-                            else{
-                                currNodeDrawable.setDirection(false);
-                            }
-                            currNodeDrawable.update(node);
-                            if (hoveredNode == node) {
-                                currNodeDrawable.hoverNode();
-                            }
-                            currNodeDrawable.draw(pane);
-                            if (hoveredNode == node) {
-                                currNodeDrawable.unhoverNode();
-                            }
-                        }
+            for (int i = 0; i < path.getNodes().size(); i++) {
+                Node node = path.getNodes().get(i);
+                if (node.getNodeType().equals(Node.Type.STAIR) || node.getNodeType().equals(Node.Type.ELEVATOR)) {
+                    String nodeType = node.getNodeType();
 
+                    currNodeDrawable = pathNodeDrawer;
+                    // NOTE: PathNodeDrawer is for drawing elevators or stairs!
+                    // TODO change name
+                    PathNodeDrawer stairElevatorDrawer = (PathNodeDrawer) pathNodeDrawer;
+                    stairElevatorDrawer.setType(nodeType);
+
+                    Node linkedNode = null;
+                    if (i > 0) {
+                        if (path.getNodes().get(i - 1).getNodeType().equals(nodeType)) {
+                            linkedNode = path.getNodes().get(i - 1);
+                            if (node.compareFloors(linkedNode) == -1) {
+                                stairElevatorDrawer.setDirection(PathNodeDrawer.Direction.UP);
+                            } else {
+                                stairElevatorDrawer.setDirection(PathNodeDrawer.Direction.DOWN);
+                            }
+                        }
+                    }
+                    if (i < path.getNodes().size() - 1) {
+                        if (path.getNodes().get(i + 1).getNodeType().equals(nodeType)) {
+                            linkedNode = path.getNodes().get(i + 1);
+                            if (node.compareFloors(linkedNode) == -1) {
+                                stairElevatorDrawer.setDirection(PathNodeDrawer.Direction.UP);
+                            } else {
+                                stairElevatorDrawer.setDirection(PathNodeDrawer.Direction.DOWN);
+                            }
+                        }
                     }
 
+                    // don't draw the elevator if it does not connect to another floor!
+                    if (linkedNode == null || (linkedNode.getFloor().equals(node.getFloor()))) {
+                        continue;
+                    }
+
+                    // only draw nodes on the current floor unless specified otherwise
+                    if (!node.getFloor().equals(map.getFloor()) && (!drawPathOnAllFloors || map.is2D())) {
+                        continue;
+                    }
+
+                    currNodeDrawable.update(node);
+                    if (hoveredNode == node) {
+                        currNodeDrawable.hoverNode();
+                    }
+                    currNodeDrawable.draw(pane);
+                    if (hoveredNode == node) {
+                        currNodeDrawable.unhoverNode();
+                    }
+
+                }
             }
 
             pane.getChildren().add(pathPane);
             pathPane.maxWidthProperty().bind(pane.maxWidthProperty());
             pathPane.maxHeightProperty().bind(pane.maxHeightProperty());
+
+            // dont draw the path if its empty
+            if(path.getEdges().size() == 0){
+                redrawPath = false;
+                pathPane.getChildren().clear();
+            }
+
             if (redrawPath) {
                 pathPane.getChildren().clear();
 
                 pathDrawer.update(path);
+                if (pathDrawer instanceof DynamicPathDrawer) {
+                    DynamicPathDrawer dyPath = (DynamicPathDrawer) pathDrawer;
+                    dyPath.updateFloorSelection(drawPathOnAllFloors);
+                }
                 pathDrawer.draw(pathPane);
 
                 Node startNode = path.getNodes().get(0);
-                NodeDrawable startIconDrawer = new StartNodeDrawer(startNode);
-                startIconDrawer.draw(pathPane);
+                if (startNode.getFloor().equals(map.getFloor()) || (!map.is2D() && drawPathOnAllFloors)) {
+                    NodeDrawable startIconDrawer = new StartNodeDrawer(startNode);
+                    startIconDrawer.draw(pathPane);
+                }
 
                 Node endNode = path.getNodes().get(path.getNodes().size() - 1);
-                NodeDrawable endIconDrawer = new EndNodeDrawer();
-                endIconDrawer.update(endNode);
-                endIconDrawer.draw(pathPane);
+                if (endNode.getFloor().equals(map.getFloor()) || (!map.is2D() && drawPathOnAllFloors)) {
+                    NodeDrawable endIconDrawer = new EndNodeDrawer(endNode);
+                    endIconDrawer.draw(pathPane);
+                }
+
                 redrawPath = false;
             }
 
@@ -203,6 +237,7 @@ public class UglyMapDrawer extends MapDrawable {
                 startNodeDefault.draw(pane);
             }
         }
+
         for (Node node : map.getNodes(node -> node.getFloor().equals(map.getFloor()))) {
             currNodeDrawable = getDrawer(node.getNodeType());
             currNodeDrawable.update(node);
@@ -237,18 +272,6 @@ public class UglyMapDrawer extends MapDrawable {
             case "RETL":    //shops, food, pay phone, areas that provide non-medical services for immediate payment
             case "SERV":    //hospital non-medical services, interpreters, shuttles, spiritual, library, patient financial, etc.
             default:    //will be hallways and anything not implemented
-                return nodeDrawer;
-        }
-    }
-    private NodeDrawable getPathNodeDrawer(String type) {
-        switch (type) {
-            case "ELEV":
-                pathNodeDrawer.setType(false);
-                return pathNodeDrawer;
-            case "STAI":
-                pathNodeDrawer.setType(true);
-                return pathNodeDrawer;
-            default:
                 return nodeDrawer;
         }
     }
