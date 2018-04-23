@@ -91,7 +91,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //                                      //
     //////////////////////////////////////////
     @FXML
-    private HBox algorithmsBox;
+    private VBox algorithmsBox;
     @FXML
     private JFXButton aStar, depthFirst, breathFirst, dijkstra, bestFirst;
     /////////////////////////////
@@ -233,6 +233,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     /////////////////////////////////
     @FXML
     private AnchorPane helpPane;
+
     /////////////////////////////////
     //                             //
     //           Date/Time         //
@@ -242,6 +243,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private Label time;
     @FXML
     private Label date;
+
     /////////////////////////////////
     //                             //
     //           Map Editor        //
@@ -254,15 +256,26 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private mapState state;
     @FXML
     private AnchorPane screensaverPane;
-    /////////////////////////////////
-    //                             //
-    //           Google Map        //
-    //                             //
-    /////////////////////////////////
+
+    //////////////////////////////////
+    //                              //
+    //           Google Maps        //
+    //                              //
+    //////////////////////////////////
     @FXML
     private GoogleMapView googleMapView;
     private GoogleMap gmap;
     private boolean isGoogleMapViewEnabled = false;
+
+    ///////////////////////
+    //                   //
+    //       Inbox       //
+    //                   //
+    ///////////////////////
+    @FXML
+    private FontAwesomeIconView inboxIcon;
+    @FXML
+    private Text inboxNum;
 
     /////////////////////////////////
     //                             //
@@ -984,10 +997,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                 arrow.setFill(Color.WHITE);
                 txtDirections.getChildren().add(arrow);
             } else if (text.toLowerCase().contains("take elevator up")) {
-                ImageView elevator = new ImageView(new Image("edu/wpi/cs3733d18/teamF/up-elevator.png", 20, 20, true, true));
+                ImageView elevator = new ImageView(new Image("edu/wpi/cs3733d18/teamF/elevator.png", 20, 20, true, true));
                 txtDirections.getChildren().add(elevator);
             } else if (text.toLowerCase().contains("take elevator down")) {
-                ImageView elevator = new ImageView(new Image("edu/wpi/cs3733d18/teamF/down-elevator.png", 20, 20, true, true));
+                ImageView elevator = new ImageView(new Image("edu/wpi/cs3733d18/teamF/down-elevator.png", 20, 20, true, false));
                 txtDirections.getChildren().add(elevator);
             } else if (text.toLowerCase().contains("take stairs up")) {
                 ImageView stairs = new ImageView(new Image("edu/wpi/cs3733d18/teamF/up-stairs.png", 20, 20, true, true));
@@ -1741,6 +1754,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         mapViewElement.updateHomeLocation();
     }
 
+
+    //////////////////////////////
+    //                          //
+    //       Google Maps        //
+    //                          //
+    //////////////////////////////
+
     @FXML
     public void onGoogleMaps(MouseEvent mouseEvent) {
         toggleGoogleMap();
@@ -1790,6 +1810,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
         Marker marker = new Marker(markerOptions);
         gmap.addMarker(marker);
+    }
+
+    ///////////////////////
+    //                   //
+    //       Inbox       //
+    //                   //
+    ///////////////////////
+    @FXML
+    private void onInbox() {
+
     }
 
 }
