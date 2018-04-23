@@ -41,6 +41,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -1281,16 +1282,35 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private void changeFloor(String floor) {
         resetFloorButtonBackgrounds();
 
+        /*javafx.scene.shape.Rectangle rectShape = new javafx.scene.shape.Rectangle();
+        rectShape.setHeight(rect.getHeight() * (1080.0/5000.0));
+        rectShape.setWidth(rect.getWidth() * (1920.0/2772.0));
+        rectShape.setX(rect.x * (1920.0/2772.0));
+        rectShape.setY(rect.y * (1080.0/5000.0));
+
+        voicePane.getChildren().add(rectShape);
+        System.out.println(voicePane.getWidth() + ", " + voicePane.getHeight());
+        rectShape.setVisible(true);*/
+
         Rectangle rect = mapViewElement.getMapDrawController().getPathBoundingBox();
-        double paneWidthScale = mapViewElement.getGesturePane().getWidth()/5000;
-        double paneHeightScale = mapViewElement.getGesturePane().getHeight()/2772;
+
+        double paneWidthScale = mapViewElement.getGesturePane().getWidth()/5000.f;
+        double paneHeightScale = mapViewElement.getGesturePane().getHeight()/2772.f;
+
+        Rectangle scaledRect = new Rectangle();
+        scaledRect.width = (int) (rect.getWidth() * paneWidthScale);
+        scaledRect.height = (int) (rect.getHeight() * paneHeightScale);
+        scaledRect.x = (int) (rect.x * paneWidthScale);
+        scaledRect.y = (int) (rect.y * paneHeightScale);
+
+        Point2D midPoint = new Point2D(scaledRect.x + (scaledRect.getWidth()/2.f), scaledRect.y + (scaledRect.getHeight()/2.f));
+        double scaleFactor = (844.0 * 578.0)/(scaledRect.getWidth() * scaledRect.getHeight());
+
+        System.out.println(midPoint.getX() + ", " + midPoint.getY());
 
         if (rect.getHeight() > 0 && rect.getWidth() > 0) {
-            System.out.println(rect.getHeight() + ", " + rect.getWidth());
-            System.out.println(rect.x + ", " + rect.y);
-            mapViewElement.getGesturePane().zoomTo(4, new Point2D(((rect.x + (rect.getWidth()/2)) * paneWidthScale), ((rect.y + (rect.getHeight()/2)) * paneHeightScale)));
-            mapViewElement.getGesturePane().centreOn(new Point2D(((rect.x + (rect.getWidth()/2)) * paneWidthScale), ((rect.y + (rect.getHeight()/2)) * paneHeightScale)));
-            System.out.println(paneWidthScale + ", " + paneHeightScale);
+            //mapViewElement.getGesturePane().zoomTo(scaleFactor, midPoint);
+            mapViewElement.getGesturePane().centreOn(midPoint);
         }
 
         map.setFloor(floor);

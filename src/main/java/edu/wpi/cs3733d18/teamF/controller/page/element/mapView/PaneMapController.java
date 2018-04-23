@@ -64,10 +64,21 @@ public class PaneMapController extends PaneController implements Observer {
             }
         }
 
+        double gestureAspect = 844.0/578.0;
+
         bBox.x = (int) upperLeftX;
         bBox.y = (int) upperLeftY;
         bBox.height = (int) (bottomRightY - upperLeftY);
         bBox.width = (int) (bottomRightX - upperLeftX);
+
+        double multiple = gestureAspect * (bBox.getHeight()/bBox.getWidth());
+        System.out.println("multiple = " + multiple);
+
+        if(multiple > 1){
+            bBox.height *= multiple;
+        }else{
+            bBox.width *= multiple;
+        }
 
         return bBox;
     }
