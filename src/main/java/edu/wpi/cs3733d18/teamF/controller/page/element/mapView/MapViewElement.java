@@ -104,6 +104,11 @@ public class MapViewElement extends PageElement {
         // disable gesturePane when ctrl is held
         switcher.getScene().setOnKeyPressed(ke -> {
             if (ke.isControlDown()) {
+                if (mapDrawController.getDrawnPath() != null) {
+                    mapDrawController.getDrawnPath().separateIntoFloors();
+                }
+
+
                 gesturePane.setGestureEnabled(false);
                 ctrlHeld = true;
             }
