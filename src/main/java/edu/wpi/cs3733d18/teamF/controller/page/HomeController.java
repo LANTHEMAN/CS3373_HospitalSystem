@@ -280,6 +280,14 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private Text inboxNum;
 
+    ////////////////////////////////////
+    //                                //
+    //       Screensaver Timout       //
+    //                                //
+    ////////////////////////////////////
+    @FXML
+    private JFXSlider sliderTimeout;
+
     /////////////////////////////////
     //                             //
     //     Facial Recognition      //
@@ -1279,39 +1287,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         btn3D.setStyle("-fx-background-color:  #f2f5f7");
     }
 
+    @FXML
+    public void onTimeoutChanged() {
+        screensaver.changeTimeout((int) (sliderTimeout.getValue() * 1000));
+    }
+
     private void changeFloor(String floor) {
         resetFloorButtonBackgrounds();
-
-        /*javafx.scene.shape.Rectangle rectShape = new javafx.scene.shape.Rectangle();
-        rectShape.setHeight(rect.getHeight() * (1080.0/5000.0));
-        rectShape.setWidth(rect.getWidth() * (1920.0/2772.0));
-        rectShape.setX(rect.x * (1920.0/2772.0));
-        rectShape.setY(rect.y * (1080.0/5000.0));
-
-        voicePane.getChildren().add(rectShape);
-        System.out.println(voicePane.getWidth() + ", " + voicePane.getHeight());
-        rectShape.setVisible(true);*/
-
-        Rectangle rect = mapViewElement.getMapDrawController().getPathBoundingBox();
-
-        double paneWidthScale = mapViewElement.getGesturePane().getWidth()/5000.f;
-        double paneHeightScale = mapViewElement.getGesturePane().getHeight()/2772.f;
-
-        Rectangle scaledRect = new Rectangle();
-        scaledRect.width = (int) (rect.getWidth() * paneWidthScale);
-        scaledRect.height = (int) (rect.getHeight() * paneHeightScale);
-        scaledRect.x = (int) (rect.x * paneWidthScale);
-        scaledRect.y = (int) (rect.y * paneHeightScale);
-
-        Point2D midPoint = new Point2D(scaledRect.x + (scaledRect.getWidth()/2.f), scaledRect.y + (scaledRect.getHeight()/2.f));
-        double scaleFactor = (844.0 * 578.0)/(scaledRect.getWidth() * scaledRect.getHeight());
-
-        System.out.println(midPoint.getX() + ", " + midPoint.getY());
-
-        if (rect.getHeight() > 0 && rect.getWidth() > 0) {
-            //mapViewElement.getGesturePane().zoomTo(scaleFactor, midPoint);
-            mapViewElement.getGesturePane().centreOn(midPoint);
-        }
 
         map.setFloor(floor);
         JFXButton floorBtn = getFloorButton(floor);
