@@ -90,6 +90,16 @@ public class PaneSwitcher {
         popup.show();
     }
 
+    public void popupSR(Screens.Screen screen) {
+        load(screen);
+        Scene popScene = new Scene(panes.get(screen.fxmlFile));
+        popup.setHeight(631);
+        popup.setWidth(955);
+        popup.setScene(popScene);
+        popScene.getStylesheets().add(Main.class.getResource("controller/default.css").toExternalForm());
+        popup.show();
+    }
+
     public void closePopup(Screens.Screen screen) {
         // will reset control back to the given screen (that should be displayed currently)
         popup.close();

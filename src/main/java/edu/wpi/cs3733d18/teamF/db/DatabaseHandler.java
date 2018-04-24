@@ -1,7 +1,5 @@
 package edu.wpi.cs3733d18.teamF.db;
 
-import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;

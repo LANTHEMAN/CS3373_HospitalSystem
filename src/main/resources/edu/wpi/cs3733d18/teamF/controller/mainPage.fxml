@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import jfxtras.scene.layout.CircularPane?>
+
+<GridPane fx:id="serviceRequestPane" alignment="CENTER" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.MainPage">
+    <Pane fx:id="voicePane" pickOnBounds="false">
+    </Pane>
+   <JFXTabPane fx:id="serviceRequestTabPane" blendMode="SRC_ATOP" tabClosingPolicy="UNAVAILABLE" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
+      <tabs>
+         <Tab closable="false" onSelectionChanged="#onCreateNewServiceRequest" text="Create Service Request">
+            <content>
+               <StackPane>
+                  <children>
+                     <AnchorPane fx:id="religiousServicesPane" style="-fx-background-color: #f1f1f1;">
+                        <children>
+                           <FontAwesomeIconView fill="#e4e4e4" glyphName="BOOK" layoutX="373.0" layoutY="580.0" size="500" />
+                           <Text layoutX="346.0" layoutY="91.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Religious Services">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Text>
+                           <Label layoutX="456.0" layoutY="249.0" text="Religion" />
+                           <Label layoutX="129.0" layoutY="128.0" scaleX="1.2" scaleY="1.2" scaleZ="1.2" text="Required Information">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <JFXTextField fx:id="firstNameRS" layoutX="197.0" layoutY="179.0" prefHeight="27.0" prefWidth="160.0" />
+                           <Label layoutX="118.0" layoutY="194.0" text="First Name" />
+                           <JFXTextField fx:id="lastNameRS" layoutX="530.0" layoutY="180.0" prefHeight="27.0" prefWidth="160.0" />
+                           <JFXTextField fx:id="destinationRS" layoutX="197.0" layoutY="235.0" prefHeight="27.0" prefWidth="160.0" />
+                           <Label layoutX="119.0" layoutY="248.0" text="Location" />
+                           <Label layoutX="455.0" layoutY="193.0" text="Last Name" />
+                           <Label layoutX="133.0" layoutY="420.0" scaleX="1.2" scaleY="1.2" scaleZ="1.2" text="Special Instructions">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <JFXTextArea fx:id="instructionsRS" layoutX="122.0" layoutY="445.0" prefHeight="75.0" prefWidth="582.0" />
+                           <JFXButton buttonType="RAISED" layoutX="567.0" layoutY="548.0" onAction="#onSubmitRS" prefHeight="27.0" prefWidth="140.0" ripplerFill="#11119d" text="Submit Request" textFill="WHITE" />
+                           <JFXButton buttonType="RAISED" layoutX="122.0" layoutY="548.0" onAction="#onCancelRS" ripplerFill="#11119d" text="Cancel" textFill="WHITE" />
+                           <Label fx:id="religionRequiredRS" layoutX="692.0" layoutY="249.0" text="*Required Field" textFill="RED" visible="false" />
+                           <Label fx:id="lastNameRequiredRS" layoutX="691.0" layoutY="185.0" text="*Required Field" textFill="RED" visible="false" />
+                           <Label fx:id="firstNameRequiredRS" layoutX="360.0" layoutY="184.0" text="*Required Field" textFill="RED" visible="false" />
+                           <Label fx:id="locationRequiredRS" layoutX="359.0" layoutY="248.0" prefWidth="104.0" text="*Required Field" textFill="RED" visible="false" />
+                           <Label fx:id="occasionRequiredRS" layoutX="359.0" layoutY="295.0" prefWidth="104.0" text="*Required Field" textFill="RED" visible="false" />
+                           <Label layoutX="115.0" layoutY="312.0" text="Urgency" />
+                           <HBox layoutX="218.0" layoutY="312.0" prefHeight="18.0" prefWidth="202.0" spacing="10.0">
+                              <children>
+                                 <RadioButton mnemonicParsing="false" selected="true" text="0">
+                                    <toggleGroup>
+                                       <ToggleGroup fx:id="securityToggleRS" />
+                                    </toggleGroup></RadioButton>
+                                 <RadioButton mnemonicParsing="false" text="1" toggleGroup="$securityToggleRS" />
+                                 <RadioButton mnemonicParsing="false" text="2" toggleGroup="$securityToggleRS" />
+                                 <RadioButton mnemonicParsing="false" text="3" toggleGroup="$securityToggleRS" />
+                                 <RadioButton mnemonicParsing="false" text="4" toggleGroup="$securityToggleRS" />
+                                 <RadioButton mnemonicParsing="false" text="5" toggleGroup="$securityToggleRS" />
+                              </children>
+                           </HBox>
+                           <JFXComboBox fx:id="religionSelect" layoutX="530.0" layoutY="236.0" prefHeight="27.0" prefWidth="160.0" promptText="         Select Religion" />
+                           <Label layoutX="115.0" layoutY="358.0" text="Staff Needed" />
+                           <HBox layoutX="218.0" layoutY="358.0" prefHeight="18.0" prefWidth="264.0" spacing="10.0">
+                              <children>
+                                 <RadioButton mnemonicParsing="false" selected="true" text="1">
+                                    <toggleGroup>
+                                       <ToggleGroup fx:id="staffToggleRS" />
+                                    </toggleGroup>
+                                 </RadioButton>
+                                 <RadioButton mnemonicParsing="false" text="2" toggleGroup="$staffToggleRS" />
+                                 <RadioButton mnemonicParsing="false" text="3" toggleGroup="$staffToggleRS" />
+                                 <RadioButton mnemonicParsing="false" text="4" toggleGroup="$staffToggleRS" />
+                                 <RadioButton mnemonicParsing="false" text="5" toggleGroup="$staffToggleRS" />
+                                 <RadioButton mnemonicParsing="false" text="6+" toggleGroup="$staffToggleRS" />
+                              </children>
+                           </HBox>
+                        </children>
+                     </AnchorPane>
+                      <AnchorPane fx:id="languageInterpreterPane" style="-fx-background-color: #f1f1f1;" StackPane.alignment="CENTER">
+                          <children>
+                           <FontAwesomeIconView fill="#e4e4e4" glyphName="LANGUAGE" layoutX="480.0" layoutY="526.0" size="400" />
+                              <Text layoutX="333.0" layoutY="85.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Language Interpreter">
+                              <font>
+                                 <Font size="19.0" />
+                              </font>
+                           </Text>
+                              <JFXTextField fx:id="languageField" layoutX="219.0" layoutY="220.0" prefHeight="27.0" prefWidth="160.0" />
+                              <Label layoutX="131.0" layoutY="226.0" text="Language">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                              <Label layoutX="144.0" layoutY="125.0" scaleX="1.2" scaleY="1.2" scaleZ="1.2" text="Required Information">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                              <JFXTextField fx:id="firstNameLanguage" layoutX="219.0" layoutY="163.0" prefHeight="27.0" prefWidth="160.0" />
+                              <Label layoutX="130.0" layoutY="176.0" text="First Name">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                              <JFXTextField fx:id="lastNameLanguage" layoutX="559.0" layoutY="167.0" prefHeight="27.0" prefWidth="160.0" />
+                              <JFXTextField fx:id="destinationLanguage" layoutX="560.0" layoutY="221.0" prefHeight="27.0" prefWidth="160.0" />
+                              <Label layoutX="472.0" layoutY="234.0" text="Location">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                              <Label layoutX="472.0" layoutY="179.0" text="Last Name">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                              <Label layoutX="148.0" layoutY="364.0" scaleX="1.2" scaleY="1.2" scaleZ="1.2" text="Special Instructions" />
+                              <JFXTextArea fx:id="instructionsLanguage" layoutX="136.0" layoutY="417.0" prefHeight="62.0" prefWidth="588.0" />
+                              <JFXButton buttonType="RAISED" layoutX="584.0" layoutY="495.0" onAction="#onSubmitLI" prefHeight="27.0" prefWidth="140.0" ripplerFill="#11119d" text="Submit Request" textFill="WHITE" />
+                              <JFXButton buttonType="RAISED" layoutX="138.0" layoutY="495.0" onAction="#onCancelLI" ripplerFill="#11119d" text="Cancel" textFill="WHITE" />
+                              <Label fx:id="languageRequiredLI" layoutX="382.0" layoutY="226.0" text="Required Field" textFill="RED" visible="false" />
+                              <Label fx:id="locationRequiredLI" layoutX="723.0" layoutY="226.0" text="Required Field" textFill="RED" visible="false" />
+                              <Label fx:id="firstNameRequiredLI" layoutX="382.0" layoutY="167.0" text="Required Field" textFill="RED" visible="false" />
+                              <Label fx:id="lastNameRequiredLI" layoutX="722.0" layoutY="171.0" text="Required Field" textFill="RED" visible="false" />
+                           <Label layoutX="132.0" layoutY="281.0" text="Urgency">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <HBox layoutX="235.0" layoutY="281.0" prefHeight="18.0" prefWidth="202.0" spacing="10.0">
+                              <children>
+                                 <RadioButton mnemonicParsing="false" selected="true" text="0">
+                                    <toggleGroup>
+                                       <ToggleGroup fx:id="securityToggleLI" />
+                                    </toggleGroup>
+                                 </RadioButton>
+                                 <RadioButton mnemonicParsing="false" text="1" toggleGroup="$securityToggleLI" />
+                                 <RadioButton mnemonicParsing="false" text="2" toggleGroup="$securityToggleLI" />
+                                 <RadioButton mnemonicParsing="false" text="3" toggleGroup="$securityToggleLI" />
+                                 <RadioButton mnemonicParsing="false" text="4" toggleGroup="$securityToggleLI" />
+                                 <RadioButton mnemonicParsing="false" text="5" toggleGroup="$securityToggleLI" />
+                              </children>
+                           </HBox>
+                           <Label layoutX="133.0" layoutY="324.0" text="Addtional Information">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                           <JFXComboBox fx:id="availableLanguagesBox" layoutX="222.0" layoutY="220.0" prefHeight="27.0" prefWidth="160.0" promptText="Available Languages" />
+                          </children>
+                      </AnchorPane>
+                      <AnchorPane fx:id="securityPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: #f1f1f1;">
+                          <children>
+                           <FontAwesomeIconView fill="#e4e4e4" glyphName="SHIELD" layoutX="514.0" layoutY="518.0" size="500" />
+                              <Text layoutX="385.0" layoutY="73.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Request">
+                              <font>
+                                 <Font name="System Bold" size="20.0" />
+                              </font>
+                           </Text>
+                              <Label layoutX="152.0" layoutY="223.0" text="Urgency">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                              <Label layoutX="509.0" layoutY="175.0" text="Location">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                              <Label layoutX="166.0" layoutY="354.0" scaleX="1.2" scaleY="1.2" scaleZ="1.2" text="Special Instructions">
+                              <font>
+                                 <Font size="12.0" />
+                              </font>
+                           </Label>
+                              <JFXButton buttonType="RAISED" layoutX="165.0" layoutY="468.0" onAction="#onCancelSecurity" prefHeight="31.0" prefWidth="104.0" text="Cancel" textFill="#f5f2f2" />
+                              <JFXButton buttonType="RAISED" layoutX="644.0" layoutY="468.0" onAction="#onSubmitSecurity" prefHeight="31.0" prefWidth="104.0" text="Submit Request" textFill="#fff2f2" />
+                           <HBox layoutX="255.0" layoutY="223.0" prefHeight="18.0" prefWidth="202.0" spacing="10.0">
+                              <children>
+                                    <RadioButton mnemonicParsing="false" selected="true" text="0">
+                                    <toggleGroup>
+                                       <ToggleGroup fx:id="securityToggleSR" />
+                                    </toggleGroup>
+                                 </RadioButton>
+                                    <RadioButton mnemonicParsing="false" text="1" toggleGroup="$securityToggleSR" />
+                                    <RadioButton mnemonicParsing="false" text="2" toggleGroup="$securityToggleSR" />
+                                    <RadioButton mnemonicParsing="false" text="3" toggleGroup="$securityToggleSR" />
+                                    <RadioButton mnemonicParsing="false" text="4" toggleGroup="$securityToggleSR" />
+                                    <RadioButton mnemonicParsing="false" text="5" toggleGroup="$securityToggleSR" />
+                              </children>
+                           </HBox>
+                              <JFXTextField fx:id="securityLocationField" layoutX="581.0" layoutY="163.0" prefHeight="27.0" prefWidth="160.0" />
+                              <JFXTextArea fx:id="securityTextArea" layoutX="155.0" layoutY="368.0" prefHeight="90.0" prefWidth="591.0" />
+                           <Label layoutX="151.0" layoutY="170.0" text="Request Title">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <JFXTextField fx:id="requestTitleField" layoutX="255.0" layoutY="159.0" prefHeight="27.0" prefWidth="160.0" />
+                           <Label fx:id="securityLocationRequired" layoutX="741.0" layoutY="172.0" text="*Required Field" textFill="RED" visible="false" />
+                           <Label layoutX="149.0" layoutY="114.0" text="Required Information">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="150.0" layoutY="312.0" text="Additional Information">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="152.0" layoutY="266.0" text="Staff Needed">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <HBox layoutX="255.0" layoutY="266.0" prefHeight="18.0" prefWidth="258.0" spacing="10.0">
+                              <children>
+                                 <RadioButton mnemonicParsing="false" selected="true" text="1">
+                                    <toggleGroup>
+                                       <ToggleGroup fx:id="staffToggleSR" />
+                                    </toggleGroup>
+                                 </RadioButton>
+                                 <RadioButton mnemonicParsing="false" text="2" toggleGroup="$staffToggleSR" />
+                                 <RadioButton mnemonicParsing="false" text="3" toggleGroup="$staffToggleSR" />
+                                 <RadioButton mnemonicParsing="false" text="4" toggleGroup="$staffToggleSR" />
+                                 <RadioButton mnemonicParsing="false" text="5" toggleGroup="$staffToggleSR" />
+                                 <RadioButton mnemonicParsing="false" text="6+" toggleGroup="$staffToggleSR" />
+                              </children>
+                           </HBox>
+                           <Label fx:id="requestTitleRequired" layoutX="420.0" layoutY="172.0" text="*Required Field" textFill="RED" visible="false" />
+                          </children>
+                      </AnchorPane>
+                     <AnchorPane fx:id="sanitationPane" style="-fx-background-color: #f1f1f1;">
+                        <children>
+                           <FontAwesomeIconView fill="#e4e4e4" glyphName="WRENCH" layoutX="476.0" layoutY="513.0" size="400" />
+                           <Text layoutX="329.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Maintenance Request">
+                              <font>
+                                 <Font size="30.0" />
+                              </font>
+                           </Text>
+                           <Label layoutX="166.0" layoutY="234.0" text="Situation">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="164.0" layoutY="134.0" text="Required Information">
+                              <font>
+                                 <Font size="21.0" />
+                              </font>
+                           </Label>
+                           <JFXTextField fx:id="firstNameMaintenance" layoutX="254.0" layoutY="171.0" prefHeight="27.0" prefWidth="160.0" />
+                           <Label layoutX="165.0" layoutY="184.0" text="First Name">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <JFXTextField fx:id="lastNameMaintenance" layoutX="594.0" layoutY="175.0" prefHeight="27.0" prefWidth="160.0" />
+                           <JFXTextField fx:id="destinationMaintenance" layoutX="595.0" layoutY="229.0" prefHeight="27.0" prefWidth="160.0" />
+                           <Label layoutX="507.0" layoutY="242.0" text="Location">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="507.0" layoutY="187.0" text="Last Name">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="173.0" layoutY="396.0" text="Special Instructions">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <JFXTextArea fx:id="instructionsMaintenance" layoutX="169.0" layoutY="421.0" prefHeight="72.0" prefWidth="588.0" />
+                           <JFXButton buttonType="RAISED" layoutX="617.0" layoutY="509.0" onAction="#onSubmitLI" prefHeight="27.0" prefWidth="140.0" ripplerFill="#11119d" text="Submit Request" textFill="WHITE" />
+                           <JFXButton buttonType="RAISED" layoutX="171.0" layoutY="509.0" onAction="#onCancelLI" ripplerFill="#11119d" text="Cancel" textFill="WHITE" />
+                           <Label layoutX="165.0" layoutY="287.0" text="Urgency">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <HBox layoutX="268.0" layoutY="287.0" prefHeight="18.0" prefWidth="202.0" spacing="10.0">
+                              <children>
+                                 <RadioButton mnemonicParsing="false" selected="true" text="0">
+                                    <toggleGroup>
+                                       <ToggleGroup fx:id="securityToggleMaintenance" />
+                                    </toggleGroup>
+                                 </RadioButton>
+                                 <RadioButton mnemonicParsing="false" text="1" toggleGroup="$securityToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="2" toggleGroup="$securityToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="3" toggleGroup="$securityToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="4" toggleGroup="$securityToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="5" toggleGroup="$securityToggleMaintenance" />
+                              </children>
+                           </HBox>
+                           <Label layoutX="165.0" layoutY="359.0" text="Addtional Information">
+                              <font>
+                                 <Font size="21.0" />
+                              </font>
+                           </Label>
+                           <JFXComboBox fx:id="situationSelection" layoutX="257.0" layoutY="227.0" prefHeight="27.0" prefWidth="160.0" promptText="Type of Situation" />
+                           <Label layoutX="165.0" layoutY="327.0" text="Staff Needed">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <HBox layoutX="268.0" layoutY="327.0" prefHeight="18.0" prefWidth="261.0" spacing="10.0">
+                              <children>
+                                 <RadioButton mnemonicParsing="false" selected="true" text="1">
+                                    <toggleGroup>
+                                       <ToggleGroup fx:id="staffToggleMaintenance" />
+                                    </toggleGroup>
+                                 </RadioButton>
+                                 <RadioButton mnemonicParsing="false" text="2" toggleGroup="$staffToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="3" toggleGroup="$staffToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="4" toggleGroup="$staffToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="5" toggleGroup="$staffToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="6+" toggleGroup="$staffToggleMaintenance" />
+                              </children>
+                           </HBox>
+                        </children></AnchorPane>
+                     <StackPane fx:id="mainPane" style="-fx-background-color: #f1f1f1;">
+                        <children>
+                           <ImageView blendMode="LIGHTEN" fitHeight="612.0" fitWidth="646.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../BWHIcon.png" />
+                              </image>
+                              <cursor>
+                                 <Cursor fx:constant="NONE" />
+                              </cursor>
+                           </ImageView>
+                           <CircularPane snapToPixel="false" StackPane.alignment="CENTER">
+                              <children>
+                                 <JFXButton fx:id="languageInterpreterBtn" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Language&#10;Interpreter" textAlignment="CENTER" textFill="WHITE">
+                                    <effect>
+                                       <DropShadow height="100.0" radius="49.5" spread="0.71" width="100.0" />
+                                    </effect>
+                                    <font>
+                                       <Font name="Arial Bold" size="18.0" />
+                                    </font>
+                                    <graphic>
+                                       <FontAwesomeIconView fill="WHITE" glyphName="LANGUAGE" size="50" />
+                                    </graphic>
+                                 </JFXButton>
+                                 <JFXButton fx:id="religiousServicesBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Religious&#10;Services" textAlignment="CENTER" textFill="WHITE">
+                                    <effect>
+                                       <DropShadow height="100.0" radius="49.5" spread="0.71" width="100.0" />
+                                    </effect>
+                                    <graphic>
+                                       <FontAwesomeIconView fill="WHITE" glyphName="BOOK" size="50" />
+                                    </graphic>
+                                    <font>
+                                       <Font name="Arial Bold" size="18.0" />
+                                    </font>
+                                 </JFXButton>
+                                 <JFXButton fx:id="securityRequestBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Security&#10;Request" textAlignment="CENTER" textFill="WHITE">
+                                    <font>
+                                       <Font name="Arial Bold" size="18.0" />
+                                    </font>
+                                    <graphic>
+                                       <FontAwesomeIconView fill="WHITE" glyphName="SHIELD" size="50" />
+                                    </graphic>
+                                 </JFXButton>
+                                 <JFXButton fx:id="sanitationServicesBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Sanitation&#10;Services" textAlignment="CENTER" textFill="WHITE">
+                                    <effect>
+                                       <DropShadow height="100.0" radius="49.5" spread="0.71" width="100.0" />
+                                    </effect>
+                                    <font>
+                                       <Font name="Arial Bold" size="18.0" />
+                                    </font>
+                                    <graphic>
+                                       <FontAwesomeIconView fill="WHITE" glyphName="PAINT_BRUSH" size="50" />
+                                    </graphic>
+                                 </JFXButton>
+                                 <JFXButton fx:id="languageInterpreterBtn1" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Language&#10;Interpreter" textAlignment="CENTER" textFill="WHITE">
+                                    <effect>
+                                       <DropShadow height="100.0" radius="49.5" spread="0.71" width="100.0" />
+                                    </effect>
+                                    <font>
+                                       <Font name="Arial Bold" size="18.0" />
+                                    </font>
+                                    <graphic>
+                                       <FontAwesomeIconView fill="WHITE" glyphName="LANGUAGE" size="50" />
+                                    </graphic>
+                                 </JFXButton>
+                                 <JFXButton fx:id="religiousServicesBtn1" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Religious&#10;Services" textAlignment="CENTER" textFill="WHITE">
+                                    <effect>
+                                       <DropShadow height="100.0" radius="49.5" spread="0.71" width="100.0" />
+                                    </effect>
+                                    <graphic>
+                                       <FontAwesomeIconView fill="WHITE" glyphName="BOOK" size="50" />
+                                    </graphic>
+                                    <font>
+                                       <Font name="Arial Bold" size="18.0" />
+                                    </font>
+                                 </JFXButton>
+                              </children>
+                           </CircularPane>
+                        </children>
+                     </StackPane>
+                  </children>
+               </StackPane>
+            </content>
+         </Tab>
+         <Tab closable="false" onSelectionChanged="#onSearchServiceRequest" text="Search Service Request">
+            <content>
+               <StackPane>
+                  <children>
+                     <AnchorPane fx:id="editRequestPane" style="-fx-background-color: #f1f1f1;">
+                        <children>
+                           <GridPane layoutY="30.0" AnchorPane.bottomAnchor="-30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+                              <columnConstraints>
+                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="234.71429443359375" minWidth="10.0" prefWidth="15.0" />
+                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="278.71429443359375" minWidth="10.0" prefWidth="278.71429443359375" />
+                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.57147216796875" minWidth="10.0" prefWidth="199.5714111328125" />
+                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.14288330078125" minWidth="10.0" prefWidth="206.4285888671875" />
+                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="15.0" />
+                              </columnConstraints>
+                              <rowConstraints>
+                                 <RowConstraints maxHeight="150.8571319580078" minHeight="10.0" prefHeight="132.4285888671875" vgrow="SOMETIMES" />
+                                 <RowConstraints maxHeight="217.57142639160156" minHeight="10.0" prefHeight="172.42855834960938" vgrow="SOMETIMES" />
+                                 <RowConstraints maxHeight="184.0" minHeight="10.0" prefHeight="91.57147216796875" vgrow="SOMETIMES" />
+                                 <RowConstraints maxHeight="118.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                                 <RowConstraints maxHeight="182.0" minHeight="10.0" prefHeight="182.0" vgrow="SOMETIMES" />
+                              </rowConstraints>
+                              <children>
+                                 <Label fx:id="idLabel" alignment="CENTER" prefHeight="36.0" prefWidth="309.0" text="Service Request #000" textAlignment="CENTER" underline="true" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                                    <font>
+                                       <Font size="25.0" />
+                                    </font>
+                                 </Label>
+                                 <Label fx:id="typeLabel" text="Type: Service Request" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                                 <VBox prefHeight="103.0" prefWidth="470.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.rowSpan="2" GridPane.valignment="TOP">
+                                    <children>
+                                       <Label text="Special Instructions">
+                                          <font>
+                                             <Font size="18.0" />
+                                          </font>
+                                       </Label>
+                                       <JFXTextArea fx:id="instructionsTextArea" prefHeight="126.0" prefWidth="470.0" />
+                                    </children>
+                                 </VBox>
+                                 <VBox GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                                    <children>
+                                       <GridPane prefHeight="115.0" prefWidth="780.0">
+                                         <columnConstraints>
+                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="321.0" minWidth="10.0" prefWidth="101.8570556640625" />
+                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="370.0" minWidth="0.0" prefWidth="8.142822265625" />
+                                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="427.0" minWidth="10.0" prefWidth="94.0" />
+                                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="534.0" minWidth="4.7142333984375" prefWidth="39.28564453125" />
+                                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="511.142822265625" minWidth="10.0" prefWidth="507.71435546875" />
+                                         </columnConstraints>
+                                         <rowConstraints>
+                                           <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                                           <RowConstraints maxHeight="61.0" minHeight="0.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                           <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                                         </rowConstraints>
+                                          <children>
+                                             <Label prefHeight="30.0" prefWidth="112.0" text="Assign to: ">
+                                                <font>
+                                                   <Font size="20.0" />
+                                                </font>
+                                             </Label>
+                                             <JFXTextField fx:id="usernameSearch" alignment="BOTTOM_LEFT" prefHeight="25.0" prefWidth="359.0" GridPane.columnIndex="2" GridPane.columnSpan="2" />
+                                             <JFXListView fx:id="usernameList" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#setAssignTo" prefHeight="39.0" prefWidth="132.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2" />
+                                          </children>
+                                       </GridPane>
+                                    </children></VBox>
+                                 <JFXButton buttonType="RAISED" onAction="#onCancelEdit" prefHeight="31.0" prefWidth="70.0" ripplerFill="#11119d" text="Cancel" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+                                 <Label fx:id="completedByLabel" text="Completed By:" visible="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                                 <Label fx:id="usernameLabel" text="username" visible="false" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                                    <GridPane.margin>
+                                       <Insets left="65.0" />
+                                    </GridPane.margin>
+                                 </Label>
+                                 <JFXButton alignment="CENTER" buttonType="RAISED" onAction="#onSubmitEdit" prefHeight="31.0" prefWidth="70.0" ripplerFill="#11119d" text="Submit" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                                 <JFXCheckBox fx:id="completeCheck" maxHeight="-Infinity" maxWidth="-Infinity" text="Complete" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                 <GridPane prefHeight="192.0" prefWidth="366.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                   <columnConstraints>
+                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                   </columnConstraints>
+                                   <rowConstraints>
+                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                   </rowConstraints>
+                                    <children>
+                                       <Label fx:id="statusLabel" text="requestStatus" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                          <font>
+                                             <Font size="16.0" />
+                                          </font>
+                                       </Label>
+                                       <Label fx:id="locationLabel" text="location" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                          <font>
+                                             <Font size="16.0" />
+                                          </font>
+                                       </Label>
+                                       <Label fx:id="fullNameLabel" text="patientName" GridPane.columnIndex="1">
+                                          <font>
+                                             <Font size="16.0" />
+                                          </font>
+                                       </Label>
+                                       <Label text="Patient Name:">
+                                          <font>
+                                             <Font size="16.0" />
+                                          </font>
+                                       </Label>
+                                       <Label text="Location:" GridPane.rowIndex="1">
+                                          <font>
+                                             <Font size="16.0" />
+                                          </font>
+                                       </Label>
+                                       <Label text="Request Status:" GridPane.rowIndex="2">
+                                          <font>
+                                             <Font size="16.0" />
+                                          </font>
+                                       </Label>
+                                    </children>
+                                 </GridPane>
+                              </children>
+                           </GridPane>
+                        </children>
+                     </AnchorPane>
+                     <AnchorPane fx:id="searchPane" style="-fx-background-color: #f1f1f1;">
+                        <children>
+                           <HBox alignment="CENTER" prefHeight="900.0" prefWidth="953.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <children>
+                                 <VBox alignment="CENTER" prefHeight="900.0" prefWidth="333.0" spacing="40.0" style="-fx-background-color: #f1f1f1;">
+                                    <children>
+                                       <Label text="Search Service Requests">
+                                          <font>
+                                             <Font size="20.0" />
+                                          </font>
+                                       </Label>
+                                       <Label text="Filter Results">
+                                          <font>
+                                             <Font size="17.0" />
+                                          </font>
+                                       </Label>
+                                       <JFXComboBox fx:id="filterType" onAction="#onFilterType" prefHeight="25.0" prefWidth="153.0" />
+                                       <JFXComboBox fx:id="availableTypes" onAction="#onAvailableTypes" prefHeight="25.0" prefWidth="153.0" />
+                                       <JFXButton buttonType="RAISED" onAction="#onClear" prefHeight="26.0" prefWidth="52.0" ripplerFill="#11119d" text="Clear" textFill="WHITE" />
+                                       <JFXButton buttonType="RAISED" onAction="#onSearch" prefHeight="84.0" prefWidth="149.0" ripplerFill="#11119d" text="Search" textFill="WHITE" />
+                                    </children>
+                                 </VBox>
+                                 <TableView fx:id="searchResultTable" prefHeight="540.0" prefWidth="755.0" style="-fx-background-color: #e4e4e4;">
+                                    <columns>
+                                       <TableColumn fx:id="btnsCol" editable="false" minWidth="0.0" prefWidth="64.0" resizable="false" text="Choose" />
+                                       <TableColumn fx:id="idNumberCol" editable="false" minWidth="0.0" prefWidth="38.0" resizable="false" text="ID" />
+                                       <TableColumn fx:id="requestTypeCol" editable="false" prefWidth="98.142822265625" resizable="false" text="Type" />
+                                       <TableColumn fx:id="firstNameCol" editable="false" prefWidth="112.857177734375" resizable="false" text="First Name" />
+                                       <TableColumn fx:id="lastNameCol" editable="false" prefWidth="105.14288330078125" resizable="false" text="Last Name" />
+                                       <TableColumn fx:id="destinationCol" editable="false" prefWidth="108.85711669921875" resizable="false" text="Location" />
+                                       <TableColumn fx:id="requestPriorityCol" editable="false" prefWidth="60.8570556640625" resizable="false" text="Priority" />
+                                       <TableColumn fx:id="theStatusCol" editable="false" prefWidth="108.571533203125" resizable="false" text="Status" />
+                                    </columns>
+                                 </TableView>
+                              </children>
+                           </HBox>
+                        </children>
+                     </AnchorPane>
+                  </children>
+               </StackPane>
+            </content>
+         </Tab>
+         <Tab text="Statistics">
+           <content>
+               <StackPane>
+                  <children>
+                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </children>
+               </StackPane>
+           </content>
+         </Tab>
+      </tabs>
+   </JFXTabPane>
+   <FontAwesomeIconView fx:id="closeBtn" fill="WHITE" glyphName="TIMES" size="30" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+      <GridPane.margin>
+         <Insets right="10.0" top="7.5" />
+      </GridPane.margin>
+   </FontAwesomeIconView>
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
+</GridPane>
