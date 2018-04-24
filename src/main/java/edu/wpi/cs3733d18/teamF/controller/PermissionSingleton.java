@@ -2,10 +2,11 @@ package edu.wpi.cs3733d18.teamF.controller;
 
 import edu.wpi.cs3733d18.teamF.db.DatabaseHandler;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
-import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PermissionSingleton {
     DatabaseHandler dbHandler;
@@ -21,20 +22,24 @@ public class PermissionSingleton {
         currUser = "Guest";
 
         if (!userExist("admin")) {
-            addUser(new User("admin", "admin", "Admin", "Default", "Admin", "Admin"));
+            addUser(new User("admin", "admin", "Admin", "Default", "Admin", "Admin", ""));
+            /*
             if (!ServiceRequestSingleton.getInstance().isInTable("admin", "LanguageInterpreter")) {
                 ServiceRequestSingleton.getInstance().addUsernameLanguageInterpreter("admin");
                 ServiceRequestSingleton.getInstance().addUsernameReligiousServices("admin");
                 ServiceRequestSingleton.getInstance().addUsernameSecurityRequest("admin");
             }
+            */
         }
 
         if (!userExist("staff")) {
-            addUser(new User("staff", "staff", "Staff", "Member", "Staff", "Nurse"));
+
+            /*addUser(new User("staff", "staff", "Staff", "Member", "Staff", "Nurse"));
             if (!ServiceRequestSingleton.getInstance().isInTable("staff", "LanguageInterpreter")) {
                 ServiceRequestSingleton.getInstance().addUsernameLanguageInterpreter("staff");
                 ServiceRequestSingleton.getInstance().addUsernameReligiousServices("staff");
             }
+            */
         }
 
     }
@@ -75,6 +80,17 @@ public class PermissionSingleton {
         return false;
     }
 
+    public boolean forceLogin(String uname){
+        for (User u : pmanage.users) {
+            if (u.uname.equals(uname)) {
+                userPrivilege = getPrivilege(u.getType());
+                currUser = uname;
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void logout() {
         userPrivilege = Privilege.GUEST;
         currUser = "Guest";
@@ -93,6 +109,7 @@ public class PermissionSingleton {
                 + "', '" + u.getLastName()
                 + "', '" + u.getPrivilege()
                 + "', '" + u.getOccupation()
+                + "', '" + u.getFaceID()
                 + "')";
         dbHandler.runAction(sql);
     }
@@ -111,6 +128,7 @@ public class PermissionSingleton {
                 + "', lastName = '" + u.getLastName()
                 + "', privilege = '" + u.getPrivilege()
                 + "', occupation = '" + u.getOccupation()
+                + "', faceID = '" + u.getFaceID()
                 + "' WHERE username = '" + u.getUname() + "'";
         dbHandler.runAction(sql);
         sql = "SELECT * FROM HUser";
@@ -145,6 +163,14 @@ public class PermissionSingleton {
         public static final String GUEST = "Guest";
         public static final String ADMIN = "Admin";
         public static final String STAFF = "Staff";
+    }
+
+    public HashMap<String, String> getUserAndFace(){
+        HashMap<String, String> unameFace = new HashMap<>();
+        for(User u : PermissionSingleton.getInstance().getPermissionManager().users){
+            unameFace.put(u.uname, u.getFaceID());
+        }
+        return unameFace;
     }
 
     public String getUserPrivilege() {

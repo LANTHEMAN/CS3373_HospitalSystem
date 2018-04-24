@@ -1,8 +1,8 @@
 package edu.wpi.cs3733d18.teamF;
 
+import edu.wpi.cs3733d18.teamF.controller.ErrorSingleton;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.Screens;
-import edu.wpi.cs3733d18.teamF.controller.page.ErrorController;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.application.Application;
@@ -17,11 +17,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.Comparator;
-
 public class Main extends Application {
     public static void main(String[] args) throws IOException, InterruptedException, JAXBException {
+
         long fileSize = 0;
         // get rid of the database folder if its empty
         try {

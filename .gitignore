@@ -42,3 +42,11 @@ gradle-app.setting
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
 .gradletasknamecache
+
+database_teamF_SR_API/
+
+1298\.dic
+
+1298\.lm
+
+initMap/
