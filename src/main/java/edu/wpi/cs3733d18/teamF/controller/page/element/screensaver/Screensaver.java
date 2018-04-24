@@ -1,6 +1,7 @@
 package edu.wpi.cs3733d18.teamF.controller.page.element.screensaver;
 
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
+import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapMementoSingleton;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -37,12 +38,13 @@ public class Screensaver extends PageElement{
     }
 
     public void start(){
+        MapMementoSingleton.getInstance().saveState();
         showElement();
-        root.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
     }
 
     public void wakeUp(Event e){
         hideElement();
+        MapMementoSingleton.getInstance().returnToLastState();
     }
 
     @Override
