@@ -1778,6 +1778,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         returnToLastState();
     }
 
+    @Override
+    public void onPathsChanged(ArrayList<Path> floorPath) {
+
+    }
+
     @FXML
     private void onChangeKioskLocation() {
         mapViewElement.updateHomeLocation();
