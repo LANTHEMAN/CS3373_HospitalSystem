@@ -8,9 +8,10 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.controller.*;
 import edu.wpi.cs3733d18.teamF.controller.page.element.about.AboutElement;
+import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapMementoSingleton;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewListener;
-import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.mapState;
+import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapState;
 import edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.Screensaver;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.face.FaceLauncher;
@@ -40,7 +41,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -50,7 +50,6 @@ import javafx.util.Duration;
 import javafx.util.Pair;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -61,7 +60,7 @@ import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 public class HomeController implements SwitchableController, Observer, MapViewListener {
-    private static mapState savedState;
+    private static MapState savedState;
     private final ObservableList<String> privilegeOptions = FXCollections.observableArrayList("Staff", "Admin");
     @FXML
     public TableColumn chooseCol;
@@ -256,7 +255,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private JFXDrawer mapEditorDrawer;
     @FXML
     private AnchorPane mapEditorBtns;
-    private mapState state;
+    private MapState state;
     @FXML
     private AnchorPane screensaverPane;
 
@@ -351,11 +350,15 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         aboutElement.initialize(aboutElementPane);
         aboutElement.hideElement();
 
+        //init memento singleton
+        MapMementoSingleton.getInstance().setSource(mapViewElement);
+
         //init screensaver
         Pair<Screensaver, Pane> screensaverInfo = switcher.loadElement("screensaver.fxml");
         screensaver = screensaverInfo.getKey();
         screensaver.initialize(screensaverPane, switcher.getScene());
         screensaver.hideElement();
+
         // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);
 
@@ -409,24 +412,24 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         languageNode.setRotate(180);
 
         english.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            saveState();
+            MapMementoSingleton.getInstance().saveState();
             onEnglish();
-            returnToLastState();
+            MapMementoSingleton.getInstance().returnToLastState();
         });
         french.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            saveState();
+            MapMementoSingleton.getInstance().saveState();
             onFrench();
-            returnToLastState();
+            MapMementoSingleton.getInstance().returnToLastState();
         });
         spanish.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            saveState();
+            MapMementoSingleton.getInstance().saveState();
             onSpanish();
-            returnToLastState();
+            MapMementoSingleton.getInstance().returnToLastState();
         });
         chinese.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            saveState();
+            MapMementoSingleton.getInstance().saveState();
             onChinese();
-            returnToLastState();
+            MapMementoSingleton.getInstance().returnToLastState();
         });
 
 
@@ -1752,31 +1755,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         mapViewElement.setEditMode(MapViewElement.EditMode.PAN);
     }
 
-    public void saveState() {
-        this.savedState = new mapState(mapViewElement.getMapDrawController().getDrawnPath(), mapViewElement.getGesturePane().getCurrentScale(), mapViewElement.getGesturePane().targetPointAtViewportCentre());
-//        this.savedState = new mapState(mapViewElement.getMapDrawController().getDrawnPath(), mapViewElement.getGesturePane().getTarget());
-    }
-
-    public void returnToState(mapState state) {
-        if (state == null) return;
-        System.out.println(state.getTarget());
-        System.out.println(state.getZoomAmount());
-        if (state.getPath() != null) mapViewElement.getMapDrawController().showPath(state.getPath());
-        mapViewElement.getGesturePane().zoomTo(state.getZoomAmount(), state.getTarget());
-    }
-
-    public void returnToLastState() {
-        returnToState(savedState);
-    }
-
-    public mapState getLastState() {
-        return savedState;
-    }
-
     @Override
-    public void onRefresh() {
-        returnToLastState();
-    }
+    public void onRefresh() { MapMementoSingleton.getInstance().returnToLastState(); }
 
     @Override
     public void onPathsChanged(ArrayList<Path> floorPath) {
@@ -1802,9 +1782,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     public void toggleGoogleMap() {
         if (isGoogleMapViewEnabled) {
-            saveState();
+            MapMementoSingleton.getInstance().saveState();
             switcher.switchTo(Screens.Home);
-            returnToLastState();
+            MapMementoSingleton.getInstance().returnToLastState();
             return;
         }
         setGoogleMapViewEnabled(true);
