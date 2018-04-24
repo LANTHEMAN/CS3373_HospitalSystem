@@ -75,23 +75,20 @@ public class Path {
         ArrayList<Path> paths = new ArrayList<>();
         ArrayList<Node> nodes = new ArrayList<>();
 
-        for (Edge edge : edges) {
-            Node node1 = edge.getNode1();
-            Node node2 = edge.getNode2();
-
-            nodes.add(node1);
-
-            if (!node1.getFloor().equals(node2.getFloor())) {
-                paths.add(new Path(nodes, graph));
-                nodes.clear();
+        String prevFloor = this.nodes.get(0).getFloor();
+        for(Node node : this.nodes){
+            if(node.getFloor().equals(prevFloor)){
+                nodes.add(node);
             }
-            // if its the last edge
-            if (edge == edges.get(edges.size() - 1)) {
-                nodes.add(node2);
-                paths.add(new Path(nodes, graph));
+            else{
+                paths.add(new Path(new ArrayList<>(nodes), graph));
+                nodes.clear();
+                nodes.add(node);
+                prevFloor = node.getFloor();
             }
         }
-        System.out.println("paths = " + paths);
+        paths.add(new Path(new ArrayList<>(nodes), graph));
+
         return paths;
     }
 
