@@ -24,9 +24,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
     private ServiceRequests popUpRequest;
     private String lastFilter;
     private String lastSearch;
-    private int prefWidth;
-    private int prefLength;
-    private String destNodeID;
 
     private ServiceRequestSingleton() {
         // initialize this class with the database
@@ -245,9 +242,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 Timestamp createdOn = null;
                 Timestamp started = null;
                 Timestamp completed = null;
-                String destNodeID = null;
-                String sourceNodeID = null;
-                String staffNeeded = resultSet.getString(15);
+                String staffNeeded = resultSet.getString(13);
                 try {
                     createdOn = resultSet.getTimestamp(10);
                 } catch (SQLException e) {
@@ -260,16 +255,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 }
                 try {
                     completed = resultSet.getTimestamp(12);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    destNodeID = resultSet.getString(13);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    sourceNodeID = resultSet.getString(14);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -308,7 +293,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
                         break;
 
                     case "Maintenance Request":
-                        s = new MaintenanceRequest(id, firstName, lastName, location, description, status, priority, special, completedBy, createdOn, started, completed, staffNeeded);
+                        s = new MaintenanceRequest(id, location, description, status, priority, special, completedBy, createdOn, started, completed, staffNeeded);
                         break;
 
                     default:
@@ -380,6 +365,18 @@ public class ServiceRequestSingleton implements DatabaseItem {
         dbHandler.runAction(sql);
     }
 
+    public void addUsernameMaintenanceRequest(String username) {
+        String sql = "INSERT INTO MaintenanceRequest WHERE username = '" + username + "'";
+        dbHandler.runAction(sql);
+    }
+
+    public void removeUsernameMaintenanceRequest(String username) {
+        String sql = "DELETE FROM MaintenanceRequest WHERE username = '" + username + "'";
+        dbHandler.runAction(sql);
+    }
+
+
+
 
     public boolean isInTable(String username, String table) {
         ResultSet rs;
@@ -431,26 +428,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
     }
 
 
-    public void setGridPaneDimensions(int windowWidth, int windowLength) {
-        this.prefWidth = windowWidth;
-        this.prefLength = windowLength;
-    }
-
-    public int getPrefWidth() {
-        return prefWidth;
-    }
-
-    public int getPrefLength() {
-        return prefLength;
-    }
-
-    public void setDestinationLocation(String destNodeID) {
-        this.destNodeID = destNodeID;
-    }
-
-    public String getDestNodeID() {
-        return destNodeID;
-    }
 
 
     public ArrayList<ServiceRequests> getServiceRequests() {

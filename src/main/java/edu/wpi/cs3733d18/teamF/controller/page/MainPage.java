@@ -38,6 +38,8 @@ public class MainPage implements SwitchableController, Observer {
     private final ObservableList<String> filterOptions = FXCollections.observableArrayList("Priority", "Status", "Type");
     private final ObservableList<String> languages = FXCollections.observableArrayList("Spanish", "French", "Chinese");
     private final ObservableList<String> religions = FXCollections.observableArrayList("Catholic", "Protestant", "Islamic", "Hindu", "Jewish", "Buddhist");
+    //TODO: Add realistic situations for maintenance request
+    private final ObservableList<String> situations = FXCollections.observableArrayList("Elevator Repair", "Broken Bed", "Fix Door");
     @FXML
     public ComboBox filterType, availableTypes, availableLanguagesBox, situationSelection;
     @FXML
@@ -202,11 +204,11 @@ public class MainPage implements SwitchableController, Observer {
         filterType.getItems().addAll(filterOptions);
         availableLanguagesBox.getItems().addAll(languages);
         religionSelect.getItems().addAll(religions);
+        situationSelection.getItems().addAll(situations);
 
         usernameSearch.setOnKeyTyped((KeyEvent e) -> {
             String input = usernameSearch.getText();
             input = input.concat("" + e.getCharacter());
-            //TODO: Fix auto complete
             DatabaseWrapper.autoComplete(input, usernameList, "HUser", "username");
         });
 
@@ -537,8 +539,7 @@ public class MainPage implements SwitchableController, Observer {
         } else {
             description = instructionsRS.getText();
         }
-        RadioButton selection = (RadioButton) religionSelect.getSelectionModel().getSelectedItem();
-        religion = selection.getText();
+        religion = religionSelect.getSelectionModel().getSelectedItem().toString();
         first_name = firstNameRS.getText();
         last_name = lastNameRS.getText();
         location = destinationRS.getText();
@@ -666,15 +667,15 @@ public class MainPage implements SwitchableController, Observer {
         RadioButton staffSelected = (RadioButton) staffToggleMaintenance.getSelectedToggle();
         String staffNeeded = staffSelected.getText();
         description = situation + "/////" + description;
-        SecurityRequests sec = new SecurityRequests(location, description, status, priority, staffNeeded);
+        MaintenanceRequest sec = new MaintenanceRequest(location, description, status, priority, situation, staffNeeded);
 
         MapSingleton.getInstance().getMap().disableNode(location);
 
         ServiceRequestSingleton.getInstance().sendServiceRequest(sec);
         ServiceRequestSingleton.getInstance().addServiceRequest(sec);
         TwilioHandlerSingleton.getInstance().sendMessage("\nMaintenance is required at " + location + ".\nAdditional Details: " + description);
-        securityPane.toBack();
-        clearSecurity();
+        maintenancePane.toBack();
+        clearMaintenancePane();
     }
 
     @FXML
