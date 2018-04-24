@@ -28,6 +28,7 @@ import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
@@ -302,6 +303,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private ImageView userIDView;
     @FXML
     private JFXTextField faceIDField;
+    @FXML
+    private JFXCheckBox allFloors;
 
     /**
      * Constructor for this class
@@ -362,6 +365,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         VoiceCommandVerification voice = new VoiceCommandVerification();
         voice.addObserver(this);
         VoiceLauncher.getInstance().addObserver(voice);
+
+        mapViewElement.update3DPathDisplay(false);
+        allFloors.setSelected(false);
 
 
         // set up mod node panel
@@ -1856,4 +1862,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     }
 
+    @FXML
+    public void onAllFloors() {
+        mapViewElement.update3DPathDisplay(allFloors.isSelected());
+    }
 }

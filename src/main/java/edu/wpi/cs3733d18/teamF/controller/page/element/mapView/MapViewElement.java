@@ -410,6 +410,7 @@ public class MapViewElement extends PageElement {
         selectedNodeEnd = destinationNode;
         Path path = map.getPath(selectedNodeStart, destinationNode);
         mapDrawController.showPath(path);
+        onChangePath(false);
         return path;
     }
 
@@ -577,7 +578,7 @@ public class MapViewElement extends PageElement {
         @Override
         public void update(Observable o, Object arg) {
             if (isMap2D != map.is2D()) {
-                zoomToPath(mapDrawController.getDrawnPath());
+                onChangePath(true);
             }
             if (!mapFloorDrawn.equals(map.getFloor()) || isMap2D != map.is2D()) {
                 refreshFloorDrawn();
