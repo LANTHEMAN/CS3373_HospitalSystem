@@ -53,7 +53,7 @@ dependencies {
             [group: "com.twilio.sdk", name: "twilio", version: "7.17.+"],
             [group: "com.github.rterp", name: "GMapsFX", version: "GMapsFX-2.12.0"],
             [group: 'org.jfxtras', name: 'jfxtras-controls', version: '8.0-r3'],
-            [group: 'com.github.matkam7', name: 'RadialFx', version: 'v0.0.1']
+            [group: 'com.github.matkam7', name: 'RadialFx', version: 'v0.0.2']
     )
 }
 
