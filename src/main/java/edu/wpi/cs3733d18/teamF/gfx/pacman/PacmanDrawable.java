@@ -1,10 +1,13 @@
-package edu.wpi.cs3733d18.teamF.controller.page.element.pacman;
+package edu.wpi.cs3733d18.teamF.gfx.pacman;
 
 import edu.wpi.cs3733d18.teamF.Main;
 import edu.wpi.cs3733d18.teamF.gfx.Drawable;
 import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+
+import java.util.Random;
+
 enum Direction {UP, DOWN, LEFT, RIGHT}
 
 public class PacmanDrawable implements Drawable {
@@ -45,6 +48,29 @@ public class PacmanDrawable implements Drawable {
         return posY;
     }
 
+    public void drawRandom(Pane pane){
+        boolean is2D = MapSingleton.getInstance().getMap().is2D();
+        int imageWidth = 5000;
+        int imageHeight = is2D ? 3400 : 2772;
+        Random rand = new Random();
+        posX = rand.nextInt(imageWidth);
+        posY = rand.nextInt(imageHeight);
+        switch(rand.nextInt(4)){
+            case 0:
+                currDirection = Direction.UP;
+                break;
+            case 1:
+                currDirection = Direction.DOWN;
+                break;
+            case 2:
+                currDirection = Direction.LEFT;
+                break;
+            default:
+                currDirection = Direction.RIGHT;
+                break;
+        }
+        draw(pane);
+    }
     @Override
     public void draw(Pane pane) {
 

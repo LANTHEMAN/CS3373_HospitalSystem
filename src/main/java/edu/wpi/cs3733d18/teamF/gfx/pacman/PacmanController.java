@@ -1,4 +1,4 @@
-package edu.wpi.cs3733d18.teamF.controller.page.element.pacman;
+package edu.wpi.cs3733d18.teamF.gfx.pacman;
 
 
 public class PacmanController{
