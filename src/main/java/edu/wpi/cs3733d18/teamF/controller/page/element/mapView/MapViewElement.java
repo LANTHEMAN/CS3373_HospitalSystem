@@ -84,6 +84,9 @@ public class MapViewElement extends PageElement {
     }
 
     public void zoomToPath(int pathIndex) {
+        if (mapDrawController.getDrawnPath() == null) {
+            return;
+        }
         floorPath = mapDrawController.getDrawnPath().separateIntoFloors();
 
         if (pathIndex == -1) {
