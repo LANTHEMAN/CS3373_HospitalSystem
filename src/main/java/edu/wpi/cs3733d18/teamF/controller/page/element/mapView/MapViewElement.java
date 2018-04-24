@@ -8,7 +8,13 @@ import edu.wpi.cs3733d18.teamF.gfx.impl.map.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.animation.Transition;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
@@ -108,9 +114,11 @@ public class MapViewElement extends PageElement {
         scaleFactor -= 3;
 
         if (rect.getHeight() > 0 && rect.getWidth() > 0) {
-            //TODO make this pretty
-            getGesturePane().zoomTo(scaleFactor, midPoint);
-            getGesturePane().animate(Duration.millis(1000)).centreOn(midPoint);
+            getGesturePane().animate(new Duration(200)).zoomTo(scaleFactor, midPoint);
+            Timeline oneHitWonder = new Timeline(new KeyFrame(Duration.millis(200),
+                    event -> getGesturePane().animate(Duration.millis(500)).centreOn(midPoint)));
+            oneHitWonder.setCycleCount(1);
+            oneHitWonder.play();
         }
     }
 
