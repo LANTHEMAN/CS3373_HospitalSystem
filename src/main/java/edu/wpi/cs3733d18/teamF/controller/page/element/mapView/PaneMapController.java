@@ -3,6 +3,7 @@ package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 import edu.wpi.cs3733d18.teamF.gfx.MapDrawable;
 import edu.wpi.cs3733d18.teamF.gfx.PaneController;
 import edu.wpi.cs3733d18.teamF.graph.Map;
+import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
 import javafx.scene.layout.Pane;
@@ -209,6 +210,11 @@ public class PaneMapController extends PaneController implements Observer {
 
     public void setMapDrawer(MapDrawable m){
         mapDrawer = m;
+        clearDrawables();
+        mapDrawer.update(MapSingleton.getInstance().getMap());
+        addDrawable(mapDrawer);
+        refresh();
+
     }
     @Override
     public void update(Observable o, Object arg) {

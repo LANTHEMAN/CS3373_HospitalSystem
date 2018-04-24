@@ -120,9 +120,6 @@ public class UglyMapDrawer extends MapDrawable {
     public void draw(Pane pane) {
         Node selectedNode = null;
         Node hoveredNode = null;
-        if (gameMapDrawer.getFloor().equals(map.getFloor())){
-            gameMapDrawer.draw(pane);
-        }
         if (selectedNodePos != null) {
             selectedNode = map.findNodeClosestTo(selectedNodePos.getX(), selectedNodePos.getY(), true);
         }

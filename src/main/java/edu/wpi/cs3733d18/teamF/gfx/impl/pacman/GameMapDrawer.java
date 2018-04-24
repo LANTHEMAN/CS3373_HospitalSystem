@@ -17,7 +17,7 @@ enum Direction {UP, DOWN, LEFT, RIGHT}
 public class GameMapDrawer extends MapDrawable implements Drawable {
 
     private double posX,posY;
-    private String floor;
+    private String floor = "L1";
     private Direction currDirection;
     private Node node = null;
 
@@ -163,29 +163,30 @@ public class GameMapDrawer extends MapDrawable implements Drawable {
         posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
         Image icon =  new Image(Main.class.getResource("pacman.gif").toExternalForm());
         javafx.scene.image.ImageView iconView = new javafx.scene.image.ImageView(icon);
-        switch(currDirection){
-            case UP:
-                iconView.setRotate(270);
-                break;
-            case LEFT:
-                iconView.setRotate(180);
-                break;
-            case DOWN:
-                iconView.setRotate(90);
-                break;
-            case RIGHT:
-            default:
-                iconView.setRotate(0);
-                break;
+        if(floor.equals(MapSingleton.getInstance().getMap().getFloor())) {
+            switch (currDirection) {
+                case UP:
+                    iconView.setRotate(270);
+                    break;
+                case LEFT:
+                    iconView.setRotate(180);
+                    break;
+                case DOWN:
+                    iconView.setRotate(90);
+                    break;
+                case RIGHT:
+                default:
+                    iconView.setRotate(0);
+                    break;
+            }
+            double imageWidth = 5000;
+            double imageHeight = is2D ? 3400 : 2772;
+            iconView.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 100);
+            iconView.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 100);
+            iconView.setScaleX(0.03);
+            iconView.setScaleY(0.03);
+            iconView.setVisible(true);
+            pane.getChildren().add(iconView);
         }
-        double imageWidth = 5000;
-        double imageHeight = is2D ? 3400 : 2772;
-
-        iconView.setTranslateX((posX * pane.getMaxWidth() / imageWidth) - 100);
-        iconView.setTranslateY((posY * pane.getMaxHeight() / imageHeight) - 100);
-        iconView.setScaleX(0.03);
-        iconView.setScaleY(0.03);
-        iconView.setVisible(true);
-        pane.getChildren().add(iconView);
     }
 }
