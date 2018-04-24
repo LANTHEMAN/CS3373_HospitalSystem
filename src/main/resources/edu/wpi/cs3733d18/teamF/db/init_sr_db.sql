@@ -4,12 +4,14 @@ type varchar(50),
 firstName varchar(50),
 lastName varchar(50),
 location varchar(50),
-instructions varchar(200),
+instructions varchar(400),
 priority int,
 status varchar(50),
-assignedTo varchar(20) REFERENCES HUser(username),
-completedBy varchar(20) REFERENCES HUser(username),
+completedBy varchar(20),
 createdOn TIMESTAMP,
 started TIMESTAMP,
-completed TIMESTAMP
+completed TIMESTAMP,
+destNodeID char(10),
+sourceNodeID char(10),
+staffNeeded varchar(10)
 );

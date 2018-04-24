@@ -1621,9 +1621,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     private void onServiceRequest() {
-        edu.wpi.cs3733d18.teamF.api.ServiceRequest.injectObservable(VoiceLauncher.getInstance());
-        edu.wpi.cs3733d18.teamF.api.ServiceRequest sr = new edu.wpi.cs3733d18.teamF.api.ServiceRequest();
-        sr.run(-1, -1, 1000, 631, null, null, null);
+        switcher.popupSR(Screens.MainPage);
     }
 
 

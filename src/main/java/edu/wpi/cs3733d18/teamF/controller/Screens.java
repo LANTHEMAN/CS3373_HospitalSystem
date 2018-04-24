@@ -6,6 +6,7 @@ public class Screens {
 
     public static final Screen Home = new Screen("home.fxml", HomeController.class);
     public static final Screen Error = new Screen("error.fxml", ErrorController.class);
+    public static final Screen MainPage = new Screen("mainPage.fxml", MainPage.class);
 
     static class Screen {
         public final String fxmlFile;
