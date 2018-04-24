@@ -35,8 +35,9 @@ public class MainPage implements SwitchableController, Observer {
     private final ObservableList<String> status = FXCollections.observableArrayList("Incomplete", "In Progress", "Complete");
     private final ObservableList<String> type = FXCollections.observableArrayList("Language Interpreter", "Religious Services", "Security Request");
     private final ObservableList<String> filterOptions = FXCollections.observableArrayList("Priority", "Status", "Type");
+    private final ObservableList<String> languages = FXCollections.observableArrayList("Spanish", "French", "Chinese");
     @FXML
-    public ComboBox filterType, availableTypes;
+    public ComboBox filterType, availableTypes, availableLanguagesBox;
     @FXML
     public TableView<ServiceRequests> searchResultTable;
     @FXML
@@ -71,7 +72,7 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     Label locationRequiredLI;
     @FXML
-    ToggleGroup securityToggle, staffToggle, staffToggleSR, securityToggleSR;
+    ToggleGroup securityToggle, staffToggle, staffToggleSR, securityToggleSR, securityToggleLI, securityToggleRS, staffToggleRS;
     @FXML
     JFXTextField securityLocationField, requestTitleField;
     @FXML
@@ -184,6 +185,7 @@ public class MainPage implements SwitchableController, Observer {
         }
 
         filterType.getItems().addAll(filterOptions);
+        availableLanguagesBox.getItems().addAll(languages);
 
         usernameSearch.setOnKeyTyped((KeyEvent e) -> {
             String input = usernameSearch.getText();
@@ -434,14 +436,18 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     void onSubmitLI() {
         int requiredFieldsEmpty = 0;
-        String l;
+        String language;
         String first_name;
         String last_name;
         String location;
         String description;
-        if (languageField.getText() == null || languageField.getText().trim().isEmpty()) {
+        try{
+            language = availableLanguagesBox.getSelectionModel().getSelectedItem().toString();
+        }catch (NullPointerException e){
+            e.printStackTrace();
             languageRequiredLI.setVisible(true);
             requiredFieldsEmpty++;
+            language = "";
         }
         if (firstNameLanguage.getText() == null || firstNameLanguage.getText().trim().isEmpty()) {
             firstNameRequiredLI.setVisible(true);
@@ -464,15 +470,16 @@ public class MainPage implements SwitchableController, Observer {
         } else {
             description = instructionsLanguage.getText();
         }
-        l = languageField.getText();
         first_name = firstNameLanguage.getText();
         last_name = lastNameLanguage.getText();
         location = destinationLanguage.getText();
-        String new_description = l + "/////" + description;
-        ServiceRequests request = new LanguageInterpreter(first_name, last_name, location, new_description, "Incomplete", 1, l, "replaceWithCorrectValue");
+        String new_description = language + "/////" + description;
+        RadioButton selection = (RadioButton) securityToggleLI.getSelectedToggle();
+        int priority = Integer.parseInt(selection.getText());
+        ServiceRequests request = new LanguageInterpreter(first_name, last_name, location, new_description, "Incomplete", priority, language, "1");
         ServiceRequestSingleton.getInstance().sendServiceRequest(request);
         ServiceRequestSingleton.getInstance().addServiceRequest(request);
-        TwilioHandlerSingleton.getInstance().sendMessage("\n" + first_name + " " + last_name + " needs a " + l + " interpreter at " + location + ".\nAdditional Details: " + description);
+        TwilioHandlerSingleton.getInstance().sendMessage("\n" + first_name + " " + last_name + " needs a " + language + " interpreter at " + location + ".\nAdditional Details: " + description);
         languageInterpreterPane.toBack();
         clearLanguage();
     }
@@ -553,7 +560,8 @@ public class MainPage implements SwitchableController, Observer {
         last_name = lastNameRS.getText();
         location = destinationRS.getText();
         String new_description = r + "/////" + occasion + "/////" + description + "\n";
-        String staffNeeded = staffToggle.getSelectedToggle().toString();
+        RadioButton selected = (RadioButton) staffToggle.getSelectedToggle();
+        String staffNeeded = selected.getText();
         ServiceRequests request = new ReligiousServices(first_name, last_name, location, new_description, "Incomplete", 1, r, staffNeeded);
         ServiceRequestSingleton.getInstance().sendServiceRequest(request);
         ServiceRequestSingleton.getInstance().addServiceRequest(request);
