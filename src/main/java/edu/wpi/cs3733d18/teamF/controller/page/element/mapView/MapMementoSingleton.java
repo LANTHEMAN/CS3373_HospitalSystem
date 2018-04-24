@@ -24,9 +24,10 @@ public class MapMementoSingleton {
 
     public void returnToState(MapState state) {
         if (state == null) return;
-        System.out.println(state.getTarget());
-        System.out.println(state.getZoomAmount());
-        if (state.getPath() != null) source.getMapDrawController().showPath(state.getPath());
+        if (state.getPath() != null) {
+            source.getMapDrawController().showPath(state.getPath());
+            source.getMapViewListener().onNewPathSelected(state.getPath());
+        }
         source.getGesturePane().zoomTo(state.getZoomAmount(), state.getTarget());
         source.getGesturePane().centreOn(state.getTarget());
     }

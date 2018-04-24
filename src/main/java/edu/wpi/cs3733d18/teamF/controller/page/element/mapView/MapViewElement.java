@@ -2,6 +2,7 @@ package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
+import edu.wpi.cs3733d18.teamF.controller.page.HomeController;
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
 import edu.wpi.cs3733d18.teamF.gfx.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.impl.map.UglyMapDrawer;
@@ -34,6 +35,7 @@ public class MapViewElement extends PageElement {
     String startNodeID = "FRETL00101";
     EditMode editMode = EditMode.MOVENODE;
     boolean showAllFloors = false;
+
     // used to see if the floor has changed to update the map drawn
     private MapListener mapListener;
     private ViewMode viewMode = ViewMode.VIEW;
@@ -568,6 +570,11 @@ public class MapViewElement extends PageElement {
 
     public GesturePane getGesturePane() {
         return gesturePane;
+    }
+
+
+    public MapViewListener getMapViewListener() {
+        return listener;
     }
 
     public enum ViewMode {
