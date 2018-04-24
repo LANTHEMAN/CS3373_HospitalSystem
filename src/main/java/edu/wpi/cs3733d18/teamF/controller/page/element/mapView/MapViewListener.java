@@ -4,6 +4,8 @@ import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
 import javafx.geometry.Point2D;
 
+import java.util.ArrayList;
+
 public interface MapViewListener {
     void onNewPathSelected(Path path);
     void onNewDestinationNode(Node node);
@@ -11,4 +13,7 @@ public interface MapViewListener {
     void onNewNodePopup(Point2D sceneLocation, Point2D nodeLocation);
     void onHideNewNodePopup();
     void onFloorRefresh();
+    void onRefresh();
+
+    void onPathsChanged(ArrayList<Path> floorPath);
 }

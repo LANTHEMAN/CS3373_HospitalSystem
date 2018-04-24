@@ -10,6 +10,11 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 public class Node extends Observable {
+
+    public static class Type{
+        public static final String ELEVATOR = "ELEV";
+        public static final String STAIR = "STAI";
+    }
     // the database ID of this node
     private final String nodeID;
     // the name of the floor where this node is located
@@ -28,6 +33,16 @@ public class Node extends Observable {
     private String shortName;
     // full name of this node
     private String longName;
+
+    public static final HashMap<String,Integer> floorToInt = new HashMap<String,Integer>();
+    static {
+        floorToInt.put("L2", -2);
+        floorToInt.put("L1", -1);
+        floorToInt.put("0G", 0);
+        floorToInt.put("01", 1);
+        floorToInt.put("02", 2);
+        floorToInt.put("03", 3);
+    }
 
     Node(Point3D position, Point2D wireframePosition, double additionalWeight, String nodeID, String floor, String building
             , String nodeType, String shortName, String longName) {
@@ -248,14 +263,8 @@ public class Node extends Observable {
             return 0;
         }
         else{
-            HashMap<String,Integer> floortoInt= new HashMap<String,Integer>();
-            floortoInt.put("L2",-2);
-            floortoInt.put("L1",-1);
-            floortoInt.put("0G",0);
-            floortoInt.put("01",1);
-            floortoInt.put("02",2);
-            floortoInt.put("03",3);
-            if(floortoInt.get(floor) < floortoInt.get(compNode.floor)){
+
+            if(floorToInt.get(floor) < floorToInt.get(compNode.floor)){
                 return -1;
             }
             else {

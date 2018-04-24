@@ -1,10 +1,12 @@
 package edu.wpi.cs3733d18.teamF.graph;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Path {
     private ArrayList<Node> nodes;
     private ArrayList<Edge> edges;
+    private Graph graph;
 
     /**
      * A collection of nodes and edges representing a path along a graph
@@ -15,6 +17,7 @@ public class Path {
     public Path(ArrayList<Node> path, Graph graph) {
         this.nodes = path;
         this.edges = new ArrayList<>();
+        this.graph = graph;
 
         // get edges
         Node prevNode = null;
@@ -61,6 +64,34 @@ public class Path {
         return this.nodes.equals(path.nodes);
     }
 
+    public ArrayList<Path> separateIntoFloors() {
+        if (nodes.size() == 0) {
+            return new ArrayList<>();
+        }
+        if (edges.size() == 0) {
+            return new ArrayList<>(Collections.singletonList(new Path(new ArrayList<>(nodes), graph)));
+        }
+
+        ArrayList<Path> paths = new ArrayList<>();
+        ArrayList<Node> nodes = new ArrayList<>();
+
+        String prevFloor = this.nodes.get(0).getFloor();
+        for(Node node : this.nodes){
+            if(node.getFloor().equals(prevFloor)){
+                nodes.add(node);
+            }
+            else{
+                paths.add(new Path(new ArrayList<>(nodes), graph));
+                nodes.clear();
+                nodes.add(node);
+                prevFloor = node.getFloor();
+            }
+        }
+        paths.add(new Path(new ArrayList<>(nodes), graph));
+
+        return paths;
+    }
+
     public ArrayList<String> makeTextDirections() {
         ArrayList<String> directions = new ArrayList<>();
 
@@ -69,6 +100,8 @@ public class Path {
         if (nodes.size() == 0) {
             return directions;
         }
+
+        directions.add("Begin at " + this.getNodes().get(0).getShortName());
 
         for (int nodeIndex = 1; nodeIndex < this.nodes.size() - 1; nodeIndex++) {
 
@@ -81,26 +114,34 @@ public class Path {
             dist += previousNode.displacementTo(currentNode) / 7.f;
 
             if (currentNode.getNodeType().equals("ELEV") && nextNode.getNodeType().equals("ELEV")) {
-                directions.add("Take Elevator to floor: " + nextNode.getFloor());
+                if (Node.floorToInt.get(currentNode.getFloor()) < Node.floorToInt.get(nextNode.getFloor())) {
+                    directions.add("Take elevator up to floor: " + nextNode.getFloor());
+                } else {
+                    directions.add("Take elevator down to floor: " + nextNode.getFloor());
+                }
                 continue;
-            } else if (currentNode.getNodeType().equals("STAI") && nextNode.getNodeType().equals("ELEV")) {
-                directions.add("Take Stairs to floor: " + nextNode.getFloor());
+            } else if (currentNode.getNodeType().equals("STAI") && nextNode.getNodeType().equals("STAI")) {
+                if (Node.floorToInt.get(currentNode.getFloor()) < Node.floorToInt.get(nextNode.getFloor())) {
+                    directions.add("Take stairs up to floor: " + nextNode.getFloor());
+                } else {
+                    directions.add("Take stairs down to floor: " + nextNode.getFloor());
+                }
                 continue;
             }
 
             if (angle < -30) {
                 directions.add(String.format("Walk straight for %.0f feet", dist));
                 if (currentNode.getNodeType().equals("HALL"))
-                    directions.add("Turn Left");
+                    directions.add("Turn left");
                 else
-                    directions.add("Turn Left at " + currentNode.getShortName());
+                    directions.add("Turn left at " + currentNode.getShortName());
                 dist = 0;
             } else if (angle > 30) {
                 directions.add(String.format("Walk straight for %.0f feet", dist));
                 if (currentNode.getNodeType().equals("HALL"))
-                    directions.add("Turn Right");
+                    directions.add("Turn right");
                 else
-                    directions.add("Turn Right at " + currentNode.getShortName());
+                    directions.add("Turn right at " + currentNode.getShortName());
                 dist = 0;
             }
         }

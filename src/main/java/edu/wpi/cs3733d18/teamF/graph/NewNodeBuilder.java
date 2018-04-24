@@ -1,6 +1,5 @@
 package edu.wpi.cs3733d18.teamF.graph;
 
-import edu.wpi.cs3733d18.teamF.Map;
 import javafx.geometry.Point2D;
 
 import static java.lang.Math.cos;
@@ -155,19 +154,29 @@ public class NewNodeBuilder extends NodeBuilder<NewNodeBuilder> {
      * @return this to allow chained builder calls
      */
     public NewNodeBuilder setFloor(String floor) {
-        if (floor.equals("0") || floor.equals("0G")) {
-            this.floor = "0G";
-        } else if (floor.equals("1") || floor.equals("01")) {
-            this.floor = "01";
-        } else if (floor.equals("2") || floor.equals("02")) {
-            this.floor = "02";
-        } else if (floor.equals("3") || floor.equals("03")) {
-            this.floor = "03";
-        } else {
-            if (!(floor.equals("L1") || floor.equals("L2"))) {
-                throw new AssertionError("Unknown Floor Number. Must be any of: 0G, 01, 02, 03, L1, L2");
-            }
-            this.floor = floor;
+        switch (floor) {
+            case "0":
+            case "0G":
+                this.floor = "0G";
+                break;
+            case "1":
+            case "01":
+                this.floor = "01";
+                break;
+            case "2":
+            case "02":
+                this.floor = "02";
+                break;
+            case "3":
+            case "03":
+                this.floor = "03";
+                break;
+            default:
+                if (!(floor.equals("L1") || floor.equals("L2"))) {
+                    throw new AssertionError("Unknown Floor Number. Must be any of: 0G, 01, 02, 03, L1, L2");
+                }
+                this.floor = floor;
+                break;
         }
         return this;
     }
