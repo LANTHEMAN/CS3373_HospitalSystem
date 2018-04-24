@@ -88,7 +88,7 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     TextField firstNameRS, lastNameRS, destinationRS;
     @FXML
-    JFXComboBox occasionBoxRS, religionSelect;
+    JFXComboBox religionSelect;
     @FXML
     TextArea instructionsRS;
     @FXML
@@ -519,18 +519,13 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     void onSubmitRS() {
         int requiredFieldsEmpty = 0;
-        String r;
+        String religion;
         String first_name;
         String last_name;
         String location;
         String description;
-        String occasion;
         if (religionSelect.getSelectionModel().isEmpty()) {
             religionRequiredRS.setVisible(true);
-            requiredFieldsEmpty++;
-        }
-        if (occasionBoxRS.getSelectionModel().isEmpty()){
-            occasionRequiredRS.setVisible(true);
             requiredFieldsEmpty++;
         }
         if (firstNameRS.getText() == null || firstNameRS.getText().trim().isEmpty()) {
@@ -554,18 +549,20 @@ public class MainPage implements SwitchableController, Observer {
         } else {
             description = instructionsRS.getText();
         }
-        r = religionSelect.getSelectionModel().getSelectedItem().toString();
-        occasion = occasionBoxRS.getSelectionModel().getSelectedItem().toString();
+        RadioButton selection = (RadioButton) religionSelect.getSelectionModel().getSelectedItem();
+        religion = selection.getText();
         first_name = firstNameRS.getText();
         last_name = lastNameRS.getText();
         location = destinationRS.getText();
-        String new_description = r + "/////" + occasion + "/////" + description + "\n";
-        RadioButton selected = (RadioButton) staffToggle.getSelectedToggle();
+        String new_description = religion + "/////" + description + "\n";
+        RadioButton selected = (RadioButton) staffToggleRS.getSelectedToggle();
         String staffNeeded = selected.getText();
-        ServiceRequests request = new ReligiousServices(first_name, last_name, location, new_description, "Incomplete", 1, r, staffNeeded);
+        selected = (RadioButton) securityToggleRS.getSelectedToggle();
+        int priority = Integer.parseInt(selected.getText());
+        ServiceRequests request = new ReligiousServices(first_name, last_name, location, new_description, "Incomplete", priority, religion, staffNeeded);
         ServiceRequestSingleton.getInstance().sendServiceRequest(request);
         ServiceRequestSingleton.getInstance().addServiceRequest(request);
-        TwilioHandlerSingleton.getInstance().sendMessage("\n" + first_name + " " + last_name + " needs " + r + " services at " + location + ".\nAdditional Details: " + description);
+        TwilioHandlerSingleton.getInstance().sendMessage("\n" + first_name + " " + last_name + " needs " + religion + " services at " + location + ".\nAdditional Details: " + description);
         religiousServicesPane.toBack();
         clearReligious();
     }
@@ -581,7 +578,6 @@ public class MainPage implements SwitchableController, Observer {
         if (religionRequiredRS.isVisible()) {
             religionRequiredRS.setVisible(false);
         }
-        occasionBoxRS.getSelectionModel().clearSelection();
         if(occasionRequiredRS.isVisible()){
             occasionRequiredRS.setVisible(false);
         }
