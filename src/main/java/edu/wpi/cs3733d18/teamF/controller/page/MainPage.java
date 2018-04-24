@@ -2,10 +2,9 @@ package edu.wpi.cs3733d18.teamF.controller.page;
 
 import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733d18.teamF.Main;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
+import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
-import edu.wpi.cs3733d18.teamF.controller.UserSingleton;
 import edu.wpi.cs3733d18.teamF.db.DatabaseWrapper;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
 import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
@@ -35,11 +34,12 @@ import java.util.Observer;
 public class MainPage implements SwitchableController, Observer {
     private final ObservableList<String> priority = FXCollections.observableArrayList("0", "1", "2", "3", "4", "5");
     private final ObservableList<String> status = FXCollections.observableArrayList("Incomplete", "In Progress", "Complete");
-    private final ObservableList<String> type = FXCollections.observableArrayList("Language Interpreter", "Religious Services", "Security Request");
+    private final ObservableList<String> type = FXCollections.observableArrayList("Language Interpreter", "Religious Services", "Security Request", "Maintenance Request");
     private final ObservableList<String> filterOptions = FXCollections.observableArrayList("Priority", "Status", "Type");
     private final ObservableList<String> languages = FXCollections.observableArrayList("Spanish", "French", "Chinese");
+    private final ObservableList<String> religions = FXCollections.observableArrayList("Catholic", "Protestant", "Islamic", "Hindu", "Jewish", "Buddhist");
     @FXML
-    public ComboBox filterType, availableTypes, availableLanguagesBox;
+    public ComboBox filterType, availableTypes, availableLanguagesBox, situationSelection;
     @FXML
     public TableView<ServiceRequests> searchResultTable;
     @FXML
@@ -74,7 +74,7 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     Label locationRequiredLI;
     @FXML
-    ToggleGroup staffToggleSR, securityToggleSR, securityToggleLI, securityToggleRS, staffToggleRS;
+    ToggleGroup staffToggleSR, securityToggleSR, securityToggleLI, securityToggleRS, staffToggleRS, securityToggleMaintenance, staffToggleMaintenance;
     @FXML
     JFXTextField securityLocationField, requestTitleField;
     @FXML
@@ -119,7 +119,7 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     private AnchorPane religiousServicesPane;
     @FXML
-    private AnchorPane sanitationPane;
+    private AnchorPane maintenancePane;
     @FXML
     private FontAwesomeIconView closeBtn;
     @FXML
@@ -129,7 +129,13 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     private JFXButton religiousServicesBtn;
     @FXML
-    private JFXButton securityRequestBtn;
+    private JFXButton securityRequestBtn, maintenanceRequestBtn;
+    @FXML
+    private JFXTextField destinationMaintenance;
+    @FXML
+    private Label maintenanceSituationRequired, maintenanceLocationRequired;
+    @FXML
+    private JFXTextArea instructionsMaintenance;
 
     private VoiceCommandVerification voice;
     private PaneVoiceController paneVoiceController;
@@ -173,6 +179,13 @@ public class MainPage implements SwitchableController, Observer {
             }
         });
 
+        maintenanceRequestBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            maintenancePane.toFront();
+            if(ServiceRequestSingleton.getInstance().getDestNodeID() != null){
+                destinationMaintenance.setText(ServiceRequestSingleton.getInstance().getDestNodeID());
+            }
+        });
+
 
         closeBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
             //VoiceLauncher.getInstance().terminate();
@@ -188,48 +201,18 @@ public class MainPage implements SwitchableController, Observer {
 
         filterType.getItems().addAll(filterOptions);
         availableLanguagesBox.getItems().addAll(languages);
+        religionSelect.getItems().addAll(religions);
 
         usernameSearch.setOnKeyTyped((KeyEvent e) -> {
             String input = usernameSearch.getText();
             input = input.concat("" + e.getCharacter());
-            autoComplete(input, usernameList);
+            //TODO: Fix auto complete
+            DatabaseWrapper.autoComplete(input, usernameList, "HUser", "username");
         });
 
         onSearch();
-
-        ArrayList<String> usernameList = new ArrayList<>();
-        usernameList.add("staff");
-        usernameList.add("admin");
-        usernameList.add("amtavares");
-        UserSingleton.getInstance().setUsernames(usernameList);
     }
 
-
-    // will filter the given ListView for the given input String
-    private void autoComplete(String input, ListView listView) {
-        if (input.length() > 0) {
-            ArrayList<String> autoCompleteStrings = new ArrayList<>();
-
-            for(String username: UserSingleton.getInstance().getUsernames()){
-                if(username.contains(input)){
-                    autoCompleteStrings.add(username);
-                }
-            }
-            try {
-                if (autoCompleteStrings.size() > 0) {
-                    ObservableList<String> list = FXCollections.observableArrayList(autoCompleteStrings);
-                    listView.setItems(list);
-                    listView.setVisible(true);
-                } else {
-                    listView.setVisible(false);
-                }
-            } catch (Exception anyE) {
-                anyE.printStackTrace();
-            }
-        } else {
-            listView.setVisible(false);
-        }
-    }
 
     @FXML
     private void setAssignTo(){
@@ -299,7 +282,7 @@ public class MainPage implements SwitchableController, Observer {
         btnsCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
 
         Callback<TableColumn<ServiceRequests, String>, TableCell<ServiceRequests, String>> cellFactory
-                = //
+                =
                 new Callback<TableColumn<ServiceRequests, String>, TableCell<ServiceRequests, String>>() {
                     @Override
                     public TableCell call(final TableColumn<ServiceRequests, String> param) {
@@ -415,7 +398,7 @@ public class MainPage implements SwitchableController, Observer {
         }
         if (completeCheck.isSelected() && !serviceRequestsPopUp.getStatus().equalsIgnoreCase("Complete")) {
             serviceRequestsPopUp.setStatus("Complete");
-            serviceRequestsPopUp.setCompletedBy(UserSingleton.getInstance().getCurrUser());
+            serviceRequestsPopUp.setCompletedBy(PermissionSingleton.getInstance().getCurrUser());
             ServiceRequestSingleton.getInstance().updateCompletedBy(serviceRequestsPopUp);
             ServiceRequestSingleton.getInstance().updateStatus(serviceRequestsPopUp);
         }
@@ -654,11 +637,63 @@ public class MainPage implements SwitchableController, Observer {
         }
     }
 
-    //////////////////////
-    //                  //
-    //   Sanitation     //
-    //                  //
-    //////////////////////
+    ////////////////////////
+    //                    //
+    //    Maintenance     //
+    //                    //
+    ////////////////////////
+
+    @FXML
+    private void onSubmitMaintenance(){
+        int requiredFields = 0;
+        if (situationSelection.getSelectionModel().isEmpty()) {
+            maintenanceSituationRequired.setVisible(true);
+            requiredFields++;
+        }
+        if(destinationMaintenance.getText() == null || destinationMaintenance.getText().trim().isEmpty()){
+            maintenanceLocationRequired.setVisible(true);
+            requiredFields++;
+        }
+        if(requiredFields > 0){
+            return;
+        }
+        String situation = situationSelection.getSelectionModel().getSelectedItem().toString();
+        String description = instructionsMaintenance.getText();
+        String status = "Incomplete";
+        String location = destinationMaintenance.getText();
+        RadioButton selected = (RadioButton) securityToggleMaintenance.getSelectedToggle();
+        int priority = Integer.parseInt(selected.getText());
+        RadioButton staffSelected = (RadioButton) staffToggleMaintenance.getSelectedToggle();
+        String staffNeeded = staffSelected.getText();
+        description = situation + "/////" + description;
+        SecurityRequests sec = new SecurityRequests(location, description, status, priority, staffNeeded);
+
+        MapSingleton.getInstance().getMap().disableNode(location);
+
+        ServiceRequestSingleton.getInstance().sendServiceRequest(sec);
+        ServiceRequestSingleton.getInstance().addServiceRequest(sec);
+        TwilioHandlerSingleton.getInstance().sendMessage("\nMaintenance is required at " + location + ".\nAdditional Details: " + description);
+        securityPane.toBack();
+        clearSecurity();
+    }
+
+    @FXML
+    private void onCancelMaintenance(){
+        maintenancePane.toBack();
+        clearMaintenancePane();
+    }
+
+    private void clearMaintenancePane(){
+        situationSelection.getSelectionModel().clearSelection();
+        instructionsMaintenance.clear();
+        destinationMaintenance.clear();
+        if(maintenanceLocationRequired.isVisible()) {
+            maintenanceLocationRequired.setVisible(false);
+        }
+        if(maintenanceSituationRequired.isVisible()) {
+            maintenanceSituationRequired.setVisible(false);
+        }
+    }
 
 
 
@@ -666,8 +701,9 @@ public class MainPage implements SwitchableController, Observer {
     private void onCreateNewServiceRequest() {
         mainPane.toFront();
         clearLanguage();
-        //clearReligious();
+        clearReligious();
         clearSecurity();
+        clearMaintenancePane();
     }
 
     @FXML
