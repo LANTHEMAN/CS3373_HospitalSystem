@@ -201,7 +201,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private JFXHamburger hamburger;
     @FXML
-    private JFXDrawer adminDrawer, guestDrawer;
+    private JFXDrawer menuDrawer, adminDrawer, guestDrawer;
+    @FXML
+    private GridPane menu;
     @FXML
     private VBox adminBox, guestBox;
     @FXML
@@ -333,6 +335,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     public void initialize(PaneSwitcher switcher) {
         adminDrawer.setDisable(true);
         guestDrawer.setDisable(true);
+        menuDrawer.setDisable(true);
         directionsDrawer.setDisable(true);
         mapEditorDrawer.setDisable(true);
         loginDrawer.setDisable(true);
@@ -492,8 +495,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
 
         directionsDrawer.setSidePane(directionsBox);
-        adminDrawer.setSidePane(adminBox);
-        guestDrawer.setSidePane(guestBox);
+        //adminDrawer.setSidePane(menu);
+        menuDrawer.setSidePane(menu);
+        //guestDrawer.setSidePane(guestBox);
         privilegeCombo.getItems().addAll(privilegeOptions);
         mapEditorDrawer.setSidePane(mapEditorBtns);
 
@@ -877,7 +881,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     private void onHamburgerMenu() {
-        if ((PermissionSingleton.getInstance().getUserPrivilege().equals("Admin") ||
+        /*if ((PermissionSingleton.getInstance().getUserPrivilege().equals("Admin") ||
                 PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) &&
                 adminDrawer.isHidden()) {
             adminDrawer.setDisable(false);
@@ -888,6 +892,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             guestDrawer.setDisable(false);
             guestDrawer.open();
             guestDrawer.toFront();
+        }*/
+        if (menuDrawer.isHidden()) {
+            menuDrawer.setDisable(false);
+            menuDrawer.open();
+            menuDrawer.toFront();
         }
         inboxNum.setText(Integer.toString(ServiceRequestSingleton.getInstance().numMessagesInInbox(PermissionSingleton.getInstance().getCurrUser())));
     }
@@ -910,7 +919,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     private void setCancelMenuEvent() {
-        if (adminDrawer.isShown()) {
+        /*if (adminDrawer.isShown()) {
             adminDrawer.close();
             adminDrawer.toBack();
             adminDrawer.setDisable(true);
@@ -918,12 +927,20 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             guestDrawer.close();
             guestDrawer.toBack();
             guestDrawer.setDisable(true);
+        }*/
+        if (menuDrawer.isShown()) {
+            menuDrawer.close();
+            menuDrawer.toBack();
+            menuDrawer.setDisable(true);
         }
     }
 
     private void setGuestMenu() {
-        hamburger.setVisible(true);
-        hamburgerD.setVisible(true);
+        hamburger.setVisible(true);//TODO rm
+        hamburgerD.setVisible(true);//TODO rm
+        algorithmsBox.setVisible(false);
+        adminBox.setVisible(false);
+        guestBox.setVisible(true);
     }
 
     private void setAdminMenu() {
@@ -931,7 +948,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         hamburgerD.setVisible(true);
         mapEditorBtn.setVisible(true);
         editUsersBtn.setVisible(true);
-        algorithmsBox.setVisible(true);
+        //algorithmsBox.setVisible(true); TODO rm
+        algorithmsBox.setVisible(false);//TODO rm
+        guestBox.setVisible(false);
+        adminBox.setVisible(true);
         emergencyBtn.setVisible(true);
     }
 
@@ -940,6 +960,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         hamburgerD.setVisible(true);
         mapEditorBtn.setVisible(false);
         editUsersBtn.setVisible(false);
+        algorithmsBox.setVisible(false);
+        guestBox.setVisible(false);
+        adminBox.setVisible(true);
     }
 
     @FXML
@@ -1183,6 +1206,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             map.setFloor(sourceNode.getFloor());
             onFloorRefresh();
         }
+    }
+
+    @FXML
+    private void onChangeAlgorithm() {
+        algorithmsBox.setVisible(true);
+    }
+
+    @FXML
+    private void onCloseAlgorithm() {
+        algorithmsBox.setVisible(false);
     }
 
     @FXML
