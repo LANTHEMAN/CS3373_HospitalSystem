@@ -76,19 +76,19 @@ public class PaneMapController extends PaneController implements Observer {
         } else {
             if (path != null && path.getNodes().size() > 0) {
                 for (Node node : path.getNodes()) {
-                    if (node.getPosition().getX() < upperLeftX) {
+                    if (node.getWireframePosition().getX() < upperLeftX) {
                         upperLeftX = node.getWireframePosition().getX();
                     }
 
-                    if (node.getPosition().getY() < upperLeftY) {
+                    if (node.getWireframePosition().getY() < upperLeftY) {
                         upperLeftY = node.getWireframePosition().getY();
                     }
 
-                    if (node.getPosition().getX() > bottomRightX) {
+                    if (node.getWireframePosition().getX() > bottomRightX) {
                         bottomRightX = node.getWireframePosition().getX();
                     }
 
-                    if (node.getPosition().getY() > bottomRightY) {
+                    if (node.getWireframePosition().getY() > bottomRightY) {
                         bottomRightY = node.getWireframePosition().getY();
                     }
                 }

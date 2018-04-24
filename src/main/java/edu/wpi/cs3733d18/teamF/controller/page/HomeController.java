@@ -9,9 +9,9 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.controller.*;
 import edu.wpi.cs3733d18.teamF.controller.page.element.about.AboutElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapMementoSingleton;
+import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapState;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewListener;
-import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapState;
 import edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.Screensaver;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.face.FaceLauncher;
@@ -29,12 +29,9 @@ import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -57,7 +54,6 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 public class HomeController implements SwitchableController, Observer, MapViewListener {
@@ -74,6 +70,12 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     AnchorPane mapElementPane;
     @FXML
     AnchorPane aboutElementPane;
+    /////////////////////////////////
+    //                             //
+    //     Facial Recognition      //
+    //                             //
+    /////////////////////////////////
+    FaceLauncher launcher = new FaceLauncher();
     private PaneSwitcher switcher;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
     ///////////////////////////////
@@ -118,7 +120,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private Text MainTitle;
     @FXML
     private JFXButton addNodeBtn, remNodeBtn, addEdgeBtn, remEdgeBtn, modifyBtn, dragBtn, panBtn;
-
     /////////////////////////
     //                     //
     //         Map         //
@@ -126,7 +127,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     /////////////////////////
     @FXML
     private HBox floorTraversal;
-
     ////////////////////////////////
     //                            //
     //         Map Builder        //
@@ -245,7 +245,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     /////////////////////////////////
     @FXML
     private AnchorPane helpPane;
-
     /////////////////////////////////
     //                             //
     //           Date/Time         //
@@ -255,7 +254,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private Label time;
     @FXML
     private Label date;
-
     /////////////////////////////////
     //                             //
     //           Map Editor        //
@@ -268,7 +266,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private MapState state;
     @FXML
     private AnchorPane screensaverPane;
-
     //////////////////////////////////
     //                              //
     //           Google Maps        //
@@ -278,7 +275,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private GoogleMapView googleMapView;
     private GoogleMap gmap;
     private boolean isGoogleMapViewEnabled = false;
-
     ///////////////////////
     //                   //
     //       Inbox       //
@@ -288,7 +284,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private FontAwesomeIconView inboxIcon;
     @FXML
     private Text inboxNum;
-
     ////////////////////////////////////
     //                                //
     //       Screensaver Timout       //
@@ -296,13 +291,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     ////////////////////////////////////
     @FXML
     private JFXSlider sliderTimeout;
-
-    /////////////////////////////////
-    //                             //
-    //     Facial Recognition      //
-    //                             //
-    /////////////////////////////////
-    FaceLauncher launcher = new FaceLauncher();
     @FXML
     private FontAwesomeIconView userIDCancel;
     @FXML
@@ -579,7 +567,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     public void onCameraClicked() throws IOException {
-        if(!usernameField.getText().equals("")) {
+        if (!usernameField.getText().equals("")) {
 
             try {
                 Webcam webcam = Webcam.getDefault(5000);
@@ -594,7 +582,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
                 Image imageFX = SwingFXUtils.toFXImage(bufferedImage, null);
                 userIDView.setImage(imageFX);
-            } catch(TimeoutException e){
+            } catch (TimeoutException e) {
                 System.out.println("Failed to load camera");
             }
         }
@@ -629,11 +617,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             Node voiceSelectedEnd = (Node) arg;
             Path path = mapViewElement.changePathDestination(voiceSelectedEnd);
             displayTextDirections(path);
+            onFloorRefresh();
         } else if (arg instanceof HashSet) {
             HashSet<Node> potentialDestinations = (HashSet<Node>) arg;
             Node voiceSelectedEnd = map.findNodeClosestTo(mapViewElement.getSelectedNodeStart(), potentialDestinations);
             Path path = mapViewElement.changePathDestination(voiceSelectedEnd);
             displayTextDirections(path);
+            onFloorRefresh();
         } else if (arg instanceof String) {
             String cmd = (String) arg;
             if (cmd.equalsIgnoreCase("Help")) {
@@ -642,21 +632,24 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             } else if (cmd.equalsIgnoreCase("Activate")) {
                 // got a string saying that the activation command has been said
                 paneVoiceController.setVisibility(true);
-            } else if (cmd.equalsIgnoreCase("DisableElevators")) {
-                elevatorBan.setVisible(true);
-                mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            } else if (cmd.equalsIgnoreCase("DisableStairs")) {
-                stairBan.setVisible(true);
-                mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            } else if (cmd.equalsIgnoreCase("EnableElevators")) {
-                elevatorBan.setVisible(false);
-                mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            } else if (cmd.equalsIgnoreCase("EnableStairs")) {
-                stairBan.setVisible(false);
-                mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+
+            } else {
+                if (cmd.equalsIgnoreCase("DisableElevators")) {
+                    elevatorBan.setVisible(true);
+                    mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+                } else if (cmd.equalsIgnoreCase("DisableStairs")) {
+                    stairBan.setVisible(true);
+                    mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+                } else if (cmd.equalsIgnoreCase("EnableElevators")) {
+                    elevatorBan.setVisible(false);
+                    mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+                } else if (cmd.equalsIgnoreCase("EnableStairs")) {
+                    stairBan.setVisible(false);
+                    mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+                }
+                onFloorRefresh();
             }
         }
-        onFloorRefresh();
     }
 
 
@@ -1776,7 +1769,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     @Override
-    public void onRefresh() { MapMementoSingleton.getInstance().returnToLastState(); }
+    public void onRefresh() {
+        MapMementoSingleton.getInstance().returnToLastState();
+    }
 
     @Override
     public void onPathsChanged(ArrayList<Path> floorPaths) {
@@ -1816,6 +1811,12 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
             floorTraversal.getChildren().add(currFloor);
         }
+    }
+
+    @Override
+    public void onFloorRefreshButtons() {
+        resetFloorButtonBorders();
+        resetFloorButtonBackgrounds();
     }
 
     @FXML

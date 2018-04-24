@@ -27,6 +27,8 @@ import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
 
+import static junit.framework.TestCase.assertEquals;
+
 public class MapViewElement extends PageElement {
     // TODO change this to default starting location
     String startNodeID = "FRETL00101";
@@ -324,12 +326,12 @@ public class MapViewElement extends PageElement {
                                 for (Node node : neighborNodes) {
                                     if (!node.getFloor().equals(dst.getFloor()) && mapDrawController.getDrawnPath().getNodes().contains(node)) {
                                         map.setFloor(node.getFloor());
-
+                                        listener.onFloorRefreshButtons();
                                         floorPath = mapDrawController.getDrawnPath().separateIntoFloors();
 
-                                        zoomToPath(floorPath.stream().filter(path -> path.getNodes().contains(node)).findFirst().get());
+                                        assertEquals(1, floorPath.stream().filter(path -> path.getNodes().contains(node)).toArray().length);
 
-                                        listener.onFloorRefresh();
+                                        zoomToPath(floorPath.stream().filter(path -> path.getNodes().contains(node)).findFirst().get());
                                         return;
                                     }
                                 }
@@ -338,8 +340,8 @@ public class MapViewElement extends PageElement {
                             Path path = map.getPath(map.findNodeClosestTo(selectedNodeStart.getPosition().getX(), selectedNodeStart.getPosition().getY(), true), dst);
                             mapDrawController.showPath(path);
                             listener.onNewPathSelected(path);
-                            onChangePath(false);
                             listener.onNewDestinationNode(selectedNodeEnd);
+                            onChangePath(false);
                         } else {
                             return;
                         }
@@ -410,6 +412,7 @@ public class MapViewElement extends PageElement {
         selectedNodeEnd = destinationNode;
         Path path = map.getPath(selectedNodeStart, destinationNode);
         mapDrawController.showPath(path);
+        map.setFloor(destinationNode.getFloor());
         onChangePath(false);
         return path;
     }
