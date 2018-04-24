@@ -5,15 +5,29 @@ import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapMementoSinglet
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
 
 public class Screensaver extends PageElement{
 
+public class Screensaver extends PageElement {
+
+    private final ArrayList<String> askMe = new ArrayList<>(Arrays.asList("Ask me to find the nearest bathroom"
+            , "Ask me to get religous services"
+            , "Ask me to find the nearest elevator"
+            , "Ask me to Find the Nearest Stairway"
+            , "Ask me to find the parking garage"
+            , "Ask me to bring you to Paitent Services"
+            , "Ask me to get you food"
+            , "Ask me to bring you to"
+            , "Ask me to bring you to the nearest ATM"
+            , "Ask me to bring you to the Shapiro Cardiovascular Building"
+            , "Ask me to bring you to the international paitent Center"
+            , "Ask me to bring you to Spiritual Care Office"));
     @FXML
     AnchorPane root;
-
     IdleMonitor idleMonitor;
     Scene scene;
 
@@ -42,7 +56,7 @@ public class Screensaver extends PageElement{
         showElement();
     }
 
-    public void wakeUp(Event e){
+    public void wakeUp(Event e) {
         hideElement();
         MapMementoSingleton.getInstance().returnToLastState();
     }
@@ -51,5 +65,6 @@ public class Screensaver extends PageElement{
     public void finalize() {
         idleMonitor.stopMonitoring();
     }
+
 
 }
