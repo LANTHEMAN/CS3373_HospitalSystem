@@ -93,9 +93,11 @@ public class PaneSwitcher {
     public void popupSR(Screens.Screen screen) {
         load(screen);
         Scene popScene = new Scene(panes.get(screen.fxmlFile));
-        popup.setHeight(631);
-        popup.setWidth(955);
+        popup.setHeight(750);
+        popup.setWidth(960);
         popup.setScene(popScene);
+        javafx.scene.image.Image image = new javafx.scene.image.Image(Main.class.getResource("BWHIcon.png").toExternalForm());
+        popup.getIcons().add(image);
         popScene.getStylesheets().add(Main.class.getResource("controller/default.css").toExternalForm());
         popup.show();
     }

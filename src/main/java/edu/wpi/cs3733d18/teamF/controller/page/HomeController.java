@@ -1628,6 +1628,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         setCancelMenuEvent();
         userTextField.clear();
         searchUserResultTable.getItems().clear();
+        displayInUserTable(DatabaseWrapper.allUsers());
         editUserPane.setVisible(true);
     }
 
