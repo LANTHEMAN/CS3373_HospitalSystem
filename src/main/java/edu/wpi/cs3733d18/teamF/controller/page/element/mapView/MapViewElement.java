@@ -2,12 +2,15 @@ package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
+import edu.wpi.cs3733d18.teamF.controller.page.HomeController;
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
 import edu.wpi.cs3733d18.teamF.gfx.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.impl.map.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -16,17 +19,23 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
+
+import static junit.framework.TestCase.assertEquals;
 
 public class MapViewElement extends PageElement {
     // TODO change this to default starting location
     String startNodeID = "FRETL00101";
     EditMode editMode = EditMode.MOVENODE;
     boolean showAllFloors = false;
+
     // used to see if the floor has changed to update the map drawn
     private MapListener mapListener;
     private ViewMode viewMode = ViewMode.VIEW;
@@ -52,6 +61,7 @@ public class MapViewElement extends PageElement {
     private boolean isMap2D;
     private Map map;
     private MapViewListener listener;
+    private ArrayList<Path> floorPath = new ArrayList<>();
 
     public void updateHomeLocation() {
         if (modifyNode == null) {
@@ -71,8 +81,48 @@ public class MapViewElement extends PageElement {
         }
     }
 
+    private void onChangePath(boolean changedStartNode) {
+        zoomToPath(changedStartNode ? 0 : -1);
+    }
+
+    public void zoomToPath(int pathIndex) {
+        if (mapDrawController.getDrawnPath() == null) {
+            return;
+        }
+        floorPath = mapDrawController.getDrawnPath().separateIntoFloors();
+
+        if (pathIndex == -1) {
+            pathIndex = floorPath.size() - 1;
+        }
+
+        
+        if (floorPath.size() > 0 && floorPath.size() > pathIndex) {
+            zoomToPath(floorPath.get(pathIndex));
+        }
+
+        listener.onPathsChanged(floorPath);
+    }
+
     public void toggleShowAllFloors() {
         update3DPathDisplay(!getShowAllFloors());
+    }
+
+    private void zoomToPath(Path path) {
+        Rectangle rect = getMapDrawController().getPathBoundingBox(path, map.is2D());
+
+        Point2D midPoint = new Point2D(rect.x + (rect.getWidth() / 2.f), rect.y + (rect.getHeight() / 2.f));
+
+        double scaleFactor = Math.floor((844.0 * 578.0) / (rect.getWidth() * rect.getHeight()));
+        if (scaleFactor > 10) scaleFactor = 10;
+        scaleFactor -= 3;
+
+        if (rect.getHeight() > 0 && rect.getWidth() > 0) {
+            getGesturePane().animate(new Duration(200)).zoomTo(scaleFactor, midPoint);
+            Timeline oneHitWonder = new Timeline(new KeyFrame(Duration.millis(200),
+                    event -> getGesturePane().animate(Duration.millis(500)).centreOn(midPoint)));
+            oneHitWonder.setCycleCount(1);
+            oneHitWonder.play();
+        }
     }
 
     public boolean getShowAllFloors() {
@@ -104,6 +154,9 @@ public class MapViewElement extends PageElement {
         // disable gesturePane when ctrl is held
         switcher.getScene().setOnKeyPressed(ke -> {
             if (ke.isControlDown()) {
+                if (mapDrawController.getDrawnPath() != null) {
+                    mapDrawController.getDrawnPath().separateIntoFloors();
+                }
                 gesturePane.setGestureEnabled(false);
                 ctrlHeld = true;
             }
@@ -279,7 +332,12 @@ public class MapViewElement extends PageElement {
                                 for (Node node : neighborNodes) {
                                     if (!node.getFloor().equals(dst.getFloor()) && mapDrawController.getDrawnPath().getNodes().contains(node)) {
                                         map.setFloor(node.getFloor());
-                                        listener.onFloorRefresh();
+                                        listener.onFloorRefreshButtons();
+                                        floorPath = mapDrawController.getDrawnPath().separateIntoFloors();
+
+                                        assertEquals(1, floorPath.stream().filter(path -> path.getNodes().contains(node)).toArray().length);
+
+                                        zoomToPath(floorPath.stream().filter(path -> path.getNodes().contains(node)).findFirst().get());
                                         return;
                                     }
                                 }
@@ -289,6 +347,7 @@ public class MapViewElement extends PageElement {
                             mapDrawController.showPath(path);
                             listener.onNewPathSelected(path);
                             listener.onNewDestinationNode(selectedNodeEnd);
+                            onChangePath(false);
                         } else {
                             return;
                         }
@@ -314,6 +373,7 @@ public class MapViewElement extends PageElement {
                     if (path.getNodes().size() >= 2) {
                         mapDrawController.showPath(path);
                         listener.onNewPathSelected(path);
+                        onChangePath(true);
                     }
                 }
             }
@@ -358,6 +418,8 @@ public class MapViewElement extends PageElement {
         selectedNodeEnd = destinationNode;
         Path path = map.getPath(selectedNodeStart, destinationNode);
         mapDrawController.showPath(path);
+        map.setFloor(destinationNode.getFloor());
+        onChangePath(false);
         return path;
     }
 
@@ -510,6 +572,11 @@ public class MapViewElement extends PageElement {
         return gesturePane;
     }
 
+
+    public MapViewListener getMapViewListener() {
+        return listener;
+    }
+
     public enum ViewMode {
         EDIT, VIEW
     }
@@ -524,10 +591,14 @@ public class MapViewElement extends PageElement {
     private class MapListener implements Observer {
         @Override
         public void update(Observable o, Object arg) {
+            if (isMap2D != map.is2D()) {
+                onChangePath(true);
+            }
             if (!mapFloorDrawn.equals(map.getFloor()) || isMap2D != map.is2D()) {
                 refreshFloorDrawn();
                 mapDrawController.refreshPath();
             }
+
         }
     }
 }
