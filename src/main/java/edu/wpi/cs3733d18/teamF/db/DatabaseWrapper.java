@@ -99,7 +99,32 @@ public class DatabaseWrapper {
                 sqlException.printStackTrace();
             }
 
+        }else{
+            autoCompleteUser = allUsers();
         }
         return autoCompleteUser;
+    }
+
+    public static ArrayList<User> allUsers(){
+        String sql = "SELECT * FROM HUser";
+        ArrayList<User> users = new ArrayList<>();
+        try {
+            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
+            while (resultSet.next()) {
+                String username = resultSet.getString(1);
+                String password = resultSet.getString(2);
+                String firstname = resultSet.getString(3);
+                String lastname = resultSet.getString(4);
+                String privilege = resultSet.getString(5);
+                String occupation = resultSet.getString(6);
+                String faceID = resultSet.getString(7);
+                User temp = new User(username, password, firstname, lastname, privilege, occupation, faceID, true);
+                users.add(temp);
+            }
+            resultSet.close();
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return users;
     }
 }

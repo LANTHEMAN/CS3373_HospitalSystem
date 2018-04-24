@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
+import edu.wpi.cs3733d18.teamF.controller.Screens;
 import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.db.DatabaseWrapper;
@@ -197,7 +198,7 @@ public class MainPage implements SwitchableController, Observer {
 
         closeBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
             VoiceLauncher.getInstance().terminate();
-            //switcher.terminate();
+            switcher.closePopup(Screens.MainPage);
         });
 
         filter = "none";
@@ -227,7 +228,9 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     private void setAssignTo(){
         String selection = usernameList.getSelectionModel().getSelectedItem().toString();
-        assignedUsernames.getItems().add(selection);
+        if(!assignedUsernames.getItems().contains(selection)) {
+            assignedUsernames.getItems().add(selection);
+        }
         usernameSearch.setVisible(false);
         usernameList.setVisible(false);
     }
@@ -357,12 +360,24 @@ public class MainPage implements SwitchableController, Observer {
         }
 
         assignedUsernames.setItems(ServiceRequestSingleton.getInstance().getAssignedUsers(s.getId()));
+
+        if(PermissionSingleton.getInstance().isAdmin()){
+            if(!plusAssignTo.isVisible()){
+                plusAssignTo.setVisible(true);
+            }
+        }else{
+            if(plusAssignTo.isVisible()){
+                plusAssignTo.setVisible(false);
+            }
+        }
+
         if(usernameList.isVisible()) {
             usernameList.setVisible(false);
         }
         if(usernameSearch.isVisible()) {
             usernameSearch.setVisible(false);
         }
+
         editRequestPane.toFront();
     }
 

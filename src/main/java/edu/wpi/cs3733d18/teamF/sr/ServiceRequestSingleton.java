@@ -368,7 +368,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
     }
 
     public void addUsernameMaintenanceRequest(String username) {
-        String sql = "INSERT INTO MaintenanceRequest WHERE username = '" + username + "'";
+        String sql = "INSERT INTO MaintenanceRequest VALUES ('" + username + "')";
         dbHandler.runAction(sql);
     }
 
