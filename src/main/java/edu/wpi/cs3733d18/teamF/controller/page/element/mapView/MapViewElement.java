@@ -20,9 +20,11 @@ import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.stream.Collectors;
 
 public class MapViewElement extends PageElement {
     // TODO change this to default starting location
@@ -54,6 +56,7 @@ public class MapViewElement extends PageElement {
     private boolean isMap2D;
     private Map map;
     private MapViewListener listener;
+    private ArrayList<Path> floorPath = new ArrayList<>();
 
     public void updateHomeLocation() {
         if (modifyNode == null) {
@@ -73,17 +76,35 @@ public class MapViewElement extends PageElement {
         }
     }
 
+    private void onChangePath(boolean changedStartNode) {
+        zoomToPath(changedStartNode ? 0 : -1);
+    }
+
+    public void zoomToPath(int pathIndex) {
+        floorPath = mapDrawController.getDrawnPath().separateIntoFloors();
+
+        if(pathIndex == -1){
+            pathIndex = floorPath.size() - 1;
+        }
+
+        if(floorPath.size() > 0 && floorPath.size() > pathIndex){
+            zoomToPath(floorPath.get(pathIndex));
+        }
+
+        listener.onPathsChanged(floorPath);
+    }
+
     public void toggleShowAllFloors() {
         update3DPathDisplay(!getShowAllFloors());
     }
 
-    public void zoomToPath(Path path) {
+    private void zoomToPath(Path path) {
         Rectangle rect = getMapDrawController().getPathBoundingBox(path);
 
-        Point2D midPoint = new Point2D(rect.x + (rect.getWidth()/2.f), rect.y + (rect.getHeight()/2.f));
+        Point2D midPoint = new Point2D(rect.x + (rect.getWidth() / 2.f), rect.y + (rect.getHeight() / 2.f));
 
-        double scaleFactor = Math.floor((844.0 * 578.0)/(rect.getWidth() * rect.getHeight()));
-        if(scaleFactor > 10) scaleFactor = 10;
+        double scaleFactor = Math.floor((844.0 * 578.0) / (rect.getWidth() * rect.getHeight()));
+        if (scaleFactor > 10) scaleFactor = 10;
         scaleFactor -= 3;
 
         if (rect.getHeight() > 0 && rect.getWidth() > 0) {
@@ -125,8 +146,6 @@ public class MapViewElement extends PageElement {
                 if (mapDrawController.getDrawnPath() != null) {
                     mapDrawController.getDrawnPath().separateIntoFloors();
                 }
-
-
                 gesturePane.setGestureEnabled(false);
                 ctrlHeld = true;
             }
@@ -302,6 +321,11 @@ public class MapViewElement extends PageElement {
                                 for (Node node : neighborNodes) {
                                     if (!node.getFloor().equals(dst.getFloor()) && mapDrawController.getDrawnPath().getNodes().contains(node)) {
                                         map.setFloor(node.getFloor());
+
+                                        floorPath = mapDrawController.getDrawnPath().separateIntoFloors();
+
+                                        zoomToPath(floorPath.stream().filter(path -> path.getNodes().contains(node)).findFirst().get());
+
                                         listener.onFloorRefresh();
                                         return;
                                     }
@@ -311,6 +335,7 @@ public class MapViewElement extends PageElement {
                             Path path = map.getPath(map.findNodeClosestTo(selectedNodeStart.getPosition().getX(), selectedNodeStart.getPosition().getY(), true), dst);
                             mapDrawController.showPath(path);
                             listener.onNewPathSelected(path);
+                            onChangePath(false);
                             listener.onNewDestinationNode(selectedNodeEnd);
                         } else {
                             return;
@@ -337,6 +362,7 @@ public class MapViewElement extends PageElement {
                     if (path.getNodes().size() >= 2) {
                         mapDrawController.showPath(path);
                         listener.onNewPathSelected(path);
+                        onChangePath(true);
                     }
                 }
             }
