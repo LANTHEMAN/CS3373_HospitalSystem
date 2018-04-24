@@ -17,6 +17,7 @@ import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.db.DatabaseWrapper;
 import edu.wpi.cs3733d18.teamF.face.FaceLauncher;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
+import edu.wpi.cs3733d18.teamF.gfx.impl.radial.GenericRadial;
 import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.graph.*;
 import edu.wpi.cs3733d18.teamF.graph.pathfinding.*;
@@ -317,6 +318,12 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private JFXCheckBox allFloors;
 
+
+    // uhg
+    @FXML
+    private GridPane rootPane;
+    private GenericRadial radialMenu;
+
     /**
      * Constructor for this class
      *
@@ -384,6 +391,14 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
         mapViewElement.update3DPathDisplay(false);
         allFloors.setSelected(false);
+
+
+        /// TODO RADIAL MENU
+        /// TODO RADIAL MENU
+        radialMenu = new GenericRadial();
+        rootPane.getChildren().add(radialMenu);
+        /// TODO RADIAL MENU
+        /// TODO RADIAL MENU
 
 
         // set up mod node panel
