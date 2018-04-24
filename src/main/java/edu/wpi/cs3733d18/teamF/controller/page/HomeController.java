@@ -852,6 +852,19 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         btn.setStyle(modifyStyle(btn.getStyle(), "-fx-background-color: ", backgroundColor));
     }
 
+    private void highlightFloorTraversal(String currFloor) {
+        for (javafx.scene.Node node : floorTraversal.getChildren()) {
+            if (node instanceof JFXButton) {
+                JFXButton btn = (JFXButton) node;
+                if (btn.getText().equals(currFloor)) {
+                    setButtonBackgroundColor(btn, "#436282");
+                } else {
+                    setButtonBackgroundColor(btn, "#042E58");
+                }
+            }
+        }
+    }
+
     @FXML
     private void onHamburgerMenu() {
         if (adminDrawer.isHidden()) {
@@ -1308,10 +1321,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         JFXButton floorBtn = getFloorButton(floor);
         setButtonBackgroundColor(floorBtn, "#436282");
 
-        /*for (javafx.scene.Node node : floorTraversal.getChildren()) {
-            setButtonBackgroundColor((JFXButton) node, "#042E58");
-        }
-        setButtonBackgroundColor(floorBtn, "#436282");*/
+        highlightFloorTraversal(floorBtn.getText());
 
         switch (floor) {
             case "03":
@@ -1830,6 +1840,12 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
             floorTraversal.getChildren().add(currFloor);
         }
+        // highlight the current floor
+        String floor = map.getFloor();
+        if (floor.charAt(0) == '0') {
+            floor = floor.substring(1);
+        }
+        highlightFloorTraversal(floor);
     }
 
     @FXML
