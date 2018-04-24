@@ -1,24 +1,21 @@
 package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
-import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.gfx.MapDrawable;
 import edu.wpi.cs3733d18.teamF.gfx.PaneController;
+import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
 import javafx.scene.layout.Pane;
 
-import java.awt.Rectangle;
-
-import javafx.geometry.Point2D;
-
+import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
 
 public class PaneMapController extends PaneController implements Observer {
 
-    private MapDrawable mapDrawer;
     public Path drawnPath = null;
     Node hoveredNode = null;
+    private MapDrawable mapDrawer;
 
     PaneMapController(Pane root, Map map, MapDrawable mapDrawer) {
         super(root);
@@ -37,55 +34,88 @@ public class PaneMapController extends PaneController implements Observer {
         draw();
     }
 
-    public Rectangle getPathBoundingBox(Path path) {
+    public Rectangle getPathBoundingBox(Path path, boolean is2D) {
         Rectangle bBox = new Rectangle();
         double upperLeftX = 5000;
         double upperLeftY = 2772;
         double bottomRightX = 0;
         double bottomRightY = 0;
 
-        if (path != null && path.getNodes().size() > 0) {
-            for (Node node : path.getNodes()) {
-                if (node.getPosition().getX() < upperLeftX) {
-                    upperLeftX = node.getPosition().getX();
-                }
+        Rectangle scaledRect = new Rectangle();
 
-                if (node.getPosition().getY() < upperLeftY) {
-                    upperLeftY = node.getPosition().getY();
-                }
+        if (is2D) {
+            if (path != null && path.getNodes().size() > 0) {
+                for (Node node : path.getNodes()) {
+                    if (node.getPosition().getX() < upperLeftX) {
+                        upperLeftX = node.getPosition().getX();
+                    }
 
-                if (node.getPosition().getX() > bottomRightX) {
-                    bottomRightX = node.getPosition().getX();
-                }
+                    if (node.getPosition().getY() < upperLeftY) {
+                        upperLeftY = node.getPosition().getY();
+                    }
 
-                if (node.getPosition().getY() > bottomRightY) {
-                    bottomRightY = node.getPosition().getY();
+                    if (node.getPosition().getX() > bottomRightX) {
+                        bottomRightX = node.getPosition().getX();
+                    }
+
+                    if (node.getPosition().getY() > bottomRightY) {
+                        bottomRightY = node.getPosition().getY();
+                    }
                 }
             }
+
+            bBox.x = (int) upperLeftX;
+            bBox.y = (int) upperLeftY;
+            bBox.height = (int) (bottomRightY - upperLeftY);
+            bBox.width = (int) (bottomRightX - upperLeftX);
+
+            scaledRect.width = (int) (bBox.getWidth() * 844.f / 5000.f);
+            scaledRect.height = (int) (bBox.getHeight() * 578.f / 3400.f);
+            scaledRect.x = (int) (bBox.getX() * 844.f / 5000.f);
+            scaledRect.y = (int) (bBox.getY() * 578.f / 3400.f);
+        } else {
+            if (path != null && path.getNodes().size() > 0) {
+                for (Node node : path.getNodes()) {
+                    if (node.getPosition().getX() < upperLeftX) {
+                        upperLeftX = node.getWireframePosition().getX();
+                    }
+
+                    if (node.getPosition().getY() < upperLeftY) {
+                        upperLeftY = node.getWireframePosition().getY();
+                    }
+
+                    if (node.getPosition().getX() > bottomRightX) {
+                        bottomRightX = node.getWireframePosition().getX();
+                    }
+
+                    if (node.getPosition().getY() > bottomRightY) {
+                        bottomRightY = node.getWireframePosition().getY();
+                    }
+                }
+            }
+
+            bBox.x = (int) upperLeftX;
+            bBox.y = (int) upperLeftY;
+            bBox.height = (int) (bottomRightY - upperLeftY);
+            bBox.width = (int) (bottomRightX - upperLeftX);
+
+            scaledRect.width = (int) (bBox.getWidth() * 844.f / 5000.f);
+            scaledRect.height = (int) (bBox.getHeight() * 578.f / 2774.f);
+            scaledRect.x = (int) (bBox.getX() * 844.f / 5000.f);
+            scaledRect.y = (int) (bBox.getY() * 578.f / 2774.f);
         }
 
-        bBox.x = (int) upperLeftX;
-        bBox.y = (int) upperLeftY;
-        bBox.height = (int) (bottomRightY - upperLeftY);
-        bBox.width = (int) (bottomRightX - upperLeftX);
+        double aspectRatio = 844.f / 578.f;
+        double multiple = aspectRatio * scaledRect.getHeight() / scaledRect.getWidth();
 
-        Rectangle scaledRect = new Rectangle();
-        scaledRect.width = (int) (bBox.getWidth() * 844.f/5000.f);
-        scaledRect.height = (int) (bBox.getHeight() * 578.f/3400.f);
-        scaledRect.x = (int) (bBox.getX() * 844.f/5000.f);
-        scaledRect.y = (int) (bBox.getY() * 578.f/3400.f);
-
-        double aspectRatio = 844.f/578.f;
-        double multiple = aspectRatio * scaledRect.getHeight()/scaledRect.getWidth();
-
-        if(multiple > 1){
+        if (multiple > 1) {
             double preWidth = scaledRect.getWidth();
             scaledRect.width *= multiple;
-            scaledRect.x -= (scaledRect.getWidth() - preWidth)/2;
-        }else{
+            scaledRect.x -= (scaledRect.getWidth() - preWidth) / 2;
+        } else {
             double preHeight = scaledRect.getHeight();
-            scaledRect.height *= (1/multiple);
-            scaledRect.y -= (scaledRect.getHeight() - preHeight)/2;
+            scaledRect.height *= (1 / multiple);
+            scaledRect.y -= (scaledRect.getHeight() - preHeight) / 2;
         }
 
         return scaledRect;
@@ -168,12 +198,12 @@ public class PaneMapController extends PaneController implements Observer {
         refresh();
     }
 
-    void update3DPathDisplay(boolean showAllFloors){
+    void update3DPathDisplay(boolean showAllFloors) {
         mapDrawer.update3DPathDisplay(showAllFloors);
         refresh();
     }
 
-    boolean isHoveringNode(Node node){
+    boolean isHoveringNode(Node node) {
         return node == hoveredNode;
     }
 
