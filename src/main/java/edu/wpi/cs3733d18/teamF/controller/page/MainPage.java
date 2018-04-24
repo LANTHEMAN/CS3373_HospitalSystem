@@ -2,7 +2,6 @@ package edu.wpi.cs3733d18.teamF.controller.page;
 
 import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733d18.teamF.Main;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
 import edu.wpi.cs3733d18.teamF.controller.UserSingleton;
@@ -35,11 +34,11 @@ import java.util.Observer;
 public class MainPage implements SwitchableController, Observer {
     private final ObservableList<String> priority = FXCollections.observableArrayList("0", "1", "2", "3", "4", "5");
     private final ObservableList<String> status = FXCollections.observableArrayList("Incomplete", "In Progress", "Complete");
-    private final ObservableList<String> type = FXCollections.observableArrayList("Language Interpreter", "Religious Services", "Security Request");
+    private final ObservableList<String> type = FXCollections.observableArrayList("Language Interpreter", "Religious Services", "Security Request", "Maintenance Request");
     private final ObservableList<String> filterOptions = FXCollections.observableArrayList("Priority", "Status", "Type");
     private final ObservableList<String> languages = FXCollections.observableArrayList("Spanish", "French", "Chinese");
     @FXML
-    public ComboBox filterType, availableTypes, availableLanguagesBox;
+    public ComboBox filterType, availableTypes, availableLanguagesBox, situationSelection;
     @FXML
     public TableView<ServiceRequests> searchResultTable;
     @FXML
@@ -74,7 +73,7 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     Label locationRequiredLI;
     @FXML
-    ToggleGroup staffToggleSR, securityToggleSR, securityToggleLI, securityToggleRS, staffToggleRS;
+    ToggleGroup staffToggleSR, securityToggleSR, securityToggleLI, securityToggleRS, staffToggleRS, securityToggleMaintenance, staffToggleMaintenance;
     @FXML
     JFXTextField securityLocationField, requestTitleField;
     @FXML
@@ -119,7 +118,7 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     private AnchorPane religiousServicesPane;
     @FXML
-    private AnchorPane sanitationPane;
+    private AnchorPane maintenancePane;
     @FXML
     private FontAwesomeIconView closeBtn;
     @FXML
@@ -130,6 +129,12 @@ public class MainPage implements SwitchableController, Observer {
     private JFXButton religiousServicesBtn;
     @FXML
     private JFXButton securityRequestBtn;
+    @FXML
+    private JFXTextField firstNameMaintenance, lastNameMaintenance, destinationMaintenance;
+    @FXML
+    private Label maintenanceSituationRequired, maintenanceLocationRequired;
+    @FXML
+    private JFXTextArea instructionsMaintenance;
 
     private VoiceCommandVerification voice;
     private PaneVoiceController paneVoiceController;
@@ -654,11 +659,61 @@ public class MainPage implements SwitchableController, Observer {
         }
     }
 
-    //////////////////////
-    //                  //
-    //   Sanitation     //
-    //                  //
-    //////////////////////
+    ////////////////////////
+    //                    //
+    //    Maintenance     //
+    //                    //
+    ////////////////////////
+
+    @FXML
+    private void onSubmitMaintenance(){
+        int requiredFields = 0;
+        if (situationSelection.getSelectionModel().isEmpty()) {
+            maintenanceSituationRequired.setVisible(true);
+            requiredFields++;
+        }
+        if(destinationMaintenance.getText() == null || destinationMaintenance.getText().trim().isEmpty()){
+            maintenanceLocationRequired.setVisible(true);
+            requiredFields++;
+        }
+        if(requiredFields > 0){
+            return;
+        }
+        String situation = situationSelection.getSelectionModel().getSelectedItem().toString();
+        String description = instructionsMaintenance.getText();
+        String status = "Incomplete";
+        String location = destinationMaintenance.getText();
+        RadioButton selected = (RadioButton) securityToggleMaintenance.getSelectedToggle();
+        int priority = Integer.parseInt(selected.getText());
+        RadioButton staffSelected = (RadioButton) staffToggleMaintenance.getSelectedToggle();
+        String staffNeeded = staffSelected.getText();
+        description = situation + "/////" + description;
+        SecurityRequests sec = new SecurityRequests(location, description, status, priority, staffNeeded);
+
+        ServiceRequestSingleton.getInstance().sendServiceRequest(sec);
+        ServiceRequestSingleton.getInstance().addServiceRequest(sec);
+        TwilioHandlerSingleton.getInstance().sendMessage("\nMaintenance is required at " + location + ".\nAdditional Details: " + description);
+        securityPane.toBack();
+        clearSecurity();
+    }
+
+    @FXML
+    private void onCancelMaintenance(){
+        maintenancePane.toBack();
+        clearMaintenancePane();
+    }
+
+    private void clearMaintenancePane(){
+        situationSelection.getSelectionModel().clearSelection();
+        instructionsMaintenance.clear();
+        destinationMaintenance.clear();
+        if(maintenanceLocationRequired.isVisible()) {
+            maintenanceLocationRequired.setVisible(false);
+        }
+        if(maintenanceSituationRequired.isVisible()) {
+            maintenanceSituationRequired.setVisible(false);
+        }
+    }
 
 
 
@@ -666,8 +721,9 @@ public class MainPage implements SwitchableController, Observer {
     private void onCreateNewServiceRequest() {
         mainPane.toFront();
         clearLanguage();
-        //clearReligious();
+        clearReligious();
         clearSecurity();
+        clearMaintenancePane();
     }
 
     @FXML
