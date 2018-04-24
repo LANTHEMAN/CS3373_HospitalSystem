@@ -889,18 +889,14 @@
           <RowConstraints maxHeight="720.0" minHeight="10.0" prefHeight="645.6696548461914" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-                <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-                    <children>
-                        <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" layoutX="301.0" layoutY="53.0" onMouseClicked="#setCancelMenuEvent" size="40" wrappingWidth="22.142844200134277" />
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="24.0" prefHeight="38.0" prefWidth="112.0" text="%MENU">
-                            <font>
-                                <Font name="System Bold" size="25.0" />
-                            </font>
-                        </Label>
-                    </children>
-                </Pane>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="112.0" text="%MENU" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                      <font>
+                          <Font name="System Bold" size="25.0" />
+                      </font>
+                  </Label>
+                  <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" onMouseClicked="#setCancelMenuEvent" size="40" translateX="-20.0" wrappingWidth="22.142844200134277" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
       
-              <VBox fx:id="adminBox" alignment="TOP_CENTER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="350.0" style="-fx-background-color: #616161;" GridPane.rowIndex="1">
+              <VBox fx:id="adminBox" alignment="TOP_CENTER" style="-fx-background-color: #616161;" GridPane.rowIndex="1">
                   <children>
                       <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%ServiceRequest" textFill="WHITE">
                           <font>
@@ -960,7 +956,7 @@
                   </JFXSlider>
                   </children>
               </VBox>
-            <VBox fx:id="algorithmsBox" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #616161;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <VBox fx:id="algorithmsBox" style="-fx-background-color: #616161;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <children>
                   <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
                      <children>
@@ -999,9 +995,9 @@
                   </JFXButton>
                </children>
             </VBox>
-            <VBox fx:id="guestBox" alignment="TOP_CENTER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="350.0" spacing="25.0" style="-fx-background-color: #616161;" GridPane.rowIndex="1">
+            <VBox fx:id="guestBox" alignment="TOP_CENTER" spacing="25.0" style="-fx-background-color: #616161;" GridPane.rowIndex="1">
                <children>
-                  <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" layoutX="10.0" layoutY="96.0" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%FindNearest" textFill="WHITE">
+                  <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%FindNearest" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>
@@ -1009,7 +1005,7 @@
                         <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%GoogleMaps" textFill="WHITE">
+                  <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onGoogleMaps" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%GoogleMaps" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>
@@ -1025,7 +1021,7 @@
                         <FontAwesomeIconView glyphName="GAMEPAD" size="50" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" layoutX="10.0" layoutY="396.0" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%About" textFill="WHITE">
+                  <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onAboutPopup" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%About" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>
@@ -1033,7 +1029,7 @@
                         <FontAwesomeIconView glyphName="INFO" size="50" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Help" textFill="WHITE">
+                  <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onHelpPopup" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Help" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>

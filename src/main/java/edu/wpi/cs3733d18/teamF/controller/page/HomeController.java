@@ -333,6 +333,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
      */
     @Override
     public void initialize(PaneSwitcher switcher) {
+        algorithmsBox.setVisible(false);
         adminDrawer.setDisable(true);
         guestDrawer.setDisable(true);
         menuDrawer.setDisable(true);
@@ -881,18 +882,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     private void onHamburgerMenu() {
-        /*if ((PermissionSingleton.getInstance().getUserPrivilege().equals("Admin") ||
-                PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) &&
-                adminDrawer.isHidden()) {
-            adminDrawer.setDisable(false);
-            adminDrawer.open();
-            adminDrawer.toFront();
-        } else if ((PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) &&
-                guestDrawer.isHidden()) {
-            guestDrawer.setDisable(false);
-            guestDrawer.open();
-            guestDrawer.toFront();
-        }*/
         if (menuDrawer.isHidden()) {
             menuDrawer.setDisable(false);
             menuDrawer.open();
@@ -936,31 +925,21 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     private void setGuestMenu() {
-        hamburger.setVisible(true);//TODO rm
-        hamburgerD.setVisible(true);//TODO rm
-        algorithmsBox.setVisible(false);
         adminBox.setVisible(false);
         guestBox.setVisible(true);
     }
 
     private void setAdminMenu() {
-        hamburger.setVisible(true);
-        hamburgerD.setVisible(true);
         mapEditorBtn.setVisible(true);
         editUsersBtn.setVisible(true);
-        //algorithmsBox.setVisible(true); TODO rm
-        algorithmsBox.setVisible(false);//TODO rm
         guestBox.setVisible(false);
         adminBox.setVisible(true);
         emergencyBtn.setVisible(true);
     }
 
     private void setStaffMenu() {
-        hamburger.setVisible(true);
-        hamburgerD.setVisible(true);
         mapEditorBtn.setVisible(false);
         editUsersBtn.setVisible(false);
-        algorithmsBox.setVisible(false);
         guestBox.setVisible(false);
         adminBox.setVisible(true);
     }
@@ -1947,7 +1926,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //////////////////////////////
 
     @FXML
-    public void onGoogleMaps(MouseEvent mouseEvent) {
+    public void onGoogleMaps() {
         toggleGoogleMap();
     }
 
@@ -1959,7 +1938,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             return;
         }
         setGoogleMapViewEnabled(true);
-
     }
 
     public void setGoogleMapViewEnabled(boolean enabled) {
