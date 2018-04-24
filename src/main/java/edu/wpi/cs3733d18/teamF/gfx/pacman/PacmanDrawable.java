@@ -2,8 +2,10 @@ package edu.wpi.cs3733d18.teamF.gfx.pacman;
 
 import edu.wpi.cs3733d18.teamF.Main;
 import edu.wpi.cs3733d18.teamF.gfx.Drawable;
+import edu.wpi.cs3733d18.teamF.gfx.MapDrawable;
 import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
 import edu.wpi.cs3733d18.teamF.graph.Node;
+import edu.wpi.cs3733d18.teamF.graph.Path;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
@@ -12,7 +14,7 @@ import java.util.Random;
 
 enum Direction {UP, DOWN, LEFT, RIGHT}
 
-public class PacmanDrawable implements Drawable {
+public class PacmanDrawable extends MapDrawable implements Drawable {
 
     private double posX,posY;
     private String floor;
@@ -30,6 +32,71 @@ public class PacmanDrawable implements Drawable {
         this.posY = 0;
         this.floor = "L1";
         this.currDirection = Direction.UP;
+    }
+
+    @Override
+    public void selectNode(Node node) {
+
+    }
+
+    @Override
+    public void unselectNode() {
+
+    }
+
+    @Override
+    public void showPath(Path path) {
+
+    }
+
+    @Override
+    public void redrawPath(Path path) {
+
+    }
+
+    @Override
+    public void unshowPath() {
+
+    }
+
+    @Override
+    public void showNodes() {
+
+    }
+
+    @Override
+    public void unshowNodes() {
+
+    }
+
+    @Override
+    public void showEdges() {
+
+    }
+
+    @Override
+    public void unshowEdges() {
+
+    }
+
+    @Override
+    public void addDefaultStartNode(Node node) {
+
+    }
+
+    @Override
+    public void hoverNode(Node node) {
+
+    }
+
+    @Override
+    public void unhoverNode() {
+
+    }
+
+    @Override
+    public void update3DPathDisplay(boolean showAllFloors) {
+
     }
 
     public void setPosX(double posX) {
