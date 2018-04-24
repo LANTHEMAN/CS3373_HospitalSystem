@@ -118,6 +118,15 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private Text MainTitle;
     @FXML
     private JFXButton addNodeBtn, remNodeBtn, addEdgeBtn, remEdgeBtn, modifyBtn, dragBtn, panBtn;
+
+    /////////////////////////
+    //                     //
+    //         Map         //
+    //                     //
+    /////////////////////////
+    @FXML
+    private HBox floorTraversal;
+
     ////////////////////////////////
     //                            //
     //         Map Builder        //
@@ -1308,6 +1317,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         JFXButton floorBtn = getFloorButton(floor);
         setButtonBackgroundColor(floorBtn, "#436282");
 
+        /*for (javafx.scene.Node node : floorTraversal.getChildren()) {
+            setButtonBackgroundColor((JFXButton) node, "#042E58");
+        }
+        setButtonBackgroundColor(floorBtn, "#436282");*/
+
         switch (floor) {
             case "03":
                 MainTitle.setText("Brigham and Women's Hospital: Level 3");
@@ -1765,8 +1779,43 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     public void onRefresh() { MapMementoSingleton.getInstance().returnToLastState(); }
 
     @Override
-    public void onPathsChanged(ArrayList<Path> floorPath) {
+    public void onPathsChanged(ArrayList<Path> floorPaths) {
+        floorTraversal.getChildren().clear();
+        for (int i = 0; i < floorPaths.size(); i++) {
+            String borderColor;
+            if (i == 0) {
+                borderColor = "GREEN";
+            } else if (i == floorPaths.size() - 1) {
+                borderColor = "RED";
+            } else {
+                borderColor = "#606060";
+            }
 
+            String floor = floorPaths.get(i).getNodes().get(0).getFloor();
+            String finalFloor = floor;
+
+            if (floor.charAt(0) == '0') {
+                floor = floor.substring(1);
+            }
+            JFXButton currFloor = new JFXButton(floor);
+            currFloor.setFont(Font.font("Arial", FontWeight.BOLD, 26));
+            currFloor.setTextFill(Color.WHITE);
+            currFloor.setPrefWidth(80);
+            currFloor.setPrefHeight(80);
+            currFloor.setStyle(String.format("-fx-background-color:  #042E58;" +
+                    "-fx-background-radius: 100;" +
+                    "-fx-border-radius: 100;" +
+                    "-fx-border-width: 5px;" +
+                    "-fx-border-color: %s", borderColor));
+
+            int finalI = i;
+            currFloor.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+                changeFloor(finalFloor);
+                mapViewElement.zoomToPath(finalI);
+            });
+
+            floorTraversal.getChildren().add(currFloor);
+        }
     }
 
     @FXML
