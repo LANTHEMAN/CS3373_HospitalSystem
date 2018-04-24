@@ -5,6 +5,8 @@ import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.db.DatabaseHandler;
 import edu.wpi.cs3733d18.teamF.db.DatabaseItem;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -391,7 +393,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
             case "SecurityRequest":
                 sql = "SELECT * FROM SecurityRequest WHERE username = '" + username + "'";
                 break;
-            case "Maintenance Request":
+            case "MaintenanceRequest":
                 sql = "SELECT * FROM MaintenanceRequest WHERE username = '" + username + "'";
                 break;
             default:
@@ -472,6 +474,39 @@ public class ServiceRequestSingleton implements DatabaseItem {
             e.printStackTrace();
         }
         return count;
+    }
+
+    public ObservableList<String> getAssignedUsers(int id){
+        String sql = "SELECT username FROM Inbox WHERE requestID = " + id;
+        ArrayList<String> usernames = new ArrayList<>();
+        ResultSet resultSet = dbHandler.runQuery(sql);
+        try{
+            while (resultSet.next()){
+                usernames.add(resultSet.getString(1));
+            }
+            resultSet.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return FXCollections.observableArrayList(usernames);
+    }
+
+    public boolean alreadyAssignedTo(String username, int id){
+        String sql = "SELECT * FROM INBOX WHERE username = '" + username + "' AND requestID = " + id;
+        ResultSet resultSet = dbHandler.runQuery(sql);
+        try {
+            if(resultSet.next()){
+                String name = resultSet.getString(1);
+                if(username.equals(name)){
+                    return true;
+                }
+            }
+            resultSet.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        return false;
     }
 
 

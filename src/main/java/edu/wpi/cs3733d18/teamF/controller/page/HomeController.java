@@ -283,7 +283,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private JFXButton inboxBtn;
     @FXML
-    private Text inboxNum;
+    private Label inboxNum;
 
     ////////////////////////////////////
     //                                //
@@ -1449,7 +1449,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         privilegeCombo.getSelectionModel().select(e.getPrivilege());
 
 
-        if(ServiceRequestSingleton.getInstance().isInTable(e.getUname(), "LanguageServices")){
+        if(ServiceRequestSingleton.getInstance().isInTable(e.getUname(), "LanguageInterpreter")){
             languageCheck.setSelected(true);
         }else{
             languageCheck.setSelected(false);
@@ -1524,9 +1524,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
 
 
-        if(languageServices && !ServiceRequestSingleton.getInstance().isInTable(username, "LanguageServices")){
+        if(languageServices && !ServiceRequestSingleton.getInstance().isInTable(username, "LanguageInterpreter")){
             ServiceRequestSingleton.getInstance().addUsernameLanguageInterpreter(username);
-        }else if(!languageServices && ServiceRequestSingleton.getInstance().isInTable(username, "LanguageServices")){
+        }else if(!languageServices && ServiceRequestSingleton.getInstance().isInTable(username, "LanguageInterpreter")){
             ServiceRequestSingleton.getInstance().removeUsernameLanguageInterpreter(username);
         }
 
