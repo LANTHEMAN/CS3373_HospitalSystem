@@ -885,7 +885,7 @@
         </AnchorPane>
         <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
         <AnchorPane fx:id="screensaverPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
-      <JFXButton fx:id="emergencyBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#triggerEmergency" prefHeight="47.0" prefWidth="115.0" ripplerFill="#cd2323" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="%Emergency" textFill="#f2f5f7" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+      <JFXButton fx:id="emergencyBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#triggerEmergency" prefHeight="47.0" prefWidth="158.0" ripplerFill="#cd2323" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="%Emergency" textFill="#f2f5f7" visible="false" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
          <font>
             <Font name="Arial Bold" size="15.0" />
          </font>
