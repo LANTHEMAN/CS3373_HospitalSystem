@@ -409,8 +409,7 @@
                                 <FontAwesomeIconView fx:id="directionsArrow" fill="#f2f5f7" glyphName="ARROW_RIGHT" onMouseClicked="#onArrowEvent" size="25" wrappingWidth="22.14285659790039" />
                             </children>
                         </HBox>
-                        <Pane fx:id="voicePane" pickOnBounds="false" prefHeight="148.0" prefWidth="1280.0">
-                     </Pane>
+                        <Pane fx:id="voicePane" pickOnBounds="false" prefHeight="148.0" prefWidth="1280.0" />
                     </children>
                 </StackPane>
                 <Text fx:id="MainTitle" fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%BrighamTitleSecondFloor" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -886,5 +885,13 @@
         </AnchorPane>
         <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
         <AnchorPane fx:id="screensaverPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
+      <JFXButton fx:id="emergencyBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#triggerEmergency" prefHeight="47.0" prefWidth="115.0" ripplerFill="#cd2323" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="%Emergency" textFill="#f2f5f7" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+         <GridPane.margin>
+            <Insets bottom="20.0" />
+         </GridPane.margin>
+      </JFXButton>
     </children>
 </GridPane>
