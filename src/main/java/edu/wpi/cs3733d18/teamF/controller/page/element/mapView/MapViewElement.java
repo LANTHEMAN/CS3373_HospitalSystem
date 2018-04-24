@@ -6,6 +6,7 @@ import edu.wpi.cs3733d18.teamF.controller.page.HomeController;
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
 import edu.wpi.cs3733d18.teamF.gfx.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.impl.map.UglyMapDrawer;
+import edu.wpi.cs3733d18.teamF.gfx.impl.pacman.GameMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
@@ -427,6 +428,12 @@ public class MapViewElement extends PageElement {
         return mapDrawController;
     }
 
+    public void startGame(){
+        mapDrawController.setMapDrawer(new GameMapDrawer());
+    }
+    public void endGame(){
+        mapDrawController.setMapDrawer(new UglyMapDrawer());
+    }
     public Node getSelectedNodeStart() {
         return selectedNodeStart;
     }

@@ -207,7 +207,9 @@ public class PaneMapController extends PaneController implements Observer {
         return node == hoveredNode;
     }
 
-
+    public void setMapDrawer(MapDrawable m){
+        mapDrawer = m;
+    }
     @Override
     public void update(Observable o, Object arg) {
         refresh();

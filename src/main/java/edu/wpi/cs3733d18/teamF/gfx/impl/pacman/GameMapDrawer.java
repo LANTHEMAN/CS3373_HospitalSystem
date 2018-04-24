@@ -1,4 +1,4 @@
-package edu.wpi.cs3733d18.teamF.gfx.pacman;
+package edu.wpi.cs3733d18.teamF.gfx.impl.pacman;
 
 import edu.wpi.cs3733d18.teamF.Main;
 import edu.wpi.cs3733d18.teamF.gfx.Drawable;
@@ -14,20 +14,21 @@ import java.util.Random;
 
 enum Direction {UP, DOWN, LEFT, RIGHT}
 
-public class PacmanDrawable extends MapDrawable implements Drawable {
+public class GameMapDrawer extends MapDrawable implements Drawable {
 
     private double posX,posY;
     private String floor;
     private Direction currDirection;
+    private Node node = null;
 
 
-    public PacmanDrawable(double posX, double posY, Direction d) {
+    public GameMapDrawer(double posX, double posY, Direction d) {
         this.posX = posX;
         this.posY = posY;
         currDirection = d;
     }
 
-    public PacmanDrawable() {
+    public GameMapDrawer() {
         this.posX = 0;
         this.posY = 0;
         this.floor = "L1";
@@ -129,9 +130,7 @@ public class PacmanDrawable extends MapDrawable implements Drawable {
 
     public void setRandom(){
         Random rand = new Random();
-        boolean is2D = MapSingleton.getInstance().getMap().is2D();
         HashSet<Node> nodes = MapSingleton.getInstance().getMap().getNodes();
-        Node node = null;
         int i = rand.nextInt(nodes.size());
         int j = 0;
         for(Node n : nodes){
@@ -141,8 +140,6 @@ public class PacmanDrawable extends MapDrawable implements Drawable {
             }
             j++;
         }
-        posX = is2D ? node.getPosition().getX() : node.getWireframePosition().getX();
-        posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
         floor = node.getFloor();
         switch(rand.nextInt(4)){
             case 0:
@@ -161,7 +158,9 @@ public class PacmanDrawable extends MapDrawable implements Drawable {
     }
     @Override
     public void draw(Pane pane) {
-
+        boolean is2D = MapSingleton.getInstance().getMap().is2D();
+        posX = is2D ? node.getPosition().getX() : node.getWireframePosition().getX();
+        posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
         Image icon =  new Image(Main.class.getResource("pacman.gif").toExternalForm());
         javafx.scene.image.ImageView iconView = new javafx.scene.image.ImageView(icon);
         switch(currDirection){
@@ -179,8 +178,6 @@ public class PacmanDrawable extends MapDrawable implements Drawable {
                 iconView.setRotate(0);
                 break;
         }
-
-        boolean is2D = MapSingleton.getInstance().getMap().is2D();
         double imageWidth = 5000;
         double imageHeight = is2D ? 3400 : 2772;
 

@@ -4,7 +4,7 @@ import edu.wpi.cs3733d18.teamF.gfx.*;
 import edu.wpi.cs3733d18.teamF.gfx.impl.edge.LineEdgeDrawer;
 import edu.wpi.cs3733d18.teamF.gfx.impl.node.*;
 import edu.wpi.cs3733d18.teamF.gfx.impl.path.DynamicPathDrawer;
-import edu.wpi.cs3733d18.teamF.gfx.pacman.PacmanDrawable;
+import edu.wpi.cs3733d18.teamF.gfx.impl.pacman.GameMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Edge;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
@@ -29,7 +29,7 @@ public class UglyMapDrawer extends MapDrawable {
     private NodeDrawable stairDrawer = new StairNodeDrawer();
     private NodeDrawable restroomDrawer = new RestroomNodeDrawer();
     private NodeDrawable pathNodeDrawer = new PathNodeDrawer();
-    private PacmanDrawable pacmanDrawable = new PacmanDrawable();
+    private GameMapDrawer gameMapDrawer = new GameMapDrawer();
     private NodeDrawable currNodeDrawable = nodeDrawer;
     private NodeDrawable startNodeDefault = null;
     private Pane pathPane = new Pane();
@@ -37,7 +37,7 @@ public class UglyMapDrawer extends MapDrawable {
 
     public UglyMapDrawer() {
         super();
-        pacmanDrawable.setRandom();
+        gameMapDrawer.setRandom();
     }
 
     @Override
@@ -120,8 +120,8 @@ public class UglyMapDrawer extends MapDrawable {
     public void draw(Pane pane) {
         Node selectedNode = null;
         Node hoveredNode = null;
-        if (pacmanDrawable.getFloor().equals(map.getFloor())){
-            pacmanDrawable.draw(pane);
+        if (gameMapDrawer.getFloor().equals(map.getFloor())){
+            gameMapDrawer.draw(pane);
         }
         if (selectedNodePos != null) {
             selectedNode = map.findNodeClosestTo(selectedNodePos.getX(), selectedNodePos.getY(), true);
