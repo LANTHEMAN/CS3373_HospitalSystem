@@ -5,6 +5,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
+import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.db.DatabaseWrapper;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
 import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
@@ -24,6 +25,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
+import org.bytedeco.javacpp.presets.opencv_core;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,6 +40,8 @@ public class MainPage implements SwitchableController, Observer {
     private final ObservableList<String> filterOptions = FXCollections.observableArrayList("Priority", "Status", "Type");
     private final ObservableList<String> languages = FXCollections.observableArrayList("Spanish", "French", "Chinese");
     private final ObservableList<String> religions = FXCollections.observableArrayList("Catholic", "Protestant", "Islamic", "Hindu", "Jewish", "Buddhist");
+    //TODO: Add realistic situations for maintenance request
+    private final ObservableList<String> situations = FXCollections.observableArrayList("Elevator Repair", "Broken Bed", "Fix Door");
     @FXML
     public ComboBox filterType, availableTypes, availableLanguagesBox, situationSelection;
     @FXML
@@ -136,6 +140,10 @@ public class MainPage implements SwitchableController, Observer {
     private Label maintenanceSituationRequired, maintenanceLocationRequired;
     @FXML
     private JFXTextArea instructionsMaintenance;
+    @FXML
+    private JFXListView assignedUsernames;
+    @FXML
+    private FontAwesomeIconView plusAssignTo;
 
     private VoiceCommandVerification voice;
     private PaneVoiceController paneVoiceController;
@@ -157,38 +165,38 @@ public class MainPage implements SwitchableController, Observer {
 
         paneVoiceController = new PaneVoiceController(voicePane);
 
-        serviceRequestPane.setPrefSize(ServiceRequestSingleton.getInstance().getPrefWidth(), ServiceRequestSingleton.getInstance().getPrefLength());
-
         languageInterpreterBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            languageInterpreterPane.toFront();
-            if(ServiceRequestSingleton.getInstance().getDestNodeID() != null){
-                destinationLanguage.setText(ServiceRequestSingleton.getInstance().getDestNodeID());
+            if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "LanguageInterpreter") || PermissionSingleton.getInstance().isAdmin()) {
+                languageInterpreterPane.toFront();
             }
         });
 
         religiousServicesBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            religiousServicesPane.toFront();
-            if(ServiceRequestSingleton.getInstance().getDestNodeID() != null){
-                destinationRS.setText(ServiceRequestSingleton.getInstance().getDestNodeID());
+            if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "ReligiousServices") || PermissionSingleton.getInstance().isAdmin()) {
+                religiousServicesPane.toFront();
             }
         });
         securityRequestBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            securityPane.toFront();
-            if(ServiceRequestSingleton.getInstance().getDestNodeID() != null){
-                securityLocationField.setText(ServiceRequestSingleton.getInstance().getDestNodeID());
+            if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "SecurityRequest") || PermissionSingleton.getInstance().isAdmin()) {
+                securityPane.toFront();
             }
         });
 
         maintenanceRequestBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            maintenancePane.toFront();
-            if(ServiceRequestSingleton.getInstance().getDestNodeID() != null){
-                destinationMaintenance.setText(ServiceRequestSingleton.getInstance().getDestNodeID());
+            if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "MaintenanceRequest") || PermissionSingleton.getInstance().isAdmin()) {
+                maintenancePane.toFront();
+            }
+        });
+
+        plusAssignTo.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            if(!usernameSearch.isVisible()){
+                usernameSearch.setVisible(true);
             }
         });
 
 
         closeBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
-            //VoiceLauncher.getInstance().terminate();
+            VoiceLauncher.getInstance().terminate();
             //switcher.terminate();
         });
 
@@ -202,13 +210,15 @@ public class MainPage implements SwitchableController, Observer {
         filterType.getItems().addAll(filterOptions);
         availableLanguagesBox.getItems().addAll(languages);
         religionSelect.getItems().addAll(religions);
+        situationSelection.getItems().addAll(situations);
 
         usernameSearch.setOnKeyTyped((KeyEvent e) -> {
             String input = usernameSearch.getText();
             input = input.concat("" + e.getCharacter());
-            //TODO: Fix auto complete
             DatabaseWrapper.autoComplete(input, usernameList, "HUser", "username");
         });
+
+
 
         onSearch();
     }
@@ -217,7 +227,8 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     private void setAssignTo(){
         String selection = usernameList.getSelectionModel().getSelectedItem().toString();
-        usernameSearch.setText(selection);
+        assignedUsernames.getItems().add(selection);
+        usernameSearch.setVisible(false);
         usernameList.setVisible(false);
     }
 
@@ -323,8 +334,12 @@ public class MainPage implements SwitchableController, Observer {
         ServiceRequestSingleton.getInstance().setPopUpRequest(s);
         serviceRequestsPopUp = s;
         typeLabel.setText("Type: " + s.getType());
+        if(s.getType().equals("Language Interpreter") || s.getType().equals("Religious Services")){
+            fullNameLabel.setText(s.getFirstName() + " " + s.getLastName());
+        }else{
+            fullNameLabel.setText("N/A");
+        }
         idLabel.setText("Service Request #" + s.getId());
-        fullNameLabel.setText(s.getFirstName() + " " + s.getLastName());
         locationLabel.setText(s.getLocation());
         statusLabel.setText(s.getStatus());
         instructionsTextArea.setText(s.getDescription());
@@ -340,8 +355,18 @@ public class MainPage implements SwitchableController, Observer {
             usernameLabel.setVisible(true);
             usernameLabel.setText(serviceRequestsPopUp.getCompletedBy());
         }
+
+        assignedUsernames.setItems(ServiceRequestSingleton.getInstance().getAssignedUsers(s.getId()));
+        if(usernameList.isVisible()) {
+            usernameList.setVisible(false);
+        }
+        if(usernameSearch.isVisible()) {
+            usernameSearch.setVisible(false);
+        }
         editRequestPane.toFront();
     }
+
+
 
     @FXML
     void onFilterType() {
@@ -393,9 +418,15 @@ public class MainPage implements SwitchableController, Observer {
 
     @FXML
     public void onSubmitEdit() {
-        if (usernameSearch.getText() != null && !usernameSearch.getText().trim().isEmpty()) {
-            ServiceRequestSingleton.getInstance().assignTo(usernameSearch.getText(), serviceRequestsPopUp);
+        if(assignedUsernames.getItems().size()>0){
+            ObservableList<String> users = assignedUsernames.getItems();
+            for(String username: users){
+                if(!ServiceRequestSingleton.getInstance().alreadyAssignedTo(username, serviceRequestsPopUp.getId())){
+                    ServiceRequestSingleton.getInstance().assignTo(username, serviceRequestsPopUp);
+                }
+            }
         }
+
         if (completeCheck.isSelected() && !serviceRequestsPopUp.getStatus().equalsIgnoreCase("Complete")) {
             serviceRequestsPopUp.setStatus("Complete");
             serviceRequestsPopUp.setCompletedBy(PermissionSingleton.getInstance().getCurrUser());
@@ -537,8 +568,7 @@ public class MainPage implements SwitchableController, Observer {
         } else {
             description = instructionsRS.getText();
         }
-        RadioButton selection = (RadioButton) religionSelect.getSelectionModel().getSelectedItem();
-        religion = selection.getText();
+        religion = religionSelect.getSelectionModel().getSelectedItem().toString();
         first_name = firstNameRS.getText();
         last_name = lastNameRS.getText();
         location = destinationRS.getText();
@@ -666,15 +696,15 @@ public class MainPage implements SwitchableController, Observer {
         RadioButton staffSelected = (RadioButton) staffToggleMaintenance.getSelectedToggle();
         String staffNeeded = staffSelected.getText();
         description = situation + "/////" + description;
-        SecurityRequests sec = new SecurityRequests(location, description, status, priority, staffNeeded);
+        MaintenanceRequest sec = new MaintenanceRequest(location, description, status, priority, situation, staffNeeded);
 
         MapSingleton.getInstance().getMap().disableNode(location);
 
         ServiceRequestSingleton.getInstance().sendServiceRequest(sec);
         ServiceRequestSingleton.getInstance().addServiceRequest(sec);
         TwilioHandlerSingleton.getInstance().sendMessage("\nMaintenance is required at " + location + ".\nAdditional Details: " + description);
-        securityPane.toBack();
-        clearSecurity();
+        maintenancePane.toBack();
+        clearMaintenancePane();
     }
 
     @FXML
