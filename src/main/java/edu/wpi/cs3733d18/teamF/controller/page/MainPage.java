@@ -6,7 +6,9 @@ import edu.wpi.cs3733d18.teamF.Main;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
 import edu.wpi.cs3733d18.teamF.controller.UserSingleton;
+import edu.wpi.cs3733d18.teamF.db.DatabaseWrapper;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
+import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
 import edu.wpi.cs3733d18.teamF.notifications.TwilioHandlerSingleton;
 import edu.wpi.cs3733d18.teamF.sr.*;
 import edu.wpi.cs3733d18.teamF.voice.VoiceCommandVerification;
@@ -416,6 +418,9 @@ public class MainPage implements SwitchableController, Observer {
             serviceRequestsPopUp.setCompletedBy(UserSingleton.getInstance().getCurrUser());
             ServiceRequestSingleton.getInstance().updateCompletedBy(serviceRequestsPopUp);
             ServiceRequestSingleton.getInstance().updateStatus(serviceRequestsPopUp);
+        }
+        if(serviceRequestsPopUp.getStatus().equals("Complete") && serviceRequestsPopUp.getType().equals("Maintenance Request")){
+            MapSingleton.getInstance().getMap().enableNode(serviceRequestsPopUp.getLocation());
         }
         usernameSearch.setText("");
         editRequestPane.toBack();

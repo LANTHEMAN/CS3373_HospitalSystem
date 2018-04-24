@@ -13,6 +13,7 @@ import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewListener;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.mapState;
 import edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.Screensaver;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
+import edu.wpi.cs3733d18.teamF.db.DatabaseWrapper;
 import edu.wpi.cs3733d18.teamF.face.FaceLauncher;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
 import edu.wpi.cs3733d18.teamF.graph.Map;
@@ -505,20 +506,20 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         searchLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = searchLocation.getText();
             input = input.concat("" + e.getCharacter());
-            filterHallAutoComplete(input, searchList);
+            DatabaseWrapper.filterHallAutoComplete(input, searchList);
         });
 
         sourceLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = sourceLocation.getText();
             input = input.concat("" + e.getCharacter());
-            filterHallAutoComplete(input, directionsList);
+            DatabaseWrapper.filterHallAutoComplete(input, directionsList);
             sourceLocationActive = true;
         });
 
         destinationLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = destinationLocation.getText();
             input = input.concat("" + e.getCharacter());
-            filterHallAutoComplete(input, directionsList);
+            DatabaseWrapper.filterHallAutoComplete(input, directionsList);
             sourceLocationActive = false;
         });
 
@@ -647,68 +648,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //          Button Colors          //
     //                                 //
     /////////////////////////////////////
-
-    // will filter the given ListView for the given input String
-    private void autoComplete(String input, ListView listView, String table, String field) {
-        if (input.length() > 0) {
-            String sql = "SELECT " + field + " FROM " + table;
-            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
-            ArrayList<String> autoCompleteStrings = new ArrayList<>();
-
-            try {
-                while (resultSet.next()) {
-                    String username = resultSet.getString(1);
-                    if (username.toLowerCase().contains(input.toLowerCase())) {
-                        autoCompleteStrings.add(username);
-                    }
-                }
-            } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
-            }
-            try {
-                if (autoCompleteStrings.size() > 0) {
-                    ObservableList<String> list = FXCollections.observableArrayList(autoCompleteStrings);
-                    listView.setItems(list);
-                    listView.setVisible(true);
-                } else {
-                    listView.setVisible(false);
-                }
-            } catch (Exception anyE) {
-                anyE.printStackTrace();
-            }
-        } else {
-            listView.setVisible(false);
-        }
-    }
-
-    private void filterHallAutoComplete(String input, ListView listView) {
-        if (input.length() > 0) {
-            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery("SELECT longName FROM Node WHERE nodeType != 'HALL' AND UPPER(longName) LIKE UPPER('%" + input + "%')");
-            ArrayList<String> hallfreeStrings = new ArrayList<>();
-
-            try {
-                while (resultSet.next()) {
-                    String name = resultSet.getString(1);
-                    hallfreeStrings.add(name);
-                }
-            } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
-            }
-            try {
-                if (hallfreeStrings.size() > 0) {
-                    ObservableList<String> list = FXCollections.observableArrayList(hallfreeStrings);
-                    listView.setItems(list);
-                    listView.setVisible(true);
-                } else {
-                    listView.setVisible(false);
-                }
-            } catch (Exception anyE) {
-                anyE.printStackTrace();
-            }
-        } else {
-            listView.setVisible(false);
-        }
-    }
 
     // will shake the password field back and forth
     private void shakePasswordField(JFXPasswordField passwordField) {

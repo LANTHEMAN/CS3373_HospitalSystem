@@ -32,7 +32,7 @@
 <?import javafx.scene.text.Text?>
 <?import jfxtras.scene.layout.CircularPane?>
 
-<GridPane fx:id="serviceRequestPane" alignment="CENTER" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.MainPage">
+<GridPane fx:id="serviceRequestPane" alignment="CENTER" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.MainPage">
     <Pane fx:id="voicePane" pickOnBounds="false">
     </Pane>
    <JFXTabPane fx:id="serviceRequestTabPane" blendMode="SRC_ATOP" tabClosingPolicy="UNAVAILABLE" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
@@ -258,85 +258,6 @@
                            <Label fx:id="requestTitleRequired" layoutX="420.0" layoutY="172.0" text="*Required Field" textFill="RED" visible="false" />
                           </children>
                       </AnchorPane>
-                     <StackPane fx:id="mainPane" style="-fx-background-color: #f1f1f1;">
-                        <children>
-                           <ImageView blendMode="LIGHTEN" fitHeight="612.0" fitWidth="646.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                              <image>
-                                 <Image url="@../BWHIcon.png" />
-                              </image>
-                              <cursor>
-                                 <Cursor fx:constant="NONE" />
-                              </cursor>
-                           </ImageView>
-                           <CircularPane snapToPixel="false" StackPane.alignment="CENTER">
-                              <children>
-                                 <JFXButton fx:id="languageInterpreterBtn" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Language&#10;Interpreter" textAlignment="CENTER" textFill="WHITE">
-                                    <effect>
-                                       <DropShadow height="100.0" radius="49.5" spread="0.71" width="100.0" />
-                                    </effect>
-                                    <font>
-                                       <Font name="Arial Bold" size="18.0" />
-                                    </font>
-                                    <graphic>
-                                       <FontAwesomeIconView fill="WHITE" glyphName="LANGUAGE" size="50" />
-                                    </graphic>
-                                 </JFXButton>
-                                 <JFXButton fx:id="religiousServicesBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Religious&#10;Services" textAlignment="CENTER" textFill="WHITE">
-                                    <effect>
-                                       <DropShadow height="100.0" radius="49.5" spread="0.71" width="100.0" />
-                                    </effect>
-                                    <graphic>
-                                       <FontAwesomeIconView fill="WHITE" glyphName="BOOK" size="50" />
-                                    </graphic>
-                                    <font>
-                                       <Font name="Arial Bold" size="18.0" />
-                                    </font>
-                                 </JFXButton>
-                                 <JFXButton fx:id="securityRequestBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Security&#10;Request" textAlignment="CENTER" textFill="WHITE">
-                                    <font>
-                                       <Font name="Arial Bold" size="18.0" />
-                                    </font>
-                                    <graphic>
-                                       <FontAwesomeIconView fill="WHITE" glyphName="SHIELD" size="50" />
-                                    </graphic>
-                                 </JFXButton>
-                                 <JFXButton fx:id="sanitationServicesBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Sanitation&#10;Services" textAlignment="CENTER" textFill="WHITE">
-                                    <effect>
-                                       <DropShadow height="100.0" radius="49.5" spread="0.71" width="100.0" />
-                                    </effect>
-                                    <font>
-                                       <Font name="Arial Bold" size="18.0" />
-                                    </font>
-                                    <graphic>
-                                       <FontAwesomeIconView fill="WHITE" glyphName="PAINT_BRUSH" size="50" />
-                                    </graphic>
-                                 </JFXButton>
-                                 <JFXButton fx:id="languageInterpreterBtn1" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Language&#10;Interpreter" textAlignment="CENTER" textFill="WHITE">
-                                    <effect>
-                                       <DropShadow height="100.0" radius="49.5" spread="0.71" width="100.0" />
-                                    </effect>
-                                    <font>
-                                       <Font name="Arial Bold" size="18.0" />
-                                    </font>
-                                    <graphic>
-                                       <FontAwesomeIconView fill="WHITE" glyphName="LANGUAGE" size="50" />
-                                    </graphic>
-                                 </JFXButton>
-                                 <JFXButton fx:id="religiousServicesBtn1" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Religious&#10;Services" textAlignment="CENTER" textFill="WHITE">
-                                    <effect>
-                                       <DropShadow height="100.0" radius="49.5" spread="0.71" width="100.0" />
-                                    </effect>
-                                    <graphic>
-                                       <FontAwesomeIconView fill="WHITE" glyphName="BOOK" size="50" />
-                                    </graphic>
-                                    <font>
-                                       <Font name="Arial Bold" size="18.0" />
-                                    </font>
-                                 </JFXButton>
-                              </children>
-                           </CircularPane>
-                        </children>
-                     </StackPane>
                      <AnchorPane fx:id="sanitationPane" style="-fx-background-color: #f1f1f1;">
                         <children>
                            <FontAwesomeIconView fill="#e4e4e4" glyphName="WRENCH" layoutX="476.0" layoutY="513.0" size="400" />
@@ -426,6 +347,85 @@
                               </children>
                            </HBox>
                         </children></AnchorPane>
+                     <StackPane fx:id="mainPane" style="-fx-background-color: #f1f1f1;">
+                        <children>
+                           <ImageView blendMode="LIGHTEN" fitHeight="612.0" fitWidth="646.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../BWHIcon.png" />
+                              </image>
+                              <cursor>
+                                 <Cursor fx:constant="NONE" />
+                              </cursor>
+                           </ImageView>
+                           <CircularPane snapToPixel="false" StackPane.alignment="CENTER">
+                              <children>
+                                 <JFXButton fx:id="languageInterpreterBtn" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Language&#10;Interpreter" textAlignment="CENTER" textFill="WHITE">
+                                    <effect>
+                                       <DropShadow height="100.0" radius="49.5" spread="0.71" width="100.0" />
+                                    </effect>
+                                    <font>
+                                       <Font name="Arial Bold" size="18.0" />
+                                    </font>
+                                    <graphic>
+                                       <FontAwesomeIconView fill="WHITE" glyphName="LANGUAGE" size="50" />
+                                    </graphic>
+                                 </JFXButton>
+                                 <JFXButton fx:id="religiousServicesBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Religious&#10;Services" textAlignment="CENTER" textFill="WHITE">
+                                    <effect>
+                                       <DropShadow height="100.0" radius="49.5" spread="0.71" width="100.0" />
+                                    </effect>
+                                    <graphic>
+                                       <FontAwesomeIconView fill="WHITE" glyphName="BOOK" size="50" />
+                                    </graphic>
+                                    <font>
+                                       <Font name="Arial Bold" size="18.0" />
+                                    </font>
+                                 </JFXButton>
+                                 <JFXButton fx:id="securityRequestBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Security&#10;Request" textAlignment="CENTER" textFill="WHITE">
+                                    <font>
+                                       <Font name="Arial Bold" size="18.0" />
+                                    </font>
+                                    <graphic>
+                                       <FontAwesomeIconView fill="WHITE" glyphName="SHIELD" size="50" />
+                                    </graphic>
+                                 </JFXButton>
+                                 <JFXButton fx:id="sanitationServicesBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Sanitation&#10;Services" textAlignment="CENTER" textFill="WHITE">
+                                    <effect>
+                                       <DropShadow height="100.0" radius="49.5" spread="0.71" width="100.0" />
+                                    </effect>
+                                    <font>
+                                       <Font name="Arial Bold" size="18.0" />
+                                    </font>
+                                    <graphic>
+                                       <FontAwesomeIconView fill="WHITE" glyphName="PAINT_BRUSH" size="50" />
+                                    </graphic>
+                                 </JFXButton>
+                                 <JFXButton fx:id="languageInterpreterBtn1" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Language&#10;Interpreter" textAlignment="CENTER" textFill="WHITE">
+                                    <effect>
+                                       <DropShadow height="100.0" radius="49.5" spread="0.71" width="100.0" />
+                                    </effect>
+                                    <font>
+                                       <Font name="Arial Bold" size="18.0" />
+                                    </font>
+                                    <graphic>
+                                       <FontAwesomeIconView fill="WHITE" glyphName="LANGUAGE" size="50" />
+                                    </graphic>
+                                 </JFXButton>
+                                 <JFXButton fx:id="religiousServicesBtn1" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" graphicTextGap="10.0" prefHeight="140.0" prefWidth="140.0" ripplerFill="#58acff" style="-fx-background-radius: 100; -fx-border-radius: 100;" text="Religious&#10;Services" textAlignment="CENTER" textFill="WHITE">
+                                    <effect>
+                                       <DropShadow height="100.0" radius="49.5" spread="0.71" width="100.0" />
+                                    </effect>
+                                    <graphic>
+                                       <FontAwesomeIconView fill="WHITE" glyphName="BOOK" size="50" />
+                                    </graphic>
+                                    <font>
+                                       <Font name="Arial Bold" size="18.0" />
+                                    </font>
+                                 </JFXButton>
+                              </children>
+                           </CircularPane>
+                        </children>
+                     </StackPane>
                   </children>
                </StackPane>
             </content>
