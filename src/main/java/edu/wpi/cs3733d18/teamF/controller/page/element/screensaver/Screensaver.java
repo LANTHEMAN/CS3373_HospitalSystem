@@ -9,10 +9,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class Screensaver extends PageElement{
-
-public class Screensaver extends PageElement {
 
     private final ArrayList<String> askMe = new ArrayList<>(Arrays.asList("Ask me to find the nearest bathroom"
             , "Ask me to get religous services"
