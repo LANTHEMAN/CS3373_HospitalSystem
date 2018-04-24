@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
+
 public class Screensaver extends PageElement{
 
     @FXML
