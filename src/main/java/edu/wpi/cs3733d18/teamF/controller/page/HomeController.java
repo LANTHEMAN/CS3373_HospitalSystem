@@ -395,8 +395,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
         /// TODO RADIAL MENU
         /// TODO RADIAL MENU
-        radialMenu = new GenericRadial();
-        rootPane.getChildren().add(radialMenu);
+        radialMenu = new GenericRadial(Arrays.asList(
+                "9.png"
+                , "9.png"
+                , "9.png"
+                //, "3.png"
+                //, "4.png"
+        ));
+
+       // rootPane.getChildren().add(radialMenu);
+
         /// TODO RADIAL MENU
         /// TODO RADIAL MENU
 

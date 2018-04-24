@@ -29,8 +29,6 @@ public class GenericRadial extends Group {
     private final Color selectionColor = Color.BLACK;
     private final Color valueColor = Color.web("30c0ff");
     private final Color valueHoverColor = Color.web("30c0ff");
-
-    private final double menuSize = 45;
     private final double innerRadius = 110;
     private final double radius = 200;
     private final List<RadialMenuItem> items = new ArrayList<RadialMenuItem>();
@@ -42,32 +40,24 @@ public class GenericRadial extends Group {
     private final Map<RadialMenuItem, ImageView> itemAndValueToWhiteIcon = new HashMap<RadialMenuItem, ImageView>();
     private final Map<RadialMenuItem, RadialMenuItem> valueItemToItem = new HashMap<RadialMenuItem, RadialMenuItem>();
     private final Group notSelectedItemEffect;
+    private double menuSize;
     private SelectionEventHandler selectionEventHandler = new SelectionEventHandler();
     private RadialMenuItem selectedItem = null;
     private Transition openAnim;
 
-    public GenericRadial() {
-        initialAngle.addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(
-                    final ObservableValue<? extends Number> paramObservableValue,
-                    final Number paramT1, final Number paramT2) {
-                setInitialAngle(paramObservableValue
-                        .getValue().doubleValue());
-            }
-        });
+    public GenericRadial(List<String> iconList) {
+        initialAngle.addListener((paramObservableValue, paramT1, paramT2) -> setInitialAngle(paramObservableValue
+                .getValue().doubleValue()));
         centerNode.visibleProperty().bind(visibleProperty());
         getChildren().add(itemsContainer);
         getChildren().add(centerNode);
 
-        addMenuItem("src/main/resources/edu/wpi/cs3733d18/teamF/icons/gemicon/PNG/32x32/row 1/1.png");
-        addMenuItem("src/main/resources/edu/wpi/cs3733d18/teamF/icons/gemicon/PNG/32x32/row 1/2.png");
-        addMenuItem("src/main/resources/edu/wpi/cs3733d18/teamF/icons/gemicon/PNG/32x32/row 1/3.png");
-        addMenuItem("src/main/resources/edu/wpi/cs3733d18/teamF/icons/gemicon/PNG/32x32/row 1/4.png");
-        addMenuItem("src/main/resources/edu/wpi/cs3733d18/teamF/icons/gemicon/PNG/32x32/row 1/5.png");
-        addMenuItem("src/main/resources/edu/wpi/cs3733d18/teamF/icons/gemicon/PNG/32x32/row 1/6.png");
-        addMenuItem("src/main/resources/edu/wpi/cs3733d18/teamF/icons/gemicon/PNG/32x32/row 1/7.png");
-        addMenuItem("src/main/resources/edu/wpi/cs3733d18/teamF/icons/gemicon/PNG/32x32/row 1/8.png");
+        menuSize = 360.f / iconList.size();
+
+        for (String iconName : iconList) {
+            addMenuItem("src/main/resources/edu/wpi/cs3733d18/teamF/icons/gemicon/PNG/32x32/row 1/" + iconName);
+        }
+
 
         final RadialMenuItem notSelected1 = createNotSelectedItemEffect();
         final RadialMenuItem notSelected2 = createNotSelectedItemEffect();
@@ -95,7 +85,7 @@ public class GenericRadial extends Group {
         return notSelectedItemEffect;
     }
 
-    private void addMenuItem(final String iconPath) {
+    public void addMenuItem(final String iconPath) {
         final ImageView imageView = getImageView(iconPath);
 
         final ImageView centerView = getImageView(iconPath.replace("32x32",
@@ -225,7 +215,7 @@ public class GenericRadial extends Group {
         computeItemsStartAngle();
     }
 
-    ImageView getImageView(final String path) {
+    private ImageView getImageView(final String path) {
         ImageView imageView = null;
         try {
             imageView = ImageViewBuilder.create()
