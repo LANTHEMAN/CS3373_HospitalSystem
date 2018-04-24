@@ -3,8 +3,8 @@ package edu.wpi.cs3733d18.teamF.controller.page;
 import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
+import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
-import edu.wpi.cs3733d18.teamF.controller.UserSingleton;
 import edu.wpi.cs3733d18.teamF.db.DatabaseWrapper;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
 import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
@@ -37,6 +37,7 @@ public class MainPage implements SwitchableController, Observer {
     private final ObservableList<String> type = FXCollections.observableArrayList("Language Interpreter", "Religious Services", "Security Request", "Maintenance Request");
     private final ObservableList<String> filterOptions = FXCollections.observableArrayList("Priority", "Status", "Type");
     private final ObservableList<String> languages = FXCollections.observableArrayList("Spanish", "French", "Chinese");
+    private final ObservableList<String> religions = FXCollections.observableArrayList("Catholic", "Protestant", "Islamic", "Hindu", "Jewish", "Buddhist");
     @FXML
     public ComboBox filterType, availableTypes, availableLanguagesBox, situationSelection;
     @FXML
@@ -128,9 +129,9 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     private JFXButton religiousServicesBtn;
     @FXML
-    private JFXButton securityRequestBtn;
+    private JFXButton securityRequestBtn, maintenanceRequestBtn;
     @FXML
-    private JFXTextField firstNameMaintenance, lastNameMaintenance, destinationMaintenance;
+    private JFXTextField destinationMaintenance;
     @FXML
     private Label maintenanceSituationRequired, maintenanceLocationRequired;
     @FXML
@@ -178,6 +179,13 @@ public class MainPage implements SwitchableController, Observer {
             }
         });
 
+        maintenanceRequestBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            maintenancePane.toFront();
+            if(ServiceRequestSingleton.getInstance().getDestNodeID() != null){
+                destinationMaintenance.setText(ServiceRequestSingleton.getInstance().getDestNodeID());
+            }
+        });
+
 
         closeBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
             //VoiceLauncher.getInstance().terminate();
@@ -193,48 +201,18 @@ public class MainPage implements SwitchableController, Observer {
 
         filterType.getItems().addAll(filterOptions);
         availableLanguagesBox.getItems().addAll(languages);
+        religionSelect.getItems().addAll(religions);
 
         usernameSearch.setOnKeyTyped((KeyEvent e) -> {
             String input = usernameSearch.getText();
             input = input.concat("" + e.getCharacter());
-            autoComplete(input, usernameList);
+            //TODO: Fix auto complete
+            DatabaseWrapper.autoComplete(input, usernameList, "HUser", "username");
         });
 
         onSearch();
-
-        ArrayList<String> usernameList = new ArrayList<>();
-        usernameList.add("staff");
-        usernameList.add("admin");
-        usernameList.add("amtavares");
-        UserSingleton.getInstance().setUsernames(usernameList);
     }
 
-
-    // will filter the given ListView for the given input String
-    private void autoComplete(String input, ListView listView) {
-        if (input.length() > 0) {
-            ArrayList<String> autoCompleteStrings = new ArrayList<>();
-
-            for(String username: UserSingleton.getInstance().getUsernames()){
-                if(username.contains(input)){
-                    autoCompleteStrings.add(username);
-                }
-            }
-            try {
-                if (autoCompleteStrings.size() > 0) {
-                    ObservableList<String> list = FXCollections.observableArrayList(autoCompleteStrings);
-                    listView.setItems(list);
-                    listView.setVisible(true);
-                } else {
-                    listView.setVisible(false);
-                }
-            } catch (Exception anyE) {
-                anyE.printStackTrace();
-            }
-        } else {
-            listView.setVisible(false);
-        }
-    }
 
     @FXML
     private void setAssignTo(){
@@ -304,7 +282,7 @@ public class MainPage implements SwitchableController, Observer {
         btnsCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
 
         Callback<TableColumn<ServiceRequests, String>, TableCell<ServiceRequests, String>> cellFactory
-                = //
+                =
                 new Callback<TableColumn<ServiceRequests, String>, TableCell<ServiceRequests, String>>() {
                     @Override
                     public TableCell call(final TableColumn<ServiceRequests, String> param) {
@@ -420,7 +398,7 @@ public class MainPage implements SwitchableController, Observer {
         }
         if (completeCheck.isSelected() && !serviceRequestsPopUp.getStatus().equalsIgnoreCase("Complete")) {
             serviceRequestsPopUp.setStatus("Complete");
-            serviceRequestsPopUp.setCompletedBy(UserSingleton.getInstance().getCurrUser());
+            serviceRequestsPopUp.setCompletedBy(PermissionSingleton.getInstance().getCurrUser());
             ServiceRequestSingleton.getInstance().updateCompletedBy(serviceRequestsPopUp);
             ServiceRequestSingleton.getInstance().updateStatus(serviceRequestsPopUp);
         }

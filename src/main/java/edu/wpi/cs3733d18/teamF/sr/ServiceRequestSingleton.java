@@ -1,7 +1,7 @@
 package edu.wpi.cs3733d18.teamF.sr;
 
 
-import edu.wpi.cs3733d18.teamF.controller.UserSingleton;
+import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.db.DatabaseHandler;
 import edu.wpi.cs3733d18.teamF.db.DatabaseItem;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
@@ -420,7 +420,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
     }
 
     public void assignTo(String username, ServiceRequests sr) {
-        if (UserSingleton.getInstance().isValidUsername(username)) {
+        if (PermissionSingleton.getInstance().userExist(username)) {
             sr.setStatus("In Progress");
             updateAssignedTo(sr);
             updateStatus(sr);
