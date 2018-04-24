@@ -37,6 +37,7 @@ public class UglyMapDrawer extends MapDrawable {
 
     public UglyMapDrawer() {
         super();
+        pacmanDrawable.setRandom();
     }
 
     @Override
@@ -119,8 +120,9 @@ public class UglyMapDrawer extends MapDrawable {
     public void draw(Pane pane) {
         Node selectedNode = null;
         Node hoveredNode = null;
-        //TODO: Remove this
-        pacmanDrawable.drawRandom(pane);
+        if (pacmanDrawable.getFloor().equals(map.getFloor())){
+            pacmanDrawable.draw(pane);
+        }
         if (selectedNodePos != null) {
             selectedNode = map.findNodeClosestTo(selectedNodePos.getX(), selectedNodePos.getY(), true);
         }

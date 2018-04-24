@@ -3,9 +3,11 @@ package edu.wpi.cs3733d18.teamF.gfx.pacman;
 import edu.wpi.cs3733d18.teamF.Main;
 import edu.wpi.cs3733d18.teamF.gfx.Drawable;
 import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
+import edu.wpi.cs3733d18.teamF.graph.Node;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
+import java.util.HashSet;
 import java.util.Random;
 
 enum Direction {UP, DOWN, LEFT, RIGHT}
@@ -13,6 +15,7 @@ enum Direction {UP, DOWN, LEFT, RIGHT}
 public class PacmanDrawable implements Drawable {
 
     private double posX,posY;
+    private String floor;
     private Direction currDirection;
 
 
@@ -25,6 +28,7 @@ public class PacmanDrawable implements Drawable {
     public PacmanDrawable() {
         this.posX = 0;
         this.posY = 0;
+        this.floor = "L1";
         this.currDirection = Direction.UP;
     }
 
@@ -48,13 +52,31 @@ public class PacmanDrawable implements Drawable {
         return posY;
     }
 
-    public void drawRandom(Pane pane){
-        boolean is2D = MapSingleton.getInstance().getMap().is2D();
-        int imageWidth = 5000;
-        int imageHeight = is2D ? 3400 : 2772;
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public void setRandom(){
         Random rand = new Random();
-        posX = rand.nextInt(imageWidth);
-        posY = rand.nextInt(imageHeight);
+        boolean is2D = MapSingleton.getInstance().getMap().is2D();
+        HashSet<Node> nodes = MapSingleton.getInstance().getMap().getNodes();
+        Node node = null;
+        int i = rand.nextInt(nodes.size());
+        int j = 0;
+        for(Node n : nodes){
+            if(i == j){
+                node = n;
+                break;
+            }
+            j++;
+        }
+        posX = is2D ? node.getPosition().getX() : node.getWireframePosition().getX();
+        posY = is2D ? node.getPosition().getY() : node.getWireframePosition().getY();
+        floor = node.getFloor();
         switch(rand.nextInt(4)){
             case 0:
                 currDirection = Direction.UP;
@@ -69,7 +91,6 @@ public class PacmanDrawable implements Drawable {
                 currDirection = Direction.RIGHT;
                 break;
         }
-        draw(pane);
     }
     @Override
     public void draw(Pane pane) {
