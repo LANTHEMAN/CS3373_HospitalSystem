@@ -196,9 +196,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private JFXHamburger hamburger;
     @FXML
-    private JFXDrawer adminDrawer;
+    private JFXDrawer adminDrawer, guestDrawer;
     @FXML
-    private VBox adminBox;
+    private VBox adminBox, guestBox;
     @FXML
     private JFXButton mapEditorBtn, editUsersBtn;
     /////////////////////////////
@@ -332,6 +332,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @Override
     public void initialize(PaneSwitcher switcher) {
         adminDrawer.setDisable(true);
+        guestDrawer.setDisable(true);
         directionsDrawer.setDisable(true);
         mapEditorDrawer.setDisable(true);
         loginDrawer.setDisable(true);
@@ -469,6 +470,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
         directionsDrawer.setSidePane(directionsBox);
         adminDrawer.setSidePane(adminBox);
+        guestDrawer.setSidePane(guestBox);
         privilegeCombo.getItems().addAll(privilegeOptions);
         mapEditorDrawer.setSidePane(mapEditorBtns);
 
@@ -843,10 +845,17 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     private void onHamburgerMenu() {
-        if (adminDrawer.isHidden()) {
+        if ((PermissionSingleton.getInstance().getUserPrivilege().equals("Admin") ||
+                PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) &&
+                adminDrawer.isHidden()) {
             adminDrawer.setDisable(false);
             adminDrawer.open();
             adminDrawer.toFront();
+        } else if ((PermissionSingleton.getInstance().getUserPrivilege().equals("Guest")) &&
+                guestDrawer.isHidden()) {
+            guestDrawer.setDisable(false);
+            guestDrawer.open();
+            guestDrawer.toFront();
         }
     }
 
@@ -872,12 +881,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             adminDrawer.close();
             adminDrawer.toBack();
             adminDrawer.setDisable(true);
+        } else if (guestDrawer.isShown()) {
+            guestDrawer.close();
+            guestDrawer.toBack();
+            guestDrawer.setDisable(true);
         }
     }
 
     private void setGuestMenu() {
-        hamburger.setVisible(false);
-        hamburgerD.setVisible(false);
+        hamburger.setVisible(true);
+        hamburgerD.setVisible(true);
     }
 
     private void setAdminMenu() {
