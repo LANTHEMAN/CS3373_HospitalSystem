@@ -301,9 +301,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private JFXButton inboxBtn;
     @FXML
-    private Label inboxNum;
-
     private Text inboxNum;
+
     ////////////////////////////////////
     //                                //
     //       Screensaver Timout       //
@@ -321,7 +320,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private JFXTextField faceIDField;
     @FXML
     private JFXCheckBox allFloors;
-
 
     // uhg
     @FXML
