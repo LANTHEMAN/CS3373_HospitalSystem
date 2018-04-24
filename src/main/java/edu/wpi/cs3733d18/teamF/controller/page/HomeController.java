@@ -613,7 +613,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     public void onCameraClicked() throws IOException {
         if (!usernameField.getText().equals("")) {
-
             try {
                 Webcam webcam = Webcam.getDefault(5000);
                 webcam.open();

@@ -6,9 +6,9 @@ Request a Service
 Help
 Select Language
 Hey Kiosk
-Get Directions to Bathroom
-Get Directions to Exit
-Get Directions to Neuroscience
+Get Directions Bathroom
+Get Directions Exit
+Get Directions Neuroscience
 Orthopedics
 Rhemutology
 Parking Garage
@@ -32,3 +32,26 @@ Security Request
 Create Service Request
 Search Service Request
 User Management
+MRI
+Cafe
+Duncan Reid Conference Room
+Lee Bell Breast Center
+Jen Center Primary Care
+Ear Nose Throat
+Outpatient Pharmacy
+Weiner Center Preoperative Evaluation
+Information Desk
+Vascular Diagnostic Lab
+Outpatient Specimen Collection
+Patient Financial Services
+Anesthesia
+Au Bon Pain
+Endoscopy
+Garden Cafe
+Gift Shop
+Gynecology
+Innovation Hub
+Kessler Library
+Chapel
+Rehab
+Rehabilitation

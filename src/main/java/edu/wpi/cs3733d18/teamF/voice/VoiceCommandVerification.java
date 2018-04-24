@@ -75,11 +75,32 @@ public class VoiceCommandVerification extends Observable implements Observer {
                     } else if (command.contains("NUCLEAR")) {
                         nodes = map.getNodes(node -> node.getLongName().contains("Nuclear Medicine"));
                         voice.speak("Here is the route to Nuclear Medicine");
+                    } else if (command.contains("MRI")) {
+                        nodes = map.getNodes(node -> node.getLongName().contains("MRI"));
+                        voice.speak("Here is the route to the MRI");
+                    } else if (command.contains("GARDEN") && command.contains("CAFE")) {
+                        nodes = map.getNodes(node -> node.getLongName().contains("Garden Cafe") && node.getNodeType().equals("RETL"));
+                        voice.speak("Here is the route to the garden cafe");
+                    } else if (command.contains("CAFE")) {
+                        nodes = map.getNodes(node -> node.getLongName().contains("Cafe") && node.getNodeType().equals("RETL"));
+                        voice.speak("Here is the route to the nearest cafe");
+                    } else if (command.contains("DUNCAN") && command.contains("REID")) {
+                        nodes = map.getNodes(node -> node.getLongName().contains("Duncan Reid Conference Room"));
+                        voice.speak("Here is the route to Duncan Reid Conference Room");
+                    } else if (command.contains("LEE") && command.contains("BELL") && command.contains("BREAST")) {
+                        nodes = map.getNodes(node -> node.getLongName().contains("Lee Bell Breast Center"));
+                        voice.speak("Here is the route to the Lee Bell Breast Center");
+                    }else if(command.contains("JEN") && command.contains("CENTER") && command.contains("PRIMARY")){
+                        nodes = map.getNodes(node -> node.getLongName().contains("Jen Center for Primary Care"));
+                        voice.speak("Here is the route to the Jen Center for Primary Care");
+                    }else if(command.contains("EAR") && command.contains("NOSE") && command.contains("THROAT")){
+                        nodes = map.getNodes(node -> node.getLongName().contains("Ear Nose & Throat"));
+                        voice.speak("Here are directions to the Ear Nose and Throat Center");
                     }
 
                     if (nodes.size() == 1) {
                         signalClassChanged(nodes.iterator().next());
-                    } else if (nodes.size() > 1){
+                    } else if (nodes.size() > 1) {
                         signalClassChanged(nodes);
                     }
 
