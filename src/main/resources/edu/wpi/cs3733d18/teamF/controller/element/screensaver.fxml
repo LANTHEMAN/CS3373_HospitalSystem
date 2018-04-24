@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="root" minHeight="500.0" minWidth="700.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.Screensaver">
+<AnchorPane fx:id="root" minHeight="500.0" minWidth="700.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.Screensaver">
    <children>
       <JFXDialog layoutX="125.0" layoutY="296.0" prefHeight="33.0" prefWidth="290.0" translateX="40.0" />
       <Label layoutX="521.0" layoutY="16.0" />
@@ -27,7 +27,7 @@
          <children>
             <ImageView fitHeight="57.0" fitWidth="200.0" translateX="10.0" translateY="-10.0">
                <image>
-                  <Image url="@../../../../../../../../../../../../Desktop/cfLLaKI.png" />
+                  <Image url="@../../logo_large.png" />
                </image>
             </ImageView>
             <Label fx:id="date" scaleX="1.5" scaleY="1.5" text="April 25, 2018" translateX="-20.0" translateY="-10.0" GridPane.halignment="RIGHT" />
