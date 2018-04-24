@@ -38,7 +38,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<GridPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
+<GridPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="256.0" />
         <ColumnConstraints />
@@ -54,12 +54,16 @@
             <children>
                 <Pane prefHeight="86.0" prefWidth="300.0">
                     <children>
-                  <Text fx:id="inboxNum" fill="WHITE" layoutX="29.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
-                     <font>
-                        <Font name="Arial Bold" size="18.0" />
-                     </font>
-                  </Text>
-                  <FontAwesomeIconView fx:id="inboxIcon" fill="WHITE" glyphName="ENVELOPE" layoutX="20.0" layoutY="53.0" onMouseClicked="#onInbox" size="30" />
+                  <StackPane alignment="CENTER_RIGHT" layoutX="6.0" prefHeight="44.0" prefWidth="46.0">
+                     <children>
+                        <JFXButton fx:id="inboxBtn" buttonType="RAISED" contentDisplay="BOTTOM" prefHeight="59.0" prefWidth="46.0" text=" ">
+                           <graphic>
+                              <FontAwesomeIconView fill="WHITE" glyphName="ENVELOPE" onMouseClicked="#onInbox" size="30" />
+                           </graphic>
+                        </JFXButton>
+                        <Label fx:id="inboxNum" alignment="CENTER" contentDisplay="RIGHT" prefHeight="14.0" prefWidth="14.0" style="-fx-background-color: RED; -fx-background-radius: 100;" text="0" textFill="WHITE" />
+                     </children>
+                  </StackPane>
                         <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" layoutX="251.0" layoutY="53.0" onMouseClicked="#setCancelMenuEvent" size="40" wrappingWidth="22.142844200134277" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="24.0" prefHeight="38.0" prefWidth="112.0" text="%MENU">
                             <font>
@@ -120,7 +124,7 @@
                   <Insets top="50.0" />
                </VBox.margin>
             </JFXTextField>
-            <JFXSlider fx:id="sliderTimeout" onMouseReleased="#onTimeoutChanged" blockIncrement="5.0" max="300.0" min="10.0" value="30.0">
+            <JFXSlider fx:id="sliderTimeout" blockIncrement="5.0" max="300.0" min="10.0" onMouseReleased="#onTimeoutChanged" value="30.0">
                <VBox.margin>
                   <Insets left="30.0" right="30.0" />
                </VBox.margin>
@@ -894,9 +898,9 @@
                         <Font size="18.0" />
                     </font>
                 </Label>
-                <JFXCheckBox fx:id="languageCheck" layoutX="70.0" layoutY="380.0" text="%LanguageInterpreter" />
-                <JFXCheckBox fx:id="religiousCheck" layoutX="280.0" layoutY="380.0" text="%ReligiousServices" />
-                <JFXCheckBox fx:id="securityCheck" layoutX="490.0" layoutY="380.0" text="%SecurityRequest" />
+                <JFXCheckBox fx:id="languageCheck" layoutX="20.0" layoutY="380.0" text="%LanguageInterpreter" />
+                <JFXCheckBox fx:id="religiousCheck" layoutX="174.0" layoutY="380.0" text="%ReligiousServices" />
+                <JFXCheckBox fx:id="securityCheck" layoutX="319.0" layoutY="380.0" text="%SecurityRequest" />
                 <JFXButton buttonType="RAISED" layoutX="568.0" layoutY="424.0" onAction="#onSubmitUser" style="-fx-background-color: #042E58;" text="%Submit" textFill="WHITE" />
                 <JFXButton buttonType="RAISED" layoutX="20.0" layoutY="424.0" onAction="#onCancelUser" style="-fx-background-color: #042E58;" text="%Cancel" textFill="WHITE" />
                 <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="90.0" prefWidth="100.0" text="%Username">
@@ -940,6 +944,7 @@
             <ImageView fx:id="userIDView" fitHeight="463.0" fitWidth="638.0" pickOnBounds="true" visible="false" />
             <FontAwesomeIconView fx:id="userIDSubmit" fill="WHITE" glyphName="CHECK" layoutX="600.0" layoutY="450.0" size="30" strokeType="OUTSIDE" strokeWidth="0.0" visible="false" />
             <FontAwesomeIconView fx:id="userIDCancel" fill="WHITE" glyphName="TIMES" layoutX="570.0" layoutY="450.0" size="30" strokeType="OUTSIDE" strokeWidth="0.0" visible="false" />
+            <JFXCheckBox fx:id="maintenanceCheck" layoutX="462.0" layoutY="380.0" text="%MaintenanceRequest" />
             </children>
         </AnchorPane>
         <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />

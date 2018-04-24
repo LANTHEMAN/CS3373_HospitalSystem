@@ -159,32 +159,26 @@ public class MainPage implements SwitchableController, Observer {
 
         paneVoiceController = new PaneVoiceController(voicePane);
 
-        serviceRequestPane.setPrefSize(ServiceRequestSingleton.getInstance().getPrefWidth(), ServiceRequestSingleton.getInstance().getPrefLength());
-
         languageInterpreterBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            languageInterpreterPane.toFront();
-            if(ServiceRequestSingleton.getInstance().getDestNodeID() != null){
-                destinationLanguage.setText(ServiceRequestSingleton.getInstance().getDestNodeID());
+            if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "LanguageInterpreter") || PermissionSingleton.getInstance().isAdmin()) {
+                languageInterpreterPane.toFront();
             }
         });
 
         religiousServicesBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            religiousServicesPane.toFront();
-            if(ServiceRequestSingleton.getInstance().getDestNodeID() != null){
-                destinationRS.setText(ServiceRequestSingleton.getInstance().getDestNodeID());
+            if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "ReligiousServices") || PermissionSingleton.getInstance().isAdmin()) {
+                religiousServicesPane.toFront();
             }
         });
         securityRequestBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            securityPane.toFront();
-            if(ServiceRequestSingleton.getInstance().getDestNodeID() != null){
-                securityLocationField.setText(ServiceRequestSingleton.getInstance().getDestNodeID());
+            if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "SecurityRequest") || PermissionSingleton.getInstance().isAdmin()) {
+                securityPane.toFront();
             }
         });
 
         maintenanceRequestBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            maintenancePane.toFront();
-            if(ServiceRequestSingleton.getInstance().getDestNodeID() != null){
-                destinationMaintenance.setText(ServiceRequestSingleton.getInstance().getDestNodeID());
+            if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "MaintenanceRequest") || PermissionSingleton.getInstance().isAdmin()) {
+                maintenancePane.toFront();
             }
         });
 

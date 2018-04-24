@@ -20,6 +20,8 @@ import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.graph.*;
 import edu.wpi.cs3733d18.teamF.graph.pathfinding.*;
 import edu.wpi.cs3733d18.teamF.qr.qrConverter;
+import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
+import edu.wpi.cs3733d18.teamF.sr.ServiceRequests;
 import edu.wpi.cs3733d18.teamF.voice.VoiceCommandVerification;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.animation.Animation;
@@ -227,7 +229,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private Label userLabel;
     @FXML
-    private JFXCheckBox languageCheck, religiousCheck, securityCheck;
+    private JFXCheckBox languageCheck, religiousCheck, securityCheck, maintenanceCheck;
     @FXML
     private JFXTextField usernameField, passwordField, fnameField, lnameField, occupationField;
     @FXML
@@ -279,7 +281,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //                   //
     ///////////////////////
     @FXML
-    private FontAwesomeIconView inboxIcon;
+    private JFXButton inboxBtn;
     @FXML
     private Text inboxNum;
 
@@ -592,8 +594,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
         if (PermissionSingleton.getInstance().getUserPrivilege().equals("Admin")) {
             setAdminMenu();
+            inboxNum.setText(Integer.toString(ServiceRequestSingleton.getInstance().numMessagesInInbox(PermissionSingleton.getInstance().getCurrUser())));
         } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
             setStaffMenu();
+            inboxNum.setText(Integer.toString(ServiceRequestSingleton.getInstance().numMessagesInInbox(PermissionSingleton.getInstance().getCurrUser())));
         } else {
             setGuestMenu();
         }
@@ -791,6 +795,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             adminDrawer.open();
             adminDrawer.toFront();
         }
+        inboxNum.setText(Integer.toString(ServiceRequestSingleton.getInstance().numMessagesInInbox(PermissionSingleton.getInstance().getCurrUser())));
     }
 
     @FXML
@@ -1374,7 +1379,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         languageCheck.setSelected(false);
         religiousCheck.setSelected(false);
         securityCheck.setSelected(false);
-        //maintenanceCheck.setSelected(false);
+        maintenanceCheck.setSelected(false);
         privilegeCombo.getSelectionModel().clearSelection();
         editUserPane.setVisible(false);
         newUserPane.setVisible(true);
@@ -1382,7 +1387,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     private void displayInUserTable(ArrayList<User> users) {
         if (users.size() < 1) {
-            //TODO: indicate to user that there are no results
             return;
         }
 
@@ -1445,6 +1449,27 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         privilegeCombo.getSelectionModel().select(e.getPrivilege());
 
 
+        if(ServiceRequestSingleton.getInstance().isInTable(e.getUname(), "LanguageServices")){
+            languageCheck.setSelected(true);
+        }else{
+            languageCheck.setSelected(false);
+        }
+        if(ServiceRequestSingleton.getInstance().isInTable(e.getUname(), "ReligiousServices")){
+            religiousCheck.setSelected(true);
+        }else{
+            religiousCheck.setSelected(false);
+        }
+        if(ServiceRequestSingleton.getInstance().isInTable(e.getUname(), "SecurityRequest")){
+            securityCheck.setSelected(true);
+        }else{
+            securityCheck.setSelected(false);
+        }
+        if(ServiceRequestSingleton.getInstance().isInTable(e.getUname(), "MaintenanceRequest")){
+            maintenanceCheck.setSelected(true);
+        }else{
+            maintenanceCheck.setSelected(false);
+        }
+
         editUserPane.setVisible(false);
         newUserPane.setVisible(true);
     }
@@ -1477,7 +1502,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         boolean languageServices = languageCheck.isSelected();
         boolean religiousServices = religiousCheck.isSelected();
         boolean securityRequest = securityCheck.isSelected();
-        //boolean maintenanceRequest = maintenanceRequest.isSelected();
+        boolean maintenanceRequest = maintenanceCheck.isSelected();
 
         User temp;
 
@@ -1496,6 +1521,31 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                 temp = new User(username, password, firstName, lastName, privilegeChoice, occupation, faceID);
             }
             PermissionSingleton.getInstance().updateUser(temp);
+        }
+
+
+        if(languageServices && !ServiceRequestSingleton.getInstance().isInTable(username, "LanguageServices")){
+            ServiceRequestSingleton.getInstance().addUsernameLanguageInterpreter(username);
+        }else if(!languageServices && ServiceRequestSingleton.getInstance().isInTable(username, "LanguageServices")){
+            ServiceRequestSingleton.getInstance().removeUsernameLanguageInterpreter(username);
+        }
+
+        if(religiousServices && !ServiceRequestSingleton.getInstance().isInTable(username, "ReligiousServices")){
+            ServiceRequestSingleton.getInstance().addUsernameReligiousServices(username);
+        }else if(!religiousServices && ServiceRequestSingleton.getInstance().isInTable(username, "ReligiousServices")){
+            ServiceRequestSingleton.getInstance().removeUsernameReligiousServices(username);
+        }
+
+        if(securityRequest && !ServiceRequestSingleton.getInstance().isInTable(username, "SecurityRequest")){
+            ServiceRequestSingleton.getInstance().addUsernameSecurityRequest(username);
+        }else if(!securityRequest && ServiceRequestSingleton.getInstance().isInTable(username, "SecurityRequest")){
+            ServiceRequestSingleton.getInstance().removeUsernameSecurityRequest(username);
+        }
+
+        if(maintenanceRequest && !ServiceRequestSingleton.getInstance().isInTable(username, "MaintenanceRequest")){
+            ServiceRequestSingleton.getInstance().addUsernameMaintenanceRequest(username);
+        }else if(!maintenanceRequest && ServiceRequestSingleton.getInstance().isInTable(username, "MaintenanceRequest")){
+            ServiceRequestSingleton.getInstance().removeUsernameMaintenanceRequest(username);
         }
 
         newUserPane.setVisible(false);
@@ -1765,8 +1815,77 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //                   //
     ///////////////////////
     @FXML
+    private VBox inboxRequests;
+    @FXML
+    private JFXTextField inboxSearch;
+    @FXML
+    private JFXComboBox inboxSort;
+
+    @FXML
     private void onInbox() {
         
+    }
+
+    @FXML
+    private void onExitInbox(){
+        inboxNum.setText(Integer.toString(ServiceRequestSingleton.getInstance().numMessagesInInbox(PermissionSingleton.getInstance().getCurrUser())));
+    }
+
+    private void createMessage(ServiceRequests request){
+        Pane pane = new Pane();
+        pane.setPrefSize(200, 100);
+        pane.setStyle("-fx-background-color: WHITE; -fx-background-radius: 30");
+        FontAwesomeIconView iconType = new FontAwesomeIconView();
+        pane.getChildren().add(iconType);
+        switch(request.getType()){
+            case "Language Interpreter":
+                iconType.setGlyphName("LANGUAGE");
+                break;
+            case "Religious Services":
+                iconType.setGlyphName("BOOK");
+                break;
+            case "Security Request":
+                iconType.setGlyphName("SHIELD");
+                break;
+            case "Maintenance Request":
+                iconType.setGlyphName("WRENCH");
+                break;
+        }
+        iconType.setGlyphSize(15);
+        iconType.setLayoutX(23);
+        iconType.setLayoutY(28);
+
+        Label requestType = new Label();
+        requestType.setText(request.getType());
+        pane.getChildren().add(requestType);
+        requestType.setLayoutX(68);
+        requestType.setLayoutY(14);
+
+        Label requestID = new Label();
+        requestID.setText(Integer.toString(request.getId()));
+        pane.getChildren().add(requestID);
+        requestType.setLayoutX(170);
+        requestType.setLayoutY(14);
+
+        Label requestPriority = new Label();
+        requestPriority.setText(Integer.toString(request.getPriority()));
+        pane.getChildren().add(requestPriority);
+        requestType.setLayoutX(21);
+        requestType.setLayoutY(50);
+
+        Label requestLocation = new Label();
+        requestLocation.setText(request.getLocation());
+        pane.getChildren().add(requestLocation);
+        requestType.setLayoutX(84);
+        requestType.setLayoutY(50);
+
+        pane.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            onSelectInboxMessage(request);
+        });
+    }
+
+    public void onSelectInboxMessage(ServiceRequests request){
+
     }
 
 }
