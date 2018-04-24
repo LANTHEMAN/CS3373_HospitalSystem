@@ -895,67 +895,6 @@
                       </font>
                   </Label>
                   <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" onMouseClicked="#setCancelMenuEvent" size="40" translateX="-20.0" wrappingWidth="22.142844200134277" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
-      
-              <VBox fx:id="adminBox" alignment="TOP_CENTER" style="-fx-background-color: #616161;" GridPane.rowIndex="1">
-                  <children>
-                      <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%ServiceRequest" textFill="WHITE">
-                          <font>
-                              <Font name="Arial" size="20.0" />
-                          </font>
-                          <graphic>
-                              <FontAwesomeIconView glyphName="CLIPBOARD" size="50" />
-                          </graphic>
-                      </JFXButton>
-                      <JFXButton fx:id="mapEditorBtn" accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onMapEditor" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%MapEditor" textFill="WHITE">
-                          <font>
-                              <Font name="Arial" size="20.0" />
-                          </font>
-                          <graphic>
-                              <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
-                          </graphic>
-                      </JFXButton>
-                      <JFXButton fx:id="editUsersBtn" accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onEditUsers" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%EditUsers" textFill="WHITE">
-                          <font>
-                              <Font name="Arial" size="20.0" />
-                          </font>
-                          <graphic>
-                              <FontAwesomeIconView glyphName="USER" glyphStyle="USER" size="50" />
-                          </graphic>
-                      </JFXButton>
-                  <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onChangeAlgorithm" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%ChangeAlgorithm" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIconView glyphName="INFO" size="50" />
-                     </graphic>
-                  </JFXButton>
-                  <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onMouseClicked="#onInbox" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Inbox" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIconView glyphName="ENVELOPE" size="50" />
-                     </graphic>
-                  </JFXButton>
-                  <JFXTextField accessibleRole="TEXT" alignment="CENTER" editable="false" focusColor="#616161" pickOnBounds="false" text="Screensaver Timeout" unFocusColor="#616161">
-                     <font>
-                        <Font name="System Bold" size="15.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <VBox.margin>
-                        <Insets top="50.0" />
-                     </VBox.margin>
-                  </JFXTextField>
-                  <JFXSlider fx:id="sliderTimeout" blockIncrement="5.0" max="300.0" min="10.0" onMouseReleased="#onTimeoutChanged" value="30.0">
-                     <VBox.margin>
-                        <Insets left="30.0" right="30.0" />
-                     </VBox.margin>
-                  </JFXSlider>
-                  </children>
-              </VBox>
             <VBox fx:id="algorithmsBox" style="-fx-background-color: #616161;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <children>
                   <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
@@ -1039,6 +978,76 @@
                   </JFXButton>
                </children>
             </VBox>
+      
+              <VBox fx:id="adminBox" alignment="TOP_CENTER" style="-fx-background-color: #616161;" GridPane.rowIndex="1">
+                  <children>
+                      <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%ServiceRequest" textFill="WHITE">
+                          <font>
+                              <Font name="Arial" size="20.0" />
+                          </font>
+                          <graphic>
+                              <FontAwesomeIconView glyphName="CLIPBOARD" size="50" />
+                          </graphic>
+                      </JFXButton>
+                      <JFXButton fx:id="mapEditorBtn" accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onMapEditor" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%MapEditor" textFill="WHITE">
+                          <font>
+                              <Font name="Arial" size="20.0" />
+                          </font>
+                          <graphic>
+                              <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
+                          </graphic>
+                      </JFXButton>
+                      <JFXButton fx:id="editUsersBtn" accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onEditUsers" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%EditUsers" textFill="WHITE">
+                          <font>
+                              <Font name="Arial" size="20.0" />
+                          </font>
+                          <graphic>
+                              <FontAwesomeIconView glyphName="USER" glyphStyle="USER" size="50" />
+                          </graphic>
+                      </JFXButton>
+                  <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onChangeAlgorithm" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%ChangeAlgorithm" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="20.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="INFO" size="50" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onMouseClicked="#onInbox" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Inbox" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="20.0" />
+                     </font>
+                     <graphic>
+                        <Pane prefHeight="50.0" prefWidth="50.0">
+                           <children>
+                              <Text fx:id="inboxNum" strokeType="OUTSIDE" strokeWidth="0.0" text="1" translateX="70.0" translateY="35.0">
+                                 <font>
+                                    <Font name="Arial Bold" size="30.0" />
+                                 </font>
+                              </Text>
+                              <FontAwesomeIconView glyphName="ENVELOPE" size="50" translateY="40.0" />
+                           </children>
+                        </Pane>
+                     </graphic>
+                  </JFXButton>
+                  <JFXTextField accessibleRole="TEXT" alignment="CENTER" editable="false" focusColor="#616161" pickOnBounds="false" text="Screensaver Timeout" unFocusColor="#616161">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets top="50.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXSlider fx:id="sliderTimeout" blockIncrement="5.0" max="300.0" min="10.0" onMouseReleased="#onTimeoutChanged" value="30.0">
+                     <VBox.margin>
+                        <Insets left="30.0" right="30.0" />
+                     </VBox.margin>
+                  </JFXSlider>
+                  </children>
+              </VBox>
          </children>
       </GridPane>
     </children>
