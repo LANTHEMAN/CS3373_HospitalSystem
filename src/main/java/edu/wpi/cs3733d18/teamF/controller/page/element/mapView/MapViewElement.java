@@ -5,7 +5,9 @@ import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.page.HomeController;
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
 import edu.wpi.cs3733d18.teamF.gfx.ImageCacheSingleton;
+import edu.wpi.cs3733d18.teamF.gfx.MapDrawable;
 import edu.wpi.cs3733d18.teamF.gfx.impl.map.UglyMapDrawer;
+import edu.wpi.cs3733d18.teamF.gfx.impl.pacman.GameMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
@@ -62,6 +64,7 @@ public class MapViewElement extends PageElement {
     private Map map;
     private MapViewListener listener;
     private ArrayList<Path> floorPath = new ArrayList<>();
+    private UglyMapDrawer uglyMapDrawer;
 
     public void updateHomeLocation() {
         if (modifyNode == null) {
@@ -142,9 +145,9 @@ public class MapViewElement extends PageElement {
         isMap2D = map.is2D();
         initElement(sourcePane, root);
         sourcePane.autosize();
-
+        uglyMapDrawer = new UglyMapDrawer();
         // draw the nodes
-        mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
+        mapDrawController = new PaneMapController(mapContainer, map, uglyMapDrawer);
         // set default start location
         resetStartLocation();
         // set the correct floor
@@ -154,6 +157,7 @@ public class MapViewElement extends PageElement {
         // disable gesturePane when ctrl is held
         switcher.getScene().setOnKeyPressed(ke -> {
             if (ke.isControlDown()) {
+                startGame();
                 if (mapDrawController.getDrawnPath() != null) {
                     mapDrawController.getDrawnPath().separateIntoFloors();
                 }
@@ -163,6 +167,7 @@ public class MapViewElement extends PageElement {
         });
         switcher.getScene().setOnKeyReleased(ke -> {
             if (!ke.isControlDown()) {
+                endGame();
                 gesturePane.setGestureEnabled(true);
                 if (ctrlHeld) {
                     selectedNodeEnd = null;
@@ -427,6 +432,14 @@ public class MapViewElement extends PageElement {
         return mapDrawController;
     }
 
+    public void startGame(){
+        GameMapDrawer mapdrawer = new GameMapDrawer();
+        mapdrawer.setRandom();
+        mapDrawController.setMapDrawer(mapdrawer);
+    }
+    public void endGame(){
+        mapDrawController.setMapDrawer(uglyMapDrawer);
+    }
     public Node getSelectedNodeStart() {
         return selectedNodeStart;
     }
