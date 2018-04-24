@@ -941,7 +941,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         Path newPath = mapViewElement.swapSrcAndDst();
         displayTextDirections(newPath);
         resetFloorButtonBorders();
+        resetFloorButtonBackgrounds();
         changeFloorButtons(newPath);
+        onPathsChanged(newPath.separateIntoFloors());
 
         map.setFloor(mapViewElement.getSelectedNodeStart().getFloor());
         onFloorRefresh();
