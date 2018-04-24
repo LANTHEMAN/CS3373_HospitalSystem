@@ -4,7 +4,11 @@ import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 import edu.cmu.sphinx.api.SpeechResult;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Paths;
 import java.util.Observable;
 
 public class VoiceLauncher extends Observable implements Runnable {
@@ -14,8 +18,43 @@ public class VoiceLauncher extends Observable implements Runnable {
 
     private VoiceLauncher() {
         configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
+        exportResource("1298.dic");
+        exportResource("1298.lm");
         configuration.setDictionaryPath("1298.dic");
         configuration.setLanguageModelPath("1298.lm");
+    }
+
+    static private String exportResource(String resourceName) {
+        InputStream stream = null;
+        OutputStream resStreamOut = null;
+        String jarFolder = "";
+        try {
+            stream = VoiceLauncher.class.getResourceAsStream(resourceName);
+            if (stream == null) {
+                throw new Exception("Cannot get resource \"" + resourceName + "\" from Jar file.");
+            }
+            int readBytes;
+            byte[] buffer = new byte[4096];
+            jarFolder = Paths.get("").toAbsolutePath().toString().replace('\\', '/');
+            resStreamOut = new FileOutputStream(jarFolder + "/" + resourceName);
+            while ((readBytes = stream.read(buffer)) > 0) {
+                resStreamOut.write(buffer, 0, readBytes);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stream != null) {
+                    stream.close();
+                }
+                if (resStreamOut != null) {
+                    resStreamOut.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return jarFolder + resourceName;
     }
 
     public static VoiceLauncher getInstance() {

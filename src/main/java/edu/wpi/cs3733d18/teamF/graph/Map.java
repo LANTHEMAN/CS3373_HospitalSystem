@@ -5,15 +5,14 @@ import edu.wpi.cs3733d18.teamF.db.DatabaseItem;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.graph.pathfinding.AStar;
 import edu.wpi.cs3733d18.teamF.graph.pathfinding.PathFindingAlgorithm;
+import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.geometry.Point2D;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -413,9 +412,51 @@ public class Map extends Observable implements DatabaseItem, Observer {
     //                                                            //
     ////////////////////////////////////////////////////////////////
 
+    static private String exportResource(String resourceName) {
+        InputStream stream = null;
+        OutputStream resStreamOut = null;
+        String jarFolder = "";
+        try {
+            stream = Map.class.getResourceAsStream(resourceName);
+            if (stream == null) {
+                throw new Exception("Cannot get resource \"" + resourceName + "\" from Jar file.");
+            }
+            int readBytes;
+            byte[] buffer = new byte[4096];
+            jarFolder = Paths.get("").toAbsolutePath().toString().replace('\\', '/');
+            resStreamOut = new FileOutputStream(jarFolder + "/" + resourceName);
+            while ((readBytes = stream.read(buffer)) > 0) {
+                resStreamOut.write(buffer, 0, readBytes);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stream != null) {
+                    stream.close();
+                }
+                if (resStreamOut != null) {
+                    resStreamOut.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return jarFolder + resourceName;
+    }
+
+
     @Override
     public void initDatabase(DatabaseHandler dbHandler) {
         try {
+            // if the init files are not copied in, copy them
+            if (!Files.exists(Paths.get("initMap"))) {
+                new File("initMap").mkdirs();
+                exportResource("initMap/edges.csv");
+                exportResource("initMap/nodes.csv");
+            }
+
+
             //if the table does not yet exist in the db, initialize it
             if (!dbHandler.tableExists("NODE")) {
                 System.out.println("DB: Initializing NODE table entry");
