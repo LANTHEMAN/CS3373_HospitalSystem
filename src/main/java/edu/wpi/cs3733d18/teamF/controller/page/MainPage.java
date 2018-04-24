@@ -4,9 +4,7 @@ import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
-import edu.wpi.cs3733d18.teamF.controller.Screens;
 import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
-import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.db.DatabaseWrapper;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
 import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
@@ -26,7 +24,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
-import org.bytedeco.javacpp.presets.opencv_core;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -195,11 +192,6 @@ public class MainPage implements SwitchableController, Observer {
             }
         });
 
-
-        closeBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
-            VoiceLauncher.getInstance().terminate();
-            switcher.closePopup(Screens.MainPage);
-        });
 
         filter = "none";
         searchType = "none";
