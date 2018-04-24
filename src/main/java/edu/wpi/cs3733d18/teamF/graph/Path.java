@@ -101,6 +101,7 @@ public class Path {
             return directions;
         }
 
+        directions.add("Level " + this.getNodes().get(0).getFloor());
         directions.add("Begin at " + this.getNodes().get(0).getShortName());
 
         for (int nodeIndex = 1; nodeIndex < this.nodes.size() - 1; nodeIndex++) {
@@ -119,6 +120,7 @@ public class Path {
                 } else {
                     directions.add("Take elevator down to floor: " + nextNode.getFloor());
                 }
+                directions.add("Level " + nextNode.getFloor());
                 continue;
             } else if (currentNode.getNodeType().equals("STAI") && nextNode.getNodeType().equals("STAI")) {
                 if (Node.floorToInt.get(currentNode.getFloor()) < Node.floorToInt.get(nextNode.getFloor())) {
@@ -126,6 +128,7 @@ public class Path {
                 } else {
                     directions.add("Take stairs down to floor: " + nextNode.getFloor());
                 }
+                directions.add("Level " + nextNode.getFloor());
                 continue;
             }
 

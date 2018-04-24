@@ -1064,7 +1064,33 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             }
             sb.append(text);
 
-            if (text.toLowerCase().contains("straight")) {
+            if (text.contains("Level")) {
+                switch (text) {
+                    case "Level 03":
+                        text = "Level 3";
+                        break;
+                    case "Level 02":
+                        text = "Level 2";
+                        break;
+                    case "Level 01":
+                        text = "Level 1";
+                        break;
+                    case "Level 0G":
+                        text = "Ground Level";
+                        break;
+                    case "Level L1":
+                        text = "Lower Level 1";
+                        break;
+                    default:
+                        text = "Lower Level 2";
+                        break;
+                }
+                Text direction = new Text("                " + text + "\n ");
+                direction.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+                direction.setFill(Color.WHITE);
+                txtDirections.getChildren().add(direction);
+                continue;
+            } else if (text.toLowerCase().contains("straight")) {
                 FontAwesomeIconView arrow = new FontAwesomeIconView(FontAwesomeIcon.LONG_ARROW_UP);
                 arrow.setGlyphSize(15);
                 arrow.setScaleX(1.5);
