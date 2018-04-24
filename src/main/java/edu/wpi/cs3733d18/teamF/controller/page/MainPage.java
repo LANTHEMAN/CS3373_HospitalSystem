@@ -72,7 +72,7 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     Label locationRequiredLI;
     @FXML
-    ToggleGroup securityToggle, staffToggle, staffToggleSR, securityToggleSR, securityToggleLI, securityToggleRS, staffToggleRS;
+    ToggleGroup staffToggleSR, securityToggleSR, securityToggleLI, securityToggleRS, staffToggleRS;
     @FXML
     JFXTextField securityLocationField, requestTitleField;
     @FXML
@@ -620,7 +620,7 @@ public class MainPage implements SwitchableController, Observer {
         String description = securityTextArea.getText();
         String requestTitle = requestTitleField.getText();
         String status = "Incomplete";
-        RadioButton selected = (RadioButton) securityToggle.getSelectedToggle();
+        RadioButton selected = (RadioButton) securityToggleSR.getSelectedToggle();
         int priority = Integer.parseInt(selected.getText());
         RadioButton staffSelected = (RadioButton) staffToggleSR.getSelectedToggle();
         String staffNeeded = staffSelected.getText();
