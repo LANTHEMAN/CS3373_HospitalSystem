@@ -289,16 +289,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private GridPane leftGPane;
 
-
-    ///////////////////////
-    //                   //
-    //       Inbox       //
-    //                   //
-    ///////////////////////
-    @FXML
-    private FontAwesomeIconView inboxIcon;
-    @FXML
-    private Text inboxNum;
     ////////////////////////////////////
     //                                //
     //       Screensaver Timout       //
