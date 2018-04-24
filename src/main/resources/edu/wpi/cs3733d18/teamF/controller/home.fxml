@@ -981,6 +981,23 @@
       
               <VBox fx:id="adminBox" alignment="TOP_CENTER" style="-fx-background-color: #616161;" GridPane.rowIndex="1">
                   <children>
+                  <StackPane>
+                     <children>
+                        <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onMouseClicked="#onInbox" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Inbox" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="20.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIconView glyphName="ENVELOPE" size="50" />
+                           </graphic>
+                        </JFXButton>
+                        <Label fx:id="inboxNum" alignment="CENTER" prefHeight="20.0" prefWidth="20.0" style="-fx-background-color: RED; -fx-background-radius: 100;" text="99" textFill="WHITE" StackPane.alignment="TOP_CENTER">
+                           <StackPane.margin>
+                              <Insets left="50.0" top="5.0" />
+                           </StackPane.margin>
+                        </Label>
+                     </children>
+                  </StackPane>
                       <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%ServiceRequest" textFill="WHITE">
                           <font>
                               <Font name="Arial" size="20.0" />
@@ -1011,23 +1028,6 @@
                      </font>
                      <graphic>
                         <FontAwesomeIconView glyphName="INFO" size="50" />
-                     </graphic>
-                  </JFXButton>
-                  <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onMouseClicked="#onInbox" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Inbox" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                     <graphic>
-                        <Pane prefHeight="50.0" prefWidth="50.0">
-                           <children>
-                              <Text fx:id="inboxNum" strokeType="OUTSIDE" strokeWidth="0.0" text="1" translateX="70.0" translateY="35.0">
-                                 <font>
-                                    <Font name="Arial Bold" size="30.0" />
-                                 </font>
-                              </Text>
-                              <FontAwesomeIconView glyphName="ENVELOPE" size="50" translateY="40.0" />
-                           </children>
-                        </Pane>
                      </graphic>
                   </JFXButton>
                   <JFXTextField accessibleRole="TEXT" alignment="CENTER" editable="false" focusColor="#616161" pickOnBounds="false" text="Screensaver Timeout" unFocusColor="#616161">
