@@ -745,12 +745,14 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         rectangle.setY(0);
         rectangle.setWidth(voicePane.getWidth());
         rectangle.setHeight(voicePane.getHeight() * 2);
+        rectangle.setMouseTransparent(true);
         rectangle.setFill(Color.RED);
         rectangle.setOpacity(0.3);
         FillTransition ft = new FillTransition(Duration.millis(1500), rectangle, Color.RED, Color.BLUE);
         ft.setCycleCount(4);
         ft.setAutoReverse(true);
         leftGPane.add(rectangle,0,0);
+
         ft.play();
         HashSet<Node> nodes = map.getNodes(node -> node.getNodeType().equals("EXIT") && !node.getLongName().contains("Ambulance"));
         Node selectedEnd = map.findNodeClosestTo(mapViewElement.getSelectedNodeStart(), nodes);
