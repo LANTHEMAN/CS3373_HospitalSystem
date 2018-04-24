@@ -93,6 +93,7 @@ public class MapViewElement extends PageElement {
             pathIndex = floorPath.size() - 1;
         }
 
+        
         if (floorPath.size() > 0 && floorPath.size() > pathIndex) {
             zoomToPath(floorPath.get(pathIndex));
         }
