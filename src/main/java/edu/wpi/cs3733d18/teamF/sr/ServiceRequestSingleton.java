@@ -5,6 +5,8 @@ import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.db.DatabaseHandler;
 import edu.wpi.cs3733d18.teamF.db.DatabaseItem;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,9 +26,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
     private ServiceRequests popUpRequest;
     private String lastFilter;
     private String lastSearch;
-    private int prefWidth;
-    private int prefLength;
-    private String destNodeID;
 
     private ServiceRequestSingleton() {
         // initialize this class with the database
@@ -245,9 +244,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 Timestamp createdOn = null;
                 Timestamp started = null;
                 Timestamp completed = null;
-                String destNodeID = null;
-                String sourceNodeID = null;
-                String staffNeeded = resultSet.getString(15);
+                String staffNeeded = resultSet.getString(13);
                 try {
                     createdOn = resultSet.getTimestamp(10);
                 } catch (SQLException e) {
@@ -260,16 +257,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 }
                 try {
                     completed = resultSet.getTimestamp(12);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    destNodeID = resultSet.getString(13);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    sourceNodeID = resultSet.getString(14);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -308,7 +295,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
                         break;
 
                     case "Maintenance Request":
-                        s = new MaintenanceRequest(id, firstName, lastName, location, description, status, priority, special, completedBy, createdOn, started, completed, staffNeeded);
+                        s = new MaintenanceRequest(id, location, description, status, priority, special, completedBy, createdOn, started, completed, staffNeeded);
                         break;
 
                     default:
@@ -380,6 +367,18 @@ public class ServiceRequestSingleton implements DatabaseItem {
         dbHandler.runAction(sql);
     }
 
+    public void addUsernameMaintenanceRequest(String username) {
+        String sql = "INSERT INTO MaintenanceRequest WHERE username = '" + username + "'";
+        dbHandler.runAction(sql);
+    }
+
+    public void removeUsernameMaintenanceRequest(String username) {
+        String sql = "DELETE FROM MaintenanceRequest WHERE username = '" + username + "'";
+        dbHandler.runAction(sql);
+    }
+
+
+
 
     public boolean isInTable(String username, String table) {
         ResultSet rs;
@@ -394,7 +393,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
             case "SecurityRequest":
                 sql = "SELECT * FROM SecurityRequest WHERE username = '" + username + "'";
                 break;
-            case "Maintenance Request":
+            case "MaintenanceRequest":
                 sql = "SELECT * FROM MaintenanceRequest WHERE username = '" + username + "'";
                 break;
             default:
@@ -431,26 +430,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
     }
 
 
-    public void setGridPaneDimensions(int windowWidth, int windowLength) {
-        this.prefWidth = windowWidth;
-        this.prefLength = windowLength;
-    }
-
-    public int getPrefWidth() {
-        return prefWidth;
-    }
-
-    public int getPrefLength() {
-        return prefLength;
-    }
-
-    public void setDestinationLocation(String destNodeID) {
-        this.destNodeID = destNodeID;
-    }
-
-    public String getDestNodeID() {
-        return destNodeID;
-    }
 
 
     public ArrayList<ServiceRequests> getServiceRequests() {
@@ -495,6 +474,39 @@ public class ServiceRequestSingleton implements DatabaseItem {
             e.printStackTrace();
         }
         return count;
+    }
+
+    public ObservableList<String> getAssignedUsers(int id){
+        String sql = "SELECT username FROM Inbox WHERE requestID = " + id;
+        ArrayList<String> usernames = new ArrayList<>();
+        ResultSet resultSet = dbHandler.runQuery(sql);
+        try{
+            while (resultSet.next()){
+                usernames.add(resultSet.getString(1));
+            }
+            resultSet.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return FXCollections.observableArrayList(usernames);
+    }
+
+    public boolean alreadyAssignedTo(String username, int id){
+        String sql = "SELECT * FROM INBOX WHERE username = '" + username + "' AND requestID = " + id;
+        ResultSet resultSet = dbHandler.runQuery(sql);
+        try {
+            if(resultSet.next()){
+                String name = resultSet.getString(1);
+                if(username.equals(name)){
+                    return true;
+                }
+            }
+            resultSet.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        return false;
     }
 
 
