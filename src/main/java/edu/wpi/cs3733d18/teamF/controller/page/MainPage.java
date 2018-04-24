@@ -690,6 +690,8 @@ public class MainPage implements SwitchableController, Observer {
         description = situation + "/////" + description;
         SecurityRequests sec = new SecurityRequests(location, description, status, priority, staffNeeded);
 
+        MapSingleton.getInstance().getMap().disableNode(location);
+
         ServiceRequestSingleton.getInstance().sendServiceRequest(sec);
         ServiceRequestSingleton.getInstance().addServiceRequest(sec);
         TwilioHandlerSingleton.getInstance().sendMessage("\nMaintenance is required at " + location + ".\nAdditional Details: " + description);
