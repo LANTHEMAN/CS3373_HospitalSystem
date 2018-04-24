@@ -16,4 +16,6 @@ public interface MapViewListener {
     void onRefresh();
 
     void onPathsChanged(ArrayList<Path> floorPath);
+
+    void onFloorRefreshButtons();
 }

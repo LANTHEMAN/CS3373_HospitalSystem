@@ -9,13 +9,9 @@ import edu.wpi.cs3733d18.teamF.gfx.impl.map.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.animation.Transition;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
@@ -31,7 +27,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.stream.Collectors;
+
+import static junit.framework.TestCase.assertEquals;
 
 public class MapViewElement extends PageElement {
     // TODO change this to default starting location
@@ -89,13 +86,17 @@ public class MapViewElement extends PageElement {
     }
 
     public void zoomToPath(int pathIndex) {
+        if (mapDrawController.getDrawnPath() == null) {
+            return;
+        }
         floorPath = mapDrawController.getDrawnPath().separateIntoFloors();
 
-        if(pathIndex == -1){
+        if (pathIndex == -1) {
             pathIndex = floorPath.size() - 1;
         }
 
-        if(floorPath.size() > 0 && floorPath.size() > pathIndex){
+        
+        if (floorPath.size() > 0 && floorPath.size() > pathIndex) {
             zoomToPath(floorPath.get(pathIndex));
         }
 
@@ -107,7 +108,7 @@ public class MapViewElement extends PageElement {
     }
 
     private void zoomToPath(Path path) {
-        Rectangle rect = getMapDrawController().getPathBoundingBox(path);
+        Rectangle rect = getMapDrawController().getPathBoundingBox(path, map.is2D());
 
         Point2D midPoint = new Point2D(rect.x + (rect.getWidth() / 2.f), rect.y + (rect.getHeight() / 2.f));
 
@@ -331,12 +332,12 @@ public class MapViewElement extends PageElement {
                                 for (Node node : neighborNodes) {
                                     if (!node.getFloor().equals(dst.getFloor()) && mapDrawController.getDrawnPath().getNodes().contains(node)) {
                                         map.setFloor(node.getFloor());
-
+                                        listener.onFloorRefreshButtons();
                                         floorPath = mapDrawController.getDrawnPath().separateIntoFloors();
 
-                                        zoomToPath(floorPath.stream().filter(path -> path.getNodes().contains(node)).findFirst().get());
+                                        assertEquals(1, floorPath.stream().filter(path -> path.getNodes().contains(node)).toArray().length);
 
-                                        listener.onFloorRefresh();
+                                        zoomToPath(floorPath.stream().filter(path -> path.getNodes().contains(node)).findFirst().get());
                                         return;
                                     }
                                 }
@@ -345,8 +346,8 @@ public class MapViewElement extends PageElement {
                             Path path = map.getPath(map.findNodeClosestTo(selectedNodeStart.getPosition().getX(), selectedNodeStart.getPosition().getY(), true), dst);
                             mapDrawController.showPath(path);
                             listener.onNewPathSelected(path);
-                            onChangePath(false);
                             listener.onNewDestinationNode(selectedNodeEnd);
+                            onChangePath(false);
                         } else {
                             return;
                         }
@@ -417,6 +418,8 @@ public class MapViewElement extends PageElement {
         selectedNodeEnd = destinationNode;
         Path path = map.getPath(selectedNodeStart, destinationNode);
         mapDrawController.showPath(path);
+        map.setFloor(destinationNode.getFloor());
+        onChangePath(false);
         return path;
     }
 
@@ -588,10 +591,14 @@ public class MapViewElement extends PageElement {
     private class MapListener implements Observer {
         @Override
         public void update(Observable o, Object arg) {
+            if (isMap2D != map.is2D()) {
+                onChangePath(true);
+            }
             if (!mapFloorDrawn.equals(map.getFloor()) || isMap2D != map.is2D()) {
                 refreshFloorDrawn();
                 mapDrawController.refreshPath();
             }
+
         }
     }
 }
