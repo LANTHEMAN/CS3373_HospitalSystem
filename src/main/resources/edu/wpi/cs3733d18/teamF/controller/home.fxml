@@ -155,7 +155,7 @@
                      </image>
                   </ImageView>
                   <FontAwesomeIconView fx:id="stairBan" fill="#cf0000b2" glyphName="BAN" onMouseClicked="#flipStairs" size="74" translateX="154.0" translateY="239.0" visible="false" />
-                  <JFXCheckBox fx:id="allFloors" layoutX="190.0" layoutY="250.0" prefHeight="18.0" prefWidth="113.0" selected="true" text="%AllFloors" textFill="WHITE">
+                  <JFXCheckBox fx:id="allFloors" layoutX="190.0" layoutY="250.0" prefHeight="18.0" prefWidth="113.0" selected="true" text="%AllFloors" textFill="WHITE" onAction="#onAllFloors">
                      <font>
                         <Font name="Arial Bold" size="15.0" />
                      </font>
