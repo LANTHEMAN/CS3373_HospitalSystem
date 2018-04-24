@@ -22,10 +22,8 @@ import edu.wpi.cs3733d18.teamF.graph.pathfinding.*;
 import edu.wpi.cs3733d18.teamF.qr.qrConverter;
 import edu.wpi.cs3733d18.teamF.voice.VoiceCommandVerification;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
+import javafx.animation.*;
 import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -41,6 +39,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
@@ -51,6 +50,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -275,6 +275,18 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private GoogleMapView googleMapView;
     private GoogleMap gmap;
     private boolean isGoogleMapViewEnabled = false;
+
+    /////////////////////////////////
+    //                             //
+    //           Emergency         //
+    //                             //
+    /////////////////////////////////
+    @FXML
+    private JFXButton emergencyBtn;
+    @FXML
+    private GridPane leftGPane;
+
+
     ///////////////////////
     //                   //
     //       Inbox       //
@@ -739,6 +751,34 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     @FXML
+    void triggerEmergency(){
+        Rectangle rectangle = new Rectangle();
+        rectangle.setX(0);
+        rectangle.setY(0);
+        rectangle.setWidth(voicePane.getWidth());
+        rectangle.setHeight(voicePane.getHeight() * 2);
+        rectangle.setMouseTransparent(true);
+        rectangle.setFill(Color.RED);
+        rectangle.setOpacity(0.3);
+        FillTransition ft = new FillTransition(Duration.millis(1500), rectangle, Color.RED, Color.BLUE);
+        ft.setCycleCount(4);
+        ft.setAutoReverse(true);
+        leftGPane.add(rectangle,0,0);
+
+        ft.play();
+        HashSet<Node> nodes = map.getNodes(node -> node.getNodeType().equals("EXIT") && !node.getLongName().contains("Ambulance"));
+        Node selectedEnd = map.findNodeClosestTo(mapViewElement.getSelectedNodeStart(), nodes);
+        Path path = mapViewElement.changePathDestination(selectedEnd);
+        displayTextDirections(path);
+        ft.setOnFinished((ActionEvent)->{
+            leftGPane.getChildren().removeAll(rectangle);
+        });
+
+
+
+    }
+
+    @FXML
     private void onLogOutBtn() {
         mapViewElement.setViewMode(MapViewElement.ViewMode.VIEW);
         PermissionSingleton.getInstance().logout();
@@ -899,6 +939,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         mapEditorBtn.setVisible(true);
         editUsersBtn.setVisible(true);
         algorithmsBox.setVisible(true);
+        emergencyBtn.setVisible(true);
     }
 
     private void setStaffMenu() {
