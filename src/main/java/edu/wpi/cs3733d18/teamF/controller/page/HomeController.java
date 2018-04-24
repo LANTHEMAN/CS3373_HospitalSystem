@@ -1069,7 +1069,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             }
 
             Text direction = new Text(" " + text + "\n ");
-            direction.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            direction.setFont(Font.font("Arial", FontWeight.BOLD, 16));
             direction.setFill(Color.WHITE);
             txtDirections.getChildren().add(direction);
 

@@ -195,9 +195,9 @@
                     <children>
                         <FontAwesomeIconView fx:id="imgDistance" fill="WHITE" glyphName="MAP" size="30" translateX="20.0" translateY="10.0" visible="false" />
                         <FontAwesomeIconView fx:id="imgTime" fill="WHITE" glyphName="CLOCK_ALT" size="30" translateX="150.0" translateY="10.0" visible="false" />
-                        <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="189.0" prefWidth="294.0" style="-fx-background-color: #042E58;" stylesheets="@scrollStyleSheet.css" translateX="4.0" translateY="25.0">
+                        <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="189.0" prefWidth="289.0" style="-fx-background-color: #042E58;" stylesheets="@scrollStyleSheet.css" translateX="9.0" translateY="25.0">
                             <content>
-                                <TextFlow fx:id="txtDirections" lineSpacing="3.0" prefHeight="187.0" prefWidth="292.0" style="-fx-background-color: #042E58;" />
+                                <TextFlow fx:id="txtDirections" lineSpacing="8.0" prefHeight="187.0" prefWidth="287.0" style="-fx-background-color: #042E58;" />
                             </content>
                         </ScrollPane>
                         <JFXListView fx:id="directionsList" onMouseClicked="#setDirectionLocation" prefHeight="189.0" prefWidth="300.0" visible="false" />
