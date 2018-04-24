@@ -1374,6 +1374,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         languageCheck.setSelected(false);
         religiousCheck.setSelected(false);
         securityCheck.setSelected(false);
+        //maintenanceCheck.setSelected(false);
         privilegeCombo.getSelectionModel().clearSelection();
         editUserPane.setVisible(false);
         newUserPane.setVisible(true);
@@ -1476,6 +1477,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         boolean languageServices = languageCheck.isSelected();
         boolean religiousServices = religiousCheck.isSelected();
         boolean securityRequest = securityCheck.isSelected();
+        //boolean maintenanceRequest = maintenanceRequest.isSelected();
 
         User temp;
 
@@ -1764,7 +1766,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     ///////////////////////
     @FXML
     private void onInbox() {
-
+        
     }
 
 }
