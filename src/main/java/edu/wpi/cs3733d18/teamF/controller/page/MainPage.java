@@ -2,6 +2,7 @@ package edu.wpi.cs3733d18.teamF.controller.page;
 
 import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733d18.teamF.Main;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
 import edu.wpi.cs3733d18.teamF.controller.UserSingleton;
@@ -143,6 +144,7 @@ public class MainPage implements SwitchableController, Observer {
         VoiceCommandVerification voice = new VoiceCommandVerification();
         voice.addObserver(this);
         VoiceLauncher.getInstance().addObserver(voice);
+
 
         paneVoiceController = new PaneVoiceController(voicePane);
 
@@ -616,7 +618,8 @@ public class MainPage implements SwitchableController, Observer {
         String status = "Incomplete";
         RadioButton selected = (RadioButton) securityToggle.getSelectedToggle();
         int priority = Integer.parseInt(selected.getText());
-        String staffNeeded = staffToggleSR.getSelectedToggle().toString();
+        RadioButton staffSelected = (RadioButton) staffToggleSR.getSelectedToggle();
+        String staffNeeded = staffSelected.getText();
         description = requestTitle + "/////" + description;
         SecurityRequests sec = new SecurityRequests(location, description, status, priority, staffNeeded);
 
@@ -636,6 +639,7 @@ public class MainPage implements SwitchableController, Observer {
     private void clearSecurity() {
         securityLocationField.clear();
         securityTextArea.clear();
+        requestTitleField.clear();
         if (securityLocationRequired.isVisible()) {
             securityLocationRequired.setVisible(false);
         }

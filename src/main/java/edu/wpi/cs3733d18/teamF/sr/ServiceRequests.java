@@ -1,8 +1,5 @@
 package edu.wpi.cs3733d18.teamF.sr;
 
-
-import edu.wpi.cs3733d18.teamF.api.sr.ServiceRequestSingleton;
-
 import java.sql.Timestamp;
 
 public abstract class ServiceRequests {
@@ -131,7 +128,7 @@ public abstract class ServiceRequests {
     }
 
     public String getStaffNeeded() {
-        return staffNeeded;
+        return this.staffNeeded;
     }
 
     public void setStaffNeeded(String staffNeeded) {
