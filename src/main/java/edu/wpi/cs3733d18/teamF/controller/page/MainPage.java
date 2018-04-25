@@ -96,6 +96,8 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     TextArea instructionsRS;
     @FXML
+    JFXListView destinationMaintenanceList;
+    @FXML
     Label religionRequiredRS, firstNameRequiredRS, lastNameRequiredRS, locationRequiredRS, occasionRequiredRS;
     String lastSearch = ServiceRequestSingleton.getInstance().getLastSearch();
     String lastFilter = ServiceRequestSingleton.getInstance().getLastFilter();
@@ -211,6 +213,10 @@ public class MainPage implements SwitchableController, Observer {
             DatabaseWrapper.autoComplete(input, usernameList, "HUser", "username");
         });
 
+        destinationMaintenance.setOnKeyTyped((KeyEvent e) -> {
+            String input = destinationMaintenance.getText();
+        });
+
 
 
         onSearch();
@@ -321,6 +327,13 @@ public class MainPage implements SwitchableController, Observer {
         searchResultTable.setItems(listRequests);
 
         ServiceRequestSingleton.getInstance().setSearch(filter, searchType);
+    }
+
+    @FXML
+    private void onDestinationMaitenance(){
+        String selection = destinationMaintenanceList.getSelectionModel().getSelectedItem().toString();
+        destinationMaintenance.setText(selection);
+        destinationMaintenanceList.setVisible(false);
     }
 
 
