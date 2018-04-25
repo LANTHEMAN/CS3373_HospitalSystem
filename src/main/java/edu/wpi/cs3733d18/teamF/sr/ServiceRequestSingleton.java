@@ -509,6 +509,55 @@ public class ServiceRequestSingleton implements DatabaseItem {
         return false;
     }
 
+    public ArrayList<ServiceRequests> multiFilterSearch(String username, int priority, String status, String type){
+        String usernameSQL;
+        String prioritySQL;
+        String statusSQL;
+        String typeSQL;
+        boolean multipleConditions = false;
+        if(PermissionSingleton.getInstance().isAdmin()){
+            usernameSQL = "";
+        }else{
+            usernameSQL = " Inbox.username = '" + username + "'";
+            multipleConditions = true;
+        }
+        if(priority < 0){
+            prioritySQL = "";
+        }else{
+            if (multipleConditions){
+                prioritySQL = " AND ServiceRequest.priority = " + priority;
+            }else {
+                prioritySQL = " ServiceRequest.priority = " + priority;
+            }
+            multipleConditions = true;
+        }
+        if(status != null){
+            if(multipleConditions){
+                statusSQL = " AND ServiceRequest.status = '" + status + "'";
+            }else {
+                statusSQL = " ServiceRequest.status = '" + status + "'";
+            }
+            multipleConditions = true;
+        }else{
+            statusSQL = "";
+        }
+        if(type != null){
+            if(multipleConditions){
+                typeSQL = " AND ServiceRequest.type = '" + type + "'";
+            }else {
+                typeSQL = " ServiceRequest.type = '" + type + "'";
+            }
+        }else{
+            typeSQL = "";
+        }
+
+        String sql = "SELECT ServiceRequest.* FROM Inbox INNER JOIN ServiceRequest ON Inbox.requestID = ServiceRequest.id WHERE" + usernameSQL + prioritySQL + statusSQL + typeSQL;
+
+        ResultSet resultSet = dbHandler.runQuery(sql);
+
+        return resultSetToServiceRequest(resultSet);
+    }
+
 
     ///////////////////////
     //                   //

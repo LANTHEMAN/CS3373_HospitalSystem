@@ -102,6 +102,18 @@ public class PaneSwitcher {
         popup.show();
     }
 
+    public void popupInbox(Screens.Screen screen) {
+        load(screen);
+        Scene popScene = new Scene(panes.get(screen.fxmlFile));
+        popup.setHeight(650);
+        popup.setWidth(855);
+        popup.setScene(popScene);
+        javafx.scene.image.Image image = new javafx.scene.image.Image(Main.class.getResource("BWHIcon.png").toExternalForm());
+        popup.getIcons().add(image);
+        popScene.getStylesheets().add(Main.class.getResource("controller/default.css").toExternalForm());
+        popup.show();
+    }
+
     public void closePopup(Screens.Screen screen) {
         // will reset control back to the given screen (that should be displayed currently)
         popup.close();
