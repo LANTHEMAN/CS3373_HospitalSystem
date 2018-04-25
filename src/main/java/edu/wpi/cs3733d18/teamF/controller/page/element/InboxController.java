@@ -25,15 +25,26 @@ public class InboxController implements SwitchableController {
     @FXML
     private JFXListView inboxRequests;
     @FXML
+    FontAwesomeIconView searchFilters;
+    @FXML
     private JFXTextField inboxSearch;
     @FXML
     private JFXComboBox inboxPrioritySort, inboxStatusSort, inboxAllSort;
 
+    private final ObservableList<String> priority = FXCollections.observableArrayList("0", "1", "2", "3", "4", "5");
+    private final ObservableList<String> status = FXCollections.observableArrayList("Incomplete", "In Progress", "Complete");
+    private final ObservableList<String> type = FXCollections.observableArrayList("Language Interpreter", "Religious Services", "Security Request", "Maintenance Request");
+
+
     public void initialize(PaneSwitcher switcher){
         this.switcher=switcher;
+        ArrayList<ServiceRequests> inbox;
 
-        //ArrayList<ServiceRequests> inbox = ServiceRequestSingleton.getInstance().getInbox(PermissionSingleton.getInstance().getCurrUser());
-        ArrayList<ServiceRequests> inbox = ServiceRequestSingleton.getInstance().getListOfRequests();
+        if(PermissionSingleton.getInstance().isAdmin()){
+            inbox = ServiceRequestSingleton.getInstance().getListOfRequests();
+        }else {
+            inbox = ServiceRequestSingleton.getInstance().getInbox(PermissionSingleton.getInstance().getCurrUser());
+        }
 
         ArrayList<JFXButton> inboxBtns = new ArrayList<>();
         for(ServiceRequests request: inbox){
@@ -42,6 +53,35 @@ public class InboxController implements SwitchableController {
         ObservableList<JFXButton> allRequests = FXCollections.observableArrayList(inboxBtns);
 
         inboxRequests.setItems(allRequests);
+
+        inboxPrioritySort.getItems().addAll(priority);
+        inboxStatusSort.getItems().addAll(status);
+        inboxAllSort.getItems().addAll(type);
+
+        searchFilters.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+            int priority = -1;
+            String status = null;
+            String type = null;
+
+            if(!inboxPrioritySort.getSelectionModel().isEmpty()){
+                priority = Integer.parseInt(inboxPrioritySort.getSelectionModel().getSelectedItem().toString());
+            }
+            if (!inboxStatusSort.getSelectionModel().isEmpty()){
+                status = inboxStatusSort.getSelectionModel().getSelectedItem().toString();
+            }
+            if(!inboxAllSort.getSelectionModel().isEmpty()){
+                type = inboxAllSort.getSelectionModel().getSelectedItem().toString();
+            }
+
+            ArrayList<ServiceRequests> requests = ServiceRequestSingleton.getInstance().multiFilterSearch(PermissionSingleton.getInstance().getCurrUser(), priority, status, type);
+            ArrayList<JFXButton> filteredRequestBtns = new ArrayList<>();
+            for(ServiceRequests req: requests){
+                filteredRequestBtns.add(createMessage(req));
+            }
+            inboxRequests.getItems().clear();
+            inboxRequests.getItems().addAll(filteredRequestBtns);
+        });
+
 
     }
     @FXML
@@ -109,5 +149,12 @@ public class InboxController implements SwitchableController {
 
     public void onSelectInboxMessage(ServiceRequests request){
 
+    }
+
+    @FXML
+    public void onClearFilters(){
+        inboxPrioritySort.getSelectionModel().clearSelection();
+        inboxStatusSort.getSelectionModel().clearSelection();
+        inboxAllSort.getSelectionModel().clearSelection();
     }
 }

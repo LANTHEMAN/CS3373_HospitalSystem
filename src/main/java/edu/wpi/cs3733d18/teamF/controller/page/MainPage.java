@@ -843,9 +843,6 @@ public class MainPage implements SwitchableController, Observer {
     }
 
     @FXML
-    Label invalidMaintenanceLocation, invalidLocationRS, invalidLocationLI, invalidLocationSR;
-
-    @FXML
     private void onSubmitMaintenance(){
         int requiredFields = 0;
         if (situationSelection.getSelectionModel().isEmpty()) {
