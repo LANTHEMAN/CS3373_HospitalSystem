@@ -20,13 +20,17 @@ public class AboutElement extends PageElement {
     FontAwesomeIconView closeCredits;
 
     @FXML
+    FontAwesomeIconView backCredits;
+
+    @FXML
     AnchorPane creditsPage;
 
     public void initialize(AnchorPane sourcePane) {
         initElement(sourcePane, root);
         closeButton.setOnMouseClicked(e -> hideElement());
+        closeCredits.setOnMouseClicked(e -> hideElement());
         creditsButton.setOnMouseClicked(e -> creditsPage.setVisible(true));
-        closeCredits.setOnMouseClicked(e-> hideElement());
+        backCredits.setOnMouseClicked(e -> creditsPage.setVisible(false));
     }
 
     public void showElement() {
