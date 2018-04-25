@@ -7,6 +7,7 @@ import edu.wpi.cs3733d18.teamF.db.DatabaseItem;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.bytedeco.javacpp.presets.opencv_core;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -401,6 +402,11 @@ public class ServiceRequestSingleton implements DatabaseItem {
         ResultSet resultSet = dbHandler.runQuery(sql);
         inbox = resultSetToServiceRequest(resultSet);
         return inbox;
+    }
+
+    public void deleteFromInbox(String username){
+        String sql = "DELETE FROM INBOX WHERE username = '" + username + "'";
+        dbHandler.runQuery(sql);
     }
 
     public int numMessagesInInbox(String username) {

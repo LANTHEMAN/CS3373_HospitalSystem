@@ -689,6 +689,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         if (ServiceRequestSingleton.getInstance().isInTable(editedUser.getUname(), "MaintenanceRequest")) {
             ServiceRequestSingleton.getInstance().removeUsernameMaintenanceRequest(editedUser.getUname());
         }
+        ServiceRequestSingleton.getInstance().deleteFromInbox(editedUser.getUname());
         PermissionSingleton.getInstance().removeUser(editedUser);
         newUserPane.setVisible(false);
         onEditUsers();
