@@ -37,6 +37,7 @@ public class MapViewElement extends PageElement {
     String startNodeID = "FRETL00101";
     EditMode editMode = EditMode.MOVENODE;
     boolean showAllFloors = false;
+    boolean game = false;
 
     // used to see if the floor has changed to update the map drawn
     private MapListener mapListener;
@@ -434,9 +435,20 @@ public class MapViewElement extends PageElement {
         GameMapDrawer mapdrawer = new GameMapDrawer();
         mapdrawer.setRandom();
         mapDrawController.setMapDrawer(mapdrawer);
+        game = true;
     }
     public void endGame(){
         mapDrawController.setMapDrawer(uglyMapDrawer);
+        game = false;
+    }
+
+    public void toggleGame(){
+        if(game){
+            endGame();
+        }
+        else{
+            startGame();
+        }
     }
     public Node getSelectedNodeStart() {
         return selectedNodeStart;

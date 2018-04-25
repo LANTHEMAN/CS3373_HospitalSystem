@@ -2056,15 +2056,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         mapViewElement.update3DPathDisplay(allFloors.isSelected());
     }
 
-    public void startGame(){
-        mapViewElement.startGame();
-    }
-
-    public void nextGame(){
-        startGame();
-    }
-
-    public void endGame(){
-        mapViewElement.endGame();
+    @FXML
+    public void toggleGame(){
+        mapViewElement.toggleGame();
     }
 }

@@ -952,7 +952,7 @@
                         <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Pacman" textFill="WHITE">
+                  <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Pacman" textFill="WHITE" onAction="#toggleGame">
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>
