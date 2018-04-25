@@ -35,7 +35,6 @@ public class MapMementoSingleton {
 
     public void returnToState(MapState state) {
         if (state == null) return;
-        ((HomeController)source.getMapViewListener()).onLogOutBtn();
 
         if (state.getPath() != null) {
             source.getMapDrawController().showPath(state.getPath());
@@ -63,6 +62,7 @@ public class MapMementoSingleton {
     }
 
     public void reset(){
+        ((HomeController)source.getMapViewListener()).onLogOutBtn();
         returnToState(initialState);
     }
 }

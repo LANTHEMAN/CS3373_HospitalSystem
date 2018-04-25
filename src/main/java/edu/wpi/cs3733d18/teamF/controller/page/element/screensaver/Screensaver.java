@@ -100,8 +100,6 @@ public class Screensaver extends PageElement{
 
     public void wakeUp(Event e) {
         MapMementoSingleton.getInstance().reset();
-
-        System.out.println("YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEET");
         hideElement();
     }
 
