@@ -2057,4 +2057,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     public void onAllFloors() {
         mapViewElement.update3DPathDisplay(allFloors.isSelected());
     }
+
+    public void startGame(){
+        mapViewElement.startGame();
+    }
+
+    public void nextGame(){
+        startGame();
+    }
+
+    public void endGame(){
+        mapViewElement.endGame();
+    }
 }
