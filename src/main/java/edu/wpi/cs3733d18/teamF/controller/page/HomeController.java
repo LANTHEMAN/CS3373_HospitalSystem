@@ -28,6 +28,7 @@ import edu.wpi.cs3733d18.teamF.voice.VoiceCommandVerification;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.animation.Animation;
 import javafx.animation.*;
+import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -770,12 +771,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
             emergency = true;
             emergencyIcon.setGlyphName("TIMES");
-            emergencyBtn.setText(resFactory.getStringBinding("%Cancel").toString());
+            emergencyBtn.setText(switcher.resFac.getStringBinding("Cancel").get());
         } else {
             emergency = false;
             emergencyIcon.setGlyphName("EXCLAMATION_TRIANGLE");
-            System.out.println(resFactory.getStringBinding("Inbox").toString());
-            emergencyBtn.setText(resFactory.getStringBinding("Inbox").toString());
+            emergencyBtn.setText(switcher.resFac.getStringBinding("Exit").get());
             ft.stop();
             leftGPane.getChildren().removeAll(rectangle);
         }
