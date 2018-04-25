@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="root" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.Screensaver">
-    <ImageView nodeOrientation="INHERIT" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647">
+    <ImageView disable="false" fitHeight="${root.height}" fitWidth="${root.width}" managed="false" nodeOrientation="INHERIT" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647">
         <image>
             <Image url="@../../HospitalWallpaper.jpg" />
         </image>
@@ -21,9 +21,9 @@
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="109.0" minHeight="6.0" prefHeight="81.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="369.0" minHeight="10.0" prefHeight="226.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="6.0" prefHeight="124.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="117.0" minHeight="6.0" prefHeight="117.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="655.0" minHeight="10.0" prefHeight="492.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="6.0" prefHeight="470.0" vgrow="SOMETIMES" />
         </rowConstraints>
         <children>
             <GridPane>
@@ -49,15 +49,21 @@
                         <GridPane.margin>
                             <Insets right="20.0" />
                         </GridPane.margin>
+                  <font>
+                     <Font size="18.0" />
+                  </font>
                     </Label>
                     <Label fx:id="date" text="April 25, 2018" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                         <GridPane.margin>
                             <Insets right="20.0" />
                         </GridPane.margin>
+                  <font>
+                     <Font size="18.0" />
+                  </font>
                     </Label>
                 </children>
             </GridPane>
-            <Label fx:id="askMeField" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <Label fx:id="askMeField" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
                 <GridPane.margin>
                     <Insets left="40.0" right="40.0" />
                 </GridPane.margin>
@@ -65,9 +71,9 @@
                     <Font size="48.0" />
                 </font>
             </Label>
-            <Label fx:id="welcomeField" alignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Label fx:id="welcomeField" alignment="CENTER" maxWidth="1.7976931348623157E308" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                 <font>
-                    <Font name="Arial Bold" size="72.0" />
+                    <Font name="Arial Bold" size="96.0" />
                 </font>
                 <GridPane.margin>
                     <Insets left="40.0" right="40.0" />

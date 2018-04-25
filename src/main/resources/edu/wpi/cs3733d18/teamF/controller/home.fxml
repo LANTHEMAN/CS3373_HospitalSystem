@@ -1,532 +1,705 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?scenebuilder-preview-i18n-resource LanguageBundle.properties?>
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXCheckBox?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
-<?import com.jfoenix.controls.JFXListView?>
-<?import com.jfoenix.controls.JFXNodesList?>
-<?import com.jfoenix.controls.JFXPasswordField?>
-<?import com.jfoenix.controls.JFXSlider?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import com.lynden.gmapsfx.GoogleMapView?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
 
-<GridPane fx:id="rootPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
+<?import com.jfoenix.controls.*?>
+<?import com.lynden.gmapsfx.GoogleMapView?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<GridPane fx:id="rootPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;"
+          xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
     <columnConstraints>
-        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="256.0" />
-        <ColumnConstraints />
+        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0"
+                           prefWidth="256.0"/>
+        <ColumnConstraints/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-        <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
-        <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
+        <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0"/>
+        <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0"/>
     </rowConstraints>
     <children>
-        <VBox fx:id="directionsBox" alignment="TOP_CENTER" fillWidth="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="350.0" snapToPixel="false" style="-fx-background-color: #042E58;">
+        <VBox fx:id="directionsBox" alignment="TOP_CENTER" fillWidth="false" maxWidth="-Infinity" minHeight="-Infinity"
+              minWidth="-Infinity" prefHeight="720.0" prefWidth="350.0" snapToPixel="false"
+              style="-fx-background-color: #042E58;">
             <children>
                 <Pane prefHeight="340.0" prefWidth="350.0" style="-fx-background-color: #042E58;">
                     <children>
-                        <JFXHamburger fx:id="hamburgerD" alignment="CENTER" fillWidth="false" layoutX="14.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" styleClass="white-hamburger" stylesheets="@homeStyleSheet.css" />
-                        <Text fill="WHITE" layoutX="76.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%Directions">
+                        <JFXHamburger fx:id="hamburgerD" alignment="CENTER" fillWidth="false" layoutX="14.0"
+                                      layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                      minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0"
+                                      prefWidth="34.0" styleClass="white-hamburger" stylesheets="@homeStyleSheet.css"/>
+                        <Text fill="WHITE" layoutX="76.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="%Directions">
                             <font>
-                                <Font name="Arial Bold" size="24.0" />
+                                <Font name="Arial Bold" size="24.0"/>
                             </font>
                         </Text>
-                        <FontAwesomeIconView fx:id="cancelDirections" fill="#f2f5f7" glyphName="TIMES" layoutX="313.0" layoutY="34.0" onMouseClicked="#onCancelDirectionsEvent" size="30" wrappingWidth="22.14285659790039" />
-                        <JFXTextField fx:id="sourceLocation" layoutX="54.0" layoutY="63.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="215.0" promptText="%SelectStart" style="-fx-background-color: #f2f5f7;">
+                        <FontAwesomeIconView fx:id="cancelDirections" fill="#f2f5f7" glyphName="TIMES" layoutX="313.0"
+                                             layoutY="34.0" onMouseClicked="#onCancelDirectionsEvent" size="30"
+                                             wrappingWidth="22.14285659790039"/>
+                        <JFXTextField fx:id="sourceLocation" layoutX="54.0" layoutY="63.0" maxHeight="-Infinity"
+                                      maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0"
+                                      prefWidth="215.0" promptText="%SelectStart"
+                                      style="-fx-background-color: #f2f5f7;">
                             <font>
-                                <Font name="Arial Bold" size="15.0" />
+                                <Font name="Arial Bold" size="15.0"/>
                             </font>
                         </JFXTextField>
-                        <Pane layoutX="279.0" layoutY="93.0" onMouseClicked="#switchLocations" prefHeight="51.0" prefWidth="48.0">
+                        <Pane layoutX="279.0" layoutY="93.0" onMouseClicked="#switchLocations" prefHeight="51.0"
+                              prefWidth="48.0">
                             <children>
-                                <FontAwesomeIconView fill="WHITE" glyphName="ARROW_UP" size="30" translateY="25.0" wrappingWidth="22.142860293388367" />
-                                <FontAwesomeIconView fill="WHITE" glyphName="ARROW_DOWN" size="30" translateX="15.0" translateY="45.0" wrappingWidth="22.142860293388367" />
+                                <FontAwesomeIconView fill="WHITE" glyphName="ARROW_UP" size="30" translateY="25.0"
+                                                     wrappingWidth="22.142860293388367"/>
+                                <FontAwesomeIconView fill="WHITE" glyphName="ARROW_DOWN" size="30" translateX="15.0"
+                                                     translateY="45.0" wrappingWidth="22.142860293388367"/>
                             </children>
                         </Pane>
-                        <JFXTextField fx:id="destinationLocation" layoutX="54.0" layoutY="129.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="215.0" promptText="%SelectDestination" style="-fx-background-color: #f2f5f7;">
+                        <JFXTextField fx:id="destinationLocation" layoutX="54.0" layoutY="129.0" maxHeight="-Infinity"
+                                      maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0"
+                                      prefWidth="215.0" promptText="%SelectDestination"
+                                      style="-fx-background-color: #f2f5f7;">
                             <font>
-                                <Font name="Arial Bold" size="15.0" />
+                                <Font name="Arial Bold" size="15.0"/>
                             </font>
                         </JFXTextField>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" translateY="70.0">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true"
+                                   translateX="20.0" translateY="70.0">
                             <image>
-                                <Image url="@../start-icon.png" />
+                                <Image url="@../start-icon.png"/>
                             </image>
                         </ImageView>
-                        <Circle fill="WHITE" layoutX="30.0" layoutY="108.0" radius="4.0" scaleX="0.7" scaleY="0.7" stroke="#f2f5f7" strokeType="INSIDE" />
-                        <Circle fill="WHITE" layoutX="30.0" layoutY="118.0" radius="4.0" scaleX="0.7" scaleY="0.7" stroke="#f2f5f7" strokeType="INSIDE" />
-                        <Circle fill="WHITE" layoutX="30.0" layoutY="128.0" radius="4.0" scaleX="0.7" scaleY="0.7" stroke="#f2f5f7" strokeType="INSIDE" />
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" translateY="135.0">
+                        <Circle fill="WHITE" layoutX="30.0" layoutY="108.0" radius="4.0" scaleX="0.7" scaleY="0.7"
+                                stroke="#f2f5f7" strokeType="INSIDE"/>
+                        <Circle fill="WHITE" layoutX="30.0" layoutY="118.0" radius="4.0" scaleX="0.7" scaleY="0.7"
+                                stroke="#f2f5f7" strokeType="INSIDE"/>
+                        <Circle fill="WHITE" layoutX="30.0" layoutY="128.0" radius="4.0" scaleX="0.7" scaleY="0.7"
+                                stroke="#f2f5f7" strokeType="INSIDE"/>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true"
+                                   translateX="20.0" translateY="135.0">
                             <image>
-                                <Image url="@../end-icon.png" />
+                                <Image url="@../end-icon.png"/>
                             </image>
                         </ImageView>
-                  <ImageView fitHeight="93.0" fitWidth="40.0" onMouseClicked="#flipElevators" pickOnBounds="true" preserveRatio="true" translateX="80.0" translateY="180.0">
-                     <image>
-                        <Image url="@../elevator.png" />
-                     </image>
-                  </ImageView>
-                  <FontAwesomeIconView fx:id="elevatorBan" fill="#cf0000b2" glyphName="BAN" onMouseClicked="#flipElevators" size="75" translateX="68.0" translateY="239.0" visible="false" />
-                  <ImageView fitHeight="93.0" fitWidth="45.0" onMouseClicked="#flipStairs" pickOnBounds="true" preserveRatio="true" translateX="160.0" translateY="190.0">
-                     <image>
-                        <Image url="@../stairs.png" />
-                     </image>
-                  </ImageView>
-                  <FontAwesomeIconView fx:id="stairBan" fill="#cf0000b2" glyphName="BAN" onMouseClicked="#flipStairs" size="74" translateX="154.0" translateY="239.0" visible="false" />
-                  <JFXCheckBox fx:id="allFloors" layoutX="190.0" layoutY="250.0" onAction="#onAllFloors" prefHeight="18.0" prefWidth="113.0" selected="true" text="%AllFloors" textFill="WHITE">
-                     <font>
-                        <Font name="Arial Bold" size="15.0" />
-                     </font>
-                  </JFXCheckBox>
-                        <JFXButton layoutX="125.0" layoutY="270.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onNavigate" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #767878;" text="%Navigate" textFill="WHITE">
+                        <ImageView fitHeight="93.0" fitWidth="40.0" onMouseClicked="#flipElevators" pickOnBounds="true"
+                                   preserveRatio="true" translateX="80.0" translateY="180.0">
+                            <image>
+                                <Image url="@../elevator.png"/>
+                            </image>
+                        </ImageView>
+                        <FontAwesomeIconView fx:id="elevatorBan" fill="#cf0000b2" glyphName="BAN"
+                                             onMouseClicked="#flipElevators" size="75" translateX="68.0"
+                                             translateY="239.0" visible="false"/>
+                        <ImageView fitHeight="93.0" fitWidth="45.0" onMouseClicked="#flipStairs" pickOnBounds="true"
+                                   preserveRatio="true" translateX="160.0" translateY="190.0">
+                            <image>
+                                <Image url="@../stairs.png"/>
+                            </image>
+                        </ImageView>
+                        <FontAwesomeIconView fx:id="stairBan" fill="#cf0000b2" glyphName="BAN"
+                                             onMouseClicked="#flipStairs" size="74" translateX="154.0"
+                                             translateY="239.0" visible="false"/>
+                        <JFXCheckBox fx:id="allFloors" layoutX="190.0" layoutY="250.0" onAction="#onAllFloors"
+                                     prefHeight="18.0" prefWidth="113.0" selected="true" text="%AllFloors"
+                                     textFill="WHITE">
                             <font>
-                                <Font name="Arial Bold" size="15.0" />
+                                <Font name="Arial Bold" size="15.0"/>
+                            </font>
+                        </JFXCheckBox>
+                        <JFXButton layoutX="125.0" layoutY="270.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                   minHeight="-Infinity" minWidth="-Infinity" onAction="#onNavigate" prefHeight="40.0"
+                                   prefWidth="100.0" style="-fx-background-color: #767878;" text="%Navigate"
+                                   textFill="WHITE">
+                            <font>
+                                <Font name="Arial Bold" size="15.0"/>
                             </font>
                         </JFXButton>
                     </children>
                 </Pane>
                 <Pane prefHeight="427.0" prefWidth="350.0" style="-fx-background-color: #042E58;">
                     <children>
-                        <FontAwesomeIconView fx:id="imgDistance" fill="WHITE" glyphName="MAP" size="30" translateX="20.0" translateY="10.0" visible="false" />
-                        <FontAwesomeIconView fx:id="imgTime" fill="WHITE" glyphName="CLOCK_ALT" size="30" translateX="170.0" translateY="10.0" visible="false" />
-                        <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="189.0" prefWidth="344.0" style="-fx-background-color: #042E58;" stylesheets="@scrollStyleSheet.css" translateX="4.0" translateY="25.0">
+                        <FontAwesomeIconView fx:id="imgDistance" fill="WHITE" glyphName="MAP" size="30"
+                                             translateX="20.0" translateY="10.0" visible="false"/>
+                        <FontAwesomeIconView fx:id="imgTime" fill="WHITE" glyphName="CLOCK_ALT" size="30"
+                                             translateX="170.0" translateY="10.0" visible="false"/>
+                        <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                    minWidth="-Infinity" prefHeight="189.0" prefWidth="344.0"
+                                    style="-fx-background-color: #042E58;" stylesheets="@scrollStyleSheet.css"
+                                    translateX="4.0" translateY="25.0">
                             <content>
-                                <TextFlow fx:id="txtDirections" lineSpacing="3.0" prefHeight="187.0" prefWidth="342.0" style="-fx-background-color: #042E58;" />
+                                <TextFlow fx:id="txtDirections" lineSpacing="3.0" prefHeight="187.0" prefWidth="342.0"
+                                          style="-fx-background-color: #042E58;"/>
                             </content>
                         </ScrollPane>
-                        <JFXListView fx:id="directionsList" onMouseClicked="#setDirectionLocation" prefHeight="189.0" prefWidth="350.0" visible="false" />
-                        <Pane fx:id="qrImage" layoutX="44.0" layoutY="220.0" prefHeight="256.0" prefWidth="256.0" />
-                        <Text fx:id="txtDistance" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="20 feet" translateX="60.0" translateY="10.0" visible="false">
+                        <JFXListView fx:id="directionsList" onMouseClicked="#setDirectionLocation" prefHeight="189.0"
+                                     prefWidth="350.0" visible="false"/>
+                        <Pane fx:id="qrImage" layoutX="44.0" layoutY="220.0" prefHeight="256.0" prefWidth="256.0"/>
+                        <Text fx:id="txtDistance" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="20 feet"
+                              translateX="60.0" translateY="10.0" visible="false">
                             <font>
-                                <Font name="Arial Bold" size="16.0" />
+                                <Font name="Arial Bold" size="16.0"/>
                             </font>
                         </Text>
-                        <Text fx:id="txtTime" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="3 minutes" translateX="205.0" translateY="10.0" visible="false">
+                        <Text fx:id="txtTime" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="3 minutes"
+                              translateX="205.0" translateY="10.0" visible="false">
                             <font>
-                                <Font name="Arial Bold" size="16.0" />
+                                <Font name="Arial Bold" size="16.0"/>
                             </font>
                         </Text>
                     </children>
                 </Pane>
             </children>
         </VBox>
-      <AnchorPane fx:id="mapEditorBtns" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="680.0">
-         <children>
-              <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="680.0" spacing="15.0" style="-fx-background-color: rgba(0,0,0,0.5); -fx-background-radius: 10; -fx-border-color: rgba(0,0,0,0);">
-                  <children>
-                      <JFXButton fx:id="addNodeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAddNode" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
-                          <graphic>
-                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
-                                  <image>
-                                      <Image url="@MapBuilder/add-node.png" />
-                                  </image>
-                              </ImageView>
-                          </graphic>
-                  </JFXButton>
-                      <JFXButton fx:id="remNodeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onRemoveNode" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
-                          <graphic>
-                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
-                                  <image>
-                                      <Image url="@MapBuilder/remove-node.png" />
-                                  </image>
-                              </ImageView>
-                          </graphic>
-                  </JFXButton>
-                      <JFXButton fx:id="addEdgeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAddEdge" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
-                          <graphic>
-                              <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
-                                  <image>
-                                      <Image url="@MapBuilder/add-edge.png" />
-                                  </image>
-                              </ImageView>
-                          </graphic>
-                  </JFXButton>
-                      <JFXButton fx:id="remEdgeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onRemoveEdge" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
-                          <graphic>
-                              <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
-                                  <image>
-                                      <Image url="@MapBuilder/remove-edge.png" />
-                                  </image>
-                              </ImageView>
-                          </graphic>
-                  </JFXButton>
-                      <JFXButton fx:id="modifyBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onModify" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
-                          <graphic>
-                              <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
-                                  <image>
-                                      <Image url="@MapBuilder/modify.png" />
-                                  </image>
-                              </ImageView>
-                          </graphic>
-                  </JFXButton>
-                      <JFXButton fx:id="dragBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDragNode" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE">
-                          <graphic>
-                              <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
-                                  <image>
-                                      <Image url="@MapBuilder/drag-node.png" />
-                                  </image>
-                              </ImageView>
-                          </graphic>
-                  </JFXButton>
-                      <JFXButton fx:id="panBtn" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onPan" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="WHITE" textOverrun="CLIP">
-                          <graphic>
-                              <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" translateX="4.0">
-                                  <image>
-                                      <Image url="@MapBuilder/pan.png" />
-                                  </image>
-                              </ImageView>
-                          </graphic>
-                  </JFXButton>
-                  </children>
-              </HBox>
-            <FontAwesomeIconView fill="WHITE" glyphName="TIMES" onMouseClicked="#onMapEditor" translateX="662.0" translateY="15.0" />
-         </children>
-      </AnchorPane>
-        <VBox fx:id="logoutBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0" style="-fx-background-color: #042E58;" visible="false">
+        <AnchorPane fx:id="mapEditorBtns" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                    minWidth="-Infinity" prefHeight="100.0" prefWidth="680.0">
+            <children>
+                <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="680.0"
+                      spacing="15.0"
+                      style="-fx-background-color: rgba(0,0,0,0.5); -fx-background-radius: 10; -fx-border-color: rgba(0,0,0,0);">
+                    <children>
+                        <JFXButton fx:id="addNodeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAddNode"
+                                   prefHeight="80.0" prefWidth="80.0"
+                                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                                   text=" " textFill="WHITE">
+                            <graphic>
+                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true"
+                                           translateX="4.0">
+                                    <image>
+                                        <Image url="@MapBuilder/add-node.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="remNodeBtn" maxHeight="-Infinity" maxWidth="-Infinity"
+                                   onAction="#onRemoveNode" prefHeight="80.0" prefWidth="80.0"
+                                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                                   text=" " textFill="WHITE">
+                            <graphic>
+                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true"
+                                           translateX="4.0">
+                                    <image>
+                                        <Image url="@MapBuilder/remove-node.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="addEdgeBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAddEdge"
+                                   prefHeight="80.0" prefWidth="80.0"
+                                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                                   text=" " textFill="WHITE">
+                            <graphic>
+                                <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true"
+                                           translateX="4.0">
+                                    <image>
+                                        <Image url="@MapBuilder/add-edge.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="remEdgeBtn" maxHeight="-Infinity" maxWidth="-Infinity"
+                                   onAction="#onRemoveEdge" prefHeight="80.0" prefWidth="80.0"
+                                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                                   text=" " textFill="WHITE">
+                            <graphic>
+                                <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true"
+                                           translateX="4.0">
+                                    <image>
+                                        <Image url="@MapBuilder/remove-edge.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="modifyBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onModify"
+                                   prefHeight="80.0" prefWidth="80.0"
+                                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                                   text=" " textFill="WHITE">
+                            <graphic>
+                                <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true"
+                                           translateX="4.0">
+                                    <image>
+                                        <Image url="@MapBuilder/modify.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="dragBtn" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDragNode"
+                                   prefHeight="80.0" prefWidth="80.0"
+                                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                                   text=" " textFill="WHITE">
+                            <graphic>
+                                <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true"
+                                           translateX="4.0">
+                                    <image>
+                                        <Image url="@MapBuilder/drag-node.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="panBtn" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity"
+                                   onAction="#onPan" prefHeight="80.0" prefWidth="80.0"
+                                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                                   text=" " textFill="WHITE" textOverrun="CLIP">
+                            <graphic>
+                                <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true"
+                                           translateX="4.0">
+                                    <image>
+                                        <Image url="@MapBuilder/pan.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </JFXButton>
+                    </children>
+                </HBox>
+                <FontAwesomeIconView fill="WHITE" glyphName="TIMES" onMouseClicked="#onMapEditor" translateX="662.0"
+                                     translateY="15.0"/>
+            </children>
+        </AnchorPane>
+        <VBox fx:id="logoutBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+              minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0"
+              style="-fx-background-color: #042E58;" visible="false">
             <children>
                 <Pane prefHeight="87.0" prefWidth="250.0">
                     <children>
-                        <FontAwesomeIconView fx:id="logoutCancel" fill="#f2f5f7" glyphName="TIMES" layoutX="6.0" layoutY="20.0" size="20" />
-                        <JFXButton fx:id="logoutBtn" buttonType="RAISED" contentDisplay="TOP" layoutX="61.0" layoutY="23.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onLogOutBtn" prefHeight="34.0" prefWidth="130.0" style="-fx-background-color: #f2f5f7;" text="%SignOut" textAlignment="CENTER">
+                        <FontAwesomeIconView fx:id="logoutCancel" fill="#f2f5f7" glyphName="TIMES" layoutX="6.0"
+                                             layoutY="20.0" size="20"/>
+                        <JFXButton fx:id="logoutBtn" buttonType="RAISED" contentDisplay="TOP" layoutX="61.0"
+                                   layoutY="23.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                   minWidth="-Infinity" onAction="#onLogOutBtn" prefHeight="34.0" prefWidth="130.0"
+                                   style="-fx-background-color: #f2f5f7;" text="%SignOut" textAlignment="CENTER">
                             <font>
-                                <Font name="Arial Bold" size="15.0" />
+                                <Font name="Arial Bold" size="15.0"/>
                             </font>
                         </JFXButton>
                     </children>
                 </Pane>
             </children>
         </VBox>
-        <JFXButton fx:id="floorBtn" buttonType="RAISED" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textAlignment="CENTER" textFill="#f2f5f7" textOverrun="CLIP">
+        <JFXButton fx:id="floorBtn" buttonType="RAISED" contentDisplay="CENTER" maxHeight="-Infinity"
+                   maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                   text=" " textAlignment="CENTER" textFill="#f2f5f7" textOverrun="CLIP">
             <font>
-                <Font name="Arial Bold" size="26.0" />
+                <Font name="Arial Bold" size="26.0"/>
             </font>
             <graphic>
-                <FontAwesomeIconView fill="WHITE" glyphName="ARROWS_V" size="50" />
+                <FontAwesomeIconView fill="WHITE" glyphName="ARROWS_V" size="50"/>
             </graphic>
         </JFXButton>
-        <JFXButton fx:id="l2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text="L2" textFill="#f2f5f7" textOverrun="CLIP">
+        <JFXButton fx:id="l2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                   minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                   text="L2" textFill="#f2f5f7" textOverrun="CLIP">
             <font>
-                <Font name="Arial Bold" size="26.0" />
+                <Font name="Arial Bold" size="26.0"/>
             </font>
         </JFXButton>
-        <JFXButton fx:id="l1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text="L1" textFill="#f2f5f7" textOverrun="CLIP">
+        <JFXButton fx:id="l1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                   minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                   text="L1" textFill="#f2f5f7" textOverrun="CLIP">
             <font>
-                <Font name="Arial Bold" size="26.0" />
+                <Font name="Arial Bold" size="26.0"/>
             </font>
         </JFXButton>
-        <JFXButton fx:id="groundFloor" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text="G" textFill="#f2f5f7" textOverrun="CLIP">
+        <JFXButton fx:id="groundFloor" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity"
+                   minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                   text="G" textFill="#f2f5f7" textOverrun="CLIP">
             <font>
-                <Font name="Arial Bold" size="26.0" />
+                <Font name="Arial Bold" size="26.0"/>
             </font>
         </JFXButton>
-        <JFXButton fx:id="floor1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text="1" textFill="#f2f5f7" textOverrun="CLIP">
+        <JFXButton fx:id="floor1" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                   minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                   text="1" textFill="#f2f5f7" textOverrun="CLIP">
             <font>
-                <Font name="Arial Bold" size="26.0" />
+                <Font name="Arial Bold" size="26.0"/>
             </font>
         </JFXButton>
-        <JFXButton fx:id="floor2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text="2" textFill="#f2f5f7" textOverrun="CLIP">
+        <JFXButton fx:id="floor2" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                   minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                   text="2" textFill="#f2f5f7" textOverrun="CLIP">
             <font>
-                <Font name="Arial Bold" size="26.0" />
+                <Font name="Arial Bold" size="26.0"/>
             </font>
         </JFXButton>
-        <JFXButton fx:id="floor3" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text="3" textFill="#f2f5f7" textOverrun="CLIP">
+        <JFXButton fx:id="floor3" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                   minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                   text="3" textFill="#f2f5f7" textOverrun="CLIP">
             <font>
-                <Font name="Arial Bold" size="26.0" />
+                <Font name="Arial Bold" size="26.0"/>
             </font>
         </JFXButton>
-        <JFXButton fx:id="languageBtn" buttonType="RAISED" layoutX="10.0" layoutY="330.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text=" " textFill="#f2f5f7" textOverrun="CLIP">
+        <JFXButton fx:id="languageBtn" buttonType="RAISED" layoutX="10.0" layoutY="330.0" maxHeight="-Infinity"
+                   maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                   text=" " textFill="#f2f5f7" textOverrun="CLIP">
             <font>
-                <Font name="Arial Bold" size="13.0" />
+                <Font name="Arial Bold" size="13.0"/>
             </font>
             <graphic>
-                <FontAwesomeIconView fill="WHITE" glyphName="LANGUAGE" size="45" textAlignment="CENTER" translateX="4.0" translateY="2.0" />
+                <FontAwesomeIconView fill="WHITE" glyphName="LANGUAGE" size="45" textAlignment="CENTER" translateX="4.0"
+                                     translateY="2.0"/>
             </graphic>
         </JFXButton>
-        <JFXButton fx:id="english" buttonType="RAISED" layoutX="10.0" layoutY="330.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text="English" textFill="#f2f5f7" textOverrun="CLIP">
+        <JFXButton fx:id="english" buttonType="RAISED" layoutX="10.0" layoutY="330.0" maxHeight="-Infinity"
+                   maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                   text="English" textFill="#f2f5f7" textOverrun="CLIP">
             <font>
-                <Font name="Arial Bold" size="15.0" />
+                <Font name="Arial Bold" size="15.0"/>
             </font>
             <graphic>
-                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" scaleY="1.3" translateX="3.0">
+                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" scaleY="1.3"
+                           translateX="3.0">
                     <image>
-                        <Image url="@Flags/American_Flag.png" />
+                        <Image url="@Flags/American_Flag.png"/>
                     </image>
                 </ImageView>
             </graphic>
         </JFXButton>
-        <JFXButton fx:id="french" buttonType="RAISED" layoutX="10.0" layoutY="330.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text="French" textFill="#f2f5f7" textOverrun="CLIP">
+        <JFXButton fx:id="french" buttonType="RAISED" layoutX="10.0" layoutY="330.0" maxHeight="-Infinity"
+                   maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                   text="French" textFill="#f2f5f7" textOverrun="CLIP">
             <font>
-                <Font name="Arial Bold" size="15.0" />
+                <Font name="Arial Bold" size="15.0"/>
             </font>
             <graphic>
                 <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" translateX="3.0">
                     <image>
-                        <Image url="@Flags/French_Flag.png" />
+                        <Image url="@Flags/French_Flag.png"/>
                     </image>
                 </ImageView>
             </graphic>
         </JFXButton>
-        <JFXButton fx:id="spanish" buttonType="RAISED" layoutX="10.0" layoutY="330.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text="Spanish" textFill="#f2f5f7" textOverrun="CLIP">
+        <JFXButton fx:id="spanish" buttonType="RAISED" layoutX="10.0" layoutY="330.0" maxHeight="-Infinity"
+                   maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                   text="Spanish" textFill="#f2f5f7" textOverrun="CLIP">
             <font>
-                <Font name="Arial Bold" size="15.0" />
+                <Font name="Arial Bold" size="15.0"/>
             </font>
             <graphic>
                 <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" translateX="3.0">
                     <image>
-                        <Image url="@Flags/Spanish_Flag.png" />
+                        <Image url="@Flags/Spanish_Flag.png"/>
                     </image>
                 </ImageView>
             </graphic>
         </JFXButton>
-        <JFXButton fx:id="chinese" buttonType="RAISED" layoutX="10.0" layoutY="330.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;" text="Chinese" textFill="#f2f5f7" textOverrun="CLIP">
+        <JFXButton fx:id="chinese" buttonType="RAISED" layoutX="10.0" layoutY="330.0" maxHeight="-Infinity"
+                   maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-width: 5px;"
+                   text="Chinese" textFill="#f2f5f7" textOverrun="CLIP">
             <font>
-                <Font name="Arial Bold" size="15.0" />
+                <Font name="Arial Bold" size="15.0"/>
             </font>
             <graphic>
                 <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" translateX="3.0">
                     <image>
-                        <Image url="@Flags/Chinese_Flag.jpg" />
+                        <Image url="@Flags/Chinese_Flag.jpg"/>
                     </image>
                 </ImageView>
             </graphic>
         </JFXButton>
-        <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0" style="-fx-background-color: #042E58;" visible="false">
+        <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+              minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" spacing="7.0"
+              style="-fx-background-color: #042E58;" visible="false">
             <children>
                 <Pane prefHeight="80.0" prefWidth="233.0">
                     <children>
-                        <JFXTextField fx:id="loginUsername" layoutX="52.0" layoutY="13.0" prefWidth="150.0" promptText="%Username" style="-fx-background-color: WHITE;">
+                        <JFXTextField fx:id="loginUsername" layoutX="52.0" layoutY="13.0" prefWidth="150.0"
+                                      promptText="%Username" style="-fx-background-color: WHITE;">
                             <font>
-                                <Font name="Arial Bold" size="15.0" />
+                                <Font name="Arial Bold" size="15.0"/>
                             </font>
                         </JFXTextField>
-                        <JFXPasswordField fx:id="loginPassword" layoutX="52.0" layoutY="45.0" prefWidth="150.0" promptText="%Password" style="-fx-background-color: WHITE;">
+                        <JFXPasswordField fx:id="loginPassword" layoutX="52.0" layoutY="45.0" prefWidth="150.0"
+                                          promptText="%Password" style="-fx-background-color: WHITE;">
                             <font>
-                                <Font name="Arial Bold" size="15.0" />
+                                <Font name="Arial Bold" size="15.0"/>
                             </font>
                         </JFXPasswordField>
-                        <FontAwesomeIconView fx:id="loginCancel" fill="#f2f5f7" glyphName="TIMES" layoutX="6.0" layoutY="20.0" size="20" />
+                        <FontAwesomeIconView fx:id="loginCancel" fill="#f2f5f7" glyphName="TIMES" layoutX="6.0"
+                                             layoutY="20.0" size="20"/>
                     </children>
                 </Pane>
             </children>
         </VBox>
-        <AnchorPane fx:id="mapElementPane" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
-        <GridPane fx:id="leftGPane" alignment="BOTTOM_LEFT" pickOnBounds="false" prefHeight="687.0" prefWidth="811.0" GridPane.columnSpan="2">
+        <AnchorPane fx:id="mapElementPane" pickOnBounds="false" GridPane.columnSpan="2147483647"
+                    GridPane.rowSpan="2147483647"/>
+        <GridPane fx:id="leftGPane" alignment="BOTTOM_LEFT" pickOnBounds="false" prefHeight="687.0" prefWidth="811.0"
+                  GridPane.columnSpan="2">
             <columnConstraints>
-                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="260.0" minHeight="10.0" prefHeight="62.57142639160156" vgrow="NEVER" />
-                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="632.3370742797852" vgrow="ALWAYS" />
-                <RowConstraints />
+                <RowConstraints maxHeight="260.0" minHeight="10.0" prefHeight="62.57142639160156" vgrow="NEVER"/>
+                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="632.3370742797852"
+                                vgrow="ALWAYS"/>
+                <RowConstraints/>
             </rowConstraints>
             <children>
-                <StackPane alignment="CENTER_LEFT" minWidth="-Infinity" pickOnBounds="false" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
+                <StackPane alignment="CENTER_LEFT" minWidth="-Infinity" pickOnBounds="false"
+                           GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowSpan="2147483647"
+                           GridPane.valignment="CENTER">
                     <children>
-                        <JFXDrawer fx:id="directionsDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefHeight="720.0" prefWidth="350.0" resizeContent="true" StackPane.alignment="CENTER_LEFT" />
-                        <JFXDrawer fx:id="adminDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefWidth="350.0" resizeContent="true" StackPane.alignment="CENTER_LEFT" />
-                  <JFXDrawer fx:id="menuDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" layoutX="10.0" layoutY="10.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefWidth="350.0" resizeContent="true" />
-                  <JFXDrawer fx:id="guestDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" layoutX="10.0" layoutY="10.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false" prefWidth="350.0" resizeContent="true" />
-                        <JFXDrawer fx:id="mapEditorDrawer" alignment="BOTTOM_CENTER" direction="BOTTOM" maxHeight="-Infinity" maxWidth="-Infinity" overLayVisible="false" prefHeight="100.0" prefWidth="680.0" StackPane.alignment="BOTTOM_CENTER" />
-                        <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="68.0" prefWidth="217.0" spacing="5.0" translateX="15.0" translateY="-5.0" StackPane.alignment="BOTTOM_LEFT">
+                        <JFXDrawer fx:id="directionsDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0"
+                                   maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false"
+                                   prefHeight="720.0" prefWidth="350.0" resizeContent="true"
+                                   StackPane.alignment="CENTER_LEFT"/>
+                        <JFXDrawer fx:id="adminDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0"
+                                   maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false" pickOnBounds="false"
+                                   prefWidth="350.0" resizeContent="true" StackPane.alignment="CENTER_LEFT"/>
+                        <JFXDrawer fx:id="menuDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" layoutX="10.0"
+                                   layoutY="10.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false"
+                                   pickOnBounds="false" prefWidth="350.0" resizeContent="true"/>
+                        <JFXDrawer fx:id="guestDrawer" alignment="TOP_CENTER" defaultDrawerSize="400.0" layoutX="10.0"
+                                   layoutY="10.0" maxWidth="-Infinity" minWidth="-Infinity" overLayVisible="false"
+                                   pickOnBounds="false" prefWidth="350.0" resizeContent="true"/>
+                        <JFXDrawer fx:id="mapEditorDrawer" alignment="BOTTOM_CENTER" direction="BOTTOM"
+                                   maxHeight="-Infinity" maxWidth="-Infinity" overLayVisible="false" prefHeight="100.0"
+                                   prefWidth="680.0" StackPane.alignment="BOTTOM_CENTER"/>
+                        <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="68.0"
+                              prefWidth="217.0" spacing="5.0" translateX="15.0" translateY="-5.0"
+                              StackPane.alignment="BOTTOM_LEFT">
                             <children>
                                 <Label fx:id="date" text="%Date">
                                     <font>
-                                        <Font name="Arial Bold" size="18.0" />
+                                        <Font name="Arial Bold" size="18.0"/>
                                     </font>
                                 </Label>
                                 <Label fx:id="time" text="%Time">
                                     <font>
-                                        <Font name="Arial Bold" size="18.0" />
+                                        <Font name="Arial Bold" size="18.0"/>
                                     </font>
                                 </Label>
                             </children>
                         </VBox>
-                        <HBox fx:id="searchBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" prefHeight="66.0" prefWidth="350.0" spacing="5.0" style="-fx-background-color: #042E58; -fx-background-radius: 10;" StackPane.alignment="TOP_LEFT">
+                        <HBox fx:id="searchBar" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+                              minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" prefHeight="66.0"
+                              prefWidth="350.0" spacing="5.0"
+                              style="-fx-background-color: #042E58; -fx-background-radius: 10;"
+                              StackPane.alignment="TOP_LEFT">
                             <children>
-                                <JFXHamburger fx:id="hamburger" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0" prefWidth="34.0" styleClass="white-hamburger" stylesheets="@homeStyleSheet.css" />
-                                <JFXTextField fx:id="searchLocation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="211.0" promptText="%TypeClickMap" style="-fx-background-color: #f2f5f7;">
+                                <JFXHamburger fx:id="hamburger" alignment="CENTER" fillWidth="false"
+                                              maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                              minWidth="-Infinity" onMouseClicked="#onHamburgerMenu" prefHeight="46.0"
+                                              prefWidth="34.0" styleClass="white-hamburger"
+                                              stylesheets="@homeStyleSheet.css"/>
+                                <JFXTextField fx:id="searchLocation" maxHeight="-Infinity" maxWidth="-Infinity"
+                                              minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0"
+                                              prefWidth="211.0" promptText="%TypeClickMap"
+                                              style="-fx-background-color: #f2f5f7;">
                                     <font>
-                                        <Font name="Arial Bold" size="15.0" />
+                                        <Font name="Arial Bold" size="15.0"/>
                                     </font>
                                 </JFXTextField>
-                                <FontAwesomeIconView fill="#f2f5f7" glyphName="SEARCH" onMouseClicked="#onSearchLocation" size="20" />
+                                <FontAwesomeIconView fill="#f2f5f7" glyphName="SEARCH"
+                                                     onMouseClicked="#onSearchLocation" size="20"/>
                                 <Line startY="-50.0" stroke="#f2f5f7">
                                     <HBox.margin>
-                                        <Insets left="7.5" right="7.5" />
+                                        <Insets left="7.5" right="7.5"/>
                                     </HBox.margin>
                                 </Line>
-                                <FontAwesomeIconView fx:id="directionsArrow" fill="#f2f5f7" glyphName="ARROW_RIGHT" onMouseClicked="#onArrowEvent" size="25" wrappingWidth="22.14285659790039" />
+                                <FontAwesomeIconView fx:id="directionsArrow" fill="#f2f5f7" glyphName="ARROW_RIGHT"
+                                                     onMouseClicked="#onArrowEvent" size="25"
+                                                     wrappingWidth="22.14285659790039"/>
                             </children>
                         </HBox>
-                        <Pane fx:id="voicePane" pickOnBounds="false" prefHeight="148.0" prefWidth="1280.0" />
+                        <Pane fx:id="voicePane" pickOnBounds="false" prefHeight="148.0" prefWidth="1280.0"/>
                     </children>
                 </StackPane>
-                <Text fx:id="MainTitle" fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%BrighamTitleSecondFloor" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <Text fx:id="MainTitle" fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="%BrighamTitleSecondFloor" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <font>
-                        <Font name="Arial Bold" size="28.0" />
+                        <Font name="Arial Bold" size="28.0"/>
                     </font>
                 </Text>
-                <VBox fx:id="addLocationPopup" alignment="CENTER" maxHeight="235.0" maxWidth="178.0" prefHeight="235.0" prefWidth="177.0" spacing="10.0" style="-fx-background-color: #042E58; -fx-background-radius: 10;" visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                <VBox fx:id="addLocationPopup" alignment="CENTER" maxHeight="235.0" maxWidth="178.0" prefHeight="235.0"
+                      prefWidth="177.0" spacing="10.0" style="-fx-background-color: #042E58; -fx-background-radius: 10;"
+                      visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                     <children>
                         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%AddLocation">
                             <font>
-                                <Font name="Arial Bold" size="15.0" />
-                            </font></Text>
+                                <Font name="Arial Bold" size="15.0"/>
+                            </font>
+                        </Text>
                         <GridPane>
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                             <children>
-                                <TextField fx:id="newNode_x" GridPane.columnIndex="1" />
-                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="X" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                <TextField fx:id="newNode_x" GridPane.columnIndex="1"/>
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="X"
+                                      GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                     <font>
-                                        <Font name="Arial Bold" size="15.0" />
+                                        <Font name="Arial Bold" size="15.0"/>
                                     </font>
                                 </Text>
                             </children>
                         </GridPane>
                         <GridPane layoutX="21.0" layoutY="172.0">
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                             <children>
-                                <TextField fx:id="newNode_y" GridPane.columnIndex="1" />
-                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Y" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                <TextField fx:id="newNode_y" GridPane.columnIndex="1"/>
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Y"
+                                      GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                     <font>
-                                        <Font name="Arial Bold" size="15.0" />
+                                        <Font name="Arial Bold" size="15.0"/>
                                     </font>
                                 </Text>
                             </children>
                         </GridPane>
                         <GridPane>
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                             <children>
-                                <ComboBox fx:id="newNode_type" prefWidth="150.0" GridPane.columnIndex="1" />
-                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%Type" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                <ComboBox fx:id="newNode_type" prefWidth="150.0" GridPane.columnIndex="1"/>
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%Type"
+                                      GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                     <font>
-                                        <Font name="Arial Bold" size="15.0" />
+                                        <Font name="Arial Bold" size="15.0"/>
                                     </font>
                                 </Text>
                             </children>
                         </GridPane>
                         <GridPane>
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                             <children>
-                                <TextField fx:id="newNode_shortName" GridPane.columnIndex="1" />
-                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%Name" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                <TextField fx:id="newNode_shortName" GridPane.columnIndex="1"/>
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%Name"
+                                      GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                     <font>
-                                        <Font name="Arial Bold" size="15.0" />
+                                        <Font name="Arial Bold" size="15.0"/>
                                     </font>
                                 </Text>
                             </children>
                         </GridPane>
-                        <JFXButton fx:id="btnLocationConfirm" mnemonicParsing="false" onAction="#onAddLocationConfirm" text="%Confirm" textFill="WHITE">
+                        <JFXButton fx:id="btnLocationConfirm" mnemonicParsing="false" onAction="#onAddLocationConfirm"
+                                   text="%Confirm" textFill="WHITE">
                             <font>
-                                <Font name="Arial Bold" size="15.0" />
+                                <Font name="Arial Bold" size="15.0"/>
                             </font>
                         </JFXButton>
-                        <JFXButton fx:id="btnLocationCancel" mnemonicParsing="false" onAction="#onAddLocationCancel" text="%Cancel" textFill="WHITE">
+                        <JFXButton fx:id="btnLocationCancel" mnemonicParsing="false" onAction="#onAddLocationCancel"
+                                   text="%Cancel" textFill="WHITE">
                             <font>
-                                <Font name="Arial Bold" size="15.0" />
+                                <Font name="Arial Bold" size="15.0"/>
                             </font>
                         </JFXButton>
                     </children>
                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                     </padding>
                 </VBox>
-                <Text fx:id="txtAdminHelp" strokeType="OUTSIDE" strokeWidth="0.0" translateX="-70.0" translateY="-20.0" visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                <Text fx:id="txtAdminHelp" strokeType="OUTSIDE" strokeWidth="0.0" translateX="-70.0" translateY="-20.0"
+                      visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                     <font>
-                        <Font size="15.0" />
+                        <Font size="15.0"/>
                     </font>
                 </Text>
-                <JFXDrawer fx:id="loginDrawer" defaultDrawerSize="400.0" direction="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="250.0" style="-fx-background-color: rgba(0, 0, 0, 0);" GridPane.halignment="RIGHT" GridPane.valignment="BASELINE">
+                <JFXDrawer fx:id="loginDrawer" defaultDrawerSize="400.0" direction="RIGHT" maxHeight="-Infinity"
+                           maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0"
+                           prefWidth="250.0" style="-fx-background-color: rgba(0, 0, 0, 0);" GridPane.halignment="RIGHT"
+                           GridPane.valignment="BASELINE">
                     <GridPane.margin>
-                        <Insets right="60.0" top="20.0" />
+                        <Insets right="60.0" top="20.0"/>
                     </GridPane.margin>
                 </JFXDrawer>
-                <JFXButton fx:id="loginBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="%Login" textFill="#f2f5f7" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+                <JFXButton fx:id="loginBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP"
+                           maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                           prefHeight="80.0" prefWidth="80.0"
+                           style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="%Login"
+                           textFill="#f2f5f7" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                     <GridPane.margin>
-                        <Insets right="20.0" top="20.0" />
+                        <Insets right="20.0" top="20.0"/>
                     </GridPane.margin>
                     <graphic>
-                        <FontAwesomeIconView fill="#f2f5f7" glyphName="USER" size="20" />
+                        <FontAwesomeIconView fill="#f2f5f7" glyphName="USER" size="20"/>
                     </graphic>
                     <font>
-                        <Font name="Arial Bold" size="15.0" />
+                        <Font name="Arial Bold" size="15.0"/>
                     </font>
                 </JFXButton>
-                <JFXListView fx:id="searchList" maxHeight="200.0" maxWidth="300.0" onMouseClicked="#setSourceSearch" visible="false" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-                <FontAwesomeIconView fill="#727272" glyphName="QUESTION" onMouseClicked="#onHelpPopup" size="50" translateX="-22.0" translateY="-70.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                <FontAwesomeIconView fill="#727272" glyphName="INFO" onMouseClicked="#onAboutPopup" size="45" textAlignment="CENTER" translateX="-75.0" translateY="-70.0" wrappingWidth="39.549333572387695" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-            <HBox fx:id="floorTraversal" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="680.0" spacing="10.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                <JFXNodesList fx:id="floorNode" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" spacing="10.0" style="-fx-background-radius: 100;" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                <JFXListView fx:id="searchList" maxHeight="200.0" maxWidth="300.0" onMouseClicked="#setSourceSearch"
+                             visible="false" GridPane.rowIndex="1" GridPane.valignment="TOP"/>
+                <FontAwesomeIconView fill="#727272" glyphName="QUESTION" onMouseClicked="#onHelpPopup" size="50"
+                                     translateX="-22.0" translateY="-70.0" GridPane.halignment="RIGHT"
+                                     GridPane.rowIndex="1" GridPane.valignment="BOTTOM"/>
+                <FontAwesomeIconView fill="#727272" glyphName="INFO" onMouseClicked="#onAboutPopup" size="45"
+                                     textAlignment="CENTER" translateX="-75.0" translateY="-70.0"
+                                     wrappingWidth="39.549333572387695" GridPane.halignment="RIGHT"
+                                     GridPane.rowIndex="1" GridPane.valignment="BOTTOM"/>
+                <HBox fx:id="floorTraversal" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+                      minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="680.0" spacing="10.0"
+                      GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM"/>
+                <JFXNodesList fx:id="floorNode" alignment="CENTER" fillWidth="false" maxHeight="-Infinity"
+                              maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0"
+                              prefWidth="80.0" spacing="10.0" style="-fx-background-radius: 100;"
+                              GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                     <GridPane.margin>
-                        <Insets right="20.0" top="50.0" />
+                        <Insets right="20.0" top="50.0"/>
                     </GridPane.margin>
                 </JFXNodesList>
-                <JFXNodesList fx:id="languageNode" alignment="CENTER" fillWidth="false" layoutX="1190.0" layoutY="123.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" spacing="10.0" style="-fx-background-radius: 100;" translateX="-140.0" translateY="-10.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                <JFXButton fx:id="btn3D" onAction="#on3D" prefHeight="60.0" prefWidth="60.0" ripplerFill="BLACK" style="-fx-background-color: #b6b8b9;" text="3D" textFill="#2c2c2c" translateX="-5.0" translateY="-5.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                <JFXNodesList fx:id="languageNode" alignment="CENTER" fillWidth="false" layoutX="1190.0" layoutY="123.0"
+                              maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                              prefHeight="80.0" prefWidth="80.0" spacing="10.0" style="-fx-background-radius: 100;"
+                              translateX="-140.0" translateY="-10.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1"
+                              GridPane.valignment="BOTTOM"/>
+                <JFXButton fx:id="btn3D" onAction="#on3D" prefHeight="60.0" prefWidth="60.0" ripplerFill="BLACK"
+                           style="-fx-background-color: #b6b8b9;" text="3D" textFill="#2c2c2c" translateX="-5.0"
+                           translateY="-5.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1"
+                           GridPane.valignment="BOTTOM">
                     <font>
-                        <Font size="20.0" />
+                        <Font size="20.0"/>
                     </font>
                 </JFXButton>
-                <JFXButton fx:id="btn2D" buttonType="RAISED" layoutX="1230.0" layoutY="670.0" onAction="#on2D" prefHeight="60.0" prefWidth="60.0" ripplerFill="BLACK" style="-fx-background-color: #f2f5f7;" text="2D" textFill="#2c2c2c" translateX="-65.0" translateY="-5.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                <JFXButton fx:id="btn2D" buttonType="RAISED" layoutX="1230.0" layoutY="670.0" onAction="#on2D"
+                           prefHeight="60.0" prefWidth="60.0" ripplerFill="BLACK" style="-fx-background-color: #f2f5f7;"
+                           text="2D" textFill="#2c2c2c" translateX="-65.0" translateY="-5.0" GridPane.halignment="RIGHT"
+                           GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                     <font>
-                        <Font size="20.0" />
+                        <Font size="20.0"/>
                     </font>
                 </JFXButton>
             </children>
         </GridPane>
-        <AnchorPane fx:id="helpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="565.0" style="-fx-background-color: rgba(255,255,255,0.90); -fx-border-color: GREY;" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+        <AnchorPane fx:id="helpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                    minWidth="-Infinity" prefHeight="400.0" prefWidth="565.0"
+                    style="-fx-background-color: rgba(255,255,255,0.90); -fx-border-color: GREY;" visible="false"
+                    GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <children>
                 <TabPane>
                     <tabs>
@@ -534,74 +707,110 @@
                             <content>
                                 <GridPane prefHeight="400.0" prefWidth="565.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="236.0" minHeight="10.0" prefHeight="234.0" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                        <RowConstraints maxHeight="236.0" minHeight="10.0" prefHeight="234.0"
+                                                        vgrow="SOMETIMES"/>
+                                        <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="32.0"
+                                                        vgrow="SOMETIMES"/>
                                     </rowConstraints>
                                     <children>
-                                        <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%HelpMenu" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                        <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%HelpMenu"
+                                              GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                             <font>
-                                                <Font name="Arial" size="18.0" />
+                                                <Font name="Arial" size="18.0"/>
                                             </font>
                                         </Text>
-                                        <FontAwesomeIconView fill="#464646" glyphName="TIMES" onMouseClicked="#onCancelClose" size="20" translateX="-10.0" translateY="10.0" GridPane.halignment="RIGHT" GridPane.valignment="TOP" />
-                                        <GridPane fx:id="userInstructions" prefHeight="273.0" prefWidth="521.0" GridPane.rowIndex="1">
+                                        <FontAwesomeIconView fill="#464646" glyphName="TIMES"
+                                                             onMouseClicked="#onCancelClose" size="20"
+                                                             translateX="-10.0" translateY="10.0"
+                                                             GridPane.halignment="RIGHT" GridPane.valignment="TOP"/>
+                                        <GridPane fx:id="userInstructions" prefHeight="273.0" prefWidth="521.0"
+                                                  GridPane.rowIndex="1">
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                                             </rowConstraints>
                                             <children>
-                                                <FontAwesomeIconView fill="#464646" glyphName="ARROWS" size="16" translateX="-80.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%MovePanMap" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <FontAwesomeIconView fill="#464646" glyphName="ARROWS" size="16"
+                                                                     translateX="-80.0" GridPane.halignment="CENTER"
+                                                                     GridPane.valignment="CENTER"/>
+                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                                                      text="%MovePanMap" GridPane.halignment="CENTER"
+                                                      GridPane.valignment="CENTER">
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Text>
-                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%DragMapMove" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                                                      text="%DragMapMove" GridPane.columnIndex="1"
+                                                      GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Text>
-                                                <FontAwesomeIconView fill="#464646" glyphName="SEARCH" size="16" translateX="-60.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%ZoomMap" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                                <FontAwesomeIconView fill="#464646" glyphName="SEARCH" size="16"
+                                                                     translateX="-60.0" GridPane.halignment="CENTER"
+                                                                     GridPane.rowIndex="1"
+                                                                     GridPane.valignment="CENTER"/>
+                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                                                      text="%ZoomMap" GridPane.halignment="CENTER" GridPane.rowIndex="1"
+                                                      GridPane.valignment="CENTER">
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Text>
-                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%ScrollToZoom" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                                                      text="%ScrollToZoom" GridPane.columnIndex="1"
+                                                      GridPane.halignment="LEFT" GridPane.rowIndex="1"
+                                                      GridPane.valignment="CENTER">
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Text>
-                                                <FontAwesomeIconView fill="#464646" glyphName="HOME" size="16" translateX="-100.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%SelectStartLocation" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                                <FontAwesomeIconView fill="#464646" glyphName="HOME" size="16"
+                                                                     translateX="-100.0" GridPane.halignment="CENTER"
+                                                                     GridPane.rowIndex="2"
+                                                                     GridPane.valignment="CENTER"/>
+                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                                                      text="%SelectStartLocation" GridPane.halignment="CENTER"
+                                                      GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Text>
-                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%RightClickLocation" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                                                      text="%RightClickLocation" GridPane.columnIndex="1"
+                                                      GridPane.halignment="LEFT" GridPane.rowIndex="2"
+                                                      GridPane.valignment="CENTER">
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Text>
-                                                <FontAwesomeIconView fill="#464646" glyphName="MAP_PIN" size="16" translateX="-95.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%SelectEndLocation" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                                                <FontAwesomeIconView fill="#464646" glyphName="MAP_PIN" size="16"
+                                                                     translateX="-95.0" GridPane.halignment="CENTER"
+                                                                     GridPane.rowIndex="3"
+                                                                     GridPane.valignment="CENTER"/>
+                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                                                      text="%SelectEndLocation" GridPane.halignment="CENTER"
+                                                      GridPane.rowIndex="3">
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Text>
-                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%LeftClickLocation" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                                                      text="%LeftClickLocation" GridPane.columnIndex="1"
+                                                      GridPane.rowIndex="3">
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Text>
                                             </children>
@@ -614,78 +823,109 @@
                             <content>
                                 <GridPane prefHeight="400.0" prefWidth="565.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="236.0" minHeight="10.0" prefHeight="234.0" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                        <RowConstraints maxHeight="236.0" minHeight="10.0" prefHeight="234.0"
+                                                        vgrow="SOMETIMES"/>
+                                        <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="32.0"
+                                                        vgrow="SOMETIMES"/>
                                     </rowConstraints>
                                     <children>
-                                        <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%ThingsYouCanAskMe" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                        <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              text="%ThingsYouCanAskMe" GridPane.halignment="CENTER"
+                                              GridPane.valignment="CENTER">
                                             <font>
-                                                <Font name="Arial" size="18.0" />
+                                                <Font name="Arial" size="18.0"/>
                                             </font>
                                         </Text>
-                                        <FontAwesomeIconView fill="#464646" glyphName="TIMES" onMouseClicked="#onCancelClose" size="20" translateX="-10.0" translateY="10.0" GridPane.halignment="RIGHT" GridPane.valignment="TOP" />
-                                        <GridPane fx:id="userInstructions1" prefHeight="273.0" prefWidth="521.0" GridPane.rowIndex="1">
+                                        <FontAwesomeIconView fill="#464646" glyphName="TIMES"
+                                                             onMouseClicked="#onCancelClose" size="20"
+                                                             translateX="-10.0" translateY="10.0"
+                                                             GridPane.halignment="RIGHT" GridPane.valignment="TOP"/>
+                                        <GridPane fx:id="userInstructions1" prefHeight="273.0" prefWidth="521.0"
+                                                  GridPane.rowIndex="1">
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                                             </rowConstraints>
                                             <children>
-                                                <Label text="%ActivateKiosk" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <Label text="%ActivateKiosk" GridPane.halignment="CENTER"
+                                                       GridPane.valignment="CENTER">
                                                     <graphic>
-                                                        <FontAwesomeIconView fill="#464646" glyphName="MICROPHONE" size="16" />
+                                                        <FontAwesomeIconView fill="#464646" glyphName="MICROPHONE"
+                                                                             size="16"/>
                                                     </graphic>
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Label>
-                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello, Kiosk" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                                                      text="Hello, Kiosk" GridPane.columnIndex="1"
+                                                      GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Text>
-                                                <Label text="%AskForDirection" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                                <Label text="%AskForDirection" GridPane.halignment="CENTER"
+                                                       GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                                     <graphic>
-                                                        <FontAwesomeIconView fill="#464646" glyphName="ARROW_RIGHT" size="16" />
+                                                        <FontAwesomeIconView fill="#464646" glyphName="ARROW_RIGHT"
+                                                                             size="16"/>
                                                     </graphic>
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Label>
-                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="Direction for ..." GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                                                      text="Direction for ..." GridPane.columnIndex="1"
+                                                      GridPane.halignment="LEFT" GridPane.rowIndex="1"
+                                                      GridPane.valignment="CENTER">
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Text>
-                                                <FontAwesomeIconView fill="#464646" glyphName="CLOUD" size="16" translateX="-100.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%AskForWeather" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                                <FontAwesomeIconView fill="#464646" glyphName="CLOUD" size="16"
+                                                                     translateX="-100.0" GridPane.halignment="CENTER"
+                                                                     GridPane.rowIndex="2"
+                                                                     GridPane.valignment="CENTER"/>
+                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                                                      text="%AskForWeather" GridPane.halignment="CENTER"
+                                                      GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Text>
-                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="What is the weather today?" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                                                      text="What is the weather today?" GridPane.columnIndex="1"
+                                                      GridPane.halignment="LEFT" GridPane.rowIndex="2"
+                                                      GridPane.valignment="CENTER">
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Text>
-                                                <FontAwesomeIconView fill="#464646" glyphName="MUSIC" size="16" text="" translateX="-95.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="%DropABeat" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                                                <FontAwesomeIconView fill="#464646" glyphName="MUSIC" size="16" text=""
+                                                                     translateX="-95.0" GridPane.halignment="CENTER"
+                                                                     GridPane.rowIndex="3"
+                                                                     GridPane.valignment="CENTER"/>
+                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0"
+                                                      text="%DropABeat" GridPane.halignment="CENTER"
+                                                      GridPane.rowIndex="3">
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Text>
-                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="RAP" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                <Text fill="#464646" strokeType="OUTSIDE" strokeWidth="0.0" text="RAP"
+                                                      GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                     <font>
-                                                        <Font name="Arial" size="18.0" />
+                                                        <Font name="Arial" size="18.0"/>
                                                     </font>
                                                 </Text>
                                             </children>
@@ -698,357 +938,474 @@
                 </TabPane>
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="editUserPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="543.0" prefWidth="885.0" style="-fx-background-color: WHITE;" visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
+        <AnchorPane fx:id="editUserPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                    minWidth="-Infinity" prefHeight="543.0" prefWidth="885.0" style="-fx-background-color: WHITE;"
+                    visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER"
+                    GridPane.rowSpan="2147483647" GridPane.valignment="CENTER">
             <children>
-                <HBox alignment="CENTER" prefHeight="900.0" prefWidth="1563.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <HBox alignment="CENTER" prefHeight="900.0" prefWidth="1563.0" AnchorPane.bottomAnchor="0.0"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
                         <Pane prefHeight="543.0" prefWidth="328.0">
                             <children>
-                                <FontAwesomeIconView glyphName="USER" layoutX="182.0" layoutY="47.0" size="40.0" />
+                                <FontAwesomeIconView glyphName="USER" layoutX="182.0" layoutY="47.0" size="40.0"/>
                                 <Label layoutX="33.0" layoutY="18.0" text="%SearchUsers">
                                     <font>
-                                        <Font size="22.0" />
+                                        <Font size="22.0"/>
                                     </font>
                                 </Label>
-                                <JFXTextField fx:id="userTextField" layoutX="61.0" layoutY="193.0" />
-                                <JFXButton buttonType="RAISED" layoutX="97.0" layoutY="437.0" onAction="#onCancelEditUser" prefHeight="41.0" prefWidth="62.0" style="-fx-background-color: #042e58;" text="%Cancel" textFill="#fcfafa" />
-                                <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutX="75.0" layoutY="299.0" onAction="#onNewUserEvent" prefHeight="76.0" prefWidth="107.0" style="-fx-background-color: #042e58;" text="%NewUser" textFill="#fcfafa">
+                                <JFXTextField fx:id="userTextField" layoutX="61.0" layoutY="193.0"/>
+                                <JFXButton buttonType="RAISED" layoutX="97.0" layoutY="437.0"
+                                           onAction="#onCancelEditUser" prefHeight="41.0" prefWidth="62.0"
+                                           style="-fx-background-color: #042e58;" text="%Cancel" textFill="#fcfafa"/>
+                                <JFXButton buttonType="RAISED" contentDisplay="TOP" layoutX="75.0" layoutY="299.0"
+                                           onAction="#onNewUserEvent" prefHeight="76.0" prefWidth="107.0"
+                                           style="-fx-background-color: #042e58;" text="%NewUser" textFill="#fcfafa">
                                     <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="USER" size="20" />
+                                        <FontAwesomeIconView fill="WHITE" glyphName="USER" size="20"/>
                                     </graphic>
                                 </JFXButton>
-                                <FontAwesomeIconView glyphName="SEARCH" layoutX="39.0" layoutY="211.0" size="20" />
+                                <FontAwesomeIconView glyphName="SEARCH" layoutX="39.0" layoutY="211.0" size="20"/>
                             </children>
                         </Pane>
                         <TableView fx:id="searchUserResultTable" prefHeight="900.0" prefWidth="701.0">
                             <columns>
-                                <TableColumn fx:id="chooseCol" editable="false" minWidth="0.0" prefWidth="64.0" resizable="false" text="%Choose" />
-                                <TableColumn fx:id="usernameCol" editable="false" minWidth="0.0" prefWidth="109.0" resizable="false" text="%Username" />
-                                <TableColumn fx:id="firstNameUserCol" editable="false" prefWidth="111.28570556640625" resizable="false" text="%FirstName" />
-                                <TableColumn fx:id="lastNameUserCol" editable="false" prefWidth="114.5714111328125" resizable="false" text="%LastName" />
-                                <TableColumn fx:id="privilegeCol" editable="false" prefWidth="120.71429443359375" resizable="false" text="%Privilege" />
-                                <TableColumn fx:id="occupationCol" editable="false" prefWidth="106.142822265625" resizable="false" text="%Occupation" />
+                                <TableColumn fx:id="chooseCol" editable="false" minWidth="0.0" prefWidth="64.0"
+                                             resizable="false" text="%Choose"/>
+                                <TableColumn fx:id="usernameCol" editable="false" minWidth="0.0" prefWidth="109.0"
+                                             resizable="false" text="%Username"/>
+                                <TableColumn fx:id="firstNameUserCol" editable="false" prefWidth="111.28570556640625"
+                                             resizable="false" text="%FirstName"/>
+                                <TableColumn fx:id="lastNameUserCol" editable="false" prefWidth="114.5714111328125"
+                                             resizable="false" text="%LastName"/>
+                                <TableColumn fx:id="privilegeCol" editable="false" prefWidth="120.71429443359375"
+                                             resizable="false" text="%Privilege"/>
+                                <TableColumn fx:id="occupationCol" editable="false" prefWidth="106.142822265625"
+                                             resizable="false" text="%Occupation"/>
                             </columns>
                         </TableView>
                     </children>
                 </HBox>
             </children>
         </AnchorPane>
-        <GridPane fx:id="gpaneNodeInfo" maxWidth="302.0" prefHeight="720.0" prefWidth="302.0" style="-fx-background-color: #042E58;" visible="false" GridPane.columnSpan="2">
+        <GridPane fx:id="gpaneNodeInfo" maxWidth="302.0" prefHeight="720.0" prefWidth="302.0"
+                  style="-fx-background-color: #042E58;" visible="false" GridPane.columnSpan="2">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="146.0" minHeight="10.0" prefHeight="129.85105895996094" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="65.82270050048828" minHeight="0.0" prefHeight="52.14894104003906" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="82.02838134765625" minHeight="0.0" prefHeight="34.58868408203125" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="82.02838134765625" minHeight="10.0" prefHeight="34.58868408203125" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="182.0" minHeight="10.0" prefHeight="178.41131591796875" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="146.0" minHeight="10.0" prefHeight="129.85105895996094" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="65.82270050048828" minHeight="0.0" prefHeight="52.14894104003906"
+                                vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="82.02838134765625" minHeight="0.0" prefHeight="34.58868408203125"
+                                vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="82.02838134765625" minHeight="10.0" prefHeight="34.58868408203125"
+                                vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="182.0" minHeight="10.0" prefHeight="178.41131591796875" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
-                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%ShortName" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%ShortName" GridPane.halignment="CENTER"
+                      GridPane.rowIndex="1" GridPane.valignment="CENTER">
                     <font>
-                        <Font size="20.0" />
+                        <Font size="20.0"/>
                     </font>
                 </Text>
-                <TextField fx:id="modNode_shortName" layoutX="195.0" layoutY="169.0" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                <Text fill="#fffbfb" layoutX="65.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%LongName" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <TextField fx:id="modNode_shortName" layoutX="195.0" layoutY="169.0" maxWidth="80.0"
+                           GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+                <Text fill="#fffbfb" layoutX="65.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="%LongName" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <font>
-                        <Font size="20.0" />
+                        <Font size="20.0"/>
                     </font>
                 </Text>
-                <TextField fx:id="modNode_longName" layoutX="10.0" layoutY="16.0" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%Type" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                <TextField fx:id="modNode_longName" layoutX="10.0" layoutY="16.0" maxWidth="80.0"
+                           GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%Type" GridPane.halignment="CENTER"
+                      GridPane.rowIndex="3" GridPane.valignment="CENTER">
                     <font>
-                        <Font size="20.0" />
+                        <Font size="20.0"/>
                     </font>
                 </Text>
-                <ComboBox fx:id="modNode_type" maxWidth="100.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%Building" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                <ComboBox fx:id="modNode_type" maxWidth="100.0" prefWidth="150.0" GridPane.columnIndex="1"
+                          GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="%Building" GridPane.halignment="CENTER"
+                      GridPane.rowIndex="4">
                     <font>
-                        <Font size="20.0" />
+                        <Font size="20.0"/>
                     </font>
                 </Text>
-                <ComboBox fx:id="modNode_building" maxWidth="100.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="X:" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                <ComboBox fx:id="modNode_building" maxWidth="100.0" prefWidth="150.0" GridPane.columnIndex="1"
+                          GridPane.halignment="CENTER" GridPane.rowIndex="4"/>
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="X:" GridPane.halignment="CENTER"
+                      GridPane.rowIndex="5" GridPane.valignment="CENTER">
                     <font>
-                        <Font size="20.0" />
+                        <Font size="20.0"/>
                     </font>
                 </Text>
-                <TextField fx:id="modNode_x" layoutX="10.0" layoutY="24.0" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Y:" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                <TextField fx:id="modNode_x" layoutX="10.0" layoutY="24.0" maxWidth="80.0" GridPane.columnIndex="1"
+                           GridPane.halignment="CENTER" GridPane.rowIndex="5"/>
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Y:" GridPane.halignment="CENTER"
+                      GridPane.rowIndex="6" GridPane.valignment="CENTER">
                     <font>
-                        <Font size="20.0" />
+                        <Font size="20.0"/>
                     </font>
                 </Text>
-                <TextField fx:id="modNode_y" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-                <JFXButton mnemonicParsing="false" onAction="#onNodeModify" text="%ModifyNode" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                <TextField fx:id="modNode_y" maxWidth="80.0" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                           GridPane.rowIndex="6"/>
+                <JFXButton mnemonicParsing="false" onAction="#onNodeModify" text="%ModifyNode" textFill="WHITE"
+                           GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                     <font>
-                        <Font size="20.0" />
+                        <Font size="20.0"/>
                     </font>
                 </JFXButton>
-                <JFXButton mnemonicParsing="false" onAction="#onModificationCancel" text="%Cancel" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                <JFXButton mnemonicParsing="false" onAction="#onModificationCancel" text="%Cancel" textFill="WHITE"
+                           GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7"
+                           GridPane.valignment="CENTER">
                     <font>
-                        <Font size="20.0" />
+                        <Font size="20.0"/>
                     </font>
                 </JFXButton>
-            <JFXButton alignment="CENTER" maxWidth="400.0" minWidth="300.0" mnemonicParsing="false" onAction="#onChangeKioskLocation" prefHeight="44.0" prefWidth="400.0" text="%SetKioskLocation" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="8">
-               <font>
-                  <Font size="20.0" />
-               </font></JFXButton>
+                <JFXButton alignment="CENTER" maxWidth="400.0" minWidth="300.0" mnemonicParsing="false"
+                           onAction="#onChangeKioskLocation" prefHeight="44.0" prefWidth="400.0"
+                           text="%SetKioskLocation" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="8">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </JFXButton>
 
             </children>
         </GridPane>
-        <AnchorPane fx:id="newUserPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="463.0" prefWidth="638.0" style="-fx-background-color: WHITE;" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+        <AnchorPane fx:id="newUserPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="463.0" prefWidth="638.0"
+                    style="-fx-background-color: WHITE;" visible="false" GridPane.halignment="CENTER"
+                    GridPane.valignment="CENTER">
             <children>
-                <Label fx:id="userLabel" alignment="CENTER" layoutX="220.0" layoutY="27.0" prefWidth="200.0" text="%User" textAlignment="CENTER">
+                <Label fx:id="userLabel" alignment="CENTER" layoutX="220.0" layoutY="27.0" prefWidth="200.0"
+                       text="%User" textAlignment="CENTER">
                     <font>
-                        <Font size="27.0" />
+                        <Font size="27.0"/>
                     </font>
                 </Label>
-                <Line endX="500.0" layoutX="119.0" layoutY="322.0" startX="-100.0" />
+                <Line endX="500.0" layoutX="119.0" layoutY="322.0" startX="-100.0"/>
                 <Label layoutX="20.0" layoutY="338.0" text="%ServiceRequest">
                     <font>
-                        <Font size="18.0" />
+                        <Font size="18.0"/>
                     </font>
                 </Label>
-                <JFXCheckBox fx:id="languageCheck" layoutX="20.0" layoutY="380.0" text="%LanguageInterpreter" />
-                <JFXCheckBox fx:id="religiousCheck" layoutX="174.0" layoutY="380.0" text="%ReligiousServices" />
-                <JFXCheckBox fx:id="securityCheck" layoutX="319.0" layoutY="380.0" text="%SecurityRequest" />
-                <JFXButton buttonType="RAISED" layoutX="568.0" layoutY="424.0" onAction="#onSubmitUser" style="-fx-background-color: #042E58;" text="%Submit" textFill="WHITE" />
-                <JFXButton buttonType="RAISED" layoutX="20.0" layoutY="424.0" onAction="#onCancelUser" style="-fx-background-color: #042E58;" text="%Cancel" textFill="WHITE" />
+                <JFXCheckBox fx:id="languageCheck" layoutX="20.0" layoutY="380.0" text="%LanguageInterpreter"/>
+                <JFXCheckBox fx:id="religiousCheck" layoutX="174.0" layoutY="380.0" text="%ReligiousServices"/>
+                <JFXCheckBox fx:id="securityCheck" layoutX="319.0" layoutY="380.0" text="%SecurityRequest"/>
+                <JFXButton buttonType="RAISED" layoutX="568.0" layoutY="424.0" onAction="#onSubmitUser"
+                           style="-fx-background-color: #042E58;" text="%Submit" textFill="WHITE"/>
+                <JFXButton buttonType="RAISED" layoutX="20.0" layoutY="424.0" onAction="#onCancelUser"
+                           style="-fx-background-color: #042E58;" text="%Cancel" textFill="WHITE"/>
                 <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="90.0" prefWidth="100.0" text="%Username">
                     <font>
-                        <Font size="14.0" />
+                        <Font size="14.0"/>
                     </font>
                 </Label>
                 <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="150.0" prefWidth="100.0" text="%FirstName">
                     <font>
-                        <Font size="14.0" />
+                        <Font size="14.0"/>
                     </font>
                 </Label>
                 <Label alignment="CENTER_RIGHT" layoutX="5.0" layoutY="210.0" prefWidth="100.0" text="%LastName">
                     <font>
-                        <Font size="14.0" />
+                        <Font size="14.0"/>
                     </font>
                 </Label>
-                <Label alignment="CENTER_RIGHT" layoutX="300.0" layoutY="150.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="100.0" text="%Occupation">
+                <Label alignment="CENTER_RIGHT" layoutX="300.0" layoutY="150.0" maxHeight="1.7976931348623157E308"
+                       maxWidth="1.7976931348623157E308" prefWidth="100.0" text="%Occupation">
                     <font>
-                        <Font size="14.0" />
+                        <Font size="14.0"/>
                     </font>
                 </Label>
                 <Label alignment="CENTER_RIGHT" layoutX="300.0" layoutY="210.0" prefWidth="100.0" text="%Privilege">
                     <font>
-                        <Font size="14.0" />
+                        <Font size="14.0"/>
                     </font>
                 </Label>
-                <JFXTextField fx:id="usernameField" alignment="BOTTOM_LEFT" editable="false" layoutX="115.0" layoutY="88.0" prefWidth="150.0" />
-                <JFXTextField fx:id="fnameField" alignment="BOTTOM_LEFT" layoutX="115.0" layoutY="148.0" prefWidth="150.0" />
-                <JFXTextField fx:id="lnameField" alignment="BOTTOM_LEFT" layoutX="115.0" layoutY="208.0" prefWidth="150.0" />
-                <JFXTextField fx:id="occupationField" alignment="BOTTOM_LEFT" layoutX="410.0" layoutY="148.0" prefWidth="150.0" />
-                <JFXComboBox fx:id="privilegeCombo" layoutX="410.0" layoutY="210.0" onAction="#onPrivilegeBox" prefHeight="25.0" prefWidth="150.0" />
-                <Label alignment="CENTER_RIGHT" layoutX="300.0" layoutY="90.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="100.0" text="%Password">
+                <JFXTextField fx:id="usernameField" alignment="BOTTOM_LEFT" editable="false" layoutX="115.0"
+                              layoutY="88.0" prefWidth="150.0"/>
+                <JFXTextField fx:id="fnameField" alignment="BOTTOM_LEFT" layoutX="115.0" layoutY="148.0"
+                              prefWidth="150.0"/>
+                <JFXTextField fx:id="lnameField" alignment="BOTTOM_LEFT" layoutX="115.0" layoutY="208.0"
+                              prefWidth="150.0"/>
+                <JFXTextField fx:id="occupationField" alignment="BOTTOM_LEFT" layoutX="410.0" layoutY="148.0"
+                              prefWidth="150.0"/>
+                <JFXComboBox fx:id="privilegeCombo" layoutX="410.0" layoutY="210.0" onAction="#onPrivilegeBox"
+                             prefHeight="25.0" prefWidth="150.0"/>
+                <Label alignment="CENTER_RIGHT" layoutX="300.0" layoutY="90.0" maxHeight="1.7976931348623157E308"
+                       maxWidth="1.7976931348623157E308" prefWidth="100.0" text="%Password">
                     <font>
-                        <Font size="14.0" />
+                        <Font size="14.0"/>
                     </font>
                 </Label>
-                <JFXTextField fx:id="passwordField" alignment="BOTTOM_LEFT" layoutX="410.0" layoutY="88.0" prefWidth="150.0" promptText="%ChangePassword" />
-            <FontAwesomeIconView fx:id="cameraIcon" glyphName="CAMERA" layoutX="298.0" layoutY="295.0" onMouseClicked="#onCameraClicked" size="40" strokeType="OUTSIDE" strokeWidth="0.0" />
-            <JFXTextField fx:id="faceIDField" focusTraversable="false" layoutX="410.0" layoutY="270.0" prefWidth="150.0" visible="false" />
-            <ImageView fx:id="userIDView" fitHeight="463.0" fitWidth="638.0" pickOnBounds="true" visible="false" />
-            <FontAwesomeIconView fx:id="userIDSubmit" fill="WHITE" glyphName="CHECK" layoutX="600.0" layoutY="450.0" size="30" strokeType="OUTSIDE" strokeWidth="0.0" visible="false" />
-            <FontAwesomeIconView fx:id="userIDCancel" fill="WHITE" glyphName="TIMES" layoutX="570.0" layoutY="450.0" size="30" strokeType="OUTSIDE" strokeWidth="0.0" visible="false" />
-            <JFXCheckBox fx:id="maintenanceCheck" layoutX="462.0" layoutY="380.0" text="%MaintenanceRequest" />
+                <JFXTextField fx:id="passwordField" alignment="BOTTOM_LEFT" layoutX="410.0" layoutY="88.0"
+                              prefWidth="150.0" promptText="%ChangePassword"/>
+                <FontAwesomeIconView fx:id="cameraIcon" glyphName="CAMERA" layoutX="298.0" layoutY="295.0"
+                                     onMouseClicked="#onCameraClicked" size="40" strokeType="OUTSIDE"
+                                     strokeWidth="0.0"/>
+                <JFXTextField fx:id="faceIDField" focusTraversable="false" layoutX="410.0" layoutY="270.0"
+                              prefWidth="150.0" visible="false"/>
+                <ImageView fx:id="userIDView" fitHeight="463.0" fitWidth="638.0" pickOnBounds="true" visible="false"/>
+                <FontAwesomeIconView fx:id="userIDSubmit" fill="WHITE" glyphName="CHECK" layoutX="600.0" layoutY="450.0"
+                                     size="30" strokeType="OUTSIDE" strokeWidth="0.0" visible="false"/>
+                <FontAwesomeIconView fx:id="userIDCancel" fill="WHITE" glyphName="TIMES" layoutX="570.0" layoutY="450.0"
+                                     size="30" strokeType="OUTSIDE" strokeWidth="0.0" visible="false"/>
+                <JFXCheckBox fx:id="maintenanceCheck" layoutX="462.0" layoutY="380.0" text="%MaintenanceRequest"/>
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
-        <GoogleMapView fx:id="googleMapView" prefHeight="578.0" prefWidth="844.0" visible="false" />
-        <FontAwesomeIconView fill="#727272" glyphName="MAP" size="45" textAlignment="CENTER" translateX="-22.0" translateY="-120.0" wrappingWidth="39.549333572387695" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-        <FontAwesomeIconView fill="#FFFFFF" glyphName="GOOGLE" onMouseClicked="#onGoogleMaps" size="35" textAlignment="CENTER" translateX="-20.0" translateY="-125.0" wrappingWidth="39.549333572387695" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-      <JFXButton fx:id="emergencyBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#triggerEmergency" prefHeight="47.0" prefWidth="158.0" ripplerFill="#cd2323" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="%Emergency" textFill="#f2f5f7" visible="false" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
-         <font>
-            <Font name="Arial Bold" size="15.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="20.0" />
-         </GridPane.margin>
-      </JFXButton>
-        <AnchorPane fx:id="screensaverPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
-      <GridPane fx:id="menu" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #616161;">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="351.5979309082031" minHeight="0.0" prefHeight="74.3303451538086" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="720.0" minHeight="10.0" prefHeight="645.6696548461914" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="112.0" text="%MENU" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                      <font>
-                          <Font name="System Bold" size="25.0" />
-                      </font>
-                  </Label>
-                  <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" onMouseClicked="#setCancelMenuEvent" size="40" translateX="-20.0" wrappingWidth="22.142844200134277" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
-            <VBox fx:id="algorithmsBox" style="-fx-background-color: #616161;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
-               <children>
-                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="24.0" prefHeight="38.0" prefWidth="164.0" text="%Algorithms">
-                           <font>
-                              <Font name="System Bold" size="25.0" />
-                           </font>
-                        </Label>
-                        <FontAwesomeIconView glyphName="TIMES" layoutX="301.0" layoutY="53.0" onMouseClicked="#onCloseAlgorithm" size="30" wrappingWidth="22.142844200134277" />
-                     </children>
-                  </Pane>
-                          <JFXButton fx:id="aStar" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAStar" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #303030;" text="%AStar" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
-                          <JFXButton fx:id="breathFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onBreathFirst" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #616161;" text="%BreadthSearch" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
-                          <JFXButton fx:id="depthFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDepthFirst" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #616161;" text="%DepthSearch" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
-                          <JFXButton fx:id="bestFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onBestFirst" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #616161;" text="%BestFirst" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
-                          <JFXButton fx:id="dijkstra" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDijkstra" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #616161;" text="Dijkstra" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
-               </children>
-            </VBox>
-            <VBox fx:id="guestBox" alignment="TOP_CENTER" spacing="25.0" style="-fx-background-color: #616161;" GridPane.rowIndex="1">
-               <children>
-                  <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%FindNearest" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
-                     </graphic>
-                  </JFXButton>
-                  <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onGoogleMaps" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%GoogleMaps" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
-                     </graphic>
-                  </JFXButton>
-                  <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Pacman" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIconView glyphName="GAMEPAD" size="50" />
-                     </graphic>
-                  </JFXButton>
-                  <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onAboutPopup" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%About" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIconView glyphName="INFO" size="50" />
-                     </graphic>
-                  </JFXButton>
-                  <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onHelpPopup" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Help" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIconView glyphName="QUESTION" size="50" />
-                     </graphic>
-                  </JFXButton>
-               </children>
-            </VBox>
-      
-              <VBox fx:id="adminBox" alignment="TOP_CENTER" style="-fx-background-color: #616161;" GridPane.rowIndex="1">
-                  <children>
-                      <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onServiceRequest" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%ServiceRequest" textFill="WHITE">
-                          <font>
-                              <Font name="Arial" size="20.0" />
-                          </font>
-                          <graphic>
-                              <FontAwesomeIconView glyphName="CLIPBOARD" size="50" />
-                          </graphic>
-                      </JFXButton>
-                      <JFXButton fx:id="mapEditorBtn" accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onMapEditor" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%MapEditor" textFill="WHITE">
-                          <font>
-                              <Font name="Arial" size="20.0" />
-                          </font>
-                          <graphic>
-                              <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50" />
-                          </graphic>
-                      </JFXButton>
-                      <JFXButton fx:id="editUsersBtn" accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onEditUsers" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%EditUsers" textFill="WHITE">
-                          <font>
-                              <Font name="Arial" size="20.0" />
-                          </font>
-                          <graphic>
-                              <FontAwesomeIconView glyphName="USER" glyphStyle="USER" size="50" />
-                          </graphic>
-                      </JFXButton>
-                  <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onChangeAlgorithm" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%ChangeAlgorithm" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIconView glyphName="INFO" size="50" />
-                     </graphic>
-                  </JFXButton>
-                  <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onMouseClicked="#onInbox" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Inbox" textFill="WHITE">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                     <graphic>
-                        <Pane prefHeight="50.0" prefWidth="50.0">
-                           <children>
-                              <Text fx:id="inboxNum" strokeType="OUTSIDE" strokeWidth="0.0" text="1" translateX="70.0" translateY="35.0">
-                                 <font>
-                                    <Font name="Arial Bold" size="30.0" />
-                                 </font>
-                              </Text>
-                              <FontAwesomeIconView glyphName="ENVELOPE" size="50" translateY="40.0" />
-                           </children>
+        <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647"
+                    GridPane.rowSpan="2147483647"/>
+        <GoogleMapView fx:id="googleMapView" prefHeight="578.0" prefWidth="844.0" visible="false"/>
+        <FontAwesomeIconView fill="#727272" glyphName="MAP" size="45" textAlignment="CENTER" translateX="-22.0"
+                             translateY="-120.0" wrappingWidth="39.549333572387695" GridPane.halignment="RIGHT"
+                             GridPane.rowIndex="1" GridPane.valignment="BOTTOM"/>
+        <FontAwesomeIconView fill="#FFFFFF" glyphName="GOOGLE" onMouseClicked="#onGoogleMaps" size="35"
+                             textAlignment="CENTER" translateX="-20.0" translateY="-125.0"
+                             wrappingWidth="39.549333572387695" GridPane.halignment="RIGHT" GridPane.rowIndex="1"
+                             GridPane.valignment="BOTTOM"/>
+        <JFXButton fx:id="emergencyBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP"
+                   maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                   onMouseClicked="#triggerEmergency" prefHeight="47.0" prefWidth="158.0" ripplerFill="#cd2323"
+                   style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="%Emergency"
+                   textFill="#f2f5f7" visible="false" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+            <font>
+                <Font name="Arial Bold" size="15.0"/>
+            </font>
+            <GridPane.margin>
+                <Insets bottom="20.0"/>
+            </GridPane.margin>
+        </JFXButton>
+        <AnchorPane fx:id="screensaverPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647"
+                    GridPane.rowSpan="2147483647"/>
+        <GridPane fx:id="menu" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="350.0"
+                  style="-fx-background-color: #616161;">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="351.5979309082031" minHeight="0.0" prefHeight="74.3303451538086"
+                                vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="720.0" minHeight="10.0" prefHeight="645.6696548461914" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="112.0" text="%MENU"
+                       GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="25.0"/>
+                    </font>
+                </Label>
+                <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT"
+                                     onMouseClicked="#setCancelMenuEvent" size="40" translateX="-20.0"
+                                     wrappingWidth="22.142844200134277" GridPane.halignment="RIGHT"
+                                     GridPane.valignment="CENTER"/>
+                <VBox fx:id="algorithmsBox" style="-fx-background-color: #616161;" GridPane.halignment="CENTER"
+                      GridPane.rowIndex="1" GridPane.valignment="TOP">
+                    <children>
+                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+                            <children>
+                                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="24.0"
+                                       prefHeight="38.0" prefWidth="164.0" text="%Algorithms">
+                                    <font>
+                                        <Font name="System Bold" size="25.0"/>
+                                    </font>
+                                </Label>
+                                <FontAwesomeIconView glyphName="TIMES" layoutX="301.0" layoutY="53.0"
+                                                     onMouseClicked="#onCloseAlgorithm" size="30"
+                                                     wrappingWidth="22.142844200134277"/>
+                            </children>
                         </Pane>
-                     </graphic>
-                  </JFXButton>
-                  <JFXTextField accessibleRole="TEXT" alignment="CENTER" editable="false" focusColor="#616161" pickOnBounds="false" text="Screensaver Timeout" unFocusColor="#616161">
-                     <font>
-                        <Font name="System Bold" size="15.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <VBox.margin>
-                        <Insets top="50.0" />
-                     </VBox.margin>
-                  </JFXTextField>
-                  <JFXSlider fx:id="sliderTimeout" blockIncrement="5.0" max="300.0" min="10.0" onMouseReleased="#onTimeoutChanged" value="30.0">
-                     <VBox.margin>
-                        <Insets left="30.0" right="30.0" />
-                     </VBox.margin>
-                  </JFXSlider>
-                  </children>
-              </VBox>
-         </children>
-      </GridPane>
+                        <JFXButton fx:id="aStar" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAStar"
+                                   prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #303030;"
+                                   text="%AStar" textFill="WHITE">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </JFXButton>
+                        <JFXButton fx:id="breathFirst" maxHeight="-Infinity" maxWidth="-Infinity"
+                                   onAction="#onBreathFirst" prefHeight="100.0" prefWidth="350.0"
+                                   style="-fx-background-color: #616161;" text="%BreadthSearch" textFill="WHITE">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </JFXButton>
+                        <JFXButton fx:id="depthFirst" maxHeight="-Infinity" maxWidth="-Infinity"
+                                   onAction="#onDepthFirst" prefHeight="100.0" prefWidth="350.0"
+                                   style="-fx-background-color: #616161;" text="%DepthSearch" textFill="WHITE">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </JFXButton>
+                        <JFXButton fx:id="bestFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onBestFirst"
+                                   prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #616161;"
+                                   text="%BestFirst" textFill="WHITE">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </JFXButton>
+                        <JFXButton fx:id="dijkstra" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDijkstra"
+                                   prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #616161;"
+                                   text="Dijkstra" textFill="WHITE">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </JFXButton>
+                    </children>
+                </VBox>
+                <VBox fx:id="guestBox" alignment="TOP_CENTER" spacing="25.0" style="-fx-background-color: #616161;"
+                      GridPane.rowIndex="1">
+                    <children>
+                        <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP"
+                                   graphicTextGap="20.0" prefWidth="350.0" ripplerFill="#11119d"
+                                   style="-fx-background-color: #616161;" text="%FindNearest" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="20.0"/>
+                            </font>
+                            <graphic>
+                                <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50"/>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP"
+                                   graphicTextGap="20.0" onAction="#onGoogleMaps" prefWidth="350.0"
+                                   ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%GoogleMaps"
+                                   textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="20.0"/>
+                            </font>
+                            <graphic>
+                                <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50"/>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP"
+                                   graphicTextGap="20.0" prefWidth="350.0" ripplerFill="#11119d"
+                                   style="-fx-background-color: #616161;" text="%Pacman" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="20.0"/>
+                            </font>
+                            <graphic>
+                                <FontAwesomeIconView glyphName="GAMEPAD" size="50"/>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP"
+                                   graphicTextGap="20.0" onAction="#onAboutPopup" prefWidth="350.0"
+                                   ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%About"
+                                   textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="20.0"/>
+                            </font>
+                            <graphic>
+                                <FontAwesomeIconView glyphName="INFO" size="50"/>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP"
+                                   graphicTextGap="20.0" onAction="#onHelpPopup" prefWidth="350.0" ripplerFill="#11119d"
+                                   style="-fx-background-color: #616161;" text="%Help" textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="20.0"/>
+                            </font>
+                            <graphic>
+                                <FontAwesomeIconView glyphName="QUESTION" size="50"/>
+                            </graphic>
+                        </JFXButton>
+                    </children>
+                </VBox>
+
+                <VBox fx:id="adminBox" alignment="TOP_CENTER" style="-fx-background-color: #616161;"
+                      GridPane.rowIndex="1">
+                    <children>
+                        <JFXButton accessibleText="Service_Request" alignment="CENTER" contentDisplay="TOP"
+                                   graphicTextGap="20.0" onAction="#onServiceRequest" prefWidth="350.0"
+                                   ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%ServiceRequest"
+                                   textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="20.0"/>
+                            </font>
+                            <graphic>
+                                <FontAwesomeIconView glyphName="CLIPBOARD" size="50"/>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="mapEditorBtn" accessibleText="Get_Directions" alignment="CENTER"
+                                   contentDisplay="TOP" graphicTextGap="20.0" onAction="#onMapEditor" prefWidth="350.0"
+                                   ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%MapEditor"
+                                   textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="20.0"/>
+                            </font>
+                            <graphic>
+                                <FontAwesomeIconView glyphName="MAP" glyphStyle="MAP" size="50"/>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="editUsersBtn" accessibleText="Find_Location" alignment="CENTER"
+                                   contentDisplay="TOP" graphicTextGap="20.0" onAction="#onEditUsers" prefWidth="350.0"
+                                   ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%EditUsers"
+                                   textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="20.0"/>
+                            </font>
+                            <graphic>
+                                <FontAwesomeIconView glyphName="USER" glyphStyle="USER" size="50"/>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP"
+                                   graphicTextGap="20.0" onAction="#onChangeAlgorithm" prefWidth="350.0"
+                                   ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%ChangeAlgorithm"
+                                   textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="20.0"/>
+                            </font>
+                            <graphic>
+                                <FontAwesomeIconView glyphName="INFO" size="50"/>
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP"
+                                   graphicTextGap="20.0" onMouseClicked="#onInbox" prefWidth="350.0"
+                                   ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Inbox"
+                                   textFill="WHITE">
+                            <font>
+                                <Font name="Arial" size="20.0"/>
+                            </font>
+                            <graphic>
+                                <Pane prefHeight="50.0" prefWidth="50.0">
+                                    <children>
+                                        <Text fx:id="inboxNum" strokeType="OUTSIDE" strokeWidth="0.0" text="1"
+                                              translateX="70.0" translateY="35.0">
+                                            <font>
+                                                <Font name="Arial Bold" size="30.0"/>
+                                            </font>
+                                        </Text>
+                                        <FontAwesomeIconView glyphName="ENVELOPE" size="50" translateY="40.0"/>
+                                    </children>
+                                </Pane>
+                            </graphic>
+                        </JFXButton>
+                        <JFXTextField accessibleRole="TEXT" alignment="CENTER" editable="false" focusColor="#616161"
+                                      pickOnBounds="false" text="Screensaver Timeout" unFocusColor="#616161">
+                            <font>
+                                <Font name="System Bold" size="15.0"/>
+                            </font>
+                            <opaqueInsets>
+                                <Insets/>
+                            </opaqueInsets>
+                            <VBox.margin>
+                                <Insets top="50.0"/>
+                            </VBox.margin>
+                        </JFXTextField>
+                        <JFXSlider fx:id="sliderTimeout" blockIncrement="5.0" max="300.0" min="10.0"
+                                   onMouseReleased="#onTimeoutChanged" value="30.0">
+                            <VBox.margin>
+                                <Insets left="30.0" right="30.0"/>
+                            </VBox.margin>
+                        </JFXSlider>
+                    </children>
+                </VBox>
+            </children>
+        </GridPane>
     </children>
 </GridPane>
