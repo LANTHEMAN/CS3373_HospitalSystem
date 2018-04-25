@@ -87,7 +87,7 @@ public class Screensaver extends PageElement{
         welcomeField.setText(welcome.get(abs(rand.nextInt()) % welcome.size()));
         askMeField.setText(askMe.get(abs(rand.nextInt()) % askMe.size()));
 
-        Timeline clock1 = new Timeline(new KeyFrame(Duration.seconds(rand.nextInt()), e ->
+        Timeline clock1 = new Timeline(new KeyFrame(Duration.seconds(abs(rand.nextInt())), e ->
                 welcomeField.setText(welcome.get(abs(rand.nextInt()) % askMe.size()))));
         clock1.setCycleCount(Animation.INDEFINITE);
         clock1.play();
