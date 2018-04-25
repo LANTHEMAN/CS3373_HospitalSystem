@@ -105,8 +105,8 @@ public class PaneSwitcher {
     public void popupInbox(Screens.Screen screen) {
         load(screen);
         Scene popScene = new Scene(panes.get(screen.fxmlFile));
-        popup.setHeight(514);
-        popup.setWidth(783);
+        popup.setHeight(650);
+        popup.setWidth(855);
         popup.setScene(popScene);
         javafx.scene.image.Image image = new javafx.scene.image.Image(Main.class.getResource("BWHIcon.png").toExternalForm());
         popup.getIcons().add(image);

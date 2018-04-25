@@ -27,7 +27,7 @@ public class InboxController implements SwitchableController {
     @FXML
     private JFXTextField inboxSearch;
     @FXML
-    private JFXComboBox inboxSort;
+    private JFXComboBox inboxPrioritySort, inboxStatusSort, inboxAllSort;
 
     public void initialize(PaneSwitcher switcher){
         this.switcher=switcher;
