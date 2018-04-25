@@ -38,7 +38,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<GridPane fx:id="rootPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
+<GridPane fx:id="rootPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="256.0" />
         <ColumnConstraints />
@@ -89,23 +89,27 @@
                                 <Image url="@../end-icon.png" />
                             </image>
                         </ImageView>
-                        <ImageView fitHeight="93.0" fitWidth="40.0" onMouseClicked="#flipElevators" pickOnBounds="true" preserveRatio="true" translateX="80.0" translateY="180.0">
-                            <image>
-                                <Image url="@../elevator.png" />
-                            </image>
-                        </ImageView>
-                        <FontAwesomeIconView fx:id="elevatorBan" fill="#cf0000b2" glyphName="BAN" onMouseClicked="#flipElevators" size="75" translateX="68.0" translateY="239.0" visible="false" />
-                        <ImageView fitHeight="93.0" fitWidth="45.0" onMouseClicked="#flipStairs" pickOnBounds="true" preserveRatio="true" translateX="160.0" translateY="190.0">
-                            <image>
-                                <Image url="@../stairs.png" />
-                            </image>
-                        </ImageView>
-                        <FontAwesomeIconView fx:id="stairBan" fill="#cf0000b2" glyphName="BAN" onMouseClicked="#flipStairs" size="74" translateX="154.0" translateY="239.0" visible="false" />
-                        <JFXCheckBox fx:id="allFloors" layoutX="190.0" layoutY="250.0" onAction="#onAllFloors" prefHeight="18.0" prefWidth="113.0" selected="true" text="%AllFloors" textFill="WHITE">
-                            <font>
-                                <Font name="Arial Bold" size="15.0" />
-                            </font>
-                        </JFXCheckBox>
+                  <HBox layoutY="185.0" prefHeight="60.0" prefWidth="350.0">
+                     <children>
+                              <ImageView fitHeight="93.0" fitWidth="40.0" onMouseClicked="#flipElevators" pickOnBounds="true" preserveRatio="true" translateX="20.0">
+                                  <image>
+                                      <Image url="@../elevator.png" />
+                                  </image>
+                              </ImageView>
+                              <FontAwesomeIconView fx:id="elevatorBan" fill="#cf0000b2" glyphName="BAN" onMouseClicked="#flipElevators" size="75" translateX="-33.0" visible="false" />
+                              <ImageView fitHeight="93.0" fitWidth="45.0" onMouseClicked="#flipStairs" pickOnBounds="true" preserveRatio="true" translateY="9.0">
+                                  <image>
+                                      <Image url="@../stairs.png" />
+                                  </image>
+                              </ImageView>
+                              <FontAwesomeIconView fx:id="stairBan" fill="#cf0000b2" glyphName="BAN" onMouseClicked="#flipStairs" size="74" translateX="-52.0" visible="false" />
+                              <JFXCheckBox fx:id="allFloors" onAction="#onAllFloors" prefHeight="18.0" prefWidth="113.0" selected="true" text="%AllFloors" textFill="WHITE" translateY="27.0">
+                                  <font>
+                                      <Font name="Arial Bold" size="15.0" />
+                                  </font>
+                              </JFXCheckBox>
+                     </children>
+                  </HBox>
                         <JFXButton layoutX="125.0" layoutY="270.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onNavigate" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #767878;" text="%Navigate" textFill="WHITE">
                             <font>
                                 <Font name="Arial Bold" size="15.0" />
@@ -113,27 +117,43 @@
                         </JFXButton>
                     </children>
                 </Pane>
-                <Pane prefHeight="427.0" prefWidth="350.0" style="-fx-background-color: #042E58;">
+                <Pane prefHeight="417.0" prefWidth="350.0" style="-fx-background-color: #042E58;" VBox.vgrow="ALWAYS">
                     <children>
-                        <FontAwesomeIconView fx:id="imgDistance" fill="WHITE" glyphName="MAP" size="30" translateX="20.0" translateY="10.0" visible="false" />
-                        <FontAwesomeIconView fx:id="imgTime" fill="WHITE" glyphName="CLOCK_ALT" size="30" translateX="170.0" translateY="10.0" visible="false" />
-                        <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="189.0" prefWidth="344.0" style="-fx-background-color: #042E58;" stylesheets="@scrollStyleSheet.css" translateX="4.0" translateY="25.0">
-                            <content>
-                                <TextFlow fx:id="txtDirections" lineSpacing="3.0" prefHeight="187.0" prefWidth="342.0" style="-fx-background-color: #042E58;" />
-                            </content>
-                        </ScrollPane>
+                  <VBox prefHeight="399.0" prefWidth="350.0">
+                     <children>
+                        <GridPane minHeight="-Infinity" prefHeight="85.0" prefWidth="350.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="54.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                                    <FontAwesomeIconView fx:id="imgDistance" fill="WHITE" glyphName="MAP" size="30" visible="false" GridPane.halignment="CENTER" />
+                                    <Text fx:id="txtDistance" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="20 feet" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                        <font>
+                                            <Font name="Arial Bold" size="16.0" />
+                                        </font>
+                                    </Text>
+                                    <FontAwesomeIconView fx:id="imgTime" fill="WHITE" glyphName="CLOCK_ALT" size="30" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                                    <Text fx:id="txtTime" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="3 minutes" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                        <font>
+                                            <Font name="Arial Bold" size="16.0" />
+                                        </font>
+                                    </Text>
+                           </children>
+                        </GridPane>
+                              <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="395.0" prefWidth="344.0" style="-fx-background-color: #042E58;" stylesheets="@scrollStyleSheet.css" translateY="5.0" VBox.vgrow="ALWAYS">
+                                  <content>
+                                      <TextFlow fx:id="txtDirections" lineSpacing="3.0" prefHeight="187.0" prefWidth="342.0" style="-fx-background-color: #042E58;" />
+                                  </content>
+                              </ScrollPane>
+                              <Pane fx:id="qrImage" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="256.0" translateX="47.0" translateY="10.0" />
+                     </children>
+                  </VBox>
                         <JFXListView fx:id="directionsList" onMouseClicked="#setDirectionLocation" prefHeight="189.0" prefWidth="350.0" visible="false" />
-                        <Pane fx:id="qrImage" layoutX="44.0" layoutY="220.0" prefHeight="256.0" prefWidth="256.0" />
-                        <Text fx:id="txtDistance" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="20 feet" translateX="60.0" translateY="10.0" visible="false">
-                            <font>
-                                <Font name="Arial Bold" size="16.0" />
-                            </font>
-                        </Text>
-                        <Text fx:id="txtTime" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="3 minutes" translateX="205.0" translateY="10.0" visible="false">
-                            <font>
-                                <Font name="Arial Bold" size="16.0" />
-                            </font>
-                        </Text>
                     </children>
                 </Pane>
             </children>

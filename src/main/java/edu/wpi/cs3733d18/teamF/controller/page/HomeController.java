@@ -287,7 +287,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private GoogleMap gmap;
     private boolean isGoogleMapViewEnabled = false;
 
-    /////////////////////////////////
+    /////////////////////////////////   
     //                             //
     //           Emergency         //
     //                             //
