@@ -9,7 +9,9 @@ import javafx.animation.Timeline;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -21,14 +23,12 @@ import static java.lang.StrictMath.abs;
 
 public class Screensaver extends PageElement{
 
-    private  final ArrayList<String> welcome = new ArrayList<>(Arrays.asList("Welcome!"
-    ,"Bienvenue!"
-    ,"benvinguda!"
-    ,"Bienvenido!"
-    ,"Herzlich Willkommen!"
-    ,"welkom!"));
-
-
+    private  final ArrayList<String> welcome = new ArrayList<>(Arrays.asList("WELCOME!"
+    ,"BIENVENUE!"
+    ,"BENVINGUDA!"
+    ,"BIENVENIDO!"
+    ,"HERZLICH WILLKOMMEN!"
+    ,"WELKOM!"));
 
     private final ArrayList<String> askMe = new ArrayList<>(Arrays.asList("Ask me to find the nearest bathroom"
             , "Ask me to find the nearest elevator"
@@ -38,7 +38,7 @@ public class Screensaver extends PageElement{
             , "Ask me to do a food request"
             , "Ask me to bring you to look for places nearby"
             , "Ask to call for help in an emergency"
-            , "Ask me to play where's Packman"
+            , "Ask me to play where's Pacman"
             , "Ask me to find the closet elevator"
             , "Ask me to bring you to the nearest ATM"
             , "Say Hello Kiosk if you want to use voice commands"
@@ -47,16 +47,17 @@ public class Screensaver extends PageElement{
             , "Ask me to bring you to the Shapiro Cardiovascular Building"
             , "Ask me to bring you to the international paitent Center"
             , "Ask me to navigate  to Spiritual Care Office"));
-        @FXML
+    @FXML
     AnchorPane root;
+
     IdleMonitor idleMonitor;
     Scene scene;
 
     @FXML
-    JFXTextField askMeField;
+    Label askMeField;
 
     @FXML
-    JFXTextField welcomeField;
+    Label welcomeField;
 
     Random rand = new Random();
 
@@ -87,8 +88,8 @@ public class Screensaver extends PageElement{
         welcomeField.setText(welcome.get(abs(rand.nextInt()) % welcome.size()));
         askMeField.setText(askMe.get(abs(rand.nextInt()) % askMe.size()));
 
-        Timeline clock1 = new Timeline(new KeyFrame(Duration.seconds(rand.nextInt()), e ->
-                welcomeField.setText(welcome.get(abs(rand.nextInt()) % askMe.size()))));
+        Timeline clock1 = new Timeline(new KeyFrame(Duration.seconds(abs(rand.nextInt()) % 10), e ->
+                welcomeField.setText(welcome.get(abs(rand.nextInt()) % welcome.size()))));
         clock1.setCycleCount(Animation.INDEFINITE);
         clock1.play();
 
