@@ -4,6 +4,7 @@ import com.github.sarxos.webcam.Webcam;
 import com.jfoenix.controls.*;
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.javascript.object.*;
+import com.sun.prism.ResourceFactory;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.controller.*;
@@ -27,6 +28,7 @@ import edu.wpi.cs3733d18.teamF.voice.VoiceCommandVerification;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.animation.Animation;
 import javafx.animation.*;
+import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -289,8 +291,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //           Emergency         //
     //                             //
     /////////////////////////////////
+    FillTransition ft;
+    Rectangle rectangle = new Rectangle();
+    private boolean emergency = false;
     @FXML
     private JFXButton emergencyBtn;
+    @FXML
+    private FontAwesomeIconView emergencyIcon;
     @FXML
     private GridPane leftGPane;
 
@@ -740,27 +747,38 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     void triggerEmergency() {
-        Rectangle rectangle = new Rectangle();
-        rectangle.setX(0);
-        rectangle.setY(0);
-        rectangle.setWidth(voicePane.getWidth());
-        rectangle.setHeight(voicePane.getHeight() * 2);
-        rectangle.setMouseTransparent(true);
-        rectangle.setFill(Color.RED);
-        rectangle.setOpacity(0.3);
-        FillTransition ft = new FillTransition(Duration.millis(1500), rectangle, Color.RED, Color.BLUE);
-        ft.setCycleCount(4);
-        ft.setAutoReverse(true);
-        leftGPane.add(rectangle, 0, 0);
+        if (!emergency) {
+            rectangle.setX(0);
+            rectangle.setY(0);
+            rectangle.setWidth(voicePane.getWidth());
+            rectangle.setHeight(voicePane.getHeight() * 2);
+            rectangle.setMouseTransparent(true);
+            rectangle.setFill(Color.RED);
+            rectangle.setOpacity(0.3);
+            ft = new FillTransition(Duration.millis(1500), rectangle, Color.RED, Color.BLUE);
+            ft.setCycleCount(Animation.INDEFINITE);
+            ft.setAutoReverse(true);
+            leftGPane.add(rectangle, 0, 0);
 
-        ft.play();
-        HashSet<Node> nodes = map.getNodes(node -> node.getNodeType().equals("EXIT") && !node.getLongName().contains("Ambulance"));
-        Node selectedEnd = map.findNodeClosestTo(mapViewElement.getSelectedNodeStart(), nodes);
-        Path path = mapViewElement.changePathDestination(selectedEnd);
-        displayTextDirections(path);
-        ft.setOnFinished((ActionEvent) -> {
+            ft.play();
+            HashSet<Node> nodes = map.getNodes(node -> node.getNodeType().equals("EXIT") && !node.getLongName().contains("Ambulance"));
+            Node selectedEnd = map.findNodeClosestTo(mapViewElement.getSelectedNodeStart(), nodes);
+            Path path = mapViewElement.changePathDestination(selectedEnd);
+            displayTextDirections(path);
+            ft.setOnFinished((ActionEvent) -> {
+                leftGPane.getChildren().removeAll(rectangle);
+            });
+
+            emergency = true;
+            emergencyIcon.setGlyphName("TIMES");
+            emergencyBtn.setText(switcher.resFac.getStringBinding("Cancel").get());
+        } else {
+            emergency = false;
+            emergencyIcon.setGlyphName("EXCLAMATION_TRIANGLE");
+            emergencyBtn.setText(switcher.resFac.getStringBinding("Exit").get());
+            ft.stop();
             leftGPane.getChildren().removeAll(rectangle);
-        });
+        }
     }
 
     @FXML
