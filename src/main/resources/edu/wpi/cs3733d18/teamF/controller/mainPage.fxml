@@ -11,6 +11,10 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
@@ -597,11 +601,78 @@
                </StackPane>
             </content>
          </Tab>
-         <Tab text="Statistics">
+         <Tab onSelectionChanged="#OnStats" text="Statistics">
            <content>
                <StackPane>
                   <children>
-                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                     <AnchorPane fx:id="employeePane" style="-fx-background-color: #f1f1f1;">
+                        <children>
+                           <Text layoutX="345.0" layoutY="54.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Service Request Statistics: Employee">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Text>
+                           <HBox layoutX="42.0" layoutY="161.0" prefHeight="354.0" prefWidth="868.0">
+                              <children>
+                                 <BarChart fx:id="AvgTimeEmployee" prefHeight="417.0" prefWidth="528.0" title="Average Request Complete Time">
+                                    <xAxis>
+                                       <CategoryAxis label="Employee" side="BOTTOM" fx:id="xAxisEmployee" />
+                                    </xAxis>
+                                    <yAxis>
+                                       <NumberAxis label="Average Time" side="LEFT" />
+                                    </yAxis>
+                                 </BarChart>
+                                 <PieChart fx:id="NumRequestEmployee" prefHeight="354.0" prefWidth="429.0" title="Number of Request Completed" />
+                              </children>
+                           </HBox>
+                           <Label layoutX="111.0" layoutY="111.0" text="Employee Name">
+                              <font>
+                                 <Font size="19.0" />
+                              </font></Label>
+                           <JFXTextField fx:id="SearchByEmployee" layoutX="263.0" layoutY="102.0" onKeyTyped="#onEmployeeName" prefHeight="27.0" prefWidth="202.0" />
+                           <JFXButton buttonType="RAISED" layoutX="111.0" layoutY="522.0" onAction="#onBack" prefHeight="27.0" prefWidth="70.0" ripplerFill="#11119d" text="Back" textFill="WHITE" />
+                        </children>
+                     </AnchorPane>
+                     <AnchorPane fx:id="serviceTypePane" style="-fx-background-color: #f1f1f1;">
+                        <children>
+                           <Text layoutX="316.0" layoutY="53.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Service Request Statistics: Service Type">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Text>
+                           <HBox layoutX="25.0" layoutY="118.0" prefHeight="389.0" prefWidth="868.0">
+                              <children>
+                                 <BarChart fx:id="AvgTimeServiceType" prefHeight="417.0" prefWidth="528.0" title="Average Request Complete Time">
+                                    <xAxis>
+                                       <CategoryAxis label="Type of Request" side="BOTTOM" fx:id="xAxisType" />
+                                    </xAxis>
+                                    <yAxis>
+                                       <NumberAxis label="Average Time" side="LEFT" />
+                                    </yAxis>
+                                 </BarChart>
+                                 <PieChart fx:id="NumRequestType" prefHeight="354.0" prefWidth="429.0" title="Number of Request by Catagory" />
+                              </children>
+                           </HBox>
+                           <JFXButton buttonType="RAISED" layoutX="92.0" layoutY="533.0" onAction="#onBack" prefHeight="27.0" prefWidth="70.0" ripplerFill="#11119d" text="Back" textFill="WHITE" />
+                        </children>
+                     </AnchorPane>
+                     <AnchorPane fx:id="statsPane" style="-fx-background-color: #f1f1f1;">
+                        <children>
+                           <FontAwesomeIconView fill="#e4e4e4" glyphName="BAR_CHART" layoutX="418.0" layoutY="531.0" size="400" />
+                           <Text layoutX="375.0" layoutY="233.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Service Request Statistics:">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Text>
+                           <Text layoutX="288.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search by: ">
+                              <font>
+                                 <Font size="19.0" />
+                              </font>
+                           </Text>
+                           <JFXComboBox fx:id="selectStats" layoutX="402.0" layoutY="275.0" prefHeight="27.0" prefWidth="160.0" promptText="Select Search Type" />
+                           <JFXButton buttonType="RAISED" layoutX="580.0" layoutY="275.0" onAction="#onSearchStats" prefHeight="27.0" prefWidth="70.0" ripplerFill="#11119d" text="Search" textFill="WHITE" />
+                        </children>
+                     </AnchorPane>
                   </children>
                </StackPane>
            </content>
