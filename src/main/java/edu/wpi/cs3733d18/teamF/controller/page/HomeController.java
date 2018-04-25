@@ -203,7 +203,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private GridPane menu;
     @FXML
-    private VBox adminBox, guestBox;
+    private VBox adminBox, guestBox, nearestBox;
     @FXML
     private JFXButton mapEditorBtn, editUsersBtn;
     /////////////////////////////
@@ -1200,6 +1200,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private void onCloseAlgorithm() {
         algorithmsBox.setVisible(false);
+    }
+
+    @FXML
+    private void onOpenNearest() {
+        nearestBox.setVisible(true);
+    }
+
+    @FXML
+    private void onCloseNearest() {
+        nearestBox.setVisible(false);
     }
 
     ////////////////////////////
