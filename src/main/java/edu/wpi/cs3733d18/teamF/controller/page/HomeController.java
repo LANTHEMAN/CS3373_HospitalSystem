@@ -4,35 +4,37 @@ import com.github.sarxos.webcam.Webcam;
 import com.jfoenix.controls.*;
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.javascript.object.*;
+import com.sun.prism.ResourceFactory;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.controller.*;
 import edu.wpi.cs3733d18.teamF.controller.page.element.about.AboutElement;
+import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapMementoSingleton;
+import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapState;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewListener;
-import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.mapState;
 import edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.Screensaver;
-import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
+import edu.wpi.cs3733d18.teamF.db.DatabaseWrapper;
 import edu.wpi.cs3733d18.teamF.face.FaceLauncher;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
+import edu.wpi.cs3733d18.teamF.gfx.impl.radial.GenericRadial;
 import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.graph.*;
 import edu.wpi.cs3733d18.teamF.graph.pathfinding.*;
 import edu.wpi.cs3733d18.teamF.qr.qrConverter;
+import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
+import edu.wpi.cs3733d18.teamF.sr.ServiceRequests;
 import edu.wpi.cs3733d18.teamF.voice.VoiceCommandVerification;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
+import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,7 +42,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -50,18 +52,18 @@ import javafx.util.Duration;
 import javafx.util.Pair;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import javax.xml.ws.Service;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.TimeoutException;
 
+import static edu.wpi.cs3733d18.teamF.db.DatabaseWrapper.autoCompleteUserSearch;
+
 public class HomeController implements SwitchableController, Observer, MapViewListener {
-    private static mapState savedState;
+    private boolean isGame = false;
+    private static MapState savedState;
     private final ObservableList<String> privilegeOptions = FXCollections.observableArrayList("Staff", "Admin");
     @FXML
     public TableColumn chooseCol;
@@ -74,6 +76,12 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     AnchorPane mapElementPane;
     @FXML
     AnchorPane aboutElementPane;
+    /////////////////////////////////
+    //                             //
+    //     Facial Recognition      //
+    //                             //
+    /////////////////////////////////
+    FaceLauncher launcher = new FaceLauncher();
     private PaneSwitcher switcher;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
     ///////////////////////////////
@@ -118,6 +126,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private Text MainTitle;
     @FXML
     private JFXButton addNodeBtn, remNodeBtn, addEdgeBtn, remEdgeBtn, modifyBtn, dragBtn, panBtn;
+    /////////////////////////
+    //                     //
+    //         Map         //
+    //                     //
+    /////////////////////////
+    @FXML
+    private HBox floorTraversal;
     ////////////////////////////////
     //                            //
     //         Map Builder        //
@@ -186,9 +201,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private JFXHamburger hamburger;
     @FXML
-    private JFXDrawer adminDrawer;
+    private JFXDrawer menuDrawer;
     @FXML
-    private VBox adminBox;
+    private GridPane menu;
+    @FXML
+    private VBox adminBox, guestBox,nearestBox;
     @FXML
     private JFXButton mapEditorBtn, editUsersBtn;
     /////////////////////////////
@@ -224,7 +241,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private Label userLabel;
     @FXML
-    private JFXCheckBox languageCheck, religiousCheck, securityCheck;
+    private JFXCheckBox languageCheck, religiousCheck, securityCheck, maintenanceCheck;
     @FXML
     private JFXTextField usernameField, passwordField, fnameField, lnameField, occupationField;
     @FXML
@@ -236,7 +253,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     /////////////////////////////////
     @FXML
     private AnchorPane helpPane;
-
     /////////////////////////////////
     //                             //
     //           Date/Time         //
@@ -246,7 +262,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private Label time;
     @FXML
     private Label date;
-
     /////////////////////////////////
     //                             //
     //           Map Editor        //
@@ -256,10 +271,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private JFXDrawer mapEditorDrawer;
     @FXML
     private AnchorPane mapEditorBtns;
-    private mapState state;
+    private MapState state;
     @FXML
     private AnchorPane screensaverPane;
-
     //////////////////////////////////
     //                              //
     //           Google Maps        //
@@ -267,8 +281,27 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //////////////////////////////////
     @FXML
     private GoogleMapView googleMapView;
+    @FXML
+    private ImageView hospitalLogo;
+    @FXML
     private GoogleMap gmap;
     private boolean isGoogleMapViewEnabled = false;
+
+    /////////////////////////////////   
+    //                             //
+    //           Emergency         //
+    //                             //
+    /////////////////////////////////
+    FillTransition ft;
+    Rectangle rectangle = new Rectangle();
+    private boolean emergency = false;
+    @FXML
+    private JFXButton emergencyBtn;
+    @FXML
+    private FontAwesomeIconView emergencyIcon;
+    @FXML
+    private GridPane leftGPane;
+
 
     ///////////////////////
     //                   //
@@ -276,24 +309,15 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //                   //
     ///////////////////////
     @FXML
-    private FontAwesomeIconView inboxIcon;
-    @FXML
-    private Text inboxNum;
+    private Label inboxNum;
 
     ////////////////////////////////////
     //                                //
-    //       Screensaver Timout       //
+    //       Screensaver Timeout      //
     //                                //
     ////////////////////////////////////
     @FXML
     private JFXSlider sliderTimeout;
-
-    /////////////////////////////////
-    //                             //
-    //     Facial Recognition      //
-    //                             //
-    /////////////////////////////////
-    FaceLauncher launcher = new FaceLauncher();
     @FXML
     private FontAwesomeIconView userIDCancel;
     @FXML
@@ -302,6 +326,25 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private ImageView userIDView;
     @FXML
     private JFXTextField faceIDField;
+    @FXML
+    private JFXCheckBox allFloors;
+
+    // uhg
+    @FXML
+    private GridPane rootPane;
+    private GenericRadial radialMenu;
+    ///////////////////////
+    //                   //
+    //       Inbox       //
+    //                   //
+    ///////////////////////
+    @FXML
+    private VBox inboxRequests;
+    @FXML
+    private JFXTextField inboxSearch;
+    @FXML
+    private JFXComboBox inboxSort;
+
 
     /**
      * Constructor for this class
@@ -310,7 +353,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
      */
     @Override
     public void initialize(PaneSwitcher switcher) {
-        adminDrawer.setDisable(true);
+        algorithmsBox.setVisible(false);
+        menuDrawer.setDisable(true);
         directionsDrawer.setDisable(true);
         mapEditorDrawer.setDisable(true);
         loginDrawer.setDisable(true);
@@ -351,17 +395,24 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         aboutElement.initialize(aboutElementPane);
         aboutElement.hideElement();
 
+        //init memento singleton
+        MapMementoSingleton.getInstance().init(mapViewElement);
+
         //init screensaver
         Pair<Screensaver, Pane> screensaverInfo = switcher.loadElement("screensaver.fxml");
         screensaver = screensaverInfo.getKey();
         screensaver.initialize(screensaverPane, switcher.getScene());
         screensaver.hideElement();
+
         // init voice overlay
         paneVoiceController = new PaneVoiceController(voicePane);
 
         VoiceCommandVerification voice = new VoiceCommandVerification();
         voice.addObserver(this);
         VoiceLauncher.getInstance().addObserver(voice);
+
+        mapViewElement.update3DPathDisplay(false);
+        allFloors.setSelected(false);
 
 
         // set up mod node panel
@@ -409,24 +460,24 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         languageNode.setRotate(180);
 
         english.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            saveState();
+            MapMementoSingleton.getInstance().saveState();
             onEnglish();
-            returnToLastState();
+            MapMementoSingleton.getInstance().returnToLastState();
         });
         french.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            saveState();
+            MapMementoSingleton.getInstance().saveState();
             onFrench();
-            returnToLastState();
+            MapMementoSingleton.getInstance().returnToLastState();
         });
         spanish.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            saveState();
+            MapMementoSingleton.getInstance().saveState();
             onSpanish();
-            returnToLastState();
+            MapMementoSingleton.getInstance().returnToLastState();
         });
         chinese.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            saveState();
+            MapMementoSingleton.getInstance().saveState();
             onChinese();
-            returnToLastState();
+            MapMementoSingleton.getInstance().returnToLastState();
         });
 
 
@@ -447,9 +498,33 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
 
         directionsDrawer.setSidePane(directionsBox);
-        adminDrawer.setSidePane(adminBox);
+        menuDrawer.setSidePane(menu);
         privilegeCombo.getItems().addAll(privilegeOptions);
         mapEditorDrawer.setSidePane(mapEditorBtns);
+        menuDrawer.setOnDrawerClosed(event -> {
+            menuDrawer.setDisable(true);
+        });
+        menuDrawer.setOnDrawerOpened(event -> {
+            menuDrawer.setDisable(false);
+        });
+        directionsDrawer.setOnDrawerClosed(event -> {
+            directionsDrawer.setDisable(true);
+        });
+        directionsDrawer.setOnDrawerOpened(event -> {
+            directionsDrawer.setDisable(false);
+        });
+        mapEditorDrawer.setOnDrawerClosed(event -> {
+            mapEditorDrawer.setDisable(true);
+        });
+        mapEditorDrawer.setOnDrawerOpened(event -> {
+            mapEditorDrawer.setDisable(false);
+        });
+        loginDrawer.setOnDrawerClosed(event -> {
+            loginDrawer.setDisable(true);
+        });
+        loginDrawer.setOnDrawerOpened(event -> {
+            loginDrawer.setDisable(false);
+        });
 
 
         // login
@@ -481,44 +556,42 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                     if (PermissionSingleton.getInstance().forceLogin(launcher.getEmployeeName(launcher.getCameraFaceID()))) {
                         setLoggedIn();
                     } else {
-                        loginDrawer.open();
                         loginDrawer.setDisable(false);
+                        loginDrawer.open();
                     }
                 } else {
-                    loginDrawer.open();
                     loginDrawer.setDisable(false);
+                    loginDrawer.open();
                 }
             }
         });
 
         loginCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             loginDrawer.close();
-            loginDrawer.setDisable(true);
         });
 
         logoutCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             loginDrawer.close();
-            loginDrawer.setDisable(true);
         });
 
 
         searchLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = searchLocation.getText();
             input = input.concat("" + e.getCharacter());
-            filterHallAutoComplete(input, searchList);
+            DatabaseWrapper.filterHallAutoComplete(input, searchList);
         });
 
         sourceLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = sourceLocation.getText();
             input = input.concat("" + e.getCharacter());
-            filterHallAutoComplete(input, directionsList);
+            DatabaseWrapper.filterHallAutoComplete(input, directionsList);
             sourceLocationActive = true;
         });
 
         destinationLocation.setOnKeyTyped((KeyEvent e) -> {
             String input = destinationLocation.getText();
             input = input.concat("" + e.getCharacter());
-            filterHallAutoComplete(input, directionsList);
+            DatabaseWrapper.filterHallAutoComplete(input, directionsList);
             sourceLocationActive = false;
         });
 
@@ -560,9 +633,15 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         clock.play();
     }
 
-    public void onCameraClicked() throws IOException {
-        if(!usernameField.getText().equals("")) {
 
+    /////////////////////////////////////
+    //                                 //
+    //          Button Colors          //
+    //                                 //
+    /////////////////////////////////////
+
+    public void onCameraClicked() throws IOException {
+        if (!usernameField.getText().equals("")) {
             try {
                 Webcam webcam = Webcam.getDefault(5000);
                 webcam.open();
@@ -576,7 +655,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
                 Image imageFX = SwingFXUtils.toFXImage(bufferedImage, null);
                 userIDView.setImage(imageFX);
-            } catch(TimeoutException e){
+            } catch (TimeoutException e) {
                 System.out.println("Failed to load camera");
             }
         }
@@ -589,14 +668,15 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
         if (PermissionSingleton.getInstance().getUserPrivilege().equals("Admin")) {
             setAdminMenu();
+            inboxNum.setText(Integer.toString(ServiceRequestSingleton.getInstance().numMessagesInInbox(PermissionSingleton.getInstance().getCurrUser())));
         } else if (PermissionSingleton.getInstance().getUserPrivilege().equals("Staff")) {
             setStaffMenu();
+            inboxNum.setText(Integer.toString(ServiceRequestSingleton.getInstance().numMessagesInInbox(PermissionSingleton.getInstance().getCurrUser())));
         } else {
             setGuestMenu();
         }
 
         loginDrawer.close();
-        loginDrawer.setDisable(true);
         loginUsername.setText("");
         loginPassword.setText("");
     }
@@ -611,11 +691,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             Node voiceSelectedEnd = (Node) arg;
             Path path = mapViewElement.changePathDestination(voiceSelectedEnd);
             displayTextDirections(path);
+            onFloorRefresh();
         } else if (arg instanceof HashSet) {
             HashSet<Node> potentialDestinations = (HashSet<Node>) arg;
             Node voiceSelectedEnd = map.findNodeClosestTo(mapViewElement.getSelectedNodeStart(), potentialDestinations);
             Path path = mapViewElement.changePathDestination(voiceSelectedEnd);
             displayTextDirections(path);
+            onFloorRefresh();
         } else if (arg instanceof String) {
             String cmd = (String) arg;
             if (cmd.equalsIgnoreCase("Help")) {
@@ -624,89 +706,26 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             } else if (cmd.equalsIgnoreCase("Activate")) {
                 // got a string saying that the activation command has been said
                 paneVoiceController.setVisibility(true);
-            } else if (cmd.equalsIgnoreCase("DisableElevators")) {
-                elevatorBan.setVisible(true);
-                mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            } else if (cmd.equalsIgnoreCase("DisableStairs")) {
-                stairBan.setVisible(true);
-                mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            } else if (cmd.equalsIgnoreCase("EnableElevators")) {
-                elevatorBan.setVisible(false);
-                mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            } else if (cmd.equalsIgnoreCase("EnableStairs")) {
-                stairBan.setVisible(false);
-                mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
-            }
-        }
-        onFloorRefresh();
-    }
 
+            }else if(cmd.equalsIgnoreCase("Fire")){
 
-    /////////////////////////////////////
-    //                                 //
-    //          Button Colors          //
-    //                                 //
-    /////////////////////////////////////
-
-    // will filter the given ListView for the given input String
-    private void autoComplete(String input, ListView listView, String table, String field) {
-        if (input.length() > 0) {
-            String sql = "SELECT " + field + " FROM " + table;
-            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
-            ArrayList<String> autoCompleteStrings = new ArrayList<>();
-
-            try {
-                while (resultSet.next()) {
-                    String username = resultSet.getString(1);
-                    if (username.toLowerCase().contains(input.toLowerCase())) {
-                        autoCompleteStrings.add(username);
-                    }
+                triggerEmergency();
+            } else {
+                if (cmd.equalsIgnoreCase("DisableElevators")) {
+                    elevatorBan.setVisible(true);
+                    mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+                } else if (cmd.equalsIgnoreCase("DisableStairs")) {
+                    stairBan.setVisible(true);
+                    mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+                } else if (cmd.equalsIgnoreCase("EnableElevators")) {
+                    elevatorBan.setVisible(false);
+                    mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
+                } else if (cmd.equalsIgnoreCase("EnableStairs")) {
+                    stairBan.setVisible(false);
+                    mapViewElement.changePathDestination(mapViewElement.getSelectedNodeEnd());
                 }
-            } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
+                onFloorRefresh();
             }
-            try {
-                if (autoCompleteStrings.size() > 0) {
-                    ObservableList<String> list = FXCollections.observableArrayList(autoCompleteStrings);
-                    listView.setItems(list);
-                    listView.setVisible(true);
-                } else {
-                    listView.setVisible(false);
-                }
-            } catch (Exception anyE) {
-                anyE.printStackTrace();
-            }
-        } else {
-            listView.setVisible(false);
-        }
-    }
-
-    private void filterHallAutoComplete(String input, ListView listView) {
-        if (input.length() > 0) {
-            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery("SELECT longName FROM Node WHERE nodeType != 'HALL' AND UPPER(longName) LIKE UPPER('%" + input + "%')");
-            ArrayList<String> hallfreeStrings = new ArrayList<>();
-
-            try {
-                while (resultSet.next()) {
-                    String name = resultSet.getString(1);
-                    hallfreeStrings.add(name);
-                }
-            } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
-            }
-            try {
-                if (hallfreeStrings.size() > 0) {
-                    ObservableList<String> list = FXCollections.observableArrayList(hallfreeStrings);
-                    listView.setItems(list);
-                    listView.setVisible(true);
-                } else {
-                    listView.setVisible(false);
-                }
-            } catch (Exception anyE) {
-                anyE.printStackTrace();
-            }
-        } else {
-            listView.setVisible(false);
         }
     }
 
@@ -728,29 +747,62 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     @FXML
-    private void onLogOutBtn() {
+    void triggerEmergency() {
+        if (!emergency) {
+            rectangle.setX(0);
+            rectangle.setY(0);
+            rectangle.setWidth(voicePane.getWidth());
+            rectangle.setHeight(voicePane.getHeight() * 2);
+            rectangle.setMouseTransparent(true);
+            rectangle.setFill(Color.RED);
+            rectangle.setOpacity(0.3);
+            ft = new FillTransition(Duration.millis(1500), rectangle, Color.RED, Color.BLUE);
+            ft.setCycleCount(Animation.INDEFINITE);
+            ft.setAutoReverse(true);
+            leftGPane.add(rectangle, 0, 0);
+
+            ft.play();
+            HashSet<Node> nodes = map.getNodes(node -> node.getNodeType().equals("EXIT") && !node.getLongName().contains("Ambulance"));
+            Node selectedEnd = map.findNodeClosestTo(mapViewElement.getSelectedNodeStart(), nodes);
+            Path path = mapViewElement.changePathDestination(selectedEnd);
+            displayTextDirections(path);
+            ft.setOnFinished((ActionEvent) -> {
+                leftGPane.getChildren().removeAll(rectangle);
+            });
+
+            emergency = true;
+            emergencyIcon.setGlyphName("TIMES");
+            emergencyBtn.setText(switcher.resFac.getStringBinding("Cancel").get());
+        } else {
+            emergency = false;
+            emergencyIcon.setGlyphName("EXCLAMATION_TRIANGLE");
+            emergencyBtn.setText(switcher.resFac.getStringBinding("Exit").get());
+            ft.stop();
+            leftGPane.getChildren().removeAll(rectangle);
+        }
+    }
+
+    @FXML
+    public void onLogOutBtn() {
         mapViewElement.setViewMode(MapViewElement.ViewMode.VIEW);
         PermissionSingleton.getInstance().logout();
         loginDrawer.close();
-        loginDrawer.setDisable(true);
         gpaneNodeInfo.setVisible(false);
         onCancelDirectionsEvent();
         setCancelMenuEvent();
         if (mapEditorDrawer.isShown()) {
             mapEditorDrawer.close();
-            mapEditorDrawer.setDisable(true);
         }
         setGuestMenu();
         if (algorithmsBox.isVisible()) {
             algorithmsBox.setVisible(false);
         }
-
+        emergencyBtn.setVisible(false);
         loginBtn.setText("Login");
     }
 
-    private void changeFloorButtons(Path path) {
+    public void changeFloorButtons(Path path) {
         resetFloorButtonBorders();
-        //greyOutFloorButtons();
         String firstFloor = path.getNodes().get(0).getFloor();
         String lastFloor = path.getNodes().get(0).getFloor();
         setButtonBorderColor(getFloorButton(firstFloor), "GREEN");
@@ -783,7 +835,14 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
     }
 
-    private void resetFloorButtonBorders() {
+
+    /////////////////////////////////
+    //                             //
+    //          Hamburger          //
+    //                             //
+    /////////////////////////////////
+
+    public void resetFloorButtonBorders() {
         setAllFloorButtonBorders("#042E58");
     }
 
@@ -804,13 +863,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         setButtonBackgroundColor(floor2, "#042E58");
         setButtonBackgroundColor(floor3, "#042E58");
     }
-
-
-    /////////////////////////////////
-    //                             //
-    //          Hamburger          //
-    //                             //
-    /////////////////////////////////
 
     private void resetEditorButtonBackgrounds() {
         setButtonBackgroundColor(addNodeBtn, "#042E58");
@@ -843,13 +895,33 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         btn.setStyle(modifyStyle(btn.getStyle(), "-fx-background-color: ", backgroundColor));
     }
 
+    /////////////////////////////
+    //                         //
+    //       Directions        //
+    //                         //
+    /////////////////////////////
+
+    private void highlightFloorTraversal(String currFloor) {
+        for (javafx.scene.Node node : floorTraversal.getChildren()) {
+            if (node instanceof JFXButton) {
+                JFXButton btn = (JFXButton) node;
+                if (btn.getText().equals(currFloor)) {
+                    setButtonBackgroundColor(btn, "#436282");
+                } else {
+                    setButtonBackgroundColor(btn, "#042E58");
+                }
+            }
+        }
+    }
+
     @FXML
     private void onHamburgerMenu() {
-        if (adminDrawer.isHidden()) {
-            adminDrawer.setDisable(false);
-            adminDrawer.open();
-            adminDrawer.toFront();
+        if (menuDrawer.isHidden()) {
+            menuDrawer.setDisable(false);
+            menuDrawer.open();
+            menuDrawer.toFront();
         }
+        inboxNum.setText(Integer.toString(ServiceRequestSingleton.getInstance().numMessagesInInbox(PermissionSingleton.getInstance().getCurrUser())));
     }
 
     @FXML
@@ -862,39 +934,32 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
     }
 
-    /////////////////////////////
-    //                         //
-    //       Directions        //
-    //                         //
-    /////////////////////////////
-
     @FXML
     private void setCancelMenuEvent() {
-        if (adminDrawer.isShown()) {
-            adminDrawer.close();
-            adminDrawer.toBack();
-            adminDrawer.setDisable(true);
+        if (menuDrawer.isShown()) {
+            menuDrawer.close();
+            menuDrawer.toBack();
         }
     }
 
     private void setGuestMenu() {
-        hamburger.setVisible(false);
-        hamburgerD.setVisible(false);
+        adminBox.setVisible(false);
+        guestBox.setVisible(true);
     }
 
     private void setAdminMenu() {
-        hamburger.setVisible(true);
-        hamburgerD.setVisible(true);
         mapEditorBtn.setVisible(true);
         editUsersBtn.setVisible(true);
-        algorithmsBox.setVisible(true);
+        guestBox.setVisible(false);
+        adminBox.setVisible(true);
+        emergencyBtn.setVisible(true);
     }
 
     private void setStaffMenu() {
-        hamburger.setVisible(true);
-        hamburgerD.setVisible(true);
         mapEditorBtn.setVisible(false);
         editUsersBtn.setVisible(false);
+        guestBox.setVisible(false);
+        adminBox.setVisible(true);
     }
 
     @FXML
@@ -922,7 +987,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         Path newPath = mapViewElement.swapSrcAndDst();
         displayTextDirections(newPath);
         resetFloorButtonBorders();
+        resetFloorButtonBackgrounds();
         changeFloorButtons(newPath);
+        onPathsChanged(newPath.separateIntoFloors());
 
         map.setFloor(mapViewElement.getSelectedNodeStart().getFloor());
         onFloorRefresh();
@@ -939,6 +1006,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
         onFloorRefresh();
     }
+
+
+    //////////////////////////////////////////
+    //                                      //
+    //           Search Algorithm           //
+    //                                      //
+    //////////////////////////////////////////
 
     @FXML
     void flipStairs() {
@@ -969,13 +1043,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         directionsList.setVisible(false);
     }
 
-
-    //////////////////////////////////////////
-    //                                      //
-    //           Search Algorithm           //
-    //                                      //
-    //////////////////////////////////////////
-
     private void displayTextDirections(Path route) {
 
         List<String> directions = route.makeTextDirections();
@@ -1004,7 +1071,33 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             }
             sb.append(text);
 
-            if (text.toLowerCase().contains("straight")) {
+            if (text.contains("Level")) {
+                switch (text) {
+                    case "Level 03":
+                        text = "Level 3";
+                        break;
+                    case "Level 02":
+                        text = "Level 2";
+                        break;
+                    case "Level 01":
+                        text = "Level 1";
+                        break;
+                    case "Level 0G":
+                        text = "Ground Level";
+                        break;
+                    case "Level L1":
+                        text = "Lower Level 1";
+                        break;
+                    default:
+                        text = "Lower Level 2";
+                        break;
+                }
+                Text direction = new Text("                " + text + "\n ");
+                direction.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+                direction.setFill(Color.WHITE);
+                txtDirections.getChildren().add(direction);
+                continue;
+            } else if (text.toLowerCase().contains("straight")) {
                 FontAwesomeIconView arrow = new FontAwesomeIconView(FontAwesomeIcon.LONG_ARROW_UP);
                 arrow.setGlyphSize(15);
                 arrow.setScaleX(1.5);
@@ -1044,7 +1137,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             }
 
             Text direction = new Text(" " + text + "\n ");
-            direction.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            direction.setFont(Font.font("Arial", FontWeight.BOLD, 16));
             direction.setFill(Color.WHITE);
             txtDirections.getChildren().add(direction);
 
@@ -1079,7 +1172,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         if (directionsDrawer.isShown()) {
             directionsDrawer.close();
             directionsDrawer.toBack();
-            directionsDrawer.setDisable(true);
             searchLocation.setText(destinationLocation.getText());
         }
     }
@@ -1112,6 +1204,66 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
     }
 
+
+    ///////////////////////////
+    //                       //
+    //       Help Pane       //
+    //                       //
+    ///////////////////////////
+
+    @FXML
+    private void onChangeAlgorithm() {
+        algorithmsBox.setVisible(true);
+    }
+
+    @FXML
+    private void onCloseAlgorithm() {
+        algorithmsBox.setVisible(false);
+    }
+
+    @FXML
+    private void onOpenNearest() {
+        nearestBox.setVisible(true);
+    }
+
+    @FXML
+    private void onCloseNearest() {
+        nearestBox.setVisible(false);
+    }
+
+    @FXML
+    private void onBathroom() {
+        HashSet<Node> nodes = map.getNodes(node -> node.getNodeType().equals("REST"));
+        Node selectedEnd = map.findNodeClosestTo(mapViewElement.getSelectedNodeStart(), nodes);
+        Path path = mapViewElement.changePathDestination(selectedEnd);
+        displayTextDirections(path);
+        onFloorRefresh();
+    }
+
+    @FXML
+    private void onExit() {
+        HashSet<Node> nodes = map.getNodes(node -> node.getNodeType().equals("EXIT") && !node.getLongName().contains("Ambulance"));
+        Node selectedEnd = map.findNodeClosestTo(mapViewElement.getSelectedNodeStart(), nodes);
+        Path path = mapViewElement.changePathDestination(selectedEnd);
+        displayTextDirections(path);
+        onFloorRefresh();
+    }
+
+    @FXML
+    private void onCafe() {
+        HashSet<Node> nodes = map.getNodes(node -> node.getLongName().contains("Cafe") && node.getNodeType().equals("RETL"));
+        Node selectedEnd = map.findNodeClosestTo(mapViewElement.getSelectedNodeStart(), nodes);
+        Path path = mapViewElement.changePathDestination(selectedEnd);
+        displayTextDirections(path);
+        onFloorRefresh();
+    }
+
+    ////////////////////////////
+    //                        //
+    //       About Pane       //
+    //                        //
+    ////////////////////////////
+
     @FXML
     private void onAStar() {
         MapSingleton.getInstance().getMap().setPathSelector(new AStar());
@@ -1122,12 +1274,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         bestFirst.setStyle("-fx-background-color: #616161");
     }
 
-
-    ///////////////////////////
-    //                       //
-    //       Help Pane       //
-    //                       //
-    ///////////////////////////
+    //////////////////////////////////////////////
+    //                                          //
+    //     Search Service Request Functions     //
+    //                                          //
+    //////////////////////////////////////////////
 
     @FXML
     private void onBreathFirst() {
@@ -1139,6 +1290,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         bestFirst.setStyle("-fx-background-color: #616161");
     }
 
+
+    /////////////////////////////
+    //                         //
+    //       Languages         //
+    //                         //
+    /////////////////////////////
+
     @FXML
     private void onDepthFirst() {
         MapSingleton.getInstance().getMap().setPathSelector(new DepthSearch());
@@ -1149,12 +1307,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         bestFirst.setStyle("-fx-background-color: #616161");
     }
 
-    ////////////////////////////
-    //                        //
-    //       About Pane       //
-    //                        //
-    ////////////////////////////
-
     @FXML
     private void onDijkstra() {
         MapSingleton.getInstance().getMap().setPathSelector(new Dijkstra());
@@ -1164,12 +1316,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         dijkstra.setStyle("-fx-background-color: #303030");
         bestFirst.setStyle("-fx-background-color: #616161");
     }
-
-    //////////////////////////////////////////////
-    //                                          //
-    //     Search Service Request Functions     //
-    //                                          //
-    //////////////////////////////////////////////
 
     @FXML
     private void onBestFirst() {
@@ -1182,11 +1328,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
 
-    /////////////////////////////
-    //                         //
-    //       Languages         //
-    //                         //
-    /////////////////////////////
+    /////////////////////
+    //                 //
+    //       Map       //
+    //                 //
+    /////////////////////
 
     @FXML
     void onHelpPopup() {
@@ -1203,42 +1349,12 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         aboutElement.showElement();
     }
 
-    private ArrayList<User> autoCompleteUserSearch(String input) {
-        ArrayList<User> autoCompleteUser = new ArrayList<>();
-        if (input.length() > 0) {
-            String sql = "SELECT * FROM HUser";
-            try {
-                ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery(sql);
-                while (resultSet.next()) {
-                    String username = resultSet.getString(1);
-                    String password = resultSet.getString(2);
-                    String firstname = resultSet.getString(3);
-                    String lastname = resultSet.getString(4);
-                    String privilege = resultSet.getString(5);
-                    String occupation = resultSet.getString(6);
-                    String faceID = resultSet.getString(7);
-                    User temp = new User(username, password, firstname, lastname, privilege, occupation, faceID, true);
-                    String searchString = username + password + firstname + lastname + privilege + occupation + faceID;
-                    if (searchString.toLowerCase().contains(input.toLowerCase())) {
-                        autoCompleteUser.add(temp);
-                    }
 
-                }
-                resultSet.close();
-            } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
-            }
-
-        }
-        return autoCompleteUser;
-    }
-
-
-    /////////////////////
-    //                 //
-    //       Map       //
-    //                 //
-    /////////////////////
+    //////////////////////////////
+    //                          //
+    //       Map Builder        //
+    //                          //
+    //////////////////////////////
 
     private void onEnglish() {
         switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("en", "US")),
@@ -1254,13 +1370,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("es", "ES")),
                 Screens.Home);
     }
-
-
-    //////////////////////////////
-    //                          //
-    //       Map Builder        //
-    //                          //
-    //////////////////////////////
 
     private void onChinese() {
         switcher.switchResource(ResourceBundle.getBundle("LanguageBundle", new Locale("zh", "CN"), new UTF8Control()),
@@ -1287,17 +1396,26 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         btn3D.setStyle("-fx-background-color:  #f2f5f7");
     }
 
+
+    ////////////////////////////////
+    //                            //
+    //       New/Edit User        //
+    //                            //
+    ////////////////////////////////
+
     @FXML
     public void onTimeoutChanged() {
         screensaver.changeTimeout((int) (sliderTimeout.getValue() * 1000));
     }
 
-    private void changeFloor(String floor) {
+    public void changeFloor(String floor) {
         resetFloorButtonBackgrounds();
 
         map.setFloor(floor);
         JFXButton floorBtn = getFloorButton(floor);
         setButtonBackgroundColor(floorBtn, "#436282");
+
+        highlightFloorTraversal(floorBtn.getText());
 
         switch (floor) {
             case "03":
@@ -1368,13 +1486,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         newNode_shortName.setText("");
     }
 
-
-    ////////////////////////////////
-    //                            //
-    //       New/Edit User        //
-    //                            //
-    ////////////////////////////////
-
     @FXML
     void onAddLocationCancel() {
         addLocationPopup.setVisible(false);
@@ -1430,10 +1541,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         mapViewElement.toggleEditorMode();
         if (mapEditorDrawer.isShown()) {
             mapEditorDrawer.close();
-            mapEditorDrawer.setDisable(true);
         } else {
-            mapEditorDrawer.open();
+            clearFloorTraversal();
             mapEditorDrawer.setDisable(false);
+            mapEditorDrawer.open();
         }
     }
 
@@ -1446,6 +1557,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             e.printStackTrace();
         }
     }
+
+
+    ////////////////////////////////////////
+    //                                    //
+    //       Service Request              //
+    //                                    //
+    ////////////////////////////////////////
 
     @FXML
     private void onNewUserEvent() {
@@ -1461,6 +1579,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         languageCheck.setSelected(false);
         religiousCheck.setSelected(false);
         securityCheck.setSelected(false);
+        maintenanceCheck.setSelected(false);
         privilegeCombo.getSelectionModel().clearSelection();
         editUserPane.setVisible(false);
         newUserPane.setVisible(true);
@@ -1468,7 +1587,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     private void displayInUserTable(ArrayList<User> users) {
         if (users.size() < 1) {
-            //TODO: indicate to user that there are no results
             return;
         }
 
@@ -1531,16 +1649,30 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         privilegeCombo.getSelectionModel().select(e.getPrivilege());
 
 
+        if (ServiceRequestSingleton.getInstance().isInTable(e.getUname(), "LanguageInterpreter")) {
+            languageCheck.setSelected(true);
+        } else {
+            languageCheck.setSelected(false);
+        }
+        if (ServiceRequestSingleton.getInstance().isInTable(e.getUname(), "ReligiousServices")) {
+            religiousCheck.setSelected(true);
+        } else {
+            religiousCheck.setSelected(false);
+        }
+        if (ServiceRequestSingleton.getInstance().isInTable(e.getUname(), "SecurityRequest")) {
+            securityCheck.setSelected(true);
+        } else {
+            securityCheck.setSelected(false);
+        }
+        if (ServiceRequestSingleton.getInstance().isInTable(e.getUname(), "MaintenanceRequest")) {
+            maintenanceCheck.setSelected(true);
+        } else {
+            maintenanceCheck.setSelected(false);
+        }
+
         editUserPane.setVisible(false);
         newUserPane.setVisible(true);
     }
-
-
-    ////////////////////////////////////////
-    //                                    //
-    //       Service Request              //
-    //                                    //
-    ////////////////////////////////////////
 
     @FXML
     public void onEditUsers() {
@@ -1548,9 +1680,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         setCancelMenuEvent();
         userTextField.clear();
         searchUserResultTable.getItems().clear();
+        displayInUserTable(DatabaseWrapper.allUsers());
         editUserPane.setVisible(true);
     }
-
 
     @FXML
     private void onSubmitUser() {
@@ -1563,6 +1695,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         boolean languageServices = languageCheck.isSelected();
         boolean religiousServices = religiousCheck.isSelected();
         boolean securityRequest = securityCheck.isSelected();
+        boolean maintenanceRequest = maintenanceCheck.isSelected();
 
         User temp;
 
@@ -1581,6 +1714,31 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                 temp = new User(username, password, firstName, lastName, privilegeChoice, occupation, faceID);
             }
             PermissionSingleton.getInstance().updateUser(temp);
+        }
+
+
+        if (languageServices && !ServiceRequestSingleton.getInstance().isInTable(username, "LanguageInterpreter")) {
+            ServiceRequestSingleton.getInstance().addUsernameLanguageInterpreter(username);
+        } else if (!languageServices && ServiceRequestSingleton.getInstance().isInTable(username, "LanguageInterpreter")) {
+            ServiceRequestSingleton.getInstance().removeUsernameLanguageInterpreter(username);
+        }
+
+        if (religiousServices && !ServiceRequestSingleton.getInstance().isInTable(username, "ReligiousServices")) {
+            ServiceRequestSingleton.getInstance().addUsernameReligiousServices(username);
+        } else if (!religiousServices && ServiceRequestSingleton.getInstance().isInTable(username, "ReligiousServices")) {
+            ServiceRequestSingleton.getInstance().removeUsernameReligiousServices(username);
+        }
+
+        if (securityRequest && !ServiceRequestSingleton.getInstance().isInTable(username, "SecurityRequest")) {
+            ServiceRequestSingleton.getInstance().addUsernameSecurityRequest(username);
+        } else if (!securityRequest && ServiceRequestSingleton.getInstance().isInTable(username, "SecurityRequest")) {
+            ServiceRequestSingleton.getInstance().removeUsernameSecurityRequest(username);
+        }
+
+        if (maintenanceRequest && !ServiceRequestSingleton.getInstance().isInTable(username, "MaintenanceRequest")) {
+            ServiceRequestSingleton.getInstance().addUsernameMaintenanceRequest(username);
+        } else if (!maintenanceRequest && ServiceRequestSingleton.getInstance().isInTable(username, "MaintenanceRequest")) {
+            ServiceRequestSingleton.getInstance().removeUsernameMaintenanceRequest(username);
         }
 
         newUserPane.setVisible(false);
@@ -1605,11 +1763,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     private void onServiceRequest() {
-        edu.wpi.cs3733d18.teamF.api.ServiceRequest.injectObservable(VoiceLauncher.getInstance());
-        edu.wpi.cs3733d18.teamF.api.ServiceRequest sr = new edu.wpi.cs3733d18.teamF.api.ServiceRequest();
-        sr.run(-1, -1, 1000, 631, null, null, null);
+        switcher.popupSR(Screens.MainPage);
     }
-
 
     @Override
     public void onNewPathSelected(Path path) {
@@ -1752,40 +1907,56 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         mapViewElement.setEditMode(MapViewElement.EditMode.PAN);
     }
 
-    public void saveState() {
-        this.savedState = new mapState(mapViewElement.getMapDrawController().getDrawnPath(), mapViewElement.getGesturePane().getCurrentScale(), mapViewElement.getGesturePane().targetPointAtViewportCentre());
-//        this.savedState = new mapState(mapViewElement.getMapDrawController().getDrawnPath(), mapViewElement.getGesturePane().getTarget());
-    }
-
-    public void returnToState(mapState state) {
-        if (state == null) return;
-        System.out.println(state.getTarget());
-        System.out.println(state.getZoomAmount());
-        if (state.getPath() != null) mapViewElement.getMapDrawController().showPath(state.getPath());
-        mapViewElement.getGesturePane().zoomTo(state.getZoomAmount(), state.getTarget());
-    }
-
-    public void returnToLastState() {
-        returnToState(savedState);
-    }
-
-    public mapState getLastState() {
-        return savedState;
-    }
-
     @Override
     public void onRefresh() {
-        returnToLastState();
+        MapMementoSingleton.getInstance().returnToLastState();
     }
 
     @Override
-    public void onPathsChanged(ArrayList<Path> floorPath) {
+    public void onPathsChanged(ArrayList<Path> floorPaths) {
+        clearFloorTraversal();
+        floorTraversal.setVisible(true);
+        for (int i = 0; i < floorPaths.size(); i++) {
+            String borderColor;
+            if (i == 0) {
+                borderColor = "GREEN";
+            } else if (i == floorPaths.size() - 1) {
+                borderColor = "RED";
+            } else {
+                borderColor = "#606060";
+            }
 
-    }
+            String floor = floorPaths.get(i).getNodes().get(0).getFloor();
+            String finalFloor = floor;
 
-    @FXML
-    private void onChangeKioskLocation() {
-        mapViewElement.updateHomeLocation();
+            if (floor.charAt(0) == '0') {
+                floor = floor.substring(1);
+            }
+            JFXButton currFloor = new JFXButton(floor);
+            currFloor.setFont(Font.font("Arial", FontWeight.BOLD, 26));
+            currFloor.setTextFill(Color.WHITE);
+            currFloor.setPrefWidth(80);
+            currFloor.setPrefHeight(80);
+            currFloor.setStyle(String.format("-fx-background-color:  #042E58;" +
+                    "-fx-background-radius: 100;" +
+                    "-fx-border-radius: 100;" +
+                    "-fx-border-width: 5px;" +
+                    "-fx-border-color: %s", borderColor));
+
+            int finalI = i;
+            currFloor.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
+                changeFloor(finalFloor);
+                mapViewElement.zoomToPath(finalI);
+            });
+
+            floorTraversal.getChildren().add(currFloor);
+        }
+        // highlight the current floor
+        String floor = map.getFloor();
+        if (floor.charAt(0) == '0') {
+            floor = floor.substring(1);
+        }
+        highlightFloorTraversal(floor);
     }
 
 
@@ -1795,23 +1966,40 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //                          //
     //////////////////////////////
 
+    public void clearFloorTraversal() {
+        floorTraversal.setVisible(false);
+        floorTraversal.getChildren().clear();
+    }
+
+    @Override
+    public void onFloorRefreshButtons() {
+        resetFloorButtonBorders();
+        resetFloorButtonBackgrounds();
+    }
+
     @FXML
-    public void onGoogleMaps(MouseEvent mouseEvent) {
+    private void onChangeKioskLocation() {
+        mapViewElement.updateHomeLocation();
+    }
+
+    @FXML
+    public void onGoogleMaps() {
         toggleGoogleMap();
     }
 
-    public void toggleGoogleMap() {
+    private void toggleGoogleMap() {
         if (isGoogleMapViewEnabled) {
-            saveState();
             switcher.switchTo(Screens.Home);
-            returnToLastState();
-            return;
+            MapMementoSingleton.getInstance().returnToLastState();
+            hospitalLogo.setVisible(false);
+        } else {
+            MapMementoSingleton.getInstance().saveState();
+            setGoogleMapViewEnabled(true);
+            hospitalLogo.setVisible(true);
         }
-        setGoogleMapViewEnabled(true);
-
     }
 
-    public void setGoogleMapViewEnabled(boolean enabled) {
+    private void setGoogleMapViewEnabled(boolean enabled) {
         googleMapView.setDisable(!enabled);
         isGoogleMapViewEnabled = enabled;
         if (enabled) {
@@ -1822,7 +2010,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         googleMapView.setPickOnBounds(enabled);
     }
 
-    protected void configureMap() {
+    private void configureMap() {
         MapOptions mapOptions = new MapOptions();
         mapOptions.center(new LatLong(42.336012, -71.106989))
                 .mapType(MapTypeIdEnum.HYBRID)
@@ -1851,9 +2039,48 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //       Inbox       //
     //                   //
     ///////////////////////
+
+
     @FXML
     private void onInbox() {
-
+        switcher.popupInbox(Screens.Inbox);
+        inboxNum.setText(Integer.toString(ServiceRequestSingleton.getInstance().numMessagesInInbox(PermissionSingleton.getInstance().getCurrUser())));
+        System.out.println("inboxNum Updated");
     }
 
+
+
+
+    public void resetHomeController(){
+        if(floorNode.isExpanded()){
+            floorNode.animateList();
+        }
+        if(languageNode.isExpanded()){
+            languageNode.animateList();
+        }
+        if(!MapSingleton.getInstance().getMap().is2D()){
+            MapSingleton.getInstance().getMap().setIs2D(true);
+        }
+        onLogOutBtn();
+    }
+
+    @FXML
+    public void onAllFloors() {
+        mapViewElement.update3DPathDisplay(allFloors.isSelected());
+    }
+
+    @FXML
+    public void toggleGame(){
+        mapViewElement.toggleGame();
+        if(!isGame) {
+            floorTraversal.setVisible(false);
+            floorTraversal.setDisable(true);
+            isGame = true;
+        }
+        else{
+            floorTraversal.setDisable(false);
+            floorTraversal.setVisible(true);
+            isGame = false;
+        }
+    }
 }

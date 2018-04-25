@@ -6,28 +6,26 @@ import net.kurobako.gesturefx.GesturePane;
 
 import java.awt.*;
 
-public class mapState {
+public class MapState {
 
     private final Path path;
     private final double zoomAmount;
     private final Point2D target;
-    //private final GesturePane.Transformable transformable;
+    private final String floor;
 
-    public mapState(Path path, double zoomAmount, Point2D target){
+    public MapState(Path path, String floor, double zoomAmount, Point2D target) {
         this.path = path;
+        this.floor = floor;
         this.zoomAmount = zoomAmount;
         this.target = target;
 
     }
 
-//    public mapState(Path path, GesturePane.Transformable transformable){
-//        this.path = path;
-//        this.transformable = transformable;
-//    }
-
     public Path getPath() {
         return path;
     }
+
+    public String getFloor(){ return floor; }
 
     public double getZoomAmount() {
         return zoomAmount;
@@ -36,9 +34,4 @@ public class mapState {
     public Point2D getTarget() {
         return target;
     }
-
-
-//    public GesturePane.Transformable getTransformable() {
-//        return transformable;
-//    }
 }

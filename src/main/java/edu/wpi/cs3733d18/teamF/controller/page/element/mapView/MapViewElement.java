@@ -5,9 +5,12 @@ import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
 import edu.wpi.cs3733d18.teamF.gfx.ImageCacheSingleton;
 import edu.wpi.cs3733d18.teamF.gfx.impl.map.UglyMapDrawer;
+import edu.wpi.cs3733d18.teamF.gfx.impl.pacman.GameMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Map;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -24,13 +27,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.stream.Collectors;
+
+import static junit.framework.TestCase.assertEquals;
 
 public class MapViewElement extends PageElement {
     // TODO change this to default starting location
     String startNodeID = "FRETL00101";
     EditMode editMode = EditMode.MOVENODE;
     boolean showAllFloors = false;
+    boolean game = false;
+
     // used to see if the floor has changed to update the map drawn
     private MapListener mapListener;
     private ViewMode viewMode = ViewMode.VIEW;
@@ -57,6 +63,7 @@ public class MapViewElement extends PageElement {
     private Map map;
     private MapViewListener listener;
     private ArrayList<Path> floorPath = new ArrayList<>();
+    private UglyMapDrawer uglyMapDrawer;
 
     public void updateHomeLocation() {
         if (modifyNode == null) {
@@ -81,13 +88,17 @@ public class MapViewElement extends PageElement {
     }
 
     public void zoomToPath(int pathIndex) {
+        if (mapDrawController.getDrawnPath() == null) {
+            return;
+        }
         floorPath = mapDrawController.getDrawnPath().separateIntoFloors();
 
-        if(pathIndex == -1){
+        if (pathIndex == -1) {
             pathIndex = floorPath.size() - 1;
         }
 
-        if(floorPath.size() > 0 && floorPath.size() > pathIndex){
+        
+        if (floorPath.size() > 0 && floorPath.size() > pathIndex) {
             zoomToPath(floorPath.get(pathIndex));
         }
 
@@ -99,7 +110,7 @@ public class MapViewElement extends PageElement {
     }
 
     private void zoomToPath(Path path) {
-        Rectangle rect = getMapDrawController().getPathBoundingBox(path);
+        Rectangle rect = getMapDrawController().getPathBoundingBox(path, map.is2D());
 
         Point2D midPoint = new Point2D(rect.x + (rect.getWidth() / 2.f), rect.y + (rect.getHeight() / 2.f));
 
@@ -108,9 +119,11 @@ public class MapViewElement extends PageElement {
         scaleFactor -= 3;
 
         if (rect.getHeight() > 0 && rect.getWidth() > 0) {
-            //TODO make this pretty
-            getGesturePane().zoomTo(scaleFactor, midPoint);
-            getGesturePane().animate(Duration.millis(1000)).centreOn(midPoint);
+            getGesturePane().animate(new Duration(200)).zoomTo(scaleFactor, midPoint);
+            Timeline oneHitWonder = new Timeline(new KeyFrame(Duration.millis(200),
+                    event -> getGesturePane().animate(Duration.millis(500)).centreOn(midPoint)));
+            oneHitWonder.setCycleCount(1);
+            oneHitWonder.play();
         }
     }
 
@@ -131,9 +144,9 @@ public class MapViewElement extends PageElement {
         isMap2D = map.is2D();
         initElement(sourcePane, root);
         sourcePane.autosize();
-
+        uglyMapDrawer = new UglyMapDrawer();
         // draw the nodes
-        mapDrawController = new PaneMapController(mapContainer, map, new UglyMapDrawer());
+        mapDrawController = new PaneMapController(mapContainer, map, uglyMapDrawer);
         // set default start location
         resetStartLocation();
         // set the correct floor
@@ -321,12 +334,12 @@ public class MapViewElement extends PageElement {
                                 for (Node node : neighborNodes) {
                                     if (!node.getFloor().equals(dst.getFloor()) && mapDrawController.getDrawnPath().getNodes().contains(node)) {
                                         map.setFloor(node.getFloor());
-
+                                        listener.onFloorRefreshButtons();
                                         floorPath = mapDrawController.getDrawnPath().separateIntoFloors();
 
-                                        zoomToPath(floorPath.stream().filter(path -> path.getNodes().contains(node)).findFirst().get());
+                                        assertEquals(1, floorPath.stream().filter(path -> path.getNodes().contains(node)).toArray().length);
 
-                                        listener.onFloorRefresh();
+                                        zoomToPath(floorPath.stream().filter(path -> path.getNodes().contains(node)).findFirst().get());
                                         return;
                                     }
                                 }
@@ -335,8 +348,8 @@ public class MapViewElement extends PageElement {
                             Path path = map.getPath(map.findNodeClosestTo(selectedNodeStart.getPosition().getX(), selectedNodeStart.getPosition().getY(), true), dst);
                             mapDrawController.showPath(path);
                             listener.onNewPathSelected(path);
-                            onChangePath(false);
                             listener.onNewDestinationNode(selectedNodeEnd);
+                            onChangePath(false);
                         } else {
                             return;
                         }
@@ -397,7 +410,7 @@ public class MapViewElement extends PageElement {
         });
 
         mapContainer.addEventHandler(Event.ANY, e -> {
-            if (((gesturePane.targetPointAtViewportCentre().getX() > 427 || gesturePane.targetPointAtViewportCentre().getX() < 417) && (gesturePane.targetPointAtViewportCentre().getY() > 348 || gesturePane.targetPointAtViewportCentre().getY() < 230)) && gesturePane.getCurrentScale() <= 2.3) {
+            if (((gesturePane.targetPointAtViewportCentre().getX() > 427 || gesturePane.targetPointAtViewportCentre().getX() < 417) || (gesturePane.targetPointAtViewportCentre().getY() > 348 || gesturePane.targetPointAtViewportCentre().getY() < 230)) && gesturePane.getCurrentScale() <= 2.3) {
                 listener.onRefresh();
             }
         });
@@ -407,6 +420,8 @@ public class MapViewElement extends PageElement {
         selectedNodeEnd = destinationNode;
         Path path = map.getPath(selectedNodeStart, destinationNode);
         mapDrawController.showPath(path);
+        map.setFloor(destinationNode.getFloor());
+        onChangePath(false);
         return path;
     }
 
@@ -414,8 +429,31 @@ public class MapViewElement extends PageElement {
         return mapDrawController;
     }
 
+    public void startGame(){
+        GameMapDrawer mapdrawer = new GameMapDrawer();
+        mapdrawer.setRandom();
+        mapDrawController.setMapDrawer(mapdrawer);
+        game = true;
+    }
+    public void endGame(){
+        mapDrawController.setMapDrawer(uglyMapDrawer);
+        game = false;
+    }
+
+    public void toggleGame(){
+        if(game){
+            endGame();
+        }
+        else{
+            startGame();
+        }
+    }
     public Node getSelectedNodeStart() {
         return selectedNodeStart;
+    }
+
+    public void nextGame(){
+        startGame();
     }
 
     public MapViewElement setSelectedNodeStart(Node selectedNodeStart) {
@@ -559,6 +597,11 @@ public class MapViewElement extends PageElement {
         return gesturePane;
     }
 
+
+    public MapViewListener getMapViewListener() {
+        return listener;
+    }
+
     public enum ViewMode {
         EDIT, VIEW
     }
@@ -573,10 +616,14 @@ public class MapViewElement extends PageElement {
     private class MapListener implements Observer {
         @Override
         public void update(Observable o, Object arg) {
+            if (isMap2D != map.is2D()) {
+                onChangePath(true);
+            }
             if (!mapFloorDrawn.equals(map.getFloor()) || isMap2D != map.is2D()) {
                 refreshFloorDrawn();
                 mapDrawController.refreshPath();
             }
+
         }
     }
 }
