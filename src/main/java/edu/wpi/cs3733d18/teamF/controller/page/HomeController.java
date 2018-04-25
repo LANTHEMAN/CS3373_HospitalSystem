@@ -277,6 +277,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //////////////////////////////////
     @FXML
     private GoogleMapView googleMapView;
+    @FXML
+    private ImageView hospitalLogo;
     private GoogleMap gmap;
     private boolean isGoogleMapViewEnabled = false;
 
@@ -1938,20 +1940,19 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         toggleGoogleMap();
     }
 
-    public void toggleGoogleMap() {
+    private void toggleGoogleMap() {
         if (isGoogleMapViewEnabled) {
             switcher.switchTo(Screens.Home);
-            System.out.println("Returning to app");
             MapMementoSingleton.getInstance().returnToLastState();
-            return;
+            hospitalLogo.setVisible(false);
         } else {
             MapMementoSingleton.getInstance().saveState();
             setGoogleMapViewEnabled(true);
+            hospitalLogo.setVisible(true);
         }
-
     }
 
-    public void setGoogleMapViewEnabled(boolean enabled) {
+    private void setGoogleMapViewEnabled(boolean enabled) {
         googleMapView.setDisable(!enabled);
         isGoogleMapViewEnabled = enabled;
         if (enabled) {
@@ -1962,7 +1963,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         googleMapView.setPickOnBounds(enabled);
     }
 
-    protected void configureMap() {
+    private void configureMap() {
         MapOptions mapOptions = new MapOptions();
         mapOptions.center(new LatLong(42.336012, -71.106989))
                 .mapType(MapTypeIdEnum.HYBRID)

@@ -505,8 +505,6 @@
                     </font>
                 </JFXButton>
                 <JFXListView fx:id="searchList" maxHeight="200.0" maxWidth="300.0" onMouseClicked="#setSourceSearch" visible="false" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-                <FontAwesomeIconView fill="#727272" glyphName="QUESTION" onMouseClicked="#onHelpPopup" size="50" translateX="-22.0" translateY="-70.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                <FontAwesomeIconView fill="#727272" glyphName="INFO" onMouseClicked="#onAboutPopup" size="45" textAlignment="CENTER" translateX="-75.0" translateY="-70.0" wrappingWidth="39.549333572387695" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
             <HBox fx:id="floorTraversal" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="680.0" spacing="10.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                 <JFXNodesList fx:id="floorNode" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" spacing="10.0" style="-fx-background-radius: 100;" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                     <GridPane.margin>
@@ -514,12 +512,12 @@
                     </GridPane.margin>
                 </JFXNodesList>
                 <JFXNodesList fx:id="languageNode" alignment="CENTER" fillWidth="false" layoutX="1190.0" layoutY="123.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" spacing="10.0" style="-fx-background-radius: 100;" translateX="-140.0" translateY="-10.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                <JFXButton fx:id="btn3D" onAction="#on3D" prefHeight="60.0" prefWidth="60.0" ripplerFill="BLACK" style="-fx-background-color: #b6b8b9;" text="3D" textFill="#2c2c2c" translateX="-5.0" translateY="-5.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                <JFXButton fx:id="btn2D" buttonType="RAISED" layoutX="1230.0" layoutY="670.0" onAction="#on2D" prefHeight="60.0" prefWidth="60.0" ripplerFill="BLACK" style="-fx-background-color: #f2f5f7;" text="2D" textFill="#2c2c2c" translateX="-65.0" translateY="-5.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                     <font>
                         <Font size="20.0" />
                     </font>
                 </JFXButton>
-                <JFXButton fx:id="btn2D" buttonType="RAISED" layoutX="1230.0" layoutY="670.0" onAction="#on2D" prefHeight="60.0" prefWidth="60.0" ripplerFill="BLACK" style="-fx-background-color: #f2f5f7;" text="2D" textFill="#2c2c2c" translateX="-65.0" translateY="-5.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                <JFXButton fx:id="btn3D" onAction="#on3D" prefHeight="60.0" prefWidth="60.0" ripplerFill="BLACK" style="-fx-background-color: #b6b8b9;" text="3D" textFill="#2c2c2c" translateX="-5.0" translateY="-5.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                     <font>
                         <Font size="20.0" />
                     </font>
@@ -869,8 +867,11 @@
         </AnchorPane>
         <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
         <GoogleMapView fx:id="googleMapView" prefHeight="578.0" prefWidth="844.0" visible="false" />
-        <FontAwesomeIconView fill="#727272" glyphName="MAP" size="45" textAlignment="CENTER" translateX="-22.0" translateY="-120.0" wrappingWidth="39.549333572387695" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-        <FontAwesomeIconView fill="#FFFFFF" glyphName="GOOGLE" onMouseClicked="#onGoogleMaps" size="35" textAlignment="CENTER" translateX="-20.0" translateY="-125.0" wrappingWidth="39.549333572387695" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+      <ImageView fx:id="hospitalLogo" fitHeight="70.0" fitWidth="90.0" onMouseClicked="#onGoogleMaps" pickOnBounds="true" preserveRatio="true" translateX="-10.0" translateY="-110.0" visible="false" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+         <image>
+            <Image url="@../BWHIcon.png" />
+         </image>
+      </ImageView>
       <JFXButton fx:id="emergencyBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#triggerEmergency" prefHeight="47.0" prefWidth="158.0" ripplerFill="#cd2323" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="%Emergency" textFill="#f2f5f7" visible="false" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
          <font>
             <Font name="Arial Bold" size="15.0" />
