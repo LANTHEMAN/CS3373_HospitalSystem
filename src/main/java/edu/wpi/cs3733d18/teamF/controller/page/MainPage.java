@@ -23,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.chart.*;
 import javafx.util.Callback;
 
 import java.sql.ResultSet;
@@ -55,6 +56,8 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     public TextArea instructionsTextArea;
     PaneSwitcher switcher;
+    @FXML
+    JFXTextField SearchByEmployee;
     @FXML
     AnchorPane languageInterpreterPane;
     @FXML
@@ -94,6 +97,10 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     JFXComboBox religionSelect;
     @FXML
+    JFXComboBox selectStats;
+    @FXML
+    AnchorPane serviceTypePane,employeePane,statsPane;
+    @FXML
     TextArea instructionsRS;
     @FXML
     JFXListView destinationMaintenanceList;
@@ -114,6 +121,29 @@ public class MainPage implements SwitchableController, Observer {
     /////////////////////////////////
     private String searchType;
     private String filter;
+    @FXML
+    BarChart AvgTimeServiceType;
+
+    @FXML
+    BarChart<String,Integer> AvgTimeEmployee;
+
+    @FXML
+    PieChart NumRequestType;
+
+    @FXML
+    PieChart NumRequestEmployee;
+
+    @FXML
+    private CategoryAxis xAxisEmployee;
+
+    @FXML
+    private CategoryAxis xAxisType;
+
+    private ObservableList<String> requestTypeT = FXCollections.observableArrayList();
+    private ObservableList<String> requestTypeE = FXCollections.observableArrayList();
+
+    private ArrayList<String> ST;
+
     @FXML
     private AnchorPane searchPane;
     @FXML
@@ -162,7 +192,7 @@ public class MainPage implements SwitchableController, Observer {
         voice.addObserver(this);
         VoiceLauncher.getInstance().addObserver(voice);
 
-
+        requestTypeE.add("Hospital Average");
         paneVoiceController = new PaneVoiceController(voicePane);
 
         languageInterpreterBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
@@ -220,6 +250,27 @@ public class MainPage implements SwitchableController, Observer {
 
 
         onSearch();
+
+        //statsssssssssssssssss
+
+        selectStats.getItems().add("Employee Name");
+        selectStats.getItems().add("Service Type");
+        selectStats.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
+
+        });
+
+        this.ST = new ArrayList<>();
+        ST.add("LanguageInterpreter");
+        ST.add("ReligiousServices");
+        ST.add("SecurityRequest");
+
+        requestTypeT.add("LanguageInterpreter");
+        requestTypeT.add("ReligiousServices");
+        requestTypeT.add("SecurityRequest");
+
+        xAxisType.setCategories(requestTypeT);
+
+
     }
 
 
@@ -694,6 +745,32 @@ public class MainPage implements SwitchableController, Observer {
     ////////////////////////
 
     @FXML
+    private void onEmployeeName(){
+
+        if(PermissionSingleton.getInstance().userExist(SearchByEmployee.getText())){
+            AvgTimeEmployee.getData().clear();
+            NumRequestEmployee.getData().clear();
+
+            requestTypeE.add(SearchByEmployee.getText());
+
+            xAxisEmployee.setCategories(requestTypeE);
+
+            XYChart.Series<String, Integer> seriesE = new XYChart.Series<>();
+                int time = ServiceRequestSingleton.getInstance().avgCompletionTimeByEmployee(null,SearchByEmployee.getText());
+                int AllEmployeeAverage = ServiceRequestSingleton.getInstance().avgCompletionTimeAll(null);
+                seriesE.getData().add(new XYChart.Data<>(SearchByEmployee.getText(),time/60000));
+                seriesE.getData().add(new XYChart.Data<>("Hospital Average",AllEmployeeAverage/60000));
+            AvgTimeEmployee.getData().add(seriesE);
+
+            ObservableList<PieChart.Data> NumRequestByEmployeeData = FXCollections.observableArrayList();
+            NumRequestByEmployeeData.add(new PieChart.Data("Hospital Average", ServiceRequestSingleton.getInstance().numRequestsAll(null)));
+            NumRequestByEmployeeData.add(new PieChart.Data(SearchByEmployee.getText(), ServiceRequestSingleton.getInstance().numRequestsByEmployee(null,SearchByEmployee.getText())));
+            NumRequestEmployee.getData().addAll(NumRequestByEmployeeData);
+            SearchByEmployee.clear();
+        }
+    }
+
+    @FXML
     private void onSubmitMaintenance(){
         int requiredFields = 0;
         if (situationSelection.getSelectionModel().isEmpty()) {
@@ -761,6 +838,52 @@ public class MainPage implements SwitchableController, Observer {
         onClear();
         onSearch();
     }
+
+    @FXML
+    private void onBack(){
+        statsPane.toFront();
+        selectStats.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    private void OnStats(){
+        selectStats.getSelectionModel().clearSelection();
+        statsPane.toFront();
+        AvgTimeServiceType.getData().clear();
+        AvgTimeEmployee.getData().clear();
+        NumRequestEmployee.getData().clear();
+        NumRequestType.getData().clear();
+        XYChart.Series<String, Integer> seriesT = new XYChart.Series<>();
+        for (int i = 0; i < requestTypeT.size();i++){
+            int time = ServiceRequestSingleton.getInstance().avgCompletionTimeAll(requestTypeT.get(i));
+            seriesT.getData().add(new XYChart.Data<>(requestTypeT.get(i),time/60000));
+            System.out.println(time);
+        }
+        AvgTimeServiceType.getData().add(seriesT);
+
+
+
+        ObservableList<PieChart.Data> NumRequestByTypeData = FXCollections.observableArrayList();
+        for (String a: ST){
+            NumRequestByTypeData.add(new PieChart.Data(a, ServiceRequestSingleton.getInstance().numRequestsAll(a)));
+        }
+        NumRequestType.getData().addAll(NumRequestByTypeData);
+
+
+    }
+
+    @FXML
+    private void onSearchStats(){
+        String selection = selectStats.getSelectionModel().getSelectedItem().toString();
+        if(selection.equals("Employee Name")){
+            employeePane.toFront();
+        }else if(selection.equals("Service Type"))
+            {
+            serviceTypePane.toFront();
+        }
+    }
+
+
 
 
     @Override
