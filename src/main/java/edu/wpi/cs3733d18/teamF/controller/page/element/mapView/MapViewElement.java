@@ -2,10 +2,8 @@ package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
-import edu.wpi.cs3733d18.teamF.controller.page.HomeController;
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
 import edu.wpi.cs3733d18.teamF.gfx.ImageCacheSingleton;
-import edu.wpi.cs3733d18.teamF.gfx.MapDrawable;
 import edu.wpi.cs3733d18.teamF.gfx.impl.map.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.gfx.impl.pacman.GameMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Map;

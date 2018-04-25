@@ -11,6 +11,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
+import org.bytedeco.javacpp.presets.opencv_core;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -312,6 +313,39 @@ public class Map extends Observable implements DatabaseItem, Observer {
                 n.setAdditionalWeight(n.getAdditionalWeight() + 5000);
             }
         }
+    }
+
+    public boolean isValidLocation(String longname){
+        String sql = "SELECT longName FROM Node WHERE longName = '" + longname + "'";
+        ResultSet resultSet = dbHandler.runQuery(sql);
+        try {
+            if(resultSet.next()){
+                String longName = resultSet.getString(1);
+                if(longname.equals(longName)){
+                    return true;
+                }
+            }
+            resultSet.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        return false;
+    }
+
+    public String getNodeIDFromLongName(String longname){
+        String sql = "SELECT id FROM Node WHERE longName = '" + longname + "'";
+        ResultSet resultSet = dbHandler.runQuery(sql);
+        String nodeID = "";
+        try {
+            if(resultSet.next()){
+                nodeID = resultSet.getString(1);
+            }
+            resultSet.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return nodeID;
     }
 
 

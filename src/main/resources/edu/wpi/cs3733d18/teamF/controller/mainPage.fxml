@@ -355,7 +355,7 @@
                                  <Font size="21.0" />
                               </font>
                            </Label>
-                           <JFXTextField fx:id="destinationMaintenance" layoutX="562.0" layoutY="220.0" prefHeight="27.0" prefWidth="202.0" />
+                           <JFXTextField fx:id="destinationMaintenance" layoutX="562.0" layoutY="220.0" prefHeight="27.0" prefWidth="172.0" />
                            <Label layoutX="505.0" layoutY="223.0" text="Location">
                               <font>
                                  <Font size="15.0" />
@@ -415,7 +415,8 @@
                            </HBox>
                            <Label fx:id="maintenanceSituationRequired" layoutX="422.0" layoutY="215.0" text="*Required Field" textFill="RED" visible="false" />
                            <Label fx:id="maintenanceLocationRequired" layoutX="741.0" layoutY="228.0" text="*Required Field" textFill="RED" visible="false" />
-                           <JFXListView fx:id="destinationMatenanceList" layoutX="560.0" layoutY="250.0" onMouseClicked="#onDestinationMaitenance" prefHeight="111.0" prefWidth="206.0" visible="false" />
+                           <JFXListView fx:id="destinationMaintenanceList" layoutX="560.0" layoutY="250.0" onMouseClicked="#onDestinationMaintenance" prefHeight="111.0" prefWidth="206.0" visible="false" />
+                           <Label fx:id="invalidMaintenanceLocation" layoutX="741.0" layoutY="228.0" prefHeight="17.0" prefWidth="95.0" text="*Invalid Location" textFill="RED" visible="false" />
                         </children></AnchorPane>
                   </children>
                </StackPane>
