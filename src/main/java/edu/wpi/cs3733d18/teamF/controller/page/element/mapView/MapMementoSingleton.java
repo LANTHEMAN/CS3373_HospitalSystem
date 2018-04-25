@@ -38,16 +38,16 @@ public class MapMementoSingleton {
 
         if (state.getPath() != null) {
             source.getMapDrawController().showPath(state.getPath());
-            source.changePath(state.getPath().getNodes().get(0), state.getPath().getNodes().get(state.getPath().getNodes().size() - 1));
             source.getMapViewListener().onNewPathSelected(state.getPath());
-            source.setSelectedNodeStart(state.getPath().getNodes().get(0));
-            source.setSelectedNodeEnd(state.getPath().getNodes().get(state.getPath().getNodes().size() - 1));
+            source.getMapViewListener().onPathsChanged(state.getPath().separateIntoFloors());
+
         }else{
             source.getMapDrawController().unshowPath();
             ((HomeController)source.getMapViewListener()).clearFloorTraversal();
             ((HomeController)source.getMapViewListener()).resetFloorButtonBorders();
         }
-        MapSingleton.getInstance().getMap().setFloor(state.getFloor());
+
+        ((HomeController) source.getMapViewListener()).changeFloor(state.getFloor());
         source.getGesturePane().zoomTo(state.getZoomAmount(), state.getTarget());
         source.getGesturePane().centreOn(state.getTarget());
 
@@ -62,7 +62,7 @@ public class MapMementoSingleton {
     }
 
     public void reset(){
-        ((HomeController)source.getMapViewListener()).onLogOutBtn();
         returnToState(initialState);
+        ((HomeController) source.getMapViewListener()).resetHomeController();
     }
 }
