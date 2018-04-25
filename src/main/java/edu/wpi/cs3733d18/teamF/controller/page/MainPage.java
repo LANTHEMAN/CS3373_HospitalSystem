@@ -99,7 +99,7 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     TextArea instructionsRS;
     @FXML
-    JFXListView destinationMaintenanceList, destinationRSList, destinationLIList;
+    JFXListView destinationMaintenanceList, destinationRSList, destinationLIList, securityLocationList;
     @FXML
     Label religionRequiredRS, firstNameRequiredRS, lastNameRequiredRS, locationRequiredRS, occasionRequiredRS;
     String lastSearch = ServiceRequestSingleton.getInstance().getLastSearch();
@@ -235,6 +235,12 @@ public class MainPage implements SwitchableController, Observer {
             DatabaseWrapper.autoCompleteLocations(input, destinationLIList);
         });
 
+        securityLocationField.setOnKeyTyped((KeyEvent e) -> {
+            String input = securityLocationField.getText();
+            input = input.concat("" + e.getCharacter());
+            DatabaseWrapper.autoCompleteLocations(input, securityLocationList);
+        });
+
         /*
         /// TODO RADIAL MENU
         /// TODO RADIAL MENU
@@ -288,6 +294,13 @@ public class MainPage implements SwitchableController, Observer {
         String selection = destinationLIList.getSelectionModel().getSelectedItem().toString();
         destinationLanguage.setText(selection);
         destinationLIList.setVisible(false);
+    }
+
+    @FXML
+    private void onSecurityLocationList(){
+        String selection = securityLocationList.getSelectionModel().getSelectedItem().toString();
+        securityLocationField.setText(selection);
+        securityLocationList.setVisible(false);
     }
 
 
@@ -721,6 +734,10 @@ public class MainPage implements SwitchableController, Observer {
             return;
         }
         String location = securityLocationField.getText();
+        if(!MapSingleton.getInstance().getMap().isValidLocation(location)){
+            invalidLocationSR.setVisible(true);
+            return;
+        }
         String description = securityTextArea.getText();
         String requestTitle = requestTitleField.getText();
         String status = "Incomplete";
@@ -751,6 +768,12 @@ public class MainPage implements SwitchableController, Observer {
         if (securityLocationRequired.isVisible()) {
             securityLocationRequired.setVisible(false);
         }
+        if(invalidLocationSR.isVisible()){
+            invalidLocationSR.setVisible(false);
+        }
+        if (securityLocationList.isVisible()){
+            securityLocationList.setVisible(false);
+        }
     }
 
     ////////////////////////
@@ -760,7 +783,7 @@ public class MainPage implements SwitchableController, Observer {
     ////////////////////////
 
     @FXML
-    Label invalidMaintenanceLocation, invalidLocationRS, invalidLocationLI;
+    Label invalidMaintenanceLocation, invalidLocationRS, invalidLocationLI, invalidLocationSR;
 
     @FXML
     private void onSubmitMaintenance(){
