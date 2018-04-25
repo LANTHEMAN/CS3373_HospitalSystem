@@ -1233,17 +1233,29 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     private void onBathroom() {
-
+        HashSet<Node> nodes = map.getNodes(node -> node.getNodeType().equals("REST"));
+        Node selectedEnd = map.findNodeClosestTo(mapViewElement.getSelectedNodeStart(), nodes);
+        Path path = mapViewElement.changePathDestination(selectedEnd);
+        displayTextDirections(path);
+        onFloorRefresh();
     }
 
     @FXML
     private void onExit() {
-
+        HashSet<Node> nodes = map.getNodes(node -> node.getNodeType().equals("EXIT") && !node.getLongName().contains("Ambulance"));
+        Node selectedEnd = map.findNodeClosestTo(mapViewElement.getSelectedNodeStart(), nodes);
+        Path path = mapViewElement.changePathDestination(selectedEnd);
+        displayTextDirections(path);
+        onFloorRefresh();
     }
 
     @FXML
     private void onCafe() {
-
+        HashSet<Node> nodes = map.getNodes(node -> node.getLongName().contains("Cafe") && node.getNodeType().equals("RETL"));
+        Node selectedEnd = map.findNodeClosestTo(mapViewElement.getSelectedNodeStart(), nodes);
+        Path path = mapViewElement.changePathDestination(selectedEnd);
+        displayTextDirections(path);
+        onFloorRefresh();
     }
 
     ////////////////////////////
