@@ -2,10 +2,8 @@ package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
-import edu.wpi.cs3733d18.teamF.controller.page.HomeController;
 import edu.wpi.cs3733d18.teamF.controller.page.PageElement;
 import edu.wpi.cs3733d18.teamF.gfx.ImageCacheSingleton;
-import edu.wpi.cs3733d18.teamF.gfx.MapDrawable;
 import edu.wpi.cs3733d18.teamF.gfx.impl.map.UglyMapDrawer;
 import edu.wpi.cs3733d18.teamF.gfx.impl.pacman.GameMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Map;
@@ -37,6 +35,7 @@ public class MapViewElement extends PageElement {
     String startNodeID = "FRETL00101";
     EditMode editMode = EditMode.MOVENODE;
     boolean showAllFloors = false;
+    boolean game = false;
 
     // used to see if the floor has changed to update the map drawn
     private MapListener mapListener;
@@ -157,7 +156,6 @@ public class MapViewElement extends PageElement {
         // disable gesturePane when ctrl is held
         switcher.getScene().setOnKeyPressed(ke -> {
             if (ke.isControlDown()) {
-                startGame();
                 if (mapDrawController.getDrawnPath() != null) {
                     mapDrawController.getDrawnPath().separateIntoFloors();
                 }
@@ -167,7 +165,6 @@ public class MapViewElement extends PageElement {
         });
         switcher.getScene().setOnKeyReleased(ke -> {
             if (!ke.isControlDown()) {
-                endGame();
                 gesturePane.setGestureEnabled(true);
                 if (ctrlHeld) {
                     selectedNodeEnd = null;
@@ -436,12 +433,27 @@ public class MapViewElement extends PageElement {
         GameMapDrawer mapdrawer = new GameMapDrawer();
         mapdrawer.setRandom();
         mapDrawController.setMapDrawer(mapdrawer);
+        game = true;
     }
     public void endGame(){
         mapDrawController.setMapDrawer(uglyMapDrawer);
+        game = false;
+    }
+
+    public void toggleGame(){
+        if(game){
+            endGame();
+        }
+        else{
+            startGame();
+        }
     }
     public Node getSelectedNodeStart() {
         return selectedNodeStart;
+    }
+
+    public void nextGame(){
+        startGame();
     }
 
     public MapViewElement setSelectedNodeStart(Node selectedNodeStart) {

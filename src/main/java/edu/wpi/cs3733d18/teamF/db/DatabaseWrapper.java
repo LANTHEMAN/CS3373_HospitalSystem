@@ -73,6 +73,35 @@ public class DatabaseWrapper {
         }
     }
 
+    public static void autoCompleteLocations(String input, ListView listView){
+        if (input.length() > 0) {
+            ResultSet resultSet = DatabaseSingleton.getInstance().getDbHandler().runQuery("SELECT longName FROM Node WHERE UPPER(longName) LIKE UPPER('%" + input + "%')");
+            ArrayList<String> locations = new ArrayList<>();
+
+            try {
+                while (resultSet.next()) {
+                    String name = resultSet.getString(1);
+                    locations.add(name);
+                }
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+            try {
+                if (locations.size() > 0) {
+                    ObservableList<String> list = FXCollections.observableArrayList(locations);
+                    listView.setItems(list);
+                    listView.setVisible(true);
+                } else {
+                    listView.setVisible(false);
+                }
+            } catch (Exception anyE) {
+                anyE.printStackTrace();
+            }
+        } else {
+            listView.setVisible(false);
+        }
+    }
+
     public static ArrayList<User> autoCompleteUserSearch(String input) {
         ArrayList<User> autoCompleteUser = new ArrayList<>();
         if (input.length() > 0) {
