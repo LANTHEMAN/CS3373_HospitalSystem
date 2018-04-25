@@ -50,6 +50,7 @@ import javafx.util.Duration;
 import javafx.util.Pair;
 
 import javax.imageio.ImageIO;
+import javax.xml.ws.Service;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -777,11 +778,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         if (algorithmsBox.isVisible()) {
             algorithmsBox.setVisible(false);
         }
-
+        emergencyBtn.setVisible(false);
         loginBtn.setText("Login");
     }
 
-    private void changeFloorButtons(Path path) {
+    public void changeFloorButtons(Path path) {
         resetFloorButtonBorders();
         String firstFloor = path.getNodes().get(0).getFloor();
         String lastFloor = path.getNodes().get(0).getFloor();
@@ -1351,7 +1352,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         screensaver.changeTimeout((int) (sliderTimeout.getValue() * 1000));
     }
 
-    private void changeFloor(String floor) {
+    public void changeFloor(String floor) {
         resetFloorButtonBackgrounds();
 
         map.setFloor(floor);
@@ -2042,6 +2043,20 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     public void onSelectInboxMessage(ServiceRequests request) {
 
+    }
+
+
+    public void resetHomeController(){
+        if(floorNode.isExpanded()){
+            floorNode.animateList();
+        }
+        if(languageNode.isExpanded()){
+            languageNode.animateList();
+        }
+        if(!MapSingleton.getInstance().getMap().is2D()){
+            MapSingleton.getInstance().getMap().setIs2D(true);
+        }
+        onLogOutBtn();
     }
 
     @FXML
