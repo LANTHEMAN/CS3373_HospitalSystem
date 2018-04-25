@@ -1961,79 +1961,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //       Inbox       //
     //                   //
     ///////////////////////
-    @FXML
-    private VBox inboxRequests;
-    @FXML
-    private JFXTextField inboxSearch;
-    @FXML
-    private JFXComboBox inboxSort;
+
 
     @FXML
     private void onInbox() {
-
-    }
-
-    @FXML
-    private void onExitInbox(){
+        switcher.popupInbox(Screens.Inbox);
         inboxNum.setText(Integer.toString(ServiceRequestSingleton.getInstance().numMessagesInInbox(PermissionSingleton.getInstance().getCurrUser())));
+        System.out.println("inboxNum Updated");
     }
 
-    private void createMessage(ServiceRequests request){
-        Pane pane = new Pane();
-        pane.setPrefSize(200, 100);
-        pane.setStyle("-fx-background-color: WHITE; -fx-background-radius: 30");
-        FontAwesomeIconView iconType = new FontAwesomeIconView();
-        pane.getChildren().add(iconType);
-        switch(request.getType()){
-            case "Language Interpreter":
-                iconType.setGlyphName("LANGUAGE");
-                break;
-            case "Religious Services":
-                iconType.setGlyphName("BOOK");
-                break;
-            case "Security Request":
-                iconType.setGlyphName("SHIELD");
-                break;
-            case "Maintenance Request":
-                iconType.setGlyphName("WRENCH");
-                break;
-        }
-        iconType.setGlyphSize(15);
-        iconType.setLayoutX(23);
-        iconType.setLayoutY(28);
 
-        Label requestType = new Label();
-        requestType.setText(request.getType());
-        pane.getChildren().add(requestType);
-        requestType.setLayoutX(68);
-        requestType.setLayoutY(14);
-
-        Label requestID = new Label();
-        requestID.setText(Integer.toString(request.getId()));
-        pane.getChildren().add(requestID);
-        requestType.setLayoutX(170);
-        requestType.setLayoutY(14);
-
-        Label requestPriority = new Label();
-        requestPriority.setText(Integer.toString(request.getPriority()));
-        pane.getChildren().add(requestPriority);
-        requestType.setLayoutX(21);
-        requestType.setLayoutY(50);
-
-        Label requestLocation = new Label();
-        requestLocation.setText(request.getLocation());
-        pane.getChildren().add(requestLocation);
-        requestType.setLayoutX(84);
-        requestType.setLayoutY(50);
-
-        pane.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            onSelectInboxMessage(request);
-        });
-    }
-
-    public void onSelectInboxMessage(ServiceRequests request){
-
-    }
 
     @FXML
     public void onAllFloors() {

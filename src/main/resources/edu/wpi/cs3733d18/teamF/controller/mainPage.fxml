@@ -41,6 +41,88 @@
             <content>
                <StackPane>
                   <children>
+                      <AnchorPane fx:id="securityPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: #f1f1f1;">
+                          <children>
+                           <FontAwesomeIconView fill="#e4e4e4" glyphName="SHIELD" layoutX="514.0" layoutY="565.0" size="500" />
+                              <Text layoutX="385.0" layoutY="120.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Request">
+                              <font>
+                                 <Font name="System Bold" size="20.0" />
+                              </font>
+                           </Text>
+                              <Label layoutX="152.0" layoutY="270.0" text="Urgency">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                              <Label layoutX="509.0" layoutY="222.0" text="Location">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                              <Label layoutX="166.0" layoutY="401.0" scaleX="1.2" scaleY="1.2" scaleZ="1.2" text="Special Instructions">
+                              <font>
+                                 <Font size="12.0" />
+                              </font>
+                           </Label>
+                              <JFXButton buttonType="RAISED" layoutX="165.0" layoutY="515.0" onAction="#onCancelSecurity" prefHeight="31.0" prefWidth="104.0" text="Cancel" textFill="#f5f2f2" />
+                              <JFXButton buttonType="RAISED" layoutX="644.0" layoutY="515.0" onAction="#onSubmitSecurity" prefHeight="31.0" prefWidth="104.0" text="Submit Request" textFill="#fff2f2" />
+                           <HBox layoutX="255.0" layoutY="270.0" prefHeight="18.0" prefWidth="202.0" spacing="10.0">
+                              <children>
+                                    <RadioButton mnemonicParsing="false" selected="true" text="0">
+                                    <toggleGroup>
+                                       <ToggleGroup fx:id="securityToggleSR" />
+                                    </toggleGroup>
+                                 </RadioButton>
+                                    <RadioButton mnemonicParsing="false" text="1" toggleGroup="$securityToggleSR" />
+                                    <RadioButton mnemonicParsing="false" text="2" toggleGroup="$securityToggleSR" />
+                                    <RadioButton mnemonicParsing="false" text="3" toggleGroup="$securityToggleSR" />
+                                    <RadioButton mnemonicParsing="false" text="4" toggleGroup="$securityToggleSR" />
+                                    <RadioButton mnemonicParsing="false" text="5" toggleGroup="$securityToggleSR" />
+                              </children>
+                           </HBox>
+                              <JFXTextField fx:id="securityLocationField" layoutX="581.0" layoutY="210.0" prefHeight="27.0" prefWidth="160.0" />
+                              <JFXTextArea fx:id="securityTextArea" layoutX="155.0" layoutY="415.0" prefHeight="90.0" prefWidth="591.0" />
+                           <Label layoutX="151.0" layoutY="217.0" text="Request Title">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <JFXTextField fx:id="requestTitleField" layoutX="255.0" layoutY="206.0" prefHeight="27.0" prefWidth="160.0" />
+                           <Label fx:id="securityLocationRequired" layoutX="741.0" layoutY="219.0" text="*Required Field" textFill="RED" visible="false" />
+                           <Label layoutX="149.0" layoutY="161.0" text="Required Information">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="150.0" layoutY="359.0" text="Additional Information">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="152.0" layoutY="313.0" text="Staff Needed">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <HBox layoutX="255.0" layoutY="313.0" prefHeight="18.0" prefWidth="258.0" spacing="10.0">
+                              <children>
+                                 <RadioButton mnemonicParsing="false" selected="true" text="1">
+                                    <toggleGroup>
+                                       <ToggleGroup fx:id="staffToggleSR" />
+                                    </toggleGroup>
+                                 </RadioButton>
+                                 <RadioButton mnemonicParsing="false" text="2" toggleGroup="$staffToggleSR" />
+                                 <RadioButton mnemonicParsing="false" text="3" toggleGroup="$staffToggleSR" />
+                                 <RadioButton mnemonicParsing="false" text="4" toggleGroup="$staffToggleSR" />
+                                 <RadioButton mnemonicParsing="false" text="5" toggleGroup="$staffToggleSR" />
+                                 <RadioButton mnemonicParsing="false" text="6+" toggleGroup="$staffToggleSR" />
+                              </children>
+                           </HBox>
+                           <Label fx:id="requestTitleRequired" layoutX="420.0" layoutY="219.0" text="*Required Field" textFill="RED" visible="false" />
+                           <JFXListView fx:id="securityLocationList" layoutX="572.0" layoutY="243.0" onMouseClicked="#onSecurityLocationList" prefHeight="167.0" prefWidth="209.0" visible="false" />
+                           <Label fx:id="invalidLocationSR" layoutX="748.0" layoutY="219.0" text="*Invalid Location" textFill="RED" visible="false" />
+                          </children>
+                      </AnchorPane>
                       <AnchorPane fx:id="languageInterpreterPane" style="-fx-background-color: #f1f1f1;" StackPane.alignment="CENTER">
                           <children>
                            <FontAwesomeIconView fill="#e4e4e4" glyphName="LANGUAGE" layoutX="480.0" layoutY="548.0" size="400" />
@@ -342,88 +424,6 @@
                            </CircularPane>
                         </children>
                      </StackPane>
-                      <AnchorPane fx:id="securityPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: #f1f1f1;">
-                          <children>
-                           <FontAwesomeIconView fill="#e4e4e4" glyphName="SHIELD" layoutX="514.0" layoutY="565.0" size="500" />
-                              <Text layoutX="385.0" layoutY="120.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Request">
-                              <font>
-                                 <Font name="System Bold" size="20.0" />
-                              </font>
-                           </Text>
-                              <Label layoutX="152.0" layoutY="270.0" text="Urgency">
-                              <font>
-                                 <Font size="15.0" />
-                              </font>
-                           </Label>
-                              <Label layoutX="509.0" layoutY="222.0" text="Location">
-                              <font>
-                                 <Font size="15.0" />
-                              </font>
-                           </Label>
-                              <Label layoutX="166.0" layoutY="401.0" scaleX="1.2" scaleY="1.2" scaleZ="1.2" text="Special Instructions">
-                              <font>
-                                 <Font size="12.0" />
-                              </font>
-                           </Label>
-                              <JFXButton buttonType="RAISED" layoutX="165.0" layoutY="515.0" onAction="#onCancelSecurity" prefHeight="31.0" prefWidth="104.0" text="Cancel" textFill="#f5f2f2" />
-                              <JFXButton buttonType="RAISED" layoutX="644.0" layoutY="515.0" onAction="#onSubmitSecurity" prefHeight="31.0" prefWidth="104.0" text="Submit Request" textFill="#fff2f2" />
-                           <HBox layoutX="255.0" layoutY="270.0" prefHeight="18.0" prefWidth="202.0" spacing="10.0">
-                              <children>
-                                    <RadioButton mnemonicParsing="false" selected="true" text="0">
-                                    <toggleGroup>
-                                       <ToggleGroup fx:id="securityToggleSR" />
-                                    </toggleGroup>
-                                 </RadioButton>
-                                    <RadioButton mnemonicParsing="false" text="1" toggleGroup="$securityToggleSR" />
-                                    <RadioButton mnemonicParsing="false" text="2" toggleGroup="$securityToggleSR" />
-                                    <RadioButton mnemonicParsing="false" text="3" toggleGroup="$securityToggleSR" />
-                                    <RadioButton mnemonicParsing="false" text="4" toggleGroup="$securityToggleSR" />
-                                    <RadioButton mnemonicParsing="false" text="5" toggleGroup="$securityToggleSR" />
-                              </children>
-                           </HBox>
-                              <JFXTextField fx:id="securityLocationField" layoutX="581.0" layoutY="210.0" prefHeight="27.0" prefWidth="160.0" />
-                              <JFXTextArea fx:id="securityTextArea" layoutX="155.0" layoutY="415.0" prefHeight="90.0" prefWidth="591.0" />
-                           <Label layoutX="151.0" layoutY="217.0" text="Request Title">
-                              <font>
-                                 <Font size="15.0" />
-                              </font>
-                           </Label>
-                           <JFXTextField fx:id="requestTitleField" layoutX="255.0" layoutY="206.0" prefHeight="27.0" prefWidth="160.0" />
-                           <Label fx:id="securityLocationRequired" layoutX="741.0" layoutY="219.0" text="*Required Field" textFill="RED" visible="false" />
-                           <Label layoutX="149.0" layoutY="161.0" text="Required Information">
-                              <font>
-                                 <Font size="18.0" />
-                              </font>
-                           </Label>
-                           <Label layoutX="150.0" layoutY="359.0" text="Additional Information">
-                              <font>
-                                 <Font size="18.0" />
-                              </font>
-                           </Label>
-                           <Label layoutX="152.0" layoutY="313.0" text="Staff Needed">
-                              <font>
-                                 <Font size="15.0" />
-                              </font>
-                           </Label>
-                           <HBox layoutX="255.0" layoutY="313.0" prefHeight="18.0" prefWidth="258.0" spacing="10.0">
-                              <children>
-                                 <RadioButton mnemonicParsing="false" selected="true" text="1">
-                                    <toggleGroup>
-                                       <ToggleGroup fx:id="staffToggleSR" />
-                                    </toggleGroup>
-                                 </RadioButton>
-                                 <RadioButton mnemonicParsing="false" text="2" toggleGroup="$staffToggleSR" />
-                                 <RadioButton mnemonicParsing="false" text="3" toggleGroup="$staffToggleSR" />
-                                 <RadioButton mnemonicParsing="false" text="4" toggleGroup="$staffToggleSR" />
-                                 <RadioButton mnemonicParsing="false" text="5" toggleGroup="$staffToggleSR" />
-                                 <RadioButton mnemonicParsing="false" text="6+" toggleGroup="$staffToggleSR" />
-                              </children>
-                           </HBox>
-                           <Label fx:id="requestTitleRequired" layoutX="420.0" layoutY="219.0" text="*Required Field" textFill="RED" visible="false" />
-                           <JFXListView fx:id="securityLocationList" layoutX="572.0" layoutY="243.0" onMouseClicked="#onSecurityLocationList" prefHeight="167.0" prefWidth="209.0" visible="false" />
-                           <Label fx:id="invalidLocationSR" layoutX="748.0" layoutY="219.0" text="*Invalid Location" textFill="RED" visible="false" />
-                          </children>
-                      </AnchorPane>
                   </children>
                </StackPane>
             </content>
