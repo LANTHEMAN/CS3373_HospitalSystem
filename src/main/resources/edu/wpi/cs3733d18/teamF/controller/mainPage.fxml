@@ -11,6 +11,10 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
@@ -41,85 +45,6 @@
             <content>
                <StackPane>
                   <children>
-                     <AnchorPane fx:id="maintenancePane" style="-fx-background-color: #f1f1f1;">
-                        <children>
-                           <FontAwesomeIconView fill="#e4e4e4" glyphName="WRENCH" layoutX="475.0" layoutY="532.0" size="400" />
-                           <Text layoutX="328.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Maintenance Request">
-                              <font>
-                                 <Font size="30.0" />
-                              </font>
-                           </Text>
-                           <Label layoutX="164.0" layoutY="215.0" text="Situation">
-                              <font>
-                                 <Font size="15.0" />
-                              </font>
-                           </Label>
-                           <Label layoutX="163.0" layoutY="153.0" text="Required Information">
-                              <font>
-                                 <Font size="21.0" />
-                              </font>
-                           </Label>
-                           <JFXTextField fx:id="destinationMaintenance" layoutX="562.0" layoutY="220.0" prefHeight="27.0" prefWidth="160.0" />
-                           <Label layoutX="505.0" layoutY="223.0" text="Location">
-                              <font>
-                                 <Font size="15.0" />
-                              </font>
-                           </Label>
-                           <Label layoutX="171.0" layoutY="377.0" text="Special Instructions">
-                              <font>
-                                 <Font size="15.0" />
-                              </font>
-                           </Label>
-                           <JFXTextArea fx:id="instructionsMaintenance" layoutX="167.0" layoutY="402.0" prefHeight="72.0" prefWidth="588.0" />
-                           <JFXButton buttonType="RAISED" layoutX="615.0" layoutY="490.0" onAction="#onSubmitMaintenance" prefHeight="27.0" prefWidth="140.0" ripplerFill="#11119d" text="Submit Request" textFill="WHITE" />
-                           <JFXButton buttonType="RAISED" layoutX="169.0" layoutY="490.0" onAction="#onCancelMaintenance" ripplerFill="#11119d" text="Cancel" textFill="WHITE" />
-                           <Label layoutX="163.0" layoutY="268.0" text="Urgency">
-                              <font>
-                                 <Font size="15.0" />
-                              </font>
-                           </Label>
-                           <HBox layoutX="266.0" layoutY="268.0" prefHeight="18.0" prefWidth="202.0" spacing="10.0">
-                              <children>
-                                 <RadioButton mnemonicParsing="false" selected="true" text="0">
-                                    <toggleGroup>
-                                       <ToggleGroup fx:id="securityToggleMaintenance" />
-                                    </toggleGroup>
-                                 </RadioButton>
-                                 <RadioButton mnemonicParsing="false" text="1" toggleGroup="$securityToggleMaintenance" />
-                                 <RadioButton mnemonicParsing="false" text="2" toggleGroup="$securityToggleMaintenance" />
-                                 <RadioButton mnemonicParsing="false" text="3" toggleGroup="$securityToggleMaintenance" />
-                                 <RadioButton mnemonicParsing="false" text="4" toggleGroup="$securityToggleMaintenance" />
-                                 <RadioButton mnemonicParsing="false" text="5" toggleGroup="$securityToggleMaintenance" />
-                              </children>
-                           </HBox>
-                           <Label layoutX="163.0" layoutY="340.0" text="Addtional Information">
-                              <font>
-                                 <Font size="21.0" />
-                              </font>
-                           </Label>
-                           <JFXComboBox fx:id="situationSelection" layoutX="255.0" layoutY="208.0" prefHeight="27.0" prefWidth="160.0" promptText="Type of Situation" />
-                           <Label layoutX="163.0" layoutY="308.0" text="Staff Needed">
-                              <font>
-                                 <Font size="15.0" />
-                              </font>
-                           </Label>
-                           <HBox layoutX="266.0" layoutY="308.0" prefHeight="18.0" prefWidth="261.0" spacing="10.0">
-                              <children>
-                                 <RadioButton mnemonicParsing="false" selected="true" text="1">
-                                    <toggleGroup>
-                                       <ToggleGroup fx:id="staffToggleMaintenance" />
-                                    </toggleGroup>
-                                 </RadioButton>
-                                 <RadioButton mnemonicParsing="false" text="2" toggleGroup="$staffToggleMaintenance" />
-                                 <RadioButton mnemonicParsing="false" text="3" toggleGroup="$staffToggleMaintenance" />
-                                 <RadioButton mnemonicParsing="false" text="4" toggleGroup="$staffToggleMaintenance" />
-                                 <RadioButton mnemonicParsing="false" text="5" toggleGroup="$staffToggleMaintenance" />
-                                 <RadioButton mnemonicParsing="false" text="6+" toggleGroup="$staffToggleMaintenance" />
-                              </children>
-                           </HBox>
-                           <Label fx:id="maintenanceSituationRequired" layoutX="422.0" layoutY="215.0" text="*Required Field" textFill="RED" visible="false" />
-                           <Label fx:id="maintenanceLocationRequired" layoutX="741.0" layoutY="228.0" text="*Required Field" textFill="RED" visible="false" />
-                        </children></AnchorPane>
                       <AnchorPane fx:id="securityPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: #f1f1f1;">
                           <children>
                            <FontAwesomeIconView fill="#e4e4e4" glyphName="SHIELD" layoutX="514.0" layoutY="565.0" size="500" />
@@ -416,6 +341,86 @@
                            </CircularPane>
                         </children>
                      </StackPane>
+                     <AnchorPane fx:id="maintenancePane" style="-fx-background-color: #f1f1f1;">
+                        <children>
+                           <FontAwesomeIconView fill="#e4e4e4" glyphName="WRENCH" layoutX="475.0" layoutY="532.0" size="400" />
+                           <Text layoutX="328.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Maintenance Request">
+                              <font>
+                                 <Font size="30.0" />
+                              </font>
+                           </Text>
+                           <Label layoutX="164.0" layoutY="215.0" text="Situation">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="163.0" layoutY="153.0" text="Required Information">
+                              <font>
+                                 <Font size="21.0" />
+                              </font>
+                           </Label>
+                           <JFXTextField fx:id="destinationMaintenance" layoutX="562.0" layoutY="220.0" prefHeight="27.0" prefWidth="202.0" />
+                           <Label layoutX="505.0" layoutY="223.0" text="Location">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="171.0" layoutY="377.0" text="Special Instructions">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <JFXTextArea fx:id="instructionsMaintenance" layoutX="167.0" layoutY="402.0" prefHeight="72.0" prefWidth="588.0" />
+                           <JFXButton buttonType="RAISED" layoutX="615.0" layoutY="490.0" onAction="#onSubmitMaintenance" prefHeight="27.0" prefWidth="140.0" ripplerFill="#11119d" text="Submit Request" textFill="WHITE" />
+                           <JFXButton buttonType="RAISED" layoutX="169.0" layoutY="490.0" onAction="#onCancelMaintenance" ripplerFill="#11119d" text="Cancel" textFill="WHITE" />
+                           <Label layoutX="163.0" layoutY="268.0" text="Urgency">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <HBox layoutX="266.0" layoutY="268.0" prefHeight="18.0" prefWidth="202.0" spacing="10.0">
+                              <children>
+                                 <RadioButton mnemonicParsing="false" selected="true" text="0">
+                                    <toggleGroup>
+                                       <ToggleGroup fx:id="securityToggleMaintenance" />
+                                    </toggleGroup>
+                                 </RadioButton>
+                                 <RadioButton mnemonicParsing="false" text="1" toggleGroup="$securityToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="2" toggleGroup="$securityToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="3" toggleGroup="$securityToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="4" toggleGroup="$securityToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="5" toggleGroup="$securityToggleMaintenance" />
+                              </children>
+                           </HBox>
+                           <Label layoutX="163.0" layoutY="340.0" text="Addtional Information">
+                              <font>
+                                 <Font size="21.0" />
+                              </font>
+                           </Label>
+                           <JFXComboBox fx:id="situationSelection" layoutX="255.0" layoutY="208.0" prefHeight="27.0" prefWidth="160.0" promptText="Type of Situation" />
+                           <Label layoutX="163.0" layoutY="308.0" text="Staff Needed">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Label>
+                           <HBox layoutX="266.0" layoutY="308.0" prefHeight="18.0" prefWidth="261.0" spacing="10.0">
+                              <children>
+                                 <RadioButton mnemonicParsing="false" selected="true" text="1">
+                                    <toggleGroup>
+                                       <ToggleGroup fx:id="staffToggleMaintenance" />
+                                    </toggleGroup>
+                                 </RadioButton>
+                                 <RadioButton mnemonicParsing="false" text="2" toggleGroup="$staffToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="3" toggleGroup="$staffToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="4" toggleGroup="$staffToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="5" toggleGroup="$staffToggleMaintenance" />
+                                 <RadioButton mnemonicParsing="false" text="6+" toggleGroup="$staffToggleMaintenance" />
+                              </children>
+                           </HBox>
+                           <Label fx:id="maintenanceSituationRequired" layoutX="422.0" layoutY="215.0" text="*Required Field" textFill="RED" visible="false" />
+                           <Label fx:id="maintenanceLocationRequired" layoutX="741.0" layoutY="228.0" text="*Required Field" textFill="RED" visible="false" />
+                           <JFXListView fx:id="destinationMatenanceList" layoutX="560.0" layoutY="250.0" onMouseClicked="#onDestinationMaitenance" prefHeight="111.0" prefWidth="206.0" visible="false" />
+                        </children></AnchorPane>
                   </children>
                </StackPane>
             </content>
@@ -589,11 +594,78 @@
                </StackPane>
             </content>
          </Tab>
-         <Tab text="Statistics">
+         <Tab onSelectionChanged="#OnStats" text="Statistics">
            <content>
                <StackPane>
                   <children>
-                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                     <AnchorPane fx:id="employeePane" style="-fx-background-color: #f1f1f1;">
+                        <children>
+                           <Text layoutX="345.0" layoutY="54.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Service Request Statistics: Employee">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Text>
+                           <HBox layoutX="42.0" layoutY="161.0" prefHeight="354.0" prefWidth="868.0">
+                              <children>
+                                 <BarChart fx:id="AvgTimeEmployee" prefHeight="417.0" prefWidth="528.0" title="Average Request Complete Time">
+                                    <xAxis>
+                                       <CategoryAxis label="Employee" side="BOTTOM" fx:id="xAxisEmployee" />
+                                    </xAxis>
+                                    <yAxis>
+                                       <NumberAxis label="Average Time" side="LEFT" />
+                                    </yAxis>
+                                 </BarChart>
+                                 <PieChart fx:id="NumRequestEmployee" prefHeight="354.0" prefWidth="429.0" title="Number of Request Completed" />
+                              </children>
+                           </HBox>
+                           <Label layoutX="111.0" layoutY="111.0" text="Employee Name">
+                              <font>
+                                 <Font size="19.0" />
+                              </font></Label>
+                           <JFXTextField fx:id="SearchByEmployee" layoutX="263.0" layoutY="102.0" onKeyTyped="#onEmployeeName" prefHeight="27.0" prefWidth="202.0" />
+                           <JFXButton buttonType="RAISED" layoutX="111.0" layoutY="522.0" onAction="#onBack" prefHeight="27.0" prefWidth="70.0" ripplerFill="#11119d" text="Back" textFill="WHITE" />
+                        </children>
+                     </AnchorPane>
+                     <AnchorPane fx:id="serviceTypePane" style="-fx-background-color: #f1f1f1;">
+                        <children>
+                           <Text layoutX="316.0" layoutY="53.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Service Request Statistics: Service Type">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Text>
+                           <HBox layoutX="25.0" layoutY="118.0" prefHeight="389.0" prefWidth="868.0">
+                              <children>
+                                 <BarChart fx:id="AvgTimeServiceType" prefHeight="417.0" prefWidth="528.0" title="Average Request Complete Time">
+                                    <xAxis>
+                                       <CategoryAxis label="Type of Request" side="BOTTOM" fx:id="xAxisType" />
+                                    </xAxis>
+                                    <yAxis>
+                                       <NumberAxis label="Average Time" side="LEFT" />
+                                    </yAxis>
+                                 </BarChart>
+                                 <PieChart fx:id="NumRequestType" prefHeight="354.0" prefWidth="429.0" title="Number of Request by Catagory" />
+                              </children>
+                           </HBox>
+                           <JFXButton buttonType="RAISED" layoutX="92.0" layoutY="533.0" onAction="#onBack" prefHeight="27.0" prefWidth="70.0" ripplerFill="#11119d" text="Back" textFill="WHITE" />
+                        </children>
+                     </AnchorPane>
+                     <AnchorPane fx:id="statsPane" style="-fx-background-color: #f1f1f1;">
+                        <children>
+                           <FontAwesomeIconView fill="#e4e4e4" glyphName="BAR_CHART" layoutX="418.0" layoutY="531.0" size="400" />
+                           <Text layoutX="375.0" layoutY="233.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Service Request Statistics:">
+                              <font>
+                                 <Font size="15.0" />
+                              </font>
+                           </Text>
+                           <Text layoutX="288.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search by: ">
+                              <font>
+                                 <Font size="19.0" />
+                              </font>
+                           </Text>
+                           <JFXComboBox fx:id="selectStats" layoutX="402.0" layoutY="275.0" prefHeight="27.0" prefWidth="160.0" promptText="Select Search Type" />
+                           <JFXButton buttonType="RAISED" layoutX="580.0" layoutY="275.0" onAction="#onSearchStats" prefHeight="27.0" prefWidth="70.0" ripplerFill="#11119d" text="Search" textFill="WHITE" />
+                        </children>
+                     </AnchorPane>
                   </children>
                </StackPane>
            </content>

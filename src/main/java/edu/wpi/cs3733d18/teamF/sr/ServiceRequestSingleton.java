@@ -526,16 +526,16 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 sql = "SELECT COUNT(*) FROM ServiceRequest";
                 break;
             case "LanguageInterpreter":
-                sql = "SELECT COUNT(*) FROM  WHERE type = 'Language Interpreter'";
+                sql = "SELECT COUNT(*) FROM ServiceRequest WHERE type = 'Language Interpreter'";
                 break;
             case "ReligiousServices":
-                sql = "SELECT COUNT(*) FROM  WHERE type = 'Religious Services'";
+                sql = "SELECT COUNT(*) FROM ServiceRequest WHERE type = 'Religious Services'";
                 break;
             case "SecurityRequest":
-                sql = "SELECT COUNT(*) FROM  WHERE type = 'Security Request'";
+                sql = "SELECT COUNT(*) FROM ServiceRequest WHERE type = 'Security Request'";
                 break;
             case "MaintenanceRequest":
-                sql = "SELECT COUNT(*) FROM  WHERE type = 'Maintenance Request'";
+                sql = "SELECT COUNT(*) FROM ServiceRequest WHERE type = 'Maintenance Request'";
                 break;
             default:
                 sql = "SELECT COUNT(*) FROM ServiceRequest";
@@ -546,38 +546,38 @@ public class ServiceRequestSingleton implements DatabaseItem {
         return count;
     }
 
-    public double avgCompletionTimeAll(String type){
+    public int avgCompletionTimeAll(String type){
         if(type == null){
             type =  "all";
         }
         String sql;
         switch (type){
             case "all":
-                sql = "SELECT S.createdOn, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete'";
+                sql = "SELECT createdOn, completed FROM ServiceRequest WHERE status = 'Complete'";
                 break;
             case "LanguageInterpreter":
-                sql = "SELECT S.createdOn, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Language Interpreter'";
+                sql = "SELECT createdOn, completed FROM ServiceRequest WHERE status = 'Complete' AND type = 'Language Interpreter'";
                 break;
             case "ReligiousServices":
-                sql = "SELECT S.createdOn, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Religious Services'";
+                sql = "SELECT createdOn, completed FROM ServiceRequest WHERE status = 'Complete' AND type = 'Religious Services'";
                 break;
             case "SecurityRequest":
-                sql = "SELECT S.createdOn, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Security Request'";
+                sql = "SELECT createdOn, completed FROM ServiceRequest WHERE status = 'Complete' AND type = 'Security Request'";
                 break;
             case "MaintenanceRequest":
-                sql = "SELECT S.createdOn, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Maintenance Request'";
+                sql = "SELECT createdOn, completed FROM ServiceRequest WHERE status = 'Complete' AND type = 'Maintenance Request'";
                 break;
             default:
-                sql = "SELECT S.createdOn, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete'";
+                sql = "SELECT createdOn, completed FROM ServiceRequest WHERE status = 'Complete'";
                 break;
         }
         ResultSet resultSet = dbHandler.runQuery(sql);
-        double avgTime = getAverageTime(resultSet);
+        int avgTime = (int)getAverageTime(resultSet);
         return avgTime;
     }
 
     public long getAverageTime(ResultSet resultSet){
-        long avgTime;
+        long avgTime = 0;
         long completionTimeSum = 0;
         int numTimes = 0;
         try {
@@ -588,45 +588,48 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 long start = started.getTime();
                 long end = completed.getTime();
 
-                completionTimeSum += end-start;
+                completionTimeSum += (end-start);
                 numTimes++;
             }
             resultSet.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
+        if (numTimes != 0){
+            avgTime = completionTimeSum/numTimes;
+        }
 
-        avgTime = completionTimeSum/numTimes;
         return avgTime;
     }
 
-    public double avgCompletionTimeByEmployee(String type, String username){
+    public int avgCompletionTimeByEmployee(String type, String username){
         if(type == null){
             type =  "all";
         }
         String sql;
         switch (type){
             case "all":
-                sql = "SELECT S.started, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND I.username = '" + username + "'";
+                sql = "SELECT ServiceRequest.started, ServiceRequest.completed FROM Inbox INNER JOIN ServiceRequest ON Inbox.requestID = ServiceRequest.id WHERE ServiceRequest.status = 'Complete' AND Inbox.username = '" + username + "'";
                 break;
             case "LanguageInterpreter":
-                sql = "SELECT S.started, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Language Interpreter' AND I.username = '" + username + "'";
+                sql = "SELECT ServiceRequest.started, ServiceRequest.completed FROM Inbox INNER JOIN ServiceRequest ON Inbox.requestID = ServiceRequest.id WHERE ServiceRequest.status = 'Complete' AND ServiceRequest.type = 'Language Interpreter' AND Inbox.username = '" + username + "'";
                 break;
             case "ReligiousServices":
-                sql = "SELECT S.started, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Religious Services' AND I.username = '" + username + "'";
+                sql = "SELECT ServiceRequest.started, ServiceRequest.completed FROM Inbox INNER JOIN ServiceRequest ON Inbox.requestID = ServiceRequest.id WHERE ServiceRequest.status = 'Complete' AND ServiceRequest.type = 'Religious Services' AND Inbox.username = '" + username + "'";
                 break;
             case "SecurityRequest":
-                sql = "SELECT S.started, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Security Request' AND I.username = '" + username + "'";
+                sql = "SELECT ServiceRequest.started, ServiceRequest.completed FROM Inbox INNER JOIN ServiceRequest ON Inbox.requestID = ServiceRequest.id WHERE ServiceRequest.status = 'Complete' AND ServiceRequest.type = 'Security Request' AND Inbox.username = '" + username + "'";
                 break;
             case "MaintenanceRequest":
-                sql = "SELECT S.started, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Maintenance Request' AND I.username = '" + username + "'";
+                sql = "SELECT ServiceRequest.started, ServiceRequest.completed FROM Inbox INNER JOIN ServiceRequest ON Inbox.requestID = ServiceRequest.id WHERE ServiceRequest.status = 'Complete' AND ServiceRequest.type = 'Maintenance Request' AND Inbox.username = '" + username + "'";
                 break;
             default:
-                sql = "SELECT S.started, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND I.username = '" + username + "'";
+                sql = "SELECT ServiceRequest.started, ServiceRequest.completed FROM Inbox INNER JOIN ServiceRequest ON Inbox.requestID = ServiceRequest.id WHERE ServiceRequest.status = 'Complete' AND Inbox.username = '" + username + "'";
                 break;
         }
         ResultSet resultSet = dbHandler.runQuery(sql);
-        double avgTime = getAverageTime(resultSet);
+        int avgTime = (int)getAverageTime(resultSet);
+        System.out.println(avgTime);
         return avgTime;
     }
 
@@ -657,6 +660,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
         }
         ResultSet resultSet = dbHandler.runQuery(sql);
         int count = getCountResult(resultSet);
+        System.out.println(count);
         return count;
     }
 
