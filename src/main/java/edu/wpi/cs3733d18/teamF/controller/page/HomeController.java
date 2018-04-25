@@ -283,6 +283,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private GoogleMapView googleMapView;
     @FXML
     private ImageView hospitalLogo;
+    @FXML
     private GoogleMap gmap;
     private boolean isGoogleMapViewEnabled = false;
 
