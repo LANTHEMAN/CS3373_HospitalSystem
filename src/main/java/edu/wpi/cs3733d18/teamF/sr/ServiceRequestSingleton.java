@@ -203,28 +203,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
         this.setListOfRequests(newList);
     }
 
-    public ArrayList<ServiceRequests> addServiceRequest(ServiceRequests s, ArrayList<ServiceRequests> listReq) {
-        int listSize = listReq.size();
-        int flag = 0;
-        ArrayList<ServiceRequests> newList = new ArrayList<>();
-        if (listSize == 0) {
-            newList.add(0, s);
-        } else {
-            for (ServiceRequests i : listReq) {
-                if (i.getId() > s.getId() && flag == 0) {
-                    newList.add(s);
-                    flag++;
-                } else {
-                    newList.add(i);
-                }
-            }
-            if (flag == 0) {
-                newList.add(s);
-            }
-        }
-
-        return newList;
-    }
 
     public ArrayList<ServiceRequests> resultSetToServiceRequest(ResultSet resultSet) {
         ArrayList<ServiceRequests> requests = new ArrayList<>();

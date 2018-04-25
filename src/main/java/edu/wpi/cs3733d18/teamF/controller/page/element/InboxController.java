@@ -7,8 +7,7 @@ import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.Screens;
 import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
 import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
-import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
-import edu.wpi.cs3733d18.teamF.sr.ServiceRequests;
+import edu.wpi.cs3733d18.teamF.sr.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -138,7 +137,29 @@ public class InboxController implements SwitchableController {
         idLabel.setText("Service Request #" + s.getId());
         locationLabel.setText(s.getLocation());
         statusLabel.setText(s.getStatus());
-        instructionsTextArea.setText(s.getDescription());
+        String description;
+        if(s.getType().equals("Security Request")){
+            instructionsTextArea.setText(s.getDescription());
+        }else{
+            switch(s.getType()){
+                case "Language Interpreter":
+                    LanguageInterpreter li = (LanguageInterpreter) s;
+                    description = li.getLanguage() + ": " + li.getDescription();
+                    instructionsTextArea.setText(description);
+                    break;
+                case "Religious Services":
+                    ReligiousServices rs = (ReligiousServices) s;
+                    description = rs.getReligion() + ": " + rs.getDescription();
+                    instructionsTextArea.setText(description);
+                    break;
+                case "Maintenance Request":
+                    MaintenanceRequest mr = (MaintenanceRequest) s;
+                    description = mr.getSituation() + ": " + mr.getDescription();
+                    instructionsTextArea.setText(description);
+                    break;
+
+            }
+        }
         instructionsTextArea.setEditable(false);
         if (s.getStatus().equalsIgnoreCase("Complete")) {
             completeCheck.setSelected(true);
@@ -150,6 +171,10 @@ public class InboxController implements SwitchableController {
             completedByLabel.setVisible(true);
             usernameLabel.setVisible(true);
             usernameLabel.setText(s.getCompletedBy());
+        }else{
+            completedByLabel.setVisible(false);
+            usernameLabel.setVisible(false);
+            usernameLabel.setText("");
         }
         editRequestPane.setVisible(true);
     }
