@@ -16,7 +16,7 @@
             <Image url="@../../HospitalWallpaper.jpg" />
         </image>
     </ImageView>
-    <GridPane prefHeight="1080.0" prefWidth="1834.0" AnchorPane.topAnchor="0.0">
+    <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -37,7 +37,7 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <ImageView fitHeight="70.0" fitWidth="250.0" GridPane.rowSpan="3">
+                    <ImageView fitHeight="90.0" fitWidth="400.0" preserveRatio="true" GridPane.rowSpan="2147483647">
                         <image>
                             <Image url="@../../logo_large.png" />
                         </image>
@@ -45,19 +45,19 @@
                             <Insets left="20.0" />
                         </GridPane.margin>
                     </ImageView>
-                    <Label fx:id="time" text="05:30pm" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+                    <Label fx:id="time" text="05:30pm" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
                         <GridPane.margin>
                             <Insets right="20.0" />
                         </GridPane.margin>
                     </Label>
-                    <Label fx:id="date" text="April 25, 2018" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                    <Label fx:id="date" text="April 25, 2018" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                         <GridPane.margin>
                             <Insets right="20.0" />
                         </GridPane.margin>
                     </Label>
                 </children>
             </GridPane>
-            <Label fx:id="askMeField" alignment="CENTER" textFill="WHITE" GridPane.rowIndex="2">
+            <Label fx:id="askMeField" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                 <GridPane.margin>
                     <Insets left="40.0" right="40.0" />
                 </GridPane.margin>
