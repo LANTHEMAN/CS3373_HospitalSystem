@@ -59,6 +59,7 @@ import java.util.concurrent.TimeoutException;
 import static edu.wpi.cs3733d18.teamF.db.DatabaseWrapper.autoCompleteUserSearch;
 
 public class HomeController implements SwitchableController, Observer, MapViewListener {
+    private boolean isGame = false;
     private static MapState savedState;
     private final ObservableList<String> privilegeOptions = FXCollections.observableArrayList("Staff", "Admin");
     @FXML
@@ -2059,5 +2060,15 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     public void toggleGame(){
         mapViewElement.toggleGame();
+        if(!isGame) {
+            floorTraversal.setVisible(false);
+            floorTraversal.setDisable(true);
+            isGame = true;
+        }
+        else{
+            floorTraversal.setDisable(false);
+            floorTraversal.setVisible(true);
+            isGame = false;
+        }
     }
 }
