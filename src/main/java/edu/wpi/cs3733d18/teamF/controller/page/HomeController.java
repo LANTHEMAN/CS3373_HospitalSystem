@@ -4,7 +4,6 @@ import com.github.sarxos.webcam.Webcam;
 import com.jfoenix.controls.*;
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.javascript.object.*;
-import com.sun.prism.ResourceFactory;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.controller.*;
@@ -23,12 +22,10 @@ import edu.wpi.cs3733d18.teamF.graph.*;
 import edu.wpi.cs3733d18.teamF.graph.pathfinding.*;
 import edu.wpi.cs3733d18.teamF.qr.qrConverter;
 import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
-import edu.wpi.cs3733d18.teamF.sr.ServiceRequests;
 import edu.wpi.cs3733d18.teamF.voice.VoiceCommandVerification;
 import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.animation.Animation;
 import javafx.animation.*;
-import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -50,10 +47,8 @@ import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.Pair;
-import org.joda.time.JodaTimePermission;
 
 import javax.imageio.ImageIO;
-import javax.xml.ws.Service;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +59,6 @@ import java.util.concurrent.TimeoutException;
 import static edu.wpi.cs3733d18.teamF.db.DatabaseWrapper.autoCompleteUserSearch;
 
 public class HomeController implements SwitchableController, Observer, MapViewListener {
-    private boolean isGame = false;
     private static MapState savedState;
     private final ObservableList<String> privilegeOptions = FXCollections.observableArrayList("Staff", "Admin");
     @FXML
@@ -84,6 +78,14 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //                             //
     /////////////////////////////////
     FaceLauncher launcher = new FaceLauncher();
+    /////////////////////////////////
+    //                             //
+    //           Emergency         //
+    //                             //
+    /////////////////////////////////
+    FillTransition ft;
+    Rectangle rectangle = new Rectangle();
+    private boolean isGame = false;
     private PaneSwitcher switcher;
     private ObservableResourceFactory resFactory = new ObservableResourceFactory();
     ///////////////////////////////
@@ -207,10 +209,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private GridPane menu;
     @FXML
-    private VBox adminBox, guestBox,nearestBox;
+    private VBox adminBox, guestBox, nearestBox;
     @FXML
     private JFXButton mapEditorBtn, editUsersBtn, changeAlgorithmBtn;
-
     /////////////////////////////
     //      Directions Box     //
     /////////////////////////////
@@ -289,14 +290,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private GoogleMap gmap;
     private boolean isGoogleMapViewEnabled = false;
-
-    /////////////////////////////////   
-    //                             //
-    //           Emergency         //
-    //                             //
-    /////////////////////////////////
-    FillTransition ft;
-    Rectangle rectangle = new Rectangle();
     private boolean emergency = false;
     @FXML
     private JFXButton emergencyBtn;
@@ -349,7 +342,15 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private JFXTextField inboxSearch;
     @FXML
     private JFXComboBox inboxSort;
+    @FXML
+    private JFXButton deleteBtn;
 
+
+    /////////////////////////////////////
+    //                                 //
+    //          Button Colors          //
+    //                                 //
+    /////////////////////////////////////
 
     /**
      * Constructor for this class
@@ -627,16 +628,16 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
             int minute = cal.get(Calendar.MINUTE);
             int hour;
             String dayTime;
-            if(cal.get(Calendar.HOUR) > 12 && cal.get(Calendar.HOUR) < 24){
+            if (cal.get(Calendar.HOUR) > 12 && cal.get(Calendar.HOUR) < 24) {
                 hour = cal.get(Calendar.HOUR) % 12;
                 dayTime = "P.M.";
-            }else if(cal.get(Calendar.HOUR) == 12){
+            } else if (cal.get(Calendar.HOUR) == 12) {
                 hour = cal.get(Calendar.HOUR);
                 dayTime = "P.M.";
-            } else if(cal.get(Calendar.HOUR) == 24 || cal.get(Calendar.HOUR) == 0){
+            } else if (cal.get(Calendar.HOUR) == 24 || cal.get(Calendar.HOUR) == 0) {
                 hour = 12;
                 dayTime = "A.M.";
-            }else{
+            } else {
                 hour = cal.get(Calendar.HOUR);
                 dayTime = "A.M.";
             }
@@ -651,13 +652,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
     }
-
-
-    /////////////////////////////////////
-    //                                 //
-    //          Button Colors          //
-    //                                 //
-    /////////////////////////////////////
 
     public void onCameraClicked() throws IOException {
         if (!usernameField.getText().equals("")) {
@@ -682,10 +676,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     @FXML
-    private JFXButton deleteBtn;
-
-    @FXML
-    public void onDeleteUser(){
+    public void onDeleteUser() {
         if (ServiceRequestSingleton.getInstance().isInTable(editedUser.getUname(), "LanguageInterpreter")) {
             ServiceRequestSingleton.getInstance().removeUsernameLanguageInterpreter(editedUser.getUname());
         }
@@ -748,7 +739,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                 // got a string saying that the activation command has been said
                 paneVoiceController.setVisibility(true);
 
-            }else if(cmd.equalsIgnoreCase("Fire")){
+            } else if (cmd.equalsIgnoreCase("Fire")) {
 
                 triggerEmergency();
             } else {
@@ -1623,7 +1614,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         lnameField.clear();
         faceIDField.clear();
         occupationField.clear();
-        if(deleteBtn.isVisible()) {
+        if (deleteBtn.isVisible()) {
             deleteBtn.setVisible(false);
         }
         languageCheck.setSelected(false);
@@ -1698,8 +1689,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         occupationField.setText(e.getOccupation());
         privilegeCombo.getSelectionModel().select(e.getPrivilege());
 
-        if(!deleteBtn.isVisible()) {
+        if (!deleteBtn.isVisible()) {
             deleteBtn.setVisible(true);
+        }
+        if (e.getUname().equals(PermissionSingleton.getInstance().getCurrUser())) {
+            deleteBtn.setVisible(false);
         }
 
 
@@ -2103,16 +2097,14 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
 
-
-
-    public void resetHomeController(){
-        if(floorNode.isExpanded()){
+    public void resetHomeController() {
+        if (floorNode.isExpanded()) {
             floorNode.animateList();
         }
-        if(languageNode.isExpanded()){
+        if (languageNode.isExpanded()) {
             languageNode.animateList();
         }
-        if(!MapSingleton.getInstance().getMap().is2D()){
+        if (!MapSingleton.getInstance().getMap().is2D()) {
             MapSingleton.getInstance().getMap().setIs2D(true);
         }
         onLogOutBtn();
@@ -2124,14 +2116,13 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     @FXML
-    public void toggleGame(){
+    public void toggleGame() {
         mapViewElement.toggleGame();
-        if(!isGame) {
+        if (!isGame) {
             floorTraversal.setVisible(false);
             floorTraversal.setDisable(true);
             isGame = true;
-        }
-        else{
+        } else {
             floorTraversal.setDisable(false);
             floorTraversal.setVisible(true);
             isGame = false;
