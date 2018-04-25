@@ -17,9 +17,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class InboxController implements SwitchableController {
     PaneSwitcher switcher;
+    private boolean decreasingOrder = true;
 
 
     @FXML
@@ -38,48 +40,16 @@ public class InboxController implements SwitchableController {
 
     public void initialize(PaneSwitcher switcher){
         this.switcher=switcher;
-        ArrayList<ServiceRequests> inbox;
 
-        if(PermissionSingleton.getInstance().isAdmin()){
-            inbox = ServiceRequestSingleton.getInstance().getListOfRequests();
-        }else {
-            inbox = ServiceRequestSingleton.getInstance().getInbox(PermissionSingleton.getInstance().getCurrUser());
-        }
+        setInbox();
 
-        ArrayList<JFXButton> inboxBtns = new ArrayList<>();
-        for(ServiceRequests request: inbox){
-            inboxBtns.add(createMessage(request));
-        }
-        ObservableList<JFXButton> allRequests = FXCollections.observableArrayList(inboxBtns);
-
-        inboxRequests.setItems(allRequests);
 
         inboxPrioritySort.getItems().addAll(priority);
         inboxStatusSort.getItems().addAll(status);
         inboxAllSort.getItems().addAll(type);
 
         searchFilters.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            int priority = -1;
-            String status = null;
-            String type = null;
-
-            if(!inboxPrioritySort.getSelectionModel().isEmpty()){
-                priority = Integer.parseInt(inboxPrioritySort.getSelectionModel().getSelectedItem().toString());
-            }
-            if (!inboxStatusSort.getSelectionModel().isEmpty()){
-                status = inboxStatusSort.getSelectionModel().getSelectedItem().toString();
-            }
-            if(!inboxAllSort.getSelectionModel().isEmpty()){
-                type = inboxAllSort.getSelectionModel().getSelectedItem().toString();
-            }
-
-            ArrayList<ServiceRequests> requests = ServiceRequestSingleton.getInstance().multiFilterSearch(PermissionSingleton.getInstance().getCurrUser(), priority, status, type);
-            ArrayList<JFXButton> filteredRequestBtns = new ArrayList<>();
-            for(ServiceRequests req: requests){
-                filteredRequestBtns.add(createMessage(req));
-            }
-            inboxRequests.getItems().clear();
-            inboxRequests.getItems().addAll(filteredRequestBtns);
+           onSearchFilters();
         });
 
 
@@ -151,10 +121,80 @@ public class InboxController implements SwitchableController {
 
     }
 
+    public void setInbox(){
+        ArrayList<ServiceRequests> inbox;
+        if(PermissionSingleton.getInstance().isAdmin()){
+            inbox = ServiceRequestSingleton.getInstance().getListOfRequests();
+        }else {
+            inbox = ServiceRequestSingleton.getInstance().getInbox(PermissionSingleton.getInstance().getCurrUser());
+        }
+
+        ArrayList<JFXButton> inboxBtns = new ArrayList<>();
+        for(ServiceRequests request: inbox){
+            inboxBtns.add(createMessage(request));
+        }
+        ObservableList<JFXButton> allRequests = FXCollections.observableArrayList(inboxBtns);
+        if(decreasingOrder) {
+            Collections.reverse(allRequests);
+        }
+        inboxRequests.setItems(allRequests);
+    }
+
     @FXML
     public void onClearFilters(){
         inboxPrioritySort.getSelectionModel().clearSelection();
         inboxStatusSort.getSelectionModel().clearSelection();
         inboxAllSort.getSelectionModel().clearSelection();
+        setInbox();
+    }
+
+    public void sortRequests(){
+        if(decreasingOrder){
+            decreasingOrder = false;
+        }else{
+            decreasingOrder = true;
+        }
+
+        if(inboxStatusSort.getSelectionModel().isEmpty() && inboxPrioritySort.getSelectionModel().isEmpty() && inboxAllSort.getSelectionModel().isEmpty()){
+            setInbox();
+        }else{
+            onSearchFilters();
+        }
+
+    }
+
+    public void onSearchFilters(){
+        int priority = -1;
+        String status = null;
+        String type = null;
+        int numFilters = 0;
+
+        if(!inboxPrioritySort.getSelectionModel().isEmpty()){
+            priority = Integer.parseInt(inboxPrioritySort.getSelectionModel().getSelectedItem().toString());
+            numFilters++;
+        }
+        if (!inboxStatusSort.getSelectionModel().isEmpty()){
+            status = inboxStatusSort.getSelectionModel().getSelectedItem().toString();
+            numFilters++;
+        }
+        if(!inboxAllSort.getSelectionModel().isEmpty()){
+            type = inboxAllSort.getSelectionModel().getSelectedItem().toString();
+            numFilters++;
+        }
+
+        if(numFilters == 0){
+            return;
+        }
+
+        ArrayList<ServiceRequests> requests = ServiceRequestSingleton.getInstance().multiFilterSearch(PermissionSingleton.getInstance().getCurrUser(), priority, status, type);
+        ArrayList<JFXButton> filteredRequestBtns = new ArrayList<>();
+        for(ServiceRequests req: requests){
+            filteredRequestBtns.add(createMessage(req));
+        }
+        inboxRequests.getItems().clear();
+        if(decreasingOrder) {
+            Collections.reverse(filteredRequestBtns);
+        }
+        inboxRequests.getItems().addAll(filteredRequestBtns);
     }
 }
