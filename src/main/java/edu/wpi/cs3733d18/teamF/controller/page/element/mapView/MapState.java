@@ -11,9 +11,11 @@ public class MapState {
     private final Path path;
     private final double zoomAmount;
     private final Point2D target;
+    private final String floor;
 
-    public MapState(Path path, double zoomAmount, Point2D target) {
+    public MapState(Path path, String floor, double zoomAmount, Point2D target) {
         this.path = path;
+        this.floor = floor;
         this.zoomAmount = zoomAmount;
         this.target = target;
 
@@ -22,6 +24,8 @@ public class MapState {
     public Path getPath() {
         return path;
     }
+
+    public String getFloor(){ return floor; }
 
     public double getZoomAmount() {
         return zoomAmount;

@@ -374,7 +374,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         aboutElement.hideElement();
 
         //init memento singleton
-        MapMementoSingleton.getInstance().setSource(mapViewElement);
+        MapMementoSingleton.getInstance().init(mapViewElement);
 
         //init screensaver
         Pair<Screensaver, Pane> screensaverInfo = switcher.loadElement("screensaver.fxml");
@@ -748,7 +748,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     }
 
     @FXML
-    private void onLogOutBtn() {
+    public void onLogOutBtn() {
         mapViewElement.setViewMode(MapViewElement.ViewMode.VIEW);
         PermissionSingleton.getInstance().logout();
         loginDrawer.close();
@@ -803,7 +803,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
     }
 
-    private void resetFloorButtonBorders() {
+    public void resetFloorButtonBorders() {
         setAllFloorButtonBorders("#042E58");
     }
 
@@ -1860,7 +1860,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @Override
     public void onPathsChanged(ArrayList<Path> floorPaths) {
-        floorTraversal.getChildren().clear();
+        clearFloorTraversal();
         for (int i = 0; i < floorPaths.size(); i++) {
             String borderColor;
             if (i == 0) {
@@ -1904,6 +1904,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         highlightFloorTraversal(floor);
     }
 
+    public void clearFloorTraversal(){
+        floorTraversal.getChildren().clear();
+    }
+
     @Override
     public void onFloorRefreshButtons() {
         resetFloorButtonBorders();
@@ -1929,11 +1933,12 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     public void toggleGoogleMap() {
         if (isGoogleMapViewEnabled) {
-            MapMementoSingleton.getInstance().saveState();
             switcher.switchTo(Screens.Home);
+            System.out.println("Returning to app");
             MapMementoSingleton.getInstance().returnToLastState();
             return;
         }
+        else MapMementoSingleton.getInstance().saveState();
         setGoogleMapViewEnabled(true);
     }
 
