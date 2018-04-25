@@ -527,7 +527,7 @@
             <children>
                 <TabPane>
                     <tabs>
-                        <Tab text="General Help">
+                        <Tab closable="false" text="General Help">
                             <content>
                                 <GridPane prefHeight="400.0" prefWidth="565.0">
                                     <columnConstraints>
@@ -607,7 +607,7 @@
                                 </GridPane>
                             </content>
                         </Tab>
-                        <Tab text="Voice Assistant Help">
+                        <Tab closable="false" text="Voice Assistant Help">
                             <content>
                                 <GridPane prefHeight="400.0" prefWidth="565.0">
                                     <columnConstraints>
