@@ -70,7 +70,7 @@ public class GenericRadial extends Group {
         menuSize = 360.f / selections.size();
 
         for (Pair<Pair<String, String>, Runnable> selection : selections) {
-            addMenuItem("src/main/resources/edu/wpi/cs3733d18/teamF/icons/gemicon/PNG/64x64/row 1/" + selection.getKey().getKey()
+            addMenuItem("edu/wpi/cs3733d18/teamF/icons/gemicon/PNG/64x64/row 1/" + selection.getKey().getKey()
                     , selection.getKey().getValue()
                     , selection.getValue());
         }
@@ -349,12 +349,8 @@ public class GenericRadial extends Group {
 
     private ImageView getImageView(final String path) {
         ImageView imageView = null;
-        try {
-            imageView = ImageViewBuilder.create()
-                    .image(new Image(new FileInputStream(path))).build();
-        } catch (final FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        imageView = ImageViewBuilder.create()
+                .image(new Image(path)).build();
         assert (imageView != null);
         return imageView;
 

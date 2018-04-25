@@ -109,7 +109,7 @@
                      <font>
                         <Font name="FontAwesome Regular" size="18.0" />
                      </font></Label>
-                  <Label text="Label" />
+                  <Label text="Team D: Gift Request API &#10;Team C: Transportation Request API " />
                </children>
             </GridPane>
             <FontAwesomeIconView fx:id="closeCredits" fill="WHITE" glyphName="TIMES" layoutX="1185.0" layoutY="161.0" scaleX="4.0" scaleY="4.0" text="" translateX="1.0" translateY="1.0" />
