@@ -11,12 +11,12 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="root" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.Screensaver">
-    <ImageView fitWidth="1834.0" nodeOrientation="INHERIT" pickOnBounds="true" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647">
+    <ImageView nodeOrientation="INHERIT" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647">
         <image>
             <Image url="@../../HospitalWallpaper.jpg" />
         </image>
     </ImageView>
-    <GridPane prefHeight="1080.0" prefWidth="1852.0">
+    <GridPane prefHeight="1080.0" prefWidth="1834.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>

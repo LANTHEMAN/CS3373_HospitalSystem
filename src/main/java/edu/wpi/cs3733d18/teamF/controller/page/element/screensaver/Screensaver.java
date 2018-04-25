@@ -69,7 +69,7 @@ public class Screensaver extends PageElement{
 
         this.scene = scene;
 
-        idleMonitor = new IdleMonitor(new Duration(30000), this::start);
+        idleMonitor = new IdleMonitor(new Duration(1000), this::start);
         idleMonitor.startMonitoring();
         idleMonitor.register(scene, Event.ANY);
     }
