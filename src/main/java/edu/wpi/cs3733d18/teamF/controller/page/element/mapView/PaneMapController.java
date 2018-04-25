@@ -3,6 +3,7 @@ package edu.wpi.cs3733d18.teamF.controller.page.element.mapView;
 import edu.wpi.cs3733d18.teamF.gfx.MapDrawable;
 import edu.wpi.cs3733d18.teamF.gfx.PaneController;
 import edu.wpi.cs3733d18.teamF.graph.Map;
+import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
 import javafx.scene.layout.Pane;
@@ -76,19 +77,19 @@ public class PaneMapController extends PaneController implements Observer {
         } else {
             if (path != null && path.getNodes().size() > 0) {
                 for (Node node : path.getNodes()) {
-                    if (node.getPosition().getX() < upperLeftX) {
+                    if (node.getWireframePosition().getX() < upperLeftX) {
                         upperLeftX = node.getWireframePosition().getX();
                     }
 
-                    if (node.getPosition().getY() < upperLeftY) {
+                    if (node.getWireframePosition().getY() < upperLeftY) {
                         upperLeftY = node.getWireframePosition().getY();
                     }
 
-                    if (node.getPosition().getX() > bottomRightX) {
+                    if (node.getWireframePosition().getX() > bottomRightX) {
                         bottomRightX = node.getWireframePosition().getX();
                     }
 
-                    if (node.getPosition().getY() > bottomRightY) {
+                    if (node.getWireframePosition().getY() > bottomRightY) {
                         bottomRightY = node.getWireframePosition().getY();
                     }
                 }
@@ -207,7 +208,14 @@ public class PaneMapController extends PaneController implements Observer {
         return node == hoveredNode;
     }
 
+    public void setMapDrawer(MapDrawable m){
+        mapDrawer = m;
+        clearDrawables();
+        mapDrawer.update(MapSingleton.getInstance().getMap());
+        addDrawable(mapDrawer);
+        refresh();
 
+    }
     @Override
     public void update(Observable o, Object arg) {
         refresh();

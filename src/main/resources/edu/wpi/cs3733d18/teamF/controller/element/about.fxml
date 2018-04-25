@@ -89,9 +89,6 @@
                <left>
                   <Text fill="WHITE" scaleX="5.0" scaleY="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Credits" translateX="110.0" BorderPane.alignment="CENTER" />
                </left>
-               <top>
-                  <FontAwesomeIconView fx:id="closeCredits" fill="WHITE" glyphName="TIMES" scaleX="3.0" scaleY="3.0" text="" translateX="620.0" translateY="10.0" BorderPane.alignment="CENTER" />
-               </top>
             </JFXToolbar>
             <GridPane layoutX="115.0" layoutY="146.0" prefHeight="530.0" prefWidth="1057.0" AnchorPane.bottomAnchor="44.0" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="108.0" AnchorPane.topAnchor="146.0">
               <columnConstraints>
@@ -108,11 +105,15 @@
                      </font>
                   </Text>
                   <Text scaleX="2.0" scaleY="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Class API's" translateX="35.0" translateY="-250.0" />
-                  <Label prefHeight="580.0" prefWidth="471.0" text="1. junit&#10;2. jfoenix&#10;3.derby&#10;4.derbyclient&#10;5.derbytools&#10;6.yahoo-weather-java-api&#10;7.commons-csv&#10;8.commons-codec&#10;9.  gesturesfx&#10;10. fontawsomefx&#10;11.sphinx4-core&#10;12.sphinx4-data&#10;13. core&#10;14. freetts&#10;15. en_us&#10;16. cmu_us_kal&#10;17. cmu_time_kal&#10;18. cmu_time_awb&#10;19. cmulex&#10;20.cmutimelex&#10;21.cmudict04&#10;22.CS3733-D18-teamF-SR-API&#10;23.twilio" translateY="10.0" GridPane.columnIndex="1" />
-                  <Label text="Label" />
-                  <FontAwesomeIconView glyphName="LONG-ARROW-ALT-LEFT" scaleX="2.0" scaleY="2.0" GridPane.columnIndex="1" />
+                  <Label prefHeight="580.0" prefWidth="471.0" text="1. junit&#10;2. jfoenix&#10;3.derby&#10;4.derbyclient&#10;5.derbytools&#10;6.yahoo-weather-java-api&#10;7.commons-csv&#10;8.commons-codec&#10;9.  gesturesfx&#10;10. fontawsomefx&#10;11.sphinx4-core&#10;12.sphinx4-data&#10;13. core&#10;14. freetts&#10;15. en_us&#10;16. cmu_us_kal&#10;17. cmu_time_kal&#10;18. cmu_time_awb&#10;19. cmulex&#10;20.cmutimelex&#10;21.cmudict04&#10;22.CS3733-D18-teamF-SR-API&#10;23.twilio" translateY="10.0" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="FontAwesome Regular" size="18.0" />
+                     </font></Label>
+                  <Label text="Team D: Gift Request API &#10;Team C: Transportation Request API " />
                </children>
             </GridPane>
+            <FontAwesomeIconView fx:id="closeCredits" fill="WHITE" glyphName="TIMES" layoutX="1250.0" layoutY="30.0" scaleX="4.0" scaleY="4.0" text="" translateX="1.0" translateY="1.0" />
+            <FontAwesomeIconView fx:id="backCredits" fill="WHITE" glyphName="CHEVRON_CIRCLE_LEFT" layoutX="1185.0" layoutY="170.0" scaleX="4.0" scaleY="4.0" text="" />
          </children>
       </AnchorPane>
    </children>

@@ -2,10 +2,10 @@ package edu.wpi.cs3733d18.teamF.controller;
 
 import edu.wpi.cs3733d18.teamF.db.DatabaseHandler;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
+import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PermissionSingleton {
@@ -23,23 +23,19 @@ public class PermissionSingleton {
 
         if (!userExist("admin")) {
             addUser(new User("admin", "admin", "Admin", "Default", "Admin", "Admin", ""));
-            /*
             if (!ServiceRequestSingleton.getInstance().isInTable("admin", "LanguageInterpreter")) {
                 ServiceRequestSingleton.getInstance().addUsernameLanguageInterpreter("admin");
                 ServiceRequestSingleton.getInstance().addUsernameReligiousServices("admin");
                 ServiceRequestSingleton.getInstance().addUsernameSecurityRequest("admin");
             }
-            */
         }
 
         if (!userExist("staff")) {
-
-            /*addUser(new User("staff", "staff", "Staff", "Member", "Staff", "Nurse"));
+            addUser(new User("staff", "staff", "Staff", "Member", "Staff", "Nurse", ""));
             if (!ServiceRequestSingleton.getInstance().isInTable("staff", "LanguageInterpreter")) {
                 ServiceRequestSingleton.getInstance().addUsernameLanguageInterpreter("staff");
                 ServiceRequestSingleton.getInstance().addUsernameReligiousServices("staff");
             }
-            */
         }
 
     }
