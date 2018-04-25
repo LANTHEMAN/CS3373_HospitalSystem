@@ -883,6 +883,7 @@
                 <ImageView fx:id="userIDView" fitHeight="463.0" fitWidth="638.0" pickOnBounds="true" visible="false" />
                 <FontAwesomeIconView fx:id="userIDSubmit" fill="WHITE" glyphName="CHECK" layoutX="600.0" layoutY="450.0" size="30" strokeType="OUTSIDE" strokeWidth="0.0" visible="false" />
                 <FontAwesomeIconView fx:id="userIDCancel" fill="WHITE" glyphName="TIMES" layoutX="570.0" layoutY="450.0" size="30" strokeType="OUTSIDE" strokeWidth="0.0" visible="false" />
+            <JFXButton fx:id="deleteBtn" layoutX="293.0" layoutY="424.0" onAction="#onDeleteUser" style="-fx-background-color: RED;" text="Delete" textFill="WHITE" />
             </children>
         </AnchorPane>
         <AnchorPane fx:id="aboutElementPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />

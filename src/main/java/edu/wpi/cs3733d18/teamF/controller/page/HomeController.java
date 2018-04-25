@@ -681,6 +681,28 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         //TODO inform the user they need to enter a username first LOL
     }
 
+    @FXML
+    private JFXButton deleteBtn;
+
+    @FXML
+    public void onDeleteUser(){
+        if (ServiceRequestSingleton.getInstance().isInTable(editedUser.getUname(), "LanguageInterpreter")) {
+            ServiceRequestSingleton.getInstance().removeUsernameLanguageInterpreter(editedUser.getUname());
+        }
+        if (ServiceRequestSingleton.getInstance().isInTable(editedUser.getUname(), "ReligiousServices")) {
+            ServiceRequestSingleton.getInstance().removeUsernameReligiousServices(editedUser.getUname());
+        }
+        if (ServiceRequestSingleton.getInstance().isInTable(editedUser.getUname(), "SecurityRequest")) {
+            ServiceRequestSingleton.getInstance().removeUsernameSecurityRequest(editedUser.getUname());
+        }
+        if (ServiceRequestSingleton.getInstance().isInTable(editedUser.getUname(), "MaintenanceRequest")) {
+            ServiceRequestSingleton.getInstance().removeUsernameMaintenanceRequest(editedUser.getUname());
+        }
+        PermissionSingleton.getInstance().removeUser(editedUser);
+        newUserPane.setVisible(false);
+        onEditUsers();
+    }
+
     public void setLoggedIn() {
         mapViewElement.getMapDrawController().unshowPath();
         loginBtn.setText(PermissionSingleton.getInstance().getCurrUser());
@@ -1601,6 +1623,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         lnameField.clear();
         faceIDField.clear();
         occupationField.clear();
+        if(deleteBtn.isVisible()) {
+            deleteBtn.setVisible(false);
+        }
         languageCheck.setSelected(false);
         religiousCheck.setSelected(false);
         securityCheck.setSelected(false);
@@ -1672,6 +1697,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         faceIDField.setText(e.getFaceID());
         occupationField.setText(e.getOccupation());
         privilegeCombo.getSelectionModel().select(e.getPrivilege());
+
+        if(!deleteBtn.isVisible()) {
+            deleteBtn.setVisible(true);
+        }
 
 
         if (ServiceRequestSingleton.getInstance().isInTable(e.getUname(), "LanguageInterpreter")) {
