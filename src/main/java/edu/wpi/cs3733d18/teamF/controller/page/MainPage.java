@@ -134,12 +134,6 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     private StackPane mainPane;
     @FXML
-    private JFXButton languageInterpreterBtn;
-    @FXML
-    private JFXButton religiousServicesBtn;
-    @FXML
-    private JFXButton securityRequestBtn, maintenanceRequestBtn;
-    @FXML
     private JFXTextField destinationMaintenance;
     @FXML
     private Label maintenanceSituationRequired, maintenanceLocationRequired;
@@ -167,28 +161,6 @@ public class MainPage implements SwitchableController, Observer {
 
         paneVoiceController = new PaneVoiceController(voicePane);
 
-        languageInterpreterBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if (ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "LanguageInterpreter") || PermissionSingleton.getInstance().isAdmin()) {
-                languageInterpreterPane.toFront();
-            }
-        });
-
-        religiousServicesBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if (ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "ReligiousServices") || PermissionSingleton.getInstance().isAdmin()) {
-                religiousServicesPane.toFront();
-            }
-        });
-        securityRequestBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if (ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "SecurityRequest") || PermissionSingleton.getInstance().isAdmin()) {
-                securityPane.toFront();
-            }
-        });
-
-        maintenanceRequestBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if (ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "MaintenanceRequest") || PermissionSingleton.getInstance().isAdmin()) {
-                maintenancePane.toFront();
-            }
-        });
 
         plusAssignTo.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             if (!usernameSearch.isVisible()) {
@@ -241,30 +213,30 @@ public class MainPage implements SwitchableController, Observer {
 
 
         radialMenu = new GenericRadial(Arrays.asList(
-                new Pair<>(new Pair<>("language.png", "F"), () -> {
+                new Pair<>(new Pair<>("language.png", "Transportation Services"), () -> {
                     if (ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "LanguageInterpreter") || PermissionSingleton.getInstance().isAdmin()) {
                         languageInterpreterPane.toFront();
                     }
                 })
-                , new Pair<>(new Pair<>("3.png", "E"), () -> {
+                , new Pair<>(new Pair<>("book.png", "Gift Shop"), () -> {
                     if (ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "ReligiousServices") || PermissionSingleton.getInstance().isAdmin()) {
                         religiousServicesPane.toFront();
                     }
                 })
-                , new Pair<>(new Pair<>("4.png", "Maintenance Request"), () -> {
+                , new Pair<>(new Pair<>("shield.png", "Maintenance Request"), () -> {
                     if (ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "SecurityRequest") || PermissionSingleton.getInstance().isAdmin()) {
                         securityPane.toFront();
                     }
                 })
-                , new Pair<>(new Pair<>("4.png", "Security Request"), () -> {
+                , new Pair<>(new Pair<>("wrench.png", "Security Request"), () -> {
                     if (ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "MaintenanceRequest") || PermissionSingleton.getInstance().isAdmin()) {
                         maintenancePane.toFront();
                     }
                 })
-                , new Pair<>(new Pair<>(/*transport*/ "4.png", "Religious Services"), () -> {
+                , new Pair<>(new Pair<>("shopping.png", "Religious Services"), () -> {
                     System.out.println("Gift");
                 })
-                , new Pair<>(new Pair<>(/*gift*/ "4.png", "Language Interpreter"), () -> {
+                , new Pair<>(new Pair<>("car.png", "Language Interpreter"), () -> {
                     System.out.println("Transport");
                 })
         ));
