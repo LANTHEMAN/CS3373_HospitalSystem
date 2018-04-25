@@ -215,6 +215,8 @@ public class MainPage implements SwitchableController, Observer {
 
         destinationMaintenance.setOnKeyTyped((KeyEvent e) -> {
             String input = destinationMaintenance.getText();
+            input = input.concat("" + e.getCharacter());
+            DatabaseWrapper.autoCompleteLocations(input, destinationMaintenanceList);
         });
 
 
@@ -330,7 +332,7 @@ public class MainPage implements SwitchableController, Observer {
     }
 
     @FXML
-    private void onDestinationMaitenance(){
+    private void onDestinationMaintenance(){
         String selection = destinationMaintenanceList.getSelectionModel().getSelectedItem().toString();
         destinationMaintenance.setText(selection);
         destinationMaintenanceList.setVisible(false);
@@ -694,6 +696,9 @@ public class MainPage implements SwitchableController, Observer {
     ////////////////////////
 
     @FXML
+    Label invalidMaintenanceLocation;
+
+    @FXML
     private void onSubmitMaintenance(){
         int requiredFields = 0;
         if (situationSelection.getSelectionModel().isEmpty()) {
@@ -707,10 +712,14 @@ public class MainPage implements SwitchableController, Observer {
         if(requiredFields > 0){
             return;
         }
+        String location = destinationMaintenance.getText();
+        if(!MapSingleton.getInstance().getMap().isValidLocation(location)){
+            invalidMaintenanceLocation.setVisible(true);
+            return;
+        }
         String situation = situationSelection.getSelectionModel().getSelectedItem().toString();
         String description = instructionsMaintenance.getText();
         String status = "Incomplete";
-        String location = destinationMaintenance.getText();
         RadioButton selected = (RadioButton) securityToggleMaintenance.getSelectedToggle();
         int priority = Integer.parseInt(selected.getText());
         RadioButton staffSelected = (RadioButton) staffToggleMaintenance.getSelectedToggle();
@@ -718,7 +727,7 @@ public class MainPage implements SwitchableController, Observer {
         description = situation + "/////" + description;
         MaintenanceRequest sec = new MaintenanceRequest(location, description, status, priority, situation, staffNeeded);
 
-        MapSingleton.getInstance().getMap().disableNode(location);
+        MapSingleton.getInstance().getMap().disableNode(MapSingleton.getInstance().getMap().getNodeIDFromLongName(location));
 
         ServiceRequestSingleton.getInstance().sendServiceRequest(sec);
         ServiceRequestSingleton.getInstance().addServiceRequest(sec);
@@ -742,6 +751,12 @@ public class MainPage implements SwitchableController, Observer {
         }
         if(maintenanceSituationRequired.isVisible()) {
             maintenanceSituationRequired.setVisible(false);
+        }
+        if(invalidMaintenanceLocation.isVisible()){
+            invalidMaintenanceLocation.setVisible(false);
+        }
+        if (destinationMaintenanceList.isVisible()){
+            destinationMaintenanceList.setVisible(false);
         }
     }
 
