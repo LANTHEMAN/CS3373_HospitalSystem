@@ -13,7 +13,6 @@ import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapState;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewElement;
 import edu.wpi.cs3733d18.teamF.controller.page.element.mapView.MapViewListener;
 import edu.wpi.cs3733d18.teamF.controller.page.element.screensaver.Screensaver;
-import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.db.DatabaseWrapper;
 import edu.wpi.cs3733d18.teamF.face.FaceLauncher;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
@@ -54,9 +53,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.awt.event.ActionEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
 
@@ -301,11 +297,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //                   //
     ///////////////////////
     @FXML
-    private Text inboxNum;
+    private Label inboxNum;
 
     ////////////////////////////////////
     //                                //
-    //       Screensaver Timout       //
+    //       Screensaver Timeout      //
     //                                //
     ////////////////////////////////////
     @FXML

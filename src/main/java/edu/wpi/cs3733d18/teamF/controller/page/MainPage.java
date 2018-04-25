@@ -4,9 +4,7 @@ import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
-import edu.wpi.cs3733d18.teamF.controller.Screens;
 import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
-import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import edu.wpi.cs3733d18.teamF.db.DatabaseWrapper;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
 import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
@@ -26,7 +24,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
-import org.bytedeco.javacpp.presets.opencv_core;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -98,6 +95,8 @@ public class MainPage implements SwitchableController, Observer {
     JFXComboBox religionSelect;
     @FXML
     TextArea instructionsRS;
+    @FXML
+    JFXListView destinationMaintenanceList;
     @FXML
     Label religionRequiredRS, firstNameRequiredRS, lastNameRequiredRS, locationRequiredRS, occasionRequiredRS;
     String lastSearch = ServiceRequestSingleton.getInstance().getLastSearch();
@@ -196,11 +195,6 @@ public class MainPage implements SwitchableController, Observer {
         });
 
 
-        closeBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
-            VoiceLauncher.getInstance().terminate();
-            switcher.closePopup(Screens.MainPage);
-        });
-
         filter = "none";
         searchType = "none";
         if (lastSearch != null && lastFilter != null) {
@@ -217,6 +211,10 @@ public class MainPage implements SwitchableController, Observer {
             String input = usernameSearch.getText();
             input = input.concat("" + e.getCharacter());
             DatabaseWrapper.autoComplete(input, usernameList, "HUser", "username");
+        });
+
+        destinationMaintenance.setOnKeyTyped((KeyEvent e) -> {
+            String input = destinationMaintenance.getText();
         });
 
 
@@ -329,6 +327,13 @@ public class MainPage implements SwitchableController, Observer {
         searchResultTable.setItems(listRequests);
 
         ServiceRequestSingleton.getInstance().setSearch(filter, searchType);
+    }
+
+    @FXML
+    private void onDestinationMaitenance(){
+        String selection = destinationMaintenanceList.getSelectionModel().getSelectedItem().toString();
+        destinationMaintenance.setText(selection);
+        destinationMaintenanceList.setVisible(false);
     }
 
 
