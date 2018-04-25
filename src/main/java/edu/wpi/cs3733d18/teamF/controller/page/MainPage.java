@@ -2,6 +2,8 @@ package edu.wpi.cs3733d18.teamF.controller.page;
 
 import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733.TeamD.GiftServiceRequest;
+import edu.wpi.cs3733d18.teamC.ChonchonTransportationAPI.ChonchonAPI;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
@@ -29,10 +31,7 @@ import javafx.util.Pair;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 public class MainPage implements SwitchableController, Observer {
     private final ObservableList<String> priority = FXCollections.observableArrayList("0", "1", "2", "3", "4", "5");
@@ -151,6 +150,7 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     private JFXListView usernameList;
 
+
     @Override
     public void initialize(PaneSwitcher switcher) {
         this.switcher = switcher;
@@ -211,7 +211,6 @@ public class MainPage implements SwitchableController, Observer {
             DatabaseWrapper.autoCompleteLocations(input, securityLocationList);
         });
 
-
         radialMenu = new GenericRadial(Arrays.asList(
                 new Pair<>(new Pair<>("language.png", "Transportation Services"), () -> {
                     if (ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "LanguageInterpreter") || PermissionSingleton.getInstance().isAdmin()) {
@@ -234,10 +233,18 @@ public class MainPage implements SwitchableController, Observer {
                     }
                 })
                 , new Pair<>(new Pair<>("shopping.png", "Religious Services"), () -> {
-                    System.out.println("Gift");
+                    try {
+                        GiftServiceRequest giftRequest = new GiftServiceRequest();
+                        giftRequest.run(0, 0, 1000, 600, null, null, null);
+                    } catch (Exception e) {
+
+                    }
                 })
                 , new Pair<>(new Pair<>("car.png", "Language Interpreter"), () -> {
-                    System.out.println("Transport");
+                    if (!ChonchonAPI.isDBInitialized()) {
+                        ChonchonAPI.initDB(new LinkedList<>(Arrays.asList("admin", "staff", "wong", "tyler")));
+                    }
+                    ChonchonAPI.run(0, 0, 1920, 1080, null, null, null);
                 })
         ));
 
