@@ -198,7 +198,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private JFXHamburger hamburger;
     @FXML
-    private JFXDrawer menuDrawer, adminDrawer, guestDrawer;
+    private JFXDrawer menuDrawer;
     @FXML
     private GridPane menu;
     @FXML
@@ -345,8 +345,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @Override
     public void initialize(PaneSwitcher switcher) {
         algorithmsBox.setVisible(false);
-        adminDrawer.setDisable(true);
-        guestDrawer.setDisable(true);
         menuDrawer.setDisable(true);
         directionsDrawer.setDisable(true);
         mapEditorDrawer.setDisable(true);
@@ -491,11 +489,33 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
 
         directionsDrawer.setSidePane(directionsBox);
-        //adminDrawer.setSidePane(menu);
         menuDrawer.setSidePane(menu);
-        //guestDrawer.setSidePane(guestBox);
         privilegeCombo.getItems().addAll(privilegeOptions);
         mapEditorDrawer.setSidePane(mapEditorBtns);
+        menuDrawer.setOnDrawerClosed(event -> {
+            menuDrawer.setDisable(true);
+        });
+        menuDrawer.setOnDrawerOpened(event -> {
+            menuDrawer.setDisable(false);
+        });
+        directionsDrawer.setOnDrawerClosed(event -> {
+            directionsDrawer.setDisable(true);
+        });
+        directionsDrawer.setOnDrawerOpened(event -> {
+            directionsDrawer.setDisable(false);
+        });
+        mapEditorDrawer.setOnDrawerClosed(event -> {
+            mapEditorDrawer.setDisable(true);
+        });
+        mapEditorDrawer.setOnDrawerOpened(event -> {
+            mapEditorDrawer.setDisable(false);
+        });
+        loginDrawer.setOnDrawerClosed(event -> {
+            loginDrawer.setDisable(true);
+        });
+        loginDrawer.setOnDrawerOpened(event -> {
+            loginDrawer.setDisable(false);
+        });
 
 
         // login
@@ -527,24 +547,22 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                     if (PermissionSingleton.getInstance().forceLogin(launcher.getEmployeeName(launcher.getCameraFaceID()))) {
                         setLoggedIn();
                     } else {
-                        loginDrawer.open();
                         loginDrawer.setDisable(false);
+                        loginDrawer.open();
                     }
                 } else {
-                    loginDrawer.open();
                     loginDrawer.setDisable(false);
+                    loginDrawer.open();
                 }
             }
         });
 
         loginCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             loginDrawer.close();
-            loginDrawer.setDisable(true);
         });
 
         logoutCancel.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
             loginDrawer.close();
-            loginDrawer.setDisable(true);
         });
 
 
@@ -650,7 +668,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         }
 
         loginDrawer.close();
-        loginDrawer.setDisable(true);
         loginUsername.setText("");
         loginPassword.setText("");
     }
@@ -750,13 +767,11 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         mapViewElement.setViewMode(MapViewElement.ViewMode.VIEW);
         PermissionSingleton.getInstance().logout();
         loginDrawer.close();
-        loginDrawer.setDisable(true);
         gpaneNodeInfo.setVisible(false);
         onCancelDirectionsEvent();
         setCancelMenuEvent();
         if (mapEditorDrawer.isShown()) {
             mapEditorDrawer.close();
-            mapEditorDrawer.setDisable(true);
         }
         setGuestMenu();
         if (algorithmsBox.isVisible()) {
@@ -768,7 +783,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     private void changeFloorButtons(Path path) {
         resetFloorButtonBorders();
-        //greyOutFloorButtons();
         String firstFloor = path.getNodes().get(0).getFloor();
         String lastFloor = path.getNodes().get(0).getFloor();
         setButtonBorderColor(getFloorButton(firstFloor), "GREEN");
@@ -902,19 +916,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     private void setCancelMenuEvent() {
-        /*if (adminDrawer.isShown()) {
-            adminDrawer.close();
-            adminDrawer.toBack();
-            adminDrawer.setDisable(true);
-        } else if (guestDrawer.isShown()) {
-            guestDrawer.close();
-            guestDrawer.toBack();
-            guestDrawer.setDisable(true);
-        }*/
         if (menuDrawer.isShown()) {
             menuDrawer.close();
             menuDrawer.toBack();
-            menuDrawer.setDisable(true);
         }
     }
 
@@ -1148,7 +1152,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         if (directionsDrawer.isShown()) {
             directionsDrawer.close();
             directionsDrawer.toBack();
-            directionsDrawer.setDisable(true);
             searchLocation.setText(destinationLocation.getText());
         }
     }
@@ -1481,10 +1484,10 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         mapViewElement.toggleEditorMode();
         if (mapEditorDrawer.isShown()) {
             mapEditorDrawer.close();
-            mapEditorDrawer.setDisable(true);
         } else {
-            mapEditorDrawer.open();
+            clearFloorTraversal();
             mapEditorDrawer.setDisable(false);
+            mapEditorDrawer.open();
         }
     }
 
@@ -1855,6 +1858,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @Override
     public void onPathsChanged(ArrayList<Path> floorPaths) {
         clearFloorTraversal();
+        floorTraversal.setVisible(true);
         for (int i = 0; i < floorPaths.size(); i++) {
             String borderColor;
             if (i == 0) {
@@ -1906,6 +1910,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     //////////////////////////////
 
     public void clearFloorTraversal() {
+        floorTraversal.setVisible(false);
         floorTraversal.getChildren().clear();
     }
 
