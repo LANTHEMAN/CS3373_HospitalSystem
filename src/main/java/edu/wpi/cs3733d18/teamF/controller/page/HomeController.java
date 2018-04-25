@@ -320,7 +320,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     // uhg
     @FXML
     private GridPane rootPane;
-    private GenericRadial radialMenu;
+
 
     /**
      * Constructor for this class
@@ -391,23 +391,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
         mapViewElement.update3DPathDisplay(false);
         allFloors.setSelected(false);
-
-
-        /// TODO RADIAL MENU
-        /// TODO RADIAL MENU
-        radialMenu = new GenericRadial(Arrays.asList(
-                new Pair<>(new Pair<>("2.png", "A"), () -> { System.out.println("A"); })
-                , new Pair<>(new Pair<>("3.png", "B"), () -> {System.out.println("B");})
-                , new Pair<>(new Pair<>("4.png", "C"), () -> {System.out.println("C");})
-                , new Pair<>(new Pair<>("5.png", "D"), () -> {System.out.println("D");})
-                , new Pair<>(new Pair<>("6.png", "E"), () -> {System.out.println("E");})
-                , new Pair<>(new Pair<>("7.png", "F"), () -> {System.out.println("F");})
-        ));
-
-        //rootPane.getChildren().add(radialMenu);
-
-        /// TODO RADIAL MENU
-        /// TODO RADIAL MENU
 
 
         // set up mod node panel

@@ -7,6 +7,7 @@ import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
 import edu.wpi.cs3733d18.teamF.db.DatabaseWrapper;
 import edu.wpi.cs3733d18.teamF.gfx.PaneVoiceController;
+import edu.wpi.cs3733d18.teamF.gfx.impl.radial.GenericRadial;
 import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
 import edu.wpi.cs3733d18.teamF.notifications.TwilioHandlerSingleton;
 import edu.wpi.cs3733d18.teamF.sr.*;
@@ -24,10 +25,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
+import javafx.util.Pair;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -96,7 +99,7 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     TextArea instructionsRS;
     @FXML
-    JFXListView destinationMaintenanceList;
+    JFXListView destinationMaintenanceList, destinationRSList, destinationLIList;
     @FXML
     Label religionRequiredRS, firstNameRequiredRS, lastNameRequiredRS, locationRequiredRS, occasionRequiredRS;
     String lastSearch = ServiceRequestSingleton.getInstance().getLastSearch();
@@ -151,6 +154,7 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     private Pane voicePane;
 
+    private GenericRadial radialMenu;
 
     @FXML
     private JFXListView usernameList;
@@ -219,6 +223,36 @@ public class MainPage implements SwitchableController, Observer {
             DatabaseWrapper.autoCompleteLocations(input, destinationMaintenanceList);
         });
 
+        destinationRS.setOnKeyTyped((KeyEvent e) -> {
+            String input = destinationRS.getText();
+            input = input.concat("" + e.getCharacter());
+            DatabaseWrapper.autoCompleteLocations(input, destinationRSList);
+        });
+
+        destinationLanguage.setOnKeyTyped((KeyEvent e) -> {
+            String input = destinationLanguage.getText();
+            input = input.concat("" + e.getCharacter());
+            DatabaseWrapper.autoCompleteLocations(input, destinationLIList);
+        });
+
+        /*
+        /// TODO RADIAL MENU
+        /// TODO RADIAL MENU
+        radialMenu = new GenericRadial(Arrays.asList(
+                new Pair<>(new Pair<>("2.png", "A"), () -> { System.out.println("A"); })
+                , new Pair<>(new Pair<>("3.png", "B"), () -> {System.out.println("B");})
+                , new Pair<>(new Pair<>("4.png", "C"), () -> {System.out.println("C");})
+                , new Pair<>(new Pair<>("5.png", "D"), () -> {System.out.println("D");})
+                , new Pair<>(new Pair<>("6.png", "E"), () -> {System.out.println("E");})
+                , new Pair<>(new Pair<>("7.png", "F"), () -> {System.out.println("F");})
+        ));
+
+        .getChildren().add(radialMenu);
+
+        /// TODO RADIAL MENU
+        /// TODO RADIAL MENU
+        */
+
 
 
         onSearch();
@@ -233,6 +267,27 @@ public class MainPage implements SwitchableController, Observer {
         }
         usernameSearch.setVisible(false);
         usernameList.setVisible(false);
+    }
+
+    @FXML
+    private void onDestinationRSList(){
+        String selection = destinationRSList.getSelectionModel().getSelectedItem().toString();
+        destinationRS.setText(selection);
+        destinationRSList.setVisible(false);
+    }
+
+    @FXML
+    private void onDestinationMaintenance(){
+        String selection = destinationMaintenanceList.getSelectionModel().getSelectedItem().toString();
+        destinationMaintenance.setText(selection);
+        destinationMaintenanceList.setVisible(false);
+    }
+
+    @FXML
+    private void onDestinationLIList(){
+        String selection = destinationLIList.getSelectionModel().getSelectedItem().toString();
+        destinationLanguage.setText(selection);
+        destinationLIList.setVisible(false);
     }
 
 
@@ -329,13 +384,6 @@ public class MainPage implements SwitchableController, Observer {
         searchResultTable.setItems(listRequests);
 
         ServiceRequestSingleton.getInstance().setSearch(filter, searchType);
-    }
-
-    @FXML
-    private void onDestinationMaintenance(){
-        String selection = destinationMaintenanceList.getSelectionModel().getSelectedItem().toString();
-        destinationMaintenance.setText(selection);
-        destinationMaintenanceList.setVisible(false);
     }
 
 
@@ -482,13 +530,9 @@ public class MainPage implements SwitchableController, Observer {
         String last_name;
         String location;
         String description;
-        try{
-            language = availableLanguagesBox.getSelectionModel().getSelectedItem().toString();
-        }catch (NullPointerException e){
-            e.printStackTrace();
+        if(availableLanguagesBox.getSelectionModel().isEmpty()) {
             languageRequiredLI.setVisible(true);
             requiredFieldsEmpty++;
-            language = "";
         }
         if (firstNameLanguage.getText() == null || firstNameLanguage.getText().trim().isEmpty()) {
             firstNameRequiredLI.setVisible(true);
@@ -505,6 +549,11 @@ public class MainPage implements SwitchableController, Observer {
         if (requiredFieldsEmpty > 0) {
             return;
         }
+        location = destinationLanguage.getText();
+        if(!MapSingleton.getInstance().getMap().isValidLocation(location)){
+            invalidLocationLI.setVisible(true);
+            return;
+        }
 
         if (instructionsLanguage.getText() == null || instructionsLanguage.getText().trim().isEmpty()) {
             description = "N/A";
@@ -513,7 +562,7 @@ public class MainPage implements SwitchableController, Observer {
         }
         first_name = firstNameLanguage.getText();
         last_name = lastNameLanguage.getText();
-        location = destinationLanguage.getText();
+        language = availableLanguagesBox.getSelectionModel().getSelectedItem().toString();
         String new_description = language + "/////" + description;
         RadioButton selection = (RadioButton) securityToggleLI.getSelectedToggle();
         int priority = Integer.parseInt(selection.getText());
@@ -547,6 +596,12 @@ public class MainPage implements SwitchableController, Observer {
         destinationLanguage.clear();
         if (locationRequiredLI.isVisible()) {
             locationRequiredLI.setVisible(false);
+        }
+        if(invalidLocationLI.isVisible()){
+            invalidLocationLI.setVisible(false);
+        }
+        if(destinationLIList.isVisible()){
+            destinationLIList.setVisible(false);
         }
         instructionsLanguage.clear();
     }
@@ -584,7 +639,11 @@ public class MainPage implements SwitchableController, Observer {
         if (requiredFieldsEmpty > 0) {
             return;
         }
-
+        location = destinationRS.getText();
+        if(!MapSingleton.getInstance().getMap().isValidLocation(location)){
+            invalidLocationRS.setVisible(true);
+            return;
+        }
         if (instructionsRS.getText() == null || instructionsRS.getText().trim().isEmpty()) {
             description = "N/A";
         } else {
@@ -593,7 +652,6 @@ public class MainPage implements SwitchableController, Observer {
         religion = religionSelect.getSelectionModel().getSelectedItem().toString();
         first_name = firstNameRS.getText();
         last_name = lastNameRS.getText();
-        location = destinationRS.getText();
         String new_description = religion + "/////" + description + "\n";
         RadioButton selected = (RadioButton) staffToggleRS.getSelectedToggle();
         String staffNeeded = selected.getText();
@@ -632,6 +690,12 @@ public class MainPage implements SwitchableController, Observer {
         destinationRS.clear();
         if (locationRequiredRS.isVisible()) {
             locationRequiredRS.setVisible(false);
+        }
+        if(invalidLocationRS.isVisible()){
+            invalidLocationRS.setVisible(false);
+        }
+        if (destinationRSList.isVisible()){
+            destinationRSList.setVisible(false);
         }
         instructionsRS.clear();
     }
@@ -696,7 +760,7 @@ public class MainPage implements SwitchableController, Observer {
     ////////////////////////
 
     @FXML
-    Label invalidMaintenanceLocation;
+    Label invalidMaintenanceLocation, invalidLocationRS, invalidLocationLI;
 
     @FXML
     private void onSubmitMaintenance(){
