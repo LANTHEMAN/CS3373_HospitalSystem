@@ -157,7 +157,6 @@ public class MapViewElement extends PageElement {
         // disable gesturePane when ctrl is held
         switcher.getScene().setOnKeyPressed(ke -> {
             if (ke.isControlDown()) {
-                startGame();
                 if (mapDrawController.getDrawnPath() != null) {
                     mapDrawController.getDrawnPath().separateIntoFloors();
                 }
@@ -167,7 +166,6 @@ public class MapViewElement extends PageElement {
         });
         switcher.getScene().setOnKeyReleased(ke -> {
             if (!ke.isControlDown()) {
-                endGame();
                 gesturePane.setGestureEnabled(true);
                 if (ctrlHeld) {
                     selectedNodeEnd = null;
@@ -442,6 +440,10 @@ public class MapViewElement extends PageElement {
     }
     public Node getSelectedNodeStart() {
         return selectedNodeStart;
+    }
+
+    public void nextGame(){
+        startGame();
     }
 
     public MapViewElement setSelectedNodeStart(Node selectedNodeStart) {
