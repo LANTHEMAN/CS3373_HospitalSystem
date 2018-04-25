@@ -4,6 +4,7 @@ import com.github.sarxos.webcam.Webcam;
 import com.jfoenix.controls.*;
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.javascript.object.*;
+import com.sun.prism.ResourceFactory;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733d18.teamF.controller.*;
@@ -769,11 +770,12 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
             emergency = true;
             emergencyIcon.setGlyphName("TIMES");
-            emergencyBtn.setText("Cancel");
+            emergencyBtn.setText(resFactory.getStringBinding("%Cancel").toString());
         } else {
             emergency = false;
             emergencyIcon.setGlyphName("EXCLAMATION_TRIANGLE");
-            emergencyBtn.setText("Exit");
+            System.out.println(resFactory.getStringBinding("Inbox").toString());
+            emergencyBtn.setText(resFactory.getStringBinding("Inbox").toString());
             ft.stop();
             leftGPane.getChildren().removeAll(rectangle);
         }

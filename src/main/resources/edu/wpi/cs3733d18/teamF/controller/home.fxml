@@ -872,7 +872,7 @@
             <Image url="@../BWHIcon.png" />
          </image>
       </ImageView>
-      <JFXButton fx:id="emergencyBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#triggerEmergency" prefHeight="80.0" prefWidth="80.0" ripplerFill="#cd2323" style="-fx-background-color: #cc0000; -fx-background-radius: 100;" text="Exit" textFill="#f2f5f7" visible="false" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+      <JFXButton fx:id="emergencyBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#triggerEmergency" prefHeight="80.0" prefWidth="80.0" ripplerFill="#cd2323" style="-fx-background-color: #cc0000; -fx-background-radius: 100;" text="%Exit" textFill="#f2f5f7" visible="false" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
          <font>
             <Font name="Arial Bold" size="16.0" />
          </font>
