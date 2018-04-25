@@ -547,7 +547,7 @@
             <children>
                 <TabPane>
                     <tabs>
-                        <Tab text="General Help">
+                        <Tab closable="false" text="General Help">
                             <content>
                                 <GridPane prefHeight="400.0" prefWidth="565.0">
                                     <columnConstraints>
@@ -627,7 +627,7 @@
                                 </GridPane>
                             </content>
                         </Tab>
-                        <Tab text="Voice Assistant Help">
+                        <Tab closable="false" text="Voice Assistant Help">
                             <content>
                                 <GridPane prefHeight="400.0" prefWidth="565.0">
                                     <columnConstraints>
@@ -919,45 +919,6 @@
                       </font>
                   </Label>
                   <FontAwesomeIconView fx:id="cancelMenu" glyphName="ANGLE_DOUBLE_LEFT" onMouseClicked="#setCancelMenuEvent" size="40" translateX="-20.0" wrappingWidth="22.142844200134277" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
-            <VBox fx:id="algorithmsBox" style="-fx-background-color: #616161;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
-               <children>
-                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="24.0" prefHeight="38.0" prefWidth="164.0" text="%Algorithms">
-                           <font>
-                              <Font name="System Bold" size="25.0" />
-                           </font>
-                        </Label>
-                        <FontAwesomeIconView glyphName="TIMES" layoutX="301.0" layoutY="53.0" onMouseClicked="#onCloseAlgorithm" size="30" wrappingWidth="22.142844200134277" />
-                     </children>
-                  </Pane>
-                          <JFXButton fx:id="aStar" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAStar" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #303030;" text="%AStar" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
-                          <JFXButton fx:id="breathFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onBreathFirst" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #616161;" text="%BreadthSearch" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
-                          <JFXButton fx:id="depthFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDepthFirst" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #616161;" text="%DepthSearch" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
-                          <JFXButton fx:id="bestFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onBestFirst" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #616161;" text="%BestFirst" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
-                          <JFXButton fx:id="dijkstra" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDijkstra" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #616161;" text="Dijkstra" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
-               </children>
-            </VBox>
             <VBox fx:id="guestBox" alignment="TOP_CENTER" spacing="25.0" style="-fx-background-color: #616161;" GridPane.rowIndex="1">
                <children>
                   <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onOpenNearest" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%FindNearest" textFill="WHITE">
@@ -1072,16 +1033,55 @@
                   </JFXSlider>
                   </children>
               </VBox>
-            <VBox fx:id="nearestBox" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #616161;" visible="false" GridPane.rowIndex="1">
+            <VBox fx:id="algorithmsBox" style="-fx-background-color: #616161;" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <children>
                   <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="24.0" prefHeight="38.0" prefWidth="164.0" text="%Nearest">
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="24.0" prefHeight="38.0" prefWidth="164.0" text="%Algorithms">
                            <font>
                               <Font name="System Bold" size="25.0" />
                            </font>
                         </Label>
-                        <FontAwesomeIconView glyphName="TIMES" layoutX="301.0" layoutY="53.0" onMouseClicked="#onCloseNearest" size="30" wrappingWidth="22.142844200134277" />
+                        <FontAwesomeIconView glyphName="TIMES" layoutX="301.0" layoutY="53.0" onMouseClicked="#onCloseAlgorithm" size="30" wrappingWidth="22.142844200134277" />
+                     </children>
+                  </Pane>
+                          <JFXButton fx:id="aStar" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onAStar" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #303030;" text="%AStar" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </JFXButton>
+                          <JFXButton fx:id="breathFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onBreathFirst" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #616161;" text="%BreadthSearch" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </JFXButton>
+                          <JFXButton fx:id="depthFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDepthFirst" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #616161;" text="%DepthSearch" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </JFXButton>
+                          <JFXButton fx:id="bestFirst" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onBestFirst" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #616161;" text="%BestFirst" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </JFXButton>
+                          <JFXButton fx:id="dijkstra" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onDijkstra" prefHeight="100.0" prefWidth="350.0" style="-fx-background-color: #616161;" text="Dijkstra" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </VBox>
+            <VBox fx:id="nearestBox" prefHeight="200.0" prefWidth="100.0" spacing="20.0" style="-fx-background-color: #616161;" visible="false" GridPane.rowIndex="1">
+               <children>
+                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="63.0" prefWidth="350.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="12.0" prefHeight="38.0" prefWidth="164.0" text="%Nearest" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="25.0" />
+                           </font>
+                        </Label>
+                        <FontAwesomeIconView glyphName="TIMES" layoutX="310.0" layoutY="43.0" onMouseClicked="#onCloseNearest" size="30" wrappingWidth="22.142844200134277" />
                      </children>
                   </Pane>
                   <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onBathroom" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Bathroom" textFill="WHITE">
@@ -1089,7 +1089,11 @@
                         <Font name="Arial" size="20.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIconView size="50" />
+                        <ImageView fitHeight="150.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../bathroom.png" />
+                           </image>
+                        </ImageView>
                      </graphic>
                   </JFXButton>
                   <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" layoutX="10.0" layoutY="118.0" onAction="#onExit" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Exit" textFill="WHITE">
@@ -1097,7 +1101,11 @@
                         <Font name="Arial" size="20.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIconView size="50" />
+                        <ImageView fitHeight="150.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../exit.png" />
+                           </image>
+                        </ImageView>
                      </graphic>
                   </JFXButton>
                   <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" layoutX="10.0" layoutY="10.0" onAction="#onCafe" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Cafe" textFill="WHITE">
@@ -1105,7 +1113,7 @@
                         <Font name="Arial" size="20.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIconView size="50" />
+                        <FontAwesomeIconView glyphName="COFFEE" size="50" />
                      </graphic>
                   </JFXButton>
                </children>
