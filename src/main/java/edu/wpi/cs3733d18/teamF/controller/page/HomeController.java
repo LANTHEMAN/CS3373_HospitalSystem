@@ -679,6 +679,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
                 // got a string saying that the activation command has been said
                 paneVoiceController.setVisibility(true);
 
+            }else if(cmd.equalsIgnoreCase("Fire")){
+
+                triggerEmergency();
             } else {
                 if (cmd.equalsIgnoreCase("DisableElevators")) {
                     elevatorBan.setVisible(true);
@@ -745,9 +748,6 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         ft.setOnFinished((ActionEvent)->{
             leftGPane.getChildren().removeAll(rectangle);
         });
-
-
-
     }
 
     @FXML

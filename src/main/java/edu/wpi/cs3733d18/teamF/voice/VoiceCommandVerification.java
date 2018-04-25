@@ -33,6 +33,8 @@ public class VoiceCommandVerification extends Observable implements Observer {
                         canSayCommand[0] = false;
                     }
                 }, 5000);
+            }else if(isFire(command)){
+                signalClassChanged("FIRE");
             } else {
                 if (!canSayCommand[0]) {
                     return;
@@ -90,10 +92,10 @@ public class VoiceCommandVerification extends Observable implements Observer {
                     } else if (command.contains("LEE") && command.contains("BELL") && command.contains("BREAST")) {
                         nodes = map.getNodes(node -> node.getLongName().contains("Lee Bell Breast Center"));
                         voice.speak("Here is the route to the Lee Bell Breast Center");
-                    }else if(command.contains("JEN") && command.contains("CENTER") && command.contains("PRIMARY")){
+                    } else if (command.contains("JEN") && command.contains("CENTER") && command.contains("PRIMARY")) {
                         nodes = map.getNodes(node -> node.getLongName().contains("Jen Center for Primary Care"));
                         voice.speak("Here is the route to the Jen Center for Primary Care");
-                    }else if(command.contains("EAR") && command.contains("NOSE") && command.contains("THROAT")){
+                    } else if (command.contains("EAR") && command.contains("NOSE") && command.contains("THROAT")) {
                         nodes = map.getNodes(node -> node.getLongName().contains("Ear Nose & Throat"));
                         voice.speak("Here are directions to the Ear Nose and Throat Center");
                     }
@@ -151,6 +153,18 @@ public class VoiceCommandVerification extends Observable implements Observer {
     public boolean isActivation(String command) {
         return command.contains("HELLO KIOSK") ||
                 command.contains("HEY KIOSK");
+    }
+
+    public boolean isFire(String command){
+        String delim = "[ ]";
+        String[] split = command.split(delim);
+        int counter = 0;
+        for(String s : split){
+            if(s.equals("FIRE")){
+                counter++;
+            }
+        }
+        return counter >= 3;
     }
 
     private void signalClassChanged(Object args) {
