@@ -14,10 +14,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
 import javax.swing.text.html.ImageView;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Random;
+import java.time.ZoneId;
+import java.util.*;
 
 import static java.lang.StrictMath.abs;
 
@@ -112,14 +110,28 @@ public class Screensaver extends PageElement {
     private String start;
 
     Timeline clock = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(SimpleTimeZone.getTimeZone(ZoneId.systemDefault()));
         int second = cal.get(Calendar.SECOND);
         int minute = cal.get(Calendar.MINUTE);
-        int hour = cal.get(Calendar.HOUR) % 12 + 1;
+        int hour;
+        String dayTime;
+        if(cal.get(Calendar.HOUR) > 12 && cal.get(Calendar.HOUR) < 24){
+            hour = cal.get(Calendar.HOUR) % 12;
+            dayTime = "P.M.";
+        }else if(cal.get(Calendar.HOUR) == 12){
+            hour = cal.get(Calendar.HOUR);
+            dayTime = "P.M.";
+        } else if(cal.get(Calendar.HOUR) == 24 || cal.get(Calendar.HOUR) == 0){
+            hour = 12;
+            dayTime = "A.M.";
+        }else{
+            hour = cal.get(Calendar.HOUR);
+            dayTime = "A.M.";
+        }
         int day = cal.get(Calendar.DAY_OF_MONTH);
         int month = cal.get(Calendar.MONTH) % 12 + 1;
         int year = cal.get(Calendar.YEAR);
-        time.setText(hour + ":" + String.format("%02d", minute) + ":" + String.format("%02d", second));
+        time.setText(hour + ":" + String.format("%02d", minute) + ":" + String.format("%02d", second) + " " + dayTime);
         date.setText(month + "/" + day + "/" + year);
     }));
 

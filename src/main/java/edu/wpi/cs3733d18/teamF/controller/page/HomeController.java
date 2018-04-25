@@ -50,12 +50,14 @@ import javafx.scene.text.TextFlow;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.Pair;
+import org.joda.time.JodaTimePermission;
 
 import javax.imageio.ImageIO;
 import javax.xml.ws.Service;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
 
@@ -207,7 +209,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     @FXML
     private VBox adminBox, guestBox,nearestBox;
     @FXML
-    private JFXButton mapEditorBtn, editUsersBtn;
+    private JFXButton mapEditorBtn, editUsersBtn, changeAlgorithmBtn;
+
     /////////////////////////////
     //      Directions Box     //
     /////////////////////////////
@@ -328,6 +331,8 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private JFXTextField faceIDField;
     @FXML
     private JFXCheckBox allFloors;
+    @FXML
+    private JFXTextField timeoutLabel;
 
     // uhg
     @FXML
@@ -617,14 +622,28 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
 
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-            Calendar cal = Calendar.getInstance();
+            Calendar cal = Calendar.getInstance(SimpleTimeZone.getTimeZone(ZoneId.systemDefault()));
             int second = cal.get(Calendar.SECOND);
             int minute = cal.get(Calendar.MINUTE);
-            int hour = cal.get(Calendar.HOUR) % 12 + 1;
+            int hour;
+            String dayTime;
+            if(cal.get(Calendar.HOUR) > 12 && cal.get(Calendar.HOUR) < 24){
+                hour = cal.get(Calendar.HOUR) % 12;
+                dayTime = "P.M.";
+            }else if(cal.get(Calendar.HOUR) == 12){
+                hour = cal.get(Calendar.HOUR);
+                dayTime = "P.M.";
+            } else if(cal.get(Calendar.HOUR) == 24 || cal.get(Calendar.HOUR) == 0){
+                hour = 12;
+                dayTime = "A.M.";
+            }else{
+                hour = cal.get(Calendar.HOUR);
+                dayTime = "A.M.";
+            }
             int day = cal.get(Calendar.DAY_OF_MONTH);
             int month = cal.get(Calendar.MONTH) % 12 + 1;
             int year = cal.get(Calendar.YEAR);
-            time.setText(hour + ":" + String.format("%02d", minute) + ":" + String.format("%02d", second));
+            time.setText(hour + ":" + String.format("%02d", minute) + ":" + String.format("%02d", second) + " " + dayTime);
             date.setText(month + "/" + day + "/" + year);
         }),
                 new KeyFrame(Duration.seconds(1))
@@ -950,6 +969,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private void setAdminMenu() {
         mapEditorBtn.setVisible(true);
         editUsersBtn.setVisible(true);
+        changeAlgorithmBtn.setVisible(true);
+        sliderTimeout.setVisible(true);
+        timeoutLabel.setVisible(true);
         guestBox.setVisible(false);
         adminBox.setVisible(true);
         emergencyBtn.setVisible(true);
@@ -958,6 +980,9 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
     private void setStaffMenu() {
         mapEditorBtn.setVisible(false);
         editUsersBtn.setVisible(false);
+        sliderTimeout.setVisible(false);
+        timeoutLabel.setVisible(false);
+        changeAlgorithmBtn.setVisible(false);
         guestBox.setVisible(false);
         adminBox.setVisible(true);
     }

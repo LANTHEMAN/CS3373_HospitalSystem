@@ -38,7 +38,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<GridPane fx:id="rootPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
+<GridPane fx:id="rootPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: e7f7fe;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733d18.teamF.controller.page.HomeController">
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="256.0" />
         <ColumnConstraints />
@@ -1007,7 +1007,7 @@
                               <FontAwesomeIconView glyphName="USER" glyphStyle="USER" size="50" />
                           </graphic>
                       </JFXButton>
-                  <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onChangeAlgorithm" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%ChangeAlgorithm" textFill="WHITE">
+                  <JFXButton fx:id="changeAlgorithmBtn" accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onChangeAlgorithm" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%ChangeAlgorithm" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>
@@ -1015,7 +1015,7 @@
                         <FontAwesomeIconView glyphName="INFO" size="50" />
                      </graphic>
                   </JFXButton>
-                  <JFXTextField accessibleRole="TEXT" alignment="CENTER" editable="false" focusColor="#616161" pickOnBounds="false" text="Screensaver Timeout" unFocusColor="#616161">
+                  <JFXTextField fx:id="timeoutLabel" accessibleRole="TEXT" alignment="CENTER" editable="false" focusColor="#616161" pickOnBounds="false" text="Screensaver Timeout" unFocusColor="#616161">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
