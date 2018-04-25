@@ -110,7 +110,7 @@ public class PaneSwitcher {
         popup.setScene(popScene);
         javafx.scene.image.Image image = new javafx.scene.image.Image(Main.class.getResource("BWHIcon.png").toExternalForm());
         popup.getIcons().add(image);
-        popScene.getStylesheets().add(Main.class.getResource("controller/default.css").toExternalForm());
+        popScene.getStylesheets().add(Main.class.getResource("controller/inbox.css").toExternalForm());
         popup.show();
     }
 

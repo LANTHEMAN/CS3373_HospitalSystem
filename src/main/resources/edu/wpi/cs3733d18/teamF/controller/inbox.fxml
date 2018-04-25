@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -42,13 +44,17 @@
                                       </HBox>
                               <HBox alignment="CENTER" prefHeight="25.0" prefWidth="257.0" spacing="7.0">
                                  <children>
-                                              <JFXComboBox fx:id="inboxPrioritySort" focusColor="WHITE" labelFloat="true" prefHeight="25.0" prefWidth="51.0" promptText="Priority" unFocusColor="WHITE" />
-                                    <JFXComboBox fx:id="inboxStatusSort" focusColor="WHITE" labelFloat="true" prefHeight="25.0" prefWidth="69.0" promptText="Status" unFocusColor="WHITE" />
-                                    <JFXComboBox fx:id="inboxAllSort" focusColor="WHITE" labelFloat="true" prefHeight="25.0" prefWidth="92.0" promptText="ALL" unFocusColor="WHITE" />
+                                              <JFXComboBox fx:id="inboxPrioritySort" focusColor="WHITE" labelFloat="true" prefHeight="25.0" prefWidth="70.0" promptText="Priority" unFocusColor="WHITE" />
+                                    <JFXComboBox fx:id="inboxStatusSort" focusColor="WHITE" labelFloat="true" prefHeight="25.0" prefWidth="132.0" promptText="Status" unFocusColor="WHITE" />
                                     <FontAwesomeIconView fx:id="searchFilters" fill="WHITE" glyphName="SEARCH" size="20" />
                                  </children>
                               </HBox>
-                              <JFXButton onAction="#onClearFilters" prefWidth="54.0" style="-fx-background-color: BLACK;" text="CLEAR" textFill="WHITE" />
+                              <HBox alignment="CENTER" prefHeight="25.0" prefWidth="277.0" spacing="20.0">
+                                 <children>
+                                    <JFXComboBox fx:id="inboxAllSort" focusColor="WHITE" labelFloat="true" prefHeight="25.0" prefWidth="140.0" promptText="All" unFocusColor="WHITE" />
+                                    <JFXButton onAction="#onClearFilters" prefWidth="54.0" style="-fx-background-color: BLACK;" text="CLEAR" textFill="WHITE" />
+                                 </children>
+                              </HBox>
                               <JFXListView fx:id="inboxRequests" prefHeight="494.0" prefWidth="263.0" style="-fx-background-color: #042e58;" />
                                   </children>
                                   <StackPane.margin>
@@ -59,20 +65,91 @@
                       </StackPane>
                   </children>
             </AnchorPane>
-              <AnchorPane prefHeight="512.0" prefWidth="530.0">
-                  <children>
-                      <GridPane layoutX="10.0" layoutY="-4.0">
-                          <columnConstraints>
+            <AnchorPane fx:id="editRequestPane" style="-fx-background-color: #f1f1f1;" visible="false">
+               <children>
+                  <GridPane layoutY="36.0" prefHeight="620.0" prefWidth="953.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="234.71429443359375" minWidth="10.0" prefWidth="15.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="278.71429443359375" minWidth="10.0" prefWidth="278.71429443359375" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.14288330078125" minWidth="10.0" prefWidth="206.4285888671875" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="15.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="270.0" minHeight="10.0" prefHeight="219.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="346.0" minHeight="10.0" prefHeight="251.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="431.0" minHeight="10.0" prefHeight="322.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="199.0" minHeight="10.0" prefHeight="105.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label fx:id="idLabel" alignment="CENTER" prefHeight="36.0" prefWidth="309.0" text="Service Request #000" textAlignment="CENTER" underline="true" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="typeLabel" text="Type: Service Request" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <VBox prefHeight="103.0" prefWidth="470.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="TOP">
+                           <children>
+                              <Label text="Special Instructions">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <JFXTextArea fx:id="instructionsTextArea" prefHeight="126.0" prefWidth="470.0" />
+                           </children>
+                        </VBox>
+                        <Label fx:id="completedByLabel" text="Completed By:" visible="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                        <Label fx:id="usernameLabel" text="Username" visible="false" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                        <JFXCheckBox fx:id="completeCheck" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onCompleteCheck" text="Complete" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                        <GridPane prefHeight="192.0" prefWidth="366.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
+                           </columnConstraints>
+                           <rowConstraints>
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                      </GridPane>
-                  </children>
+                           </rowConstraints>
+                           <children>
+                              <Label fx:id="fullNameLabel" text="patientName" GridPane.columnIndex="1">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Patient Name:">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Request Status:" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="statusLabel" text="requestStatus" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="locationLabel" text="location" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Location:" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </GridPane>
+               </children>
             </AnchorPane>
           </items>
       </SplitPane>

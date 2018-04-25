@@ -24,8 +24,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
     private ArrayList<ServiceRequests> listOfRequests = new ArrayList<>();
     private int id = 0;
     private ServiceRequests popUpRequest;
-    private String lastFilter;
-    private String lastSearch;
 
     private ServiceRequestSingleton() {
         // initialize this class with the database
@@ -75,14 +73,14 @@ public class ServiceRequestSingleton implements DatabaseItem {
         updateLocal();
     }
 
-    public void markAsComplete(String username, int srID){
+    public void markAsComplete(String username, int srID) {
         Timestamp time = new Timestamp(System.currentTimeMillis());
         String sql = "UPDATE ServiceRequest SET status = Complete, completedBy= '" + username + "', completed = '" + time + "' WHERE id = " + srID;
         dbHandler.runAction(sql);
         updateLocal();
     }
 
-    public void updateLocal(){
+    public void updateLocal() {
         String sql = "SELECT * FROM ServiceRequest";
         ResultSet rs = dbHandler.runQuery(sql);
         syncLocalFromDB("ServiceRequest", rs);
@@ -160,7 +158,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
 
     @Override
     public void syncLocalFromDB(String tableName, ResultSet resultSet) {
-        if(tableName.equals("ServiceRequest")) {
+        if (tableName.equals("ServiceRequest")) {
             ArrayList<ServiceRequests> requests = this.resultSetToServiceRequest(resultSet);
             for (ServiceRequests s : requests) {
                 addServiceRequest(s);
@@ -319,23 +317,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
         this.popUpRequest = popUpRequest;
     }
 
-    public String getLastFilter() {
-        return lastFilter;
-    }
-
-    public void setSearch(String lastFilter, String lastSearch) {
-        this.lastFilter = lastFilter;
-        this.lastSearch = lastSearch;
-    }
-
-    public String getLastSearch() {
-        return lastSearch;
-    }
-
-    public void setSearchNull() {
-        this.lastFilter = null;
-        this.lastSearch = null;
-    }
 
     public void addUsernameLanguageInterpreter(String username) {
         String sql = "INSERT INTO LanguageInterpreter VALUES ('" + username + "')";
@@ -376,8 +357,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
         String sql = "DELETE FROM MaintenanceRequest WHERE username = '" + username + "'";
         dbHandler.runAction(sql);
     }
-
-
 
 
     public boolean isInTable(String username, String table) {
@@ -430,8 +409,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
     }
 
 
-
-
     public ArrayList<ServiceRequests> getServiceRequests() {
         ArrayList<ServiceRequests> list = new ArrayList<>();
         String sql = "SELECT * FROM ServiceRequest";
@@ -440,7 +417,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
         return list;
     }
 
-    public ArrayList<ServiceRequests> getInbox(String username){
+    public ArrayList<ServiceRequests> getInbox(String username) {
         ArrayList<ServiceRequests> inbox;
         String sql = "SELECT S.* FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE I.username = '" + username + "'";
         ResultSet resultSet = dbHandler.runQuery(sql);
@@ -448,7 +425,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
         return inbox;
     }
 
-    public int numMessagesInInbox(String username){
+    public int numMessagesInInbox(String username) {
         String sql = "SELECT COUNT(CASE WHEN s.STATUS != 'Complete' THEN 1 END ) FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE I.username = '" + username + "'";
         ResultSet resultSet = dbHandler.runQuery(sql);
         int count = getCountResult(resultSet);
@@ -456,103 +433,109 @@ public class ServiceRequestSingleton implements DatabaseItem {
     }
 
 
-    public int numMessagesInAdminInbox(){
+    public int numMessagesInAdminInbox() {
         String sql = "SELECT COUNT(*) FROM ServiceRequest S WHERE S.status = 'InProgress'";
         ResultSet resultSet = dbHandler.runQuery(sql);
         int count = getCountResult(resultSet);
         return count;
     }
 
-    private int getCountResult(ResultSet resultSet){
+    private int getCountResult(ResultSet resultSet) {
         int count = 0;
         try {
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 count = resultSet.getInt(1);
             }
             resultSet.close();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return count;
     }
 
-    public ObservableList<String> getAssignedUsers(int id){
+    public ObservableList<String> getAssignedUsers(int id) {
         String sql = "SELECT username FROM Inbox WHERE requestID = " + id;
         ArrayList<String> usernames = new ArrayList<>();
         ResultSet resultSet = dbHandler.runQuery(sql);
-        try{
-            while (resultSet.next()){
+        try {
+            while (resultSet.next()) {
                 usernames.add(resultSet.getString(1));
             }
             resultSet.close();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return FXCollections.observableArrayList(usernames);
     }
 
-    public boolean alreadyAssignedTo(String username, int id){
+    public boolean alreadyAssignedTo(String username, int id) {
         String sql = "SELECT * FROM INBOX WHERE username = '" + username + "' AND requestID = " + id;
         ResultSet resultSet = dbHandler.runQuery(sql);
         try {
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 String name = resultSet.getString(1);
-                if(username.equals(name)){
+                if (username.equals(name)) {
                     return true;
                 }
             }
             resultSet.close();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
         return false;
     }
 
-    public ArrayList<ServiceRequests> multiFilterSearch(String username, int priority, String status, String type){
+    public ArrayList<ServiceRequests> multiFilterSearch(String username, int priority, String status, String type) {
         String usernameSQL;
         String prioritySQL;
         String statusSQL;
         String typeSQL;
+        String sql;
         boolean multipleConditions = false;
-        if(PermissionSingleton.getInstance().isAdmin()){
-            usernameSQL = "";
-        }else{
+        boolean userSpecific = true;
+        if(username != null) {
             usernameSQL = " Inbox.username = '" + username + "'";
             multipleConditions = true;
-        }
-        if(priority < 0){
-            prioritySQL = "";
         }else{
-            if (multipleConditions){
+            usernameSQL = "";
+            userSpecific = false;
+        }
+        if (priority < 0) {
+            prioritySQL = "";
+        } else {
+            if (multipleConditions) {
                 prioritySQL = " AND ServiceRequest.priority = " + priority;
-            }else {
+            } else {
                 prioritySQL = " ServiceRequest.priority = " + priority;
             }
             multipleConditions = true;
         }
-        if(status != null){
-            if(multipleConditions){
+        if (status != null) {
+            if (multipleConditions) {
                 statusSQL = " AND ServiceRequest.status = '" + status + "'";
-            }else {
+            } else {
                 statusSQL = " ServiceRequest.status = '" + status + "'";
             }
             multipleConditions = true;
-        }else{
+        } else {
             statusSQL = "";
         }
-        if(type != null){
-            if(multipleConditions){
+        if (type != null) {
+            if (multipleConditions) {
                 typeSQL = " AND ServiceRequest.type = '" + type + "'";
-            }else {
+            } else {
                 typeSQL = " ServiceRequest.type = '" + type + "'";
             }
-        }else{
+        } else {
             typeSQL = "";
         }
 
-        String sql = "SELECT ServiceRequest.* FROM Inbox INNER JOIN ServiceRequest ON Inbox.requestID = ServiceRequest.id WHERE" + usernameSQL + prioritySQL + statusSQL + typeSQL;
-
+        if(userSpecific) {
+            sql = "SELECT ServiceRequest.* FROM Inbox INNER JOIN ServiceRequest ON Inbox.requestID = ServiceRequest.id WHERE" + usernameSQL + prioritySQL + statusSQL + typeSQL;
+        }else{
+            sql = "SELECT * FROM ServiceRequest WHERE" + prioritySQL + statusSQL + typeSQL;
+        }
         ResultSet resultSet = dbHandler.runQuery(sql);
 
         return resultSetToServiceRequest(resultSet);
@@ -565,12 +548,12 @@ public class ServiceRequestSingleton implements DatabaseItem {
     //                   //
     ///////////////////////
     //if type equals null is counts all types of requests
-    public int numRequestsAll(String type){
-        if(type == null){
-            type =  "all";
+    public int numRequestsAll(String type) {
+        if (type == null) {
+            type = "all";
         }
         String sql;
-        switch (type){
+        switch (type) {
             case "all":
                 sql = "SELECT COUNT(*) FROM ServiceRequest";
                 break;
@@ -595,12 +578,12 @@ public class ServiceRequestSingleton implements DatabaseItem {
         return count;
     }
 
-    public int avgCompletionTimeAll(String type){
-        if(type == null){
-            type =  "all";
+    public int avgCompletionTimeAll(String type) {
+        if (type == null) {
+            type = "all";
         }
         String sql;
-        switch (type){
+        switch (type) {
             case "all":
                 sql = "SELECT createdOn, completed FROM ServiceRequest WHERE status = 'Complete'";
                 break;
@@ -621,42 +604,42 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 break;
         }
         ResultSet resultSet = dbHandler.runQuery(sql);
-        int avgTime = (int)getAverageTime(resultSet);
+        int avgTime = (int) getAverageTime(resultSet);
         return avgTime;
     }
 
-    public long getAverageTime(ResultSet resultSet){
+    public long getAverageTime(ResultSet resultSet) {
         long avgTime = 0;
         long completionTimeSum = 0;
         int numTimes = 0;
         try {
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 Timestamp started = resultSet.getTimestamp(1);
                 Timestamp completed = resultSet.getTimestamp(2);
 
                 long start = started.getTime();
                 long end = completed.getTime();
 
-                completionTimeSum += (end-start);
+                completionTimeSum += (end - start);
                 numTimes++;
             }
             resultSet.close();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (numTimes != 0){
-            avgTime = completionTimeSum/numTimes;
+        if (numTimes != 0) {
+            avgTime = completionTimeSum / numTimes;
         }
 
         return avgTime;
     }
 
-    public int avgCompletionTimeByEmployee(String type, String username){
-        if(type == null){
-            type =  "all";
+    public int avgCompletionTimeByEmployee(String type, String username) {
+        if (type == null) {
+            type = "all";
         }
         String sql;
-        switch (type){
+        switch (type) {
             case "all":
                 sql = "SELECT ServiceRequest.started, ServiceRequest.completed FROM Inbox INNER JOIN ServiceRequest ON Inbox.requestID = ServiceRequest.id WHERE ServiceRequest.status = 'Complete' AND Inbox.username = '" + username + "'";
                 break;
@@ -677,17 +660,17 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 break;
         }
         ResultSet resultSet = dbHandler.runQuery(sql);
-        int avgTime = (int)getAverageTime(resultSet);
+        int avgTime = (int) getAverageTime(resultSet);
         System.out.println(avgTime);
         return avgTime;
     }
 
-    public int numRequestsByEmployee(String type, String username){
-        if(type == null){
-            type =  "all";
+    public int numRequestsByEmployee(String type, String username) {
+        if (type == null) {
+            type = "all";
         }
         String sql;
-        switch (type){
+        switch (type) {
             case "all":
                 sql = "SELECT COUNT(*) FROM ServiceRequest WHERE completedBy = '" + username + "'";
                 break;
@@ -714,5 +697,4 @@ public class ServiceRequestSingleton implements DatabaseItem {
     }
 
 
-    
 }

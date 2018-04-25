@@ -18,6 +18,10 @@ import edu.wpi.cs3733d18.teamF.voice.VoiceLauncher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
@@ -26,25 +30,21 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.chart.*;
 import javafx.util.Callback;
 import javafx.util.Pair;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 public class MainPage implements SwitchableController, Observer {
     private final ObservableList<String> priority = FXCollections.observableArrayList("0", "1", "2", "3", "4", "5");
     private final ObservableList<String> status = FXCollections.observableArrayList("Incomplete", "In Progress", "Complete");
     private final ObservableList<String> type = FXCollections.observableArrayList("Language Interpreter", "Religious Services", "Security Request", "Maintenance Request");
-    private final ObservableList<String> filterOptions = FXCollections.observableArrayList("Priority", "Status", "Type");
     private final ObservableList<String> languages = FXCollections.observableArrayList("Spanish", "French", "Chinese");
     private final ObservableList<String> religions = FXCollections.observableArrayList("Catholic", "Protestant", "Islamic", "Hindu", "Jewish", "Buddhist");
     //TODO: Add realistic situations for maintenance request
     private final ObservableList<String> situations = FXCollections.observableArrayList("Elevator Repair", "Broken Bed", "Fix Door");
     @FXML
-    public ComboBox filterType, availableTypes, availableLanguagesBox, situationSelection;
+    public ComboBox typeFilter, priorityFilter, statusFilter, availableLanguagesBox, situationSelection;
     @FXML
     public TableView<ServiceRequests> searchResultTable;
     @FXML
@@ -101,17 +101,23 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     JFXComboBox selectStats;
     @FXML
-    AnchorPane serviceTypePane,employeePane,statsPane;
+    AnchorPane serviceTypePane, employeePane, statsPane;
     @FXML
     TextArea instructionsRS;
     @FXML
     JFXListView destinationMaintenanceList, destinationRSList, destinationLIList, securityLocationList;
     @FXML
     Label religionRequiredRS, firstNameRequiredRS, lastNameRequiredRS, locationRequiredRS, occasionRequiredRS;
-    String lastSearch = ServiceRequestSingleton.getInstance().getLastSearch();
-    String lastFilter = ServiceRequestSingleton.getInstance().getLastFilter();
     @FXML
     Label invalidMaintenanceLocation, invalidLocationRS, invalidLocationLI, invalidLocationSR;
+    @FXML
+    BarChart AvgTimeServiceType;
+    @FXML
+    BarChart<String, Integer> AvgTimeEmployee;
+    @FXML
+    PieChart NumRequestType;
+    @FXML
+    PieChart NumRequestEmployee;
     /////////////////////////////////////////
     //                                     //
     //           Service Request           //
@@ -125,18 +131,6 @@ public class MainPage implements SwitchableController, Observer {
     /////////////////////////////////
     private String searchType;
     private String filter;
-    @FXML
-    BarChart AvgTimeServiceType;
-
-    @FXML
-    BarChart<String,Integer> AvgTimeEmployee;
-
-    @FXML
-    PieChart NumRequestType;
-
-    @FXML
-    PieChart NumRequestEmployee;
-
     @FXML
     private CategoryAxis xAxisEmployee;
 
@@ -199,14 +193,9 @@ public class MainPage implements SwitchableController, Observer {
         });
 
 
-        filter = "none";
-        searchType = "none";
-        if (lastSearch != null && lastFilter != null) {
-            searchType = lastSearch;
-            filter = lastFilter;
-        }
-
-        filterType.getItems().addAll(filterOptions);
+        typeFilter.getItems().addAll(type);
+        statusFilter.getItems().addAll(status);
+        priorityFilter.getItems().addAll(priority);
         availableLanguagesBox.getItems().addAll(languages);
         religionSelect.getItems().addAll(religions);
         situationSelection.getItems().addAll(situations);
@@ -288,7 +277,7 @@ public class MainPage implements SwitchableController, Observer {
 
         selectStats.getItems().add("Employee Name");
         selectStats.getItems().add("Service Type");
-        selectStats.addEventHandler(MouseEvent.MOUSE_CLICKED, (e)->{
+        selectStats.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
 
         });
 
@@ -346,50 +335,33 @@ public class MainPage implements SwitchableController, Observer {
 
     @FXML
     void onSearch() {
-        ArrayList<ServiceRequests> requests = new ArrayList<>();
-        try {
-            if (filter.equalsIgnoreCase("none")) {
-                ResultSet all = ServiceRequestSingleton.getInstance().getRequests();
-                requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(all);
-                all.close();
-            } else {
-                switch (searchType) {
-                    case "Priority":
-                        ResultSet rp = ServiceRequestSingleton.getInstance().getRequestsOfPriority(Integer.parseInt(filter));
-                        requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(rp);
-                        rp.close();
-                        break;
+        int priority = -1;
+        String status = null;
+        String type = null;
+        int numFilters = 0;
 
-                    case "Status":
-                        ResultSet rs = ServiceRequestSingleton.getInstance().getRequestsOfStatus(filter);
-                        requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(rs);
-                        rs.close();
-                        break;
-
-                    case "Type":
-                        ResultSet rt = ServiceRequestSingleton.getInstance().getRequestsOfType(filter);
-                        requests = ServiceRequestSingleton.getInstance().resultSetToServiceRequest(rt);
-                        rt.close();
-                        break;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (!priorityFilter.getSelectionModel().isEmpty()) {
+            priority = Integer.parseInt(priorityFilter.getSelectionModel().getSelectedItem().toString());
+            numFilters++;
         }
-
-        try {
-            searchResultTable.getItems().clear();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+        if (!statusFilter.getSelectionModel().isEmpty()) {
+            status = statusFilter.getSelectionModel().getSelectedItem().toString();
+            numFilters++;
         }
-
+        if (!typeFilter.getSelectionModel().isEmpty()) {
+            type = typeFilter.getSelectionModel().getSelectedItem().toString();
+            numFilters++;
+        }
+        ArrayList<ServiceRequests> requests;
+        if (numFilters == 0) {
+            requests = ServiceRequestSingleton.getInstance().getServiceRequests();
+        } else {
+            requests = ServiceRequestSingleton.getInstance().multiFilterSearch(null, priority, status, type);
+        }
 
         ObservableList<ServiceRequests> listRequests;
-        if (requests.size() < 1) {
-            return;
-        } else {
-            listRequests = FXCollections.observableArrayList(requests);
-        }
+        listRequests = FXCollections.observableArrayList(requests);
+
 
         searchResultTable.setEditable(false);
 
@@ -432,10 +404,9 @@ public class MainPage implements SwitchableController, Observer {
                 };
 
         btnsCol.setCellFactory(cellFactory);
-
+        searchResultTable.getItems().clear();
         searchResultTable.setItems(listRequests);
 
-        ServiceRequestSingleton.getInstance().setSearch(filter, searchType);
     }
 
     public void onSelect(ServiceRequests s) {
@@ -486,51 +457,17 @@ public class MainPage implements SwitchableController, Observer {
         editRequestPane.toFront();
     }
 
-    @FXML
-    void onFilterType() {
-        searchType = "none";
-        filter = "none";
-        try {
-            if (filterType.getSelectionModel().getSelectedItem().equals("Priority")) {
-                searchType = "Priority";
-                availableTypes.setItems(priority);
-                availableTypes.setVisible(true);
-            } else if (filterType.getSelectionModel().getSelectedItem().equals("Status")) {
-                searchType = "Status";
-                availableTypes.setItems(status);
-                availableTypes.setVisible(true);
-            } else if (filterType.getSelectionModel().getSelectedItem().equals("Type")) {
-                searchType = "Type";
-                availableTypes.setItems(type);
-                availableTypes.setVisible(true);
-            }
-        } catch (NullPointerException e) {
-            searchType = "none";
-        }
-    }
-
-    @FXML
-    void onAvailableTypes() {
-        try {
-            filter = availableTypes.getSelectionModel().getSelectedItem().toString();
-        } catch (NullPointerException e) {
-            filter = "none";
-        }
-    }
 
     @FXML
     void onClear() {
-        availableTypes.setVisible(false);
-        availableTypes.valueProperty().set(null);
-        filterType.valueProperty().set(null);
-        searchType = "none";
-        filter = "none";
+        typeFilter.getSelectionModel().clearSelection();
+        statusFilter.getSelectionModel().clearSelection();
+        priorityFilter.getSelectionModel().clearSelection();
         try {
             searchResultTable.getItems().clear();
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        ServiceRequestSingleton.getInstance().setSearchNull();
         onSearch();
     }
 
@@ -545,14 +482,32 @@ public class MainPage implements SwitchableController, Observer {
             }
         }
 
+        String previousStatus = serviceRequestsPopUp.getStatus();
+
         if (completeCheck.isSelected() && !serviceRequestsPopUp.getStatus().equalsIgnoreCase("Complete")) {
             serviceRequestsPopUp.setStatus("Complete");
             serviceRequestsPopUp.setCompletedBy(PermissionSingleton.getInstance().getCurrUser());
             ServiceRequestSingleton.getInstance().updateCompletedBy(serviceRequestsPopUp);
             ServiceRequestSingleton.getInstance().updateStatus(serviceRequestsPopUp);
+            usernameLabel.setText(PermissionSingleton.getInstance().getCurrUser());
+            usernameLabel.setVisible(true);
+            completedByLabel.setVisible(true);
+            statusLabel.setText("Complete");
+        } else {
+            serviceRequestsPopUp.setStatus("Incomplete");
+            serviceRequestsPopUp.setCompletedBy(null);
+            ServiceRequestSingleton.getInstance().updateStatus(serviceRequestsPopUp);
+            ServiceRequestSingleton.getInstance().updateCompletedBy(serviceRequestsPopUp);
+            usernameLabel.setText("");
+            usernameLabel.setVisible(false);
+            completedByLabel.setVisible(false);
+            statusLabel.setText("In Progress");
         }
-        if (serviceRequestsPopUp.getStatus().equals("Complete") && serviceRequestsPopUp.getType().equals("Maintenance Request")) {
+        if (serviceRequestsPopUp.getStatus().equals("Complete") && !previousStatus.equals("Complete") && serviceRequestsPopUp.getType().equals("Maintenance Request")) {
             MapSingleton.getInstance().getMap().enableNode(serviceRequestsPopUp.getLocation());
+        }else if(previousStatus.equals("Complete") && serviceRequestsPopUp.getStatus().equals("In Progress") && serviceRequestsPopUp.getType().equals("Maintenance Request")){
+            MapSingleton.getInstance().getMap().disableNode(serviceRequestsPopUp.getLocation());
+
         }
         usernameSearch.setText("");
         editRequestPane.toBack();
@@ -817,9 +772,9 @@ public class MainPage implements SwitchableController, Observer {
     }
 
     @FXML
-    private void onEmployeeName(){
+    private void onEmployeeName() {
 
-        if(PermissionSingleton.getInstance().userExist(SearchByEmployee.getText())){
+        if (PermissionSingleton.getInstance().userExist(SearchByEmployee.getText())) {
             AvgTimeEmployee.getData().clear();
             NumRequestEmployee.getData().clear();
 
@@ -828,22 +783,22 @@ public class MainPage implements SwitchableController, Observer {
             xAxisEmployee.setCategories(requestTypeE);
 
             XYChart.Series<String, Integer> seriesE = new XYChart.Series<>();
-                int time = ServiceRequestSingleton.getInstance().avgCompletionTimeByEmployee(null,SearchByEmployee.getText());
-                int AllEmployeeAverage = ServiceRequestSingleton.getInstance().avgCompletionTimeAll(null);
-                seriesE.getData().add(new XYChart.Data<>(SearchByEmployee.getText(),time/60000));
-                seriesE.getData().add(new XYChart.Data<>("Hospital Average",AllEmployeeAverage/60000));
+            int time = ServiceRequestSingleton.getInstance().avgCompletionTimeByEmployee(null, SearchByEmployee.getText());
+            int AllEmployeeAverage = ServiceRequestSingleton.getInstance().avgCompletionTimeAll(null);
+            seriesE.getData().add(new XYChart.Data<>(SearchByEmployee.getText(), time / 60000));
+            seriesE.getData().add(new XYChart.Data<>("Hospital Average", AllEmployeeAverage / 60000));
             AvgTimeEmployee.getData().add(seriesE);
 
             ObservableList<PieChart.Data> NumRequestByEmployeeData = FXCollections.observableArrayList();
             NumRequestByEmployeeData.add(new PieChart.Data("Hospital Average", ServiceRequestSingleton.getInstance().numRequestsAll(null)));
-            NumRequestByEmployeeData.add(new PieChart.Data(SearchByEmployee.getText(), ServiceRequestSingleton.getInstance().numRequestsByEmployee(null,SearchByEmployee.getText())));
+            NumRequestByEmployeeData.add(new PieChart.Data(SearchByEmployee.getText(), ServiceRequestSingleton.getInstance().numRequestsByEmployee(null, SearchByEmployee.getText())));
             NumRequestEmployee.getData().addAll(NumRequestByEmployeeData);
             SearchByEmployee.clear();
         }
     }
 
     @FXML
-    private void onSubmitMaintenance(){
+    private void onSubmitMaintenance() {
         int requiredFields = 0;
         if (situationSelection.getSelectionModel().isEmpty()) {
             maintenanceSituationRequired.setVisible(true);
@@ -921,13 +876,13 @@ public class MainPage implements SwitchableController, Observer {
     }
 
     @FXML
-    private void onBack(){
+    private void onBack() {
         statsPane.toFront();
         selectStats.getSelectionModel().clearSelection();
     }
 
     @FXML
-    private void OnStats(){
+    private void OnStats() {
         selectStats.getSelectionModel().clearSelection();
         statsPane.toFront();
         AvgTimeServiceType.getData().clear();
@@ -935,17 +890,16 @@ public class MainPage implements SwitchableController, Observer {
         NumRequestEmployee.getData().clear();
         NumRequestType.getData().clear();
         XYChart.Series<String, Integer> seriesT = new XYChart.Series<>();
-        for (int i = 0; i < requestTypeT.size();i++){
+        for (int i = 0; i < requestTypeT.size(); i++) {
             int time = ServiceRequestSingleton.getInstance().avgCompletionTimeAll(requestTypeT.get(i));
-            seriesT.getData().add(new XYChart.Data<>(requestTypeT.get(i),time/60000));
+            seriesT.getData().add(new XYChart.Data<>(requestTypeT.get(i), time / 60000));
             System.out.println(time);
         }
         AvgTimeServiceType.getData().add(seriesT);
 
 
-
         ObservableList<PieChart.Data> NumRequestByTypeData = FXCollections.observableArrayList();
-        for (String a: ST){
+        for (String a : ST) {
             NumRequestByTypeData.add(new PieChart.Data(a, ServiceRequestSingleton.getInstance().numRequestsAll(a)));
         }
         NumRequestType.getData().addAll(NumRequestByTypeData);
@@ -954,17 +908,14 @@ public class MainPage implements SwitchableController, Observer {
     }
 
     @FXML
-    private void onSearchStats(){
+    private void onSearchStats() {
         String selection = selectStats.getSelectionModel().getSelectedItem().toString();
-        if(selection.equals("Employee Name")){
+        if (selection.equals("Employee Name")) {
             employeePane.toFront();
-        }else if(selection.equals("Service Type"))
-            {
+        } else if (selection.equals("Service Type")) {
             serviceTypePane.toFront();
         }
     }
-
-
 
 
     @Override

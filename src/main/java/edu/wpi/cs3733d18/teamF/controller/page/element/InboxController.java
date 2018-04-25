@@ -6,6 +6,7 @@ import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.Screens;
 import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
+import edu.wpi.cs3733d18.teamF.graph.MapSingleton;
 import edu.wpi.cs3733d18.teamF.sr.ServiceRequestSingleton;
 import edu.wpi.cs3733d18.teamF.sr.ServiceRequests;
 import javafx.collections.FXCollections;
@@ -13,7 +14,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ import java.util.Collections;
 public class InboxController implements SwitchableController {
     PaneSwitcher switcher;
     private boolean decreasingOrder = true;
+    private ServiceRequests selectedRequest = null;
 
 
     @FXML
@@ -31,7 +35,15 @@ public class InboxController implements SwitchableController {
     @FXML
     private JFXTextField inboxSearch;
     @FXML
+    private JFXCheckBox completeCheck;
+    @FXML
     private JFXComboBox inboxPrioritySort, inboxStatusSort, inboxAllSort;
+    @FXML
+    private Label typeLabel, fullNameLabel, idLabel, locationLabel, statusLabel, completedByLabel, usernameLabel;
+    @FXML
+    private TextArea instructionsTextArea;
+    @FXML
+    private AnchorPane editRequestPane;
 
     private final ObservableList<String> priority = FXCollections.observableArrayList("0", "1", "2", "3", "4", "5");
     private final ObservableList<String> status = FXCollections.observableArrayList("Incomplete", "In Progress", "Complete");
@@ -42,7 +54,6 @@ public class InboxController implements SwitchableController {
         this.switcher=switcher;
 
         setInbox();
-
 
         inboxPrioritySort.getItems().addAll(priority);
         inboxStatusSort.getItems().addAll(status);
@@ -117,8 +128,61 @@ public class InboxController implements SwitchableController {
 
     }
 
-    public void onSelectInboxMessage(ServiceRequests request){
+    public void onSelectInboxMessage(ServiceRequests s){
+        selectedRequest = s;
+        typeLabel.setText("Type: " + s.getType());
+        if (s.getType().equals("Language Interpreter") || s.getType().equals("Religious Services")) {
+            fullNameLabel.setText(s.getFirstName() + " " + s.getLastName());
+        } else {
+            fullNameLabel.setText("N/A");
+        }
+        idLabel.setText("Service Request #" + s.getId());
+        locationLabel.setText(s.getLocation());
+        statusLabel.setText(s.getStatus());
+        instructionsTextArea.setText(s.getDescription());
+        instructionsTextArea.setEditable(false);
+        if (s.getStatus().equalsIgnoreCase("Complete")) {
+            completeCheck.setSelected(true);
+        } else {
+            completeCheck.setSelected(false);
+        }
 
+        if (s.getStatus().equals("Complete")) {
+            completedByLabel.setVisible(true);
+            usernameLabel.setVisible(true);
+            usernameLabel.setText(s.getCompletedBy());
+        }
+        editRequestPane.setVisible(true);
+    }
+
+    @FXML
+    public void onCompleteCheck(){
+        String previousStatus = selectedRequest.getStatus();
+        if (completeCheck.isSelected() && !selectedRequest.getStatus().equalsIgnoreCase("Complete")) {
+            selectedRequest.setStatus("Complete");
+            selectedRequest.setCompletedBy(PermissionSingleton.getInstance().getCurrUser());
+            ServiceRequestSingleton.getInstance().updateCompletedBy(selectedRequest);
+            ServiceRequestSingleton.getInstance().updateStatus(selectedRequest);
+            usernameLabel.setText(PermissionSingleton.getInstance().getCurrUser());
+            usernameLabel.setVisible(true);
+            completedByLabel.setVisible(true);
+            statusLabel.setText("Complete");
+        }else{
+            selectedRequest.setStatus("Incomplete");
+            selectedRequest.setCompletedBy(null);
+            ServiceRequestSingleton.getInstance().updateStatus(selectedRequest);
+            ServiceRequestSingleton.getInstance().updateCompletedBy(selectedRequest);
+            usernameLabel.setText("");
+            usernameLabel.setVisible(false);
+            completedByLabel.setVisible(false);
+            statusLabel.setText("In Progress");
+        }
+        if (selectedRequest.getStatus().equals("Complete") && !previousStatus.equals("Complete") && selectedRequest.getType().equals("Maintenance Request")) {
+            MapSingleton.getInstance().getMap().enableNode(selectedRequest.getLocation());
+        }else if(previousStatus.equals("Complete") && selectedRequest.getStatus().equals("In Progress") && selectedRequest.getType().equals("Maintenance Request")){
+            MapSingleton.getInstance().getMap().disableNode(selectedRequest.getLocation());
+
+        }
     }
 
     public void setInbox(){
