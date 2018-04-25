@@ -7,7 +7,6 @@ import edu.wpi.cs3733d18.teamF.db.DatabaseItem;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.bytedeco.javacpp.presets.opencv_core;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -404,9 +403,10 @@ public class ServiceRequestSingleton implements DatabaseItem {
         return inbox;
     }
 
-    public void deleteFromInbox(String username){
+    public void deleteFromInbox(String username) {
         String sql = "DELETE FROM INBOX WHERE username = '" + username + "'";
-        dbHandler.runQuery(sql);
+        dbHandler.runAction(sql);
+
     }
 
     public int numMessagesInInbox(String username) {
@@ -478,10 +478,10 @@ public class ServiceRequestSingleton implements DatabaseItem {
         String sql;
         boolean multipleConditions = false;
         boolean userSpecific = true;
-        if(username != null) {
+        if (username != null) {
             usernameSQL = " Inbox.username = '" + username + "'";
             multipleConditions = true;
-        }else{
+        } else {
             usernameSQL = "";
             userSpecific = false;
         }
@@ -515,9 +515,9 @@ public class ServiceRequestSingleton implements DatabaseItem {
             typeSQL = "";
         }
 
-        if(userSpecific) {
+        if (userSpecific) {
             sql = "SELECT ServiceRequest.* FROM Inbox INNER JOIN ServiceRequest ON Inbox.requestID = ServiceRequest.id WHERE" + usernameSQL + prioritySQL + statusSQL + typeSQL;
-        }else{
+        } else {
             sql = "SELECT * FROM ServiceRequest WHERE" + prioritySQL + statusSQL + typeSQL;
         }
         ResultSet resultSet = dbHandler.runQuery(sql);
