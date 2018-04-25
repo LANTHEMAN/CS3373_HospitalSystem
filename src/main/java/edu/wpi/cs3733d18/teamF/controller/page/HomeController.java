@@ -400,14 +400,15 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
         /// TODO RADIAL MENU
         /// TODO RADIAL MENU
         radialMenu = new GenericRadial(Arrays.asList(
-                "9.png"
-                , "9.png"
-                , "9.png"
-                //, "3.png"
-                //, "4.png"
+                new Pair<>(new Pair<>("2.png", "A"), () -> { System.out.println("A"); })
+                , new Pair<>(new Pair<>("3.png", "B"), () -> {System.out.println("B");})
+                , new Pair<>(new Pair<>("4.png", "C"), () -> {System.out.println("C");})
+                , new Pair<>(new Pair<>("5.png", "D"), () -> {System.out.println("D");})
+                , new Pair<>(new Pair<>("6.png", "E"), () -> {System.out.println("E");})
+                , new Pair<>(new Pair<>("7.png", "F"), () -> {System.out.println("F");})
         ));
 
-       // rootPane.getChildren().add(radialMenu);
+        //rootPane.getChildren().add(radialMenu);
 
         /// TODO RADIAL MENU
         /// TODO RADIAL MENU
@@ -1990,7 +1991,7 @@ public class HomeController implements SwitchableController, Observer, MapViewLi
 
     @FXML
     private void onInbox() {
-        
+
     }
 
     @FXML
