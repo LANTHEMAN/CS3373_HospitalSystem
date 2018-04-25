@@ -35,10 +35,14 @@ public class MapMementoSingleton {
 
     public void returnToState(MapState state) {
         if (state == null) return;
+        ((HomeController)source.getMapViewListener()).onLogOutBtn();
+
         if (state.getPath() != null) {
             source.getMapDrawController().showPath(state.getPath());
             source.changePath(state.getPath().getNodes().get(0), state.getPath().getNodes().get(state.getPath().getNodes().size() - 1));
             source.getMapViewListener().onNewPathSelected(state.getPath());
+            source.setSelectedNodeStart(state.getPath().getNodes().get(0));
+            source.setSelectedNodeEnd(state.getPath().getNodes().get(state.getPath().getNodes().size() - 1));
         }else{
             source.getMapDrawController().unshowPath();
             ((HomeController)source.getMapViewListener()).clearFloorTraversal();
@@ -47,7 +51,7 @@ public class MapMementoSingleton {
         MapSingleton.getInstance().getMap().setFloor(state.getFloor());
         source.getGesturePane().zoomTo(state.getZoomAmount(), state.getTarget());
         source.getGesturePane().centreOn(state.getTarget());
-        ((HomeController)source.getMapViewListener()).onLogOutBtn();
+
     }
 
     public void returnToLastState() {
