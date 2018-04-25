@@ -872,16 +872,19 @@
             <Image url="@../BWHIcon.png" />
          </image>
       </ImageView>
-      <JFXButton fx:id="emergencyBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#triggerEmergency" prefHeight="47.0" prefWidth="158.0" ripplerFill="#cd2323" style="-fx-background-color: #042E58; -fx-background-radius: 100;" text="%Emergency" textFill="#f2f5f7" visible="false" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+      <JFXButton fx:id="emergencyBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#triggerEmergency" prefHeight="80.0" prefWidth="80.0" ripplerFill="#cd2323" style="-fx-background-color: #cc0000; -fx-background-radius: 100;" text="%Exit" textFill="#f2f5f7" visible="false" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
          <font>
-            <Font name="Arial Bold" size="15.0" />
+            <Font name="Arial Bold" size="16.0" />
          </font>
          <GridPane.margin>
-            <Insets bottom="20.0" />
+            <Insets bottom="10.0" right="230.0" />
          </GridPane.margin>
+         <graphic>
+            <FontAwesomeIconView fx:id="emergencyIcon" fill="WHITE" glyphName="EXCLAMATION_TRIANGLE" size="25" />
+         </graphic>
       </JFXButton>
         <AnchorPane fx:id="screensaverPane" pickOnBounds="false" visible="false" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647" />
-      <GridPane fx:id="menu" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #616161;">
+      <GridPane fx:id="menu" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #616161;">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -984,7 +987,7 @@
                   <children>
                   <StackPane>
                      <children>
-                        <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onMouseClicked="#onInbox" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Inbox" textFill="WHITE">
+                        <JFXButton accessibleText="Find_Location" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onInbox" onMouseClicked="#onInbox" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Inbox" textFill="WHITE">
                            <font>
                               <Font name="Arial" size="20.0" />
                            </font>
