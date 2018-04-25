@@ -1061,7 +1061,7 @@
                         <FontAwesomeIconView glyphName="TIMES" layoutX="301.0" layoutY="53.0" onMouseClicked="#onCloseNearest" size="30" wrappingWidth="22.142844200134277" />
                      </children>
                   </Pane>
-                  <JFXButton fx:id="onBathroom" accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Bathroom" textFill="WHITE">
+                  <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" onAction="#onBathroom" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Bathroom" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>
@@ -1069,7 +1069,7 @@
                         <FontAwesomeIconView size="50" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="onExit" accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" layoutX="10.0" layoutY="118.0" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Exit" textFill="WHITE">
+                  <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" layoutX="10.0" layoutY="118.0" onAction="#onExit" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Exit" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>
@@ -1077,7 +1077,7 @@
                         <FontAwesomeIconView size="50" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="onCafe" accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" layoutX="10.0" layoutY="10.0" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Cafe" textFill="WHITE">
+                  <JFXButton accessibleText="Get_Directions" alignment="CENTER" contentDisplay="TOP" graphicTextGap="20.0" layoutX="10.0" layoutY="10.0" onAction="#onCafe" prefWidth="350.0" ripplerFill="#11119d" style="-fx-background-color: #616161;" text="%Cafe" textFill="WHITE">
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>
