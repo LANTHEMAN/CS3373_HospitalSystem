@@ -298,6 +298,23 @@ public class Map extends Observable implements DatabaseItem, Observer {
         }
     }
 
+    public void enableNode(String nodeID){
+        for(Node n : graph.getNodes()){
+            if(n.getNodeID().equals(nodeID)){
+                n.setAdditionalWeight(n.getAdditionalWeight() - 5000);
+            }
+        }
+    }
+
+    public void disableNode(String nodeID){
+        for(Node n : graph.getNodes()){
+            if(n.getNodeID().equals(nodeID)){
+                n.setAdditionalWeight(n.getAdditionalWeight() + 5000);
+            }
+        }
+    }
+
+
     public void enableStairs() {
 
         if (stairsDisabled) {

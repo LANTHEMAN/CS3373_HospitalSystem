@@ -11,7 +11,5 @@ completedBy varchar(20),
 createdOn TIMESTAMP,
 started TIMESTAMP,
 completed TIMESTAMP,
-destNodeID char(10),
-sourceNodeID char(10),
 staffNeeded varchar(10)
 );

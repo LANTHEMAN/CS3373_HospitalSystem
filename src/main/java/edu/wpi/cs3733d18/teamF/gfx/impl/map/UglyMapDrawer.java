@@ -1,12 +1,10 @@
 package edu.wpi.cs3733d18.teamF.gfx.impl.map;
 
-import edu.wpi.cs3733d18.teamF.gfx.EdgeDrawable;
-import edu.wpi.cs3733d18.teamF.gfx.MapDrawable;
-import edu.wpi.cs3733d18.teamF.gfx.NodeDrawable;
-import edu.wpi.cs3733d18.teamF.gfx.PathDrawable;
+import edu.wpi.cs3733d18.teamF.gfx.*;
 import edu.wpi.cs3733d18.teamF.gfx.impl.edge.LineEdgeDrawer;
 import edu.wpi.cs3733d18.teamF.gfx.impl.node.*;
 import edu.wpi.cs3733d18.teamF.gfx.impl.path.DynamicPathDrawer;
+import edu.wpi.cs3733d18.teamF.gfx.impl.pacman.GameMapDrawer;
 import edu.wpi.cs3733d18.teamF.graph.Edge;
 import edu.wpi.cs3733d18.teamF.graph.Node;
 import edu.wpi.cs3733d18.teamF.graph.Path;
@@ -31,6 +29,7 @@ public class UglyMapDrawer extends MapDrawable {
     private NodeDrawable stairDrawer = new StairNodeDrawer();
     private NodeDrawable restroomDrawer = new RestroomNodeDrawer();
     private NodeDrawable pathNodeDrawer = new PathNodeDrawer();
+    private GameMapDrawer gameMapDrawer = new GameMapDrawer();
     private NodeDrawable currNodeDrawable = nodeDrawer;
     private NodeDrawable startNodeDefault = null;
     private Pane pathPane = new Pane();
@@ -38,6 +37,7 @@ public class UglyMapDrawer extends MapDrawable {
 
     public UglyMapDrawer() {
         super();
+        gameMapDrawer.setRandom();
     }
 
     @Override

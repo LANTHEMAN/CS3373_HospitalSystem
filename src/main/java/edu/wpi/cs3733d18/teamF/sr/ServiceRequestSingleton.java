@@ -1,10 +1,12 @@
 package edu.wpi.cs3733d18.teamF.sr;
 
 
-import edu.wpi.cs3733d18.teamF.controller.UserSingleton;
+import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.db.DatabaseHandler;
 import edu.wpi.cs3733d18.teamF.db.DatabaseItem;
 import edu.wpi.cs3733d18.teamF.db.DatabaseSingleton;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,9 +26,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
     private ServiceRequests popUpRequest;
     private String lastFilter;
     private String lastSearch;
-    private int prefWidth;
-    private int prefLength;
-    private String destNodeID;
 
     private ServiceRequestSingleton() {
         // initialize this class with the database
@@ -147,6 +146,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
         dbHandler.runSQLScript("init_sr_li_db.sql");
         dbHandler.runSQLScript("init_sr_rs_db.sql");
         dbHandler.runSQLScript("init_sr_sr_db.sql");
+        dbHandler.runSQLScript("init_sr_mr_db.sql");
         dbHandler.runSQLScript("init_sr_inbox_db.sql");
         if (dbHandler != DatabaseSingleton.getInstance().getDbHandler()) {
             initDatabase(DatabaseSingleton.getInstance().getDbHandler());
@@ -244,9 +244,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 Timestamp createdOn = null;
                 Timestamp started = null;
                 Timestamp completed = null;
-                String destNodeID = null;
-                String sourceNodeID = null;
-                String staffNeeded = resultSet.getString(15);
+                String staffNeeded = resultSet.getString(13);
                 try {
                     createdOn = resultSet.getTimestamp(10);
                 } catch (SQLException e) {
@@ -259,16 +257,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 }
                 try {
                     completed = resultSet.getTimestamp(12);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    destNodeID = resultSet.getString(13);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    sourceNodeID = resultSet.getString(14);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -304,6 +292,10 @@ public class ServiceRequestSingleton implements DatabaseItem {
 
                     case "Security Request":
                         s = new SecurityRequests(id, location, description, status, priority, completedBy, createdOn, started, completed, staffNeeded);
+                        break;
+
+                    case "Maintenance Request":
+                        s = new MaintenanceRequest(id, location, description, status, priority, special, completedBy, createdOn, started, completed, staffNeeded);
                         break;
 
                     default:
@@ -375,6 +367,18 @@ public class ServiceRequestSingleton implements DatabaseItem {
         dbHandler.runAction(sql);
     }
 
+    public void addUsernameMaintenanceRequest(String username) {
+        String sql = "INSERT INTO MaintenanceRequest VALUES ('" + username + "')";
+        dbHandler.runAction(sql);
+    }
+
+    public void removeUsernameMaintenanceRequest(String username) {
+        String sql = "DELETE FROM MaintenanceRequest WHERE username = '" + username + "'";
+        dbHandler.runAction(sql);
+    }
+
+
+
 
     public boolean isInTable(String username, String table) {
         ResultSet rs;
@@ -388,6 +392,9 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 break;
             case "SecurityRequest":
                 sql = "SELECT * FROM SecurityRequest WHERE username = '" + username + "'";
+                break;
+            case "MaintenanceRequest":
+                sql = "SELECT * FROM MaintenanceRequest WHERE username = '" + username + "'";
                 break;
             default:
                 sql = "SELECT * FROM '" + table + "' WHERE username = '" + username + "'";
@@ -412,7 +419,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
     }
 
     public void assignTo(String username, ServiceRequests sr) {
-        if (UserSingleton.getInstance().isValidUsername(username)) {
+        if (PermissionSingleton.getInstance().userExist(username)) {
             sr.setStatus("In Progress");
             updateAssignedTo(sr);
             updateStatus(sr);
@@ -423,26 +430,6 @@ public class ServiceRequestSingleton implements DatabaseItem {
     }
 
 
-    public void setGridPaneDimensions(int windowWidth, int windowLength) {
-        this.prefWidth = windowWidth;
-        this.prefLength = windowLength;
-    }
-
-    public int getPrefWidth() {
-        return prefWidth;
-    }
-
-    public int getPrefLength() {
-        return prefLength;
-    }
-
-    public void setDestinationLocation(String destNodeID) {
-        this.destNodeID = destNodeID;
-    }
-
-    public String getDestNodeID() {
-        return destNodeID;
-    }
 
 
     public ArrayList<ServiceRequests> getServiceRequests() {
@@ -489,6 +476,39 @@ public class ServiceRequestSingleton implements DatabaseItem {
         return count;
     }
 
+    public ObservableList<String> getAssignedUsers(int id){
+        String sql = "SELECT username FROM Inbox WHERE requestID = " + id;
+        ArrayList<String> usernames = new ArrayList<>();
+        ResultSet resultSet = dbHandler.runQuery(sql);
+        try{
+            while (resultSet.next()){
+                usernames.add(resultSet.getString(1));
+            }
+            resultSet.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return FXCollections.observableArrayList(usernames);
+    }
+
+    public boolean alreadyAssignedTo(String username, int id){
+        String sql = "SELECT * FROM INBOX WHERE username = '" + username + "' AND requestID = " + id;
+        ResultSet resultSet = dbHandler.runQuery(sql);
+        try {
+            if(resultSet.next()){
+                String name = resultSet.getString(1);
+                if(username.equals(name)){
+                    return true;
+                }
+            }
+            resultSet.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        return false;
+    }
+
 
     ///////////////////////
     //                   //
@@ -506,13 +526,16 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 sql = "SELECT COUNT(*) FROM ServiceRequest";
                 break;
             case "LanguageInterpreter":
-                sql = "SELECT COUNT(*) FROM  WHERE type = 'LanguageInterpreter'";
+                sql = "SELECT COUNT(*) FROM  WHERE type = 'Language Interpreter'";
                 break;
             case "ReligiousServices":
-                sql = "SELECT COUNT(*) FROM  WHERE type = 'ReligiousServices'";
+                sql = "SELECT COUNT(*) FROM  WHERE type = 'Religious Services'";
                 break;
             case "SecurityRequest":
-                sql = "SELECT COUNT(*) FROM  WHERE type = 'SecurityRequest'";
+                sql = "SELECT COUNT(*) FROM  WHERE type = 'Security Request'";
+                break;
+            case "MaintenanceRequest":
+                sql = "SELECT COUNT(*) FROM  WHERE type = 'Maintenance Request'";
                 break;
             default:
                 sql = "SELECT COUNT(*) FROM ServiceRequest";
@@ -533,13 +556,16 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 sql = "SELECT S.createdOn, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete'";
                 break;
             case "LanguageInterpreter":
-                sql = "SELECT S.createdOn, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'LanguageInterpreter'";
+                sql = "SELECT S.createdOn, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Language Interpreter'";
                 break;
             case "ReligiousServices":
-                sql = "SELECT S.createdOn, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'ReligiousServices'";
+                sql = "SELECT S.createdOn, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Religious Services'";
                 break;
             case "SecurityRequest":
-                sql = "SELECT S.createdOn, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'SecurityRequest'";
+                sql = "SELECT S.createdOn, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Security Request'";
+                break;
+            case "MaintenanceRequest":
+                sql = "SELECT S.createdOn, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Maintenance Request'";
                 break;
             default:
                 sql = "SELECT S.createdOn, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete'";
@@ -584,13 +610,16 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 sql = "SELECT S.started, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND I.username = '" + username + "'";
                 break;
             case "LanguageInterpreter":
-                sql = "SELECT S.started, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'LanguageInterpreter' AND I.username = '" + username + "'";
+                sql = "SELECT S.started, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Language Interpreter' AND I.username = '" + username + "'";
                 break;
             case "ReligiousServices":
-                sql = "SELECT S.started, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'ReligiousServices' AND I.username = '" + username + "'";
+                sql = "SELECT S.started, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Religious Services' AND I.username = '" + username + "'";
                 break;
             case "SecurityRequest":
-                sql = "SELECT S.started, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'SecurityRequest' AND I.username = '" + username + "'";
+                sql = "SELECT S.started, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Security Request' AND I.username = '" + username + "'";
+                break;
+            case "MaintenanceRequest":
+                sql = "SELECT S.started, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND type = 'Maintenance Request' AND I.username = '" + username + "'";
                 break;
             default:
                 sql = "SELECT S.started, S.completed FROM Inbox I INNER JOIN ServiceRequest S ON I.requestID = S.id WHERE S.status = 'Complete' AND I.username = '" + username + "'";
@@ -611,13 +640,16 @@ public class ServiceRequestSingleton implements DatabaseItem {
                 sql = "SELECT COUNT(*) FROM ServiceRequest WHERE completedBy = '" + username + "'";
                 break;
             case "LanguageInterpreter":
-                sql = "SELECT COUNT(*) FROM ServiceRequest WHERE type = 'LanguageInterpreter' AND completedBy = '" + username + "'";
+                sql = "SELECT COUNT(*) FROM ServiceRequest WHERE type = 'Language Interpreter' AND completedBy = '" + username + "'";
                 break;
             case "ReligiousServices":
-                sql = "SELECT COUNT(*) FROM ServiceRequest WHERE type = 'ReligiousServices' AND completedBy = '" + username + "'";
+                sql = "SELECT COUNT(*) FROM ServiceRequest WHERE type = 'Religious Services' AND completedBy = '" + username + "'";
                 break;
             case "SecurityRequest":
-                sql = "SELECT COUNT(*) FROM ServiceRequest WHERE type = 'SecurityRequest' AND completedBy = '" + username + "'";
+                sql = "SELECT COUNT(*) FROM ServiceRequest WHERE type = 'Security Request' AND completedBy = '" + username + "'";
+                break;
+            case "MaintenanceRequest":
+                sql = "SELECT COUNT(*) FROM ServiceRequest WHERE type = 'Maintenance Request' AND completedBy = '" + username + "'";
                 break;
             default:
                 sql = "SELECT COUNT(*) FROM ServiceRequest WHERE completedBy = '" + username + "'";
