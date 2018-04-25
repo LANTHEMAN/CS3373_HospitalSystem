@@ -571,7 +571,6 @@ public class MainPage implements SwitchableController, Observer {
         int priority = Integer.parseInt(selection.getText());
         ServiceRequests request = new LanguageInterpreter(first_name, last_name, location, new_description, "Incomplete", priority, language, "1");
         ServiceRequestSingleton.getInstance().sendServiceRequest(request);
-        ServiceRequestSingleton.getInstance().addServiceRequest(request);
         TwilioHandlerSingleton.getInstance().sendMessage("\n" + first_name + " " + last_name + " needs a " + language + " interpreter at " + location + ".\nAdditional Details: " + description);
         languageInterpreterPane.toBack();
         clearLanguage();
@@ -661,7 +660,6 @@ public class MainPage implements SwitchableController, Observer {
         int priority = Integer.parseInt(selected.getText());
         ServiceRequests request = new ReligiousServices(first_name, last_name, location, new_description, "Incomplete", priority, religion, staffNeeded);
         ServiceRequestSingleton.getInstance().sendServiceRequest(request);
-        ServiceRequestSingleton.getInstance().addServiceRequest(request);
         TwilioHandlerSingleton.getInstance().sendMessage("\n" + first_name + " " + last_name + " needs " + religion + " services at " + location + ".\nAdditional Details: " + description);
         religiousServicesPane.toBack();
         clearReligious();
@@ -738,7 +736,6 @@ public class MainPage implements SwitchableController, Observer {
         SecurityRequests sec = new SecurityRequests(location, description, status, priority, staffNeeded);
 
         ServiceRequestSingleton.getInstance().sendServiceRequest(sec);
-        ServiceRequestSingleton.getInstance().addServiceRequest(sec);
         TwilioHandlerSingleton.getInstance().sendMessage("\nSecurity is required at " + location + ".\nAdditional Details: " + description);
         securityPane.toBack();
         clearSecurity();
@@ -834,7 +831,6 @@ public class MainPage implements SwitchableController, Observer {
         MapSingleton.getInstance().getMap().disableNode(MapSingleton.getInstance().getMap().getNodeIDFromLongName(location));
 
         ServiceRequestSingleton.getInstance().sendServiceRequest(sec);
-        ServiceRequestSingleton.getInstance().addServiceRequest(sec);
         TwilioHandlerSingleton.getInstance().sendMessage("\nMaintenance is required at " + location + ".\nAdditional Details: " + description);
         maintenancePane.toBack();
         clearMaintenancePane();

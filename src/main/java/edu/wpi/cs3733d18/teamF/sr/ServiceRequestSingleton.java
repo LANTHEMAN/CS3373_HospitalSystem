@@ -301,7 +301,7 @@ public class ServiceRequestSingleton implements DatabaseItem {
                         break;
                 }
 
-                requests = addServiceRequest(s, requests);
+                requests.add(s);
             }
         } catch (SQLException e) {
             e.printStackTrace();

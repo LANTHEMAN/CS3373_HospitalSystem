@@ -52,7 +52,6 @@ public class InboxController implements SwitchableController {
 
     public void initialize(PaneSwitcher switcher){
         this.switcher=switcher;
-
         setInbox();
 
         inboxPrioritySort.getItems().addAll(priority);
@@ -186,12 +185,8 @@ public class InboxController implements SwitchableController {
     }
 
     public void setInbox(){
-        ArrayList<ServiceRequests> inbox;
-        if(PermissionSingleton.getInstance().isAdmin()){
-            inbox = ServiceRequestSingleton.getInstance().getListOfRequests();
-        }else {
-            inbox = ServiceRequestSingleton.getInstance().getInbox(PermissionSingleton.getInstance().getCurrUser());
-        }
+        inboxRequests.getItems().clear();
+        ArrayList<ServiceRequests> inbox = ServiceRequestSingleton.getInstance().getInbox(PermissionSingleton.getInstance().getCurrUser());
 
         ArrayList<JFXButton> inboxBtns = new ArrayList<>();
         for(ServiceRequests request: inbox){
