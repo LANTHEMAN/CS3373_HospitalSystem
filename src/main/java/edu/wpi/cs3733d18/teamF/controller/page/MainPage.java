@@ -2,6 +2,8 @@ package edu.wpi.cs3733d18.teamF.controller.page;
 
 import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733.TeamD.GiftServiceRequest;
+import edu.wpi.cs3733d18.teamC.ChonchonTransportationAPI.ChonchonAPI;
 import edu.wpi.cs3733d18.teamF.controller.PaneSwitcher;
 import edu.wpi.cs3733d18.teamF.controller.PermissionSingleton;
 import edu.wpi.cs3733d18.teamF.controller.SwitchableController;
@@ -29,10 +31,7 @@ import javafx.util.Pair;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 public class MainPage implements SwitchableController, Observer {
     private final ObservableList<String> priority = FXCollections.observableArrayList("0", "1", "2", "3", "4", "5");
@@ -104,6 +103,8 @@ public class MainPage implements SwitchableController, Observer {
     Label religionRequiredRS, firstNameRequiredRS, lastNameRequiredRS, locationRequiredRS, occasionRequiredRS;
     String lastSearch = ServiceRequestSingleton.getInstance().getLastSearch();
     String lastFilter = ServiceRequestSingleton.getInstance().getLastFilter();
+    @FXML
+    Label invalidMaintenanceLocation, invalidLocationRS, invalidLocationLI, invalidLocationSR;
     /////////////////////////////////////////
     //                                     //
     //           Service Request           //
@@ -132,12 +133,6 @@ public class MainPage implements SwitchableController, Observer {
     @FXML
     private StackPane mainPane;
     @FXML
-    private JFXButton languageInterpreterBtn;
-    @FXML
-    private JFXButton religiousServicesBtn;
-    @FXML
-    private JFXButton securityRequestBtn, maintenanceRequestBtn;
-    @FXML
     private JFXTextField destinationMaintenance;
     @FXML
     private Label maintenanceSituationRequired, maintenanceLocationRequired;
@@ -147,17 +142,14 @@ public class MainPage implements SwitchableController, Observer {
     private JFXListView assignedUsernames;
     @FXML
     private FontAwesomeIconView plusAssignTo;
-
     private VoiceCommandVerification voice;
     private PaneVoiceController paneVoiceController;
-
     @FXML
     private Pane voicePane;
-
     private GenericRadial radialMenu;
-
     @FXML
     private JFXListView usernameList;
+
 
     @Override
     public void initialize(PaneSwitcher switcher) {
@@ -169,31 +161,9 @@ public class MainPage implements SwitchableController, Observer {
 
         paneVoiceController = new PaneVoiceController(voicePane);
 
-        languageInterpreterBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "LanguageInterpreter") || PermissionSingleton.getInstance().isAdmin()) {
-                languageInterpreterPane.toFront();
-            }
-        });
-
-        religiousServicesBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "ReligiousServices") || PermissionSingleton.getInstance().isAdmin()) {
-                religiousServicesPane.toFront();
-            }
-        });
-        securityRequestBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "SecurityRequest") || PermissionSingleton.getInstance().isAdmin()) {
-                securityPane.toFront();
-            }
-        });
-
-        maintenanceRequestBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if(ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "MaintenanceRequest") || PermissionSingleton.getInstance().isAdmin()) {
-                maintenancePane.toFront();
-            }
-        });
 
         plusAssignTo.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
-            if(!usernameSearch.isVisible()){
+            if (!usernameSearch.isVisible()) {
                 usernameSearch.setVisible(true);
             }
         });
@@ -241,34 +211,54 @@ public class MainPage implements SwitchableController, Observer {
             DatabaseWrapper.autoCompleteLocations(input, securityLocationList);
         });
 
-        /*
-        /// TODO RADIAL MENU
-        /// TODO RADIAL MENU
         radialMenu = new GenericRadial(Arrays.asList(
-                new Pair<>(new Pair<>("2.png", "A"), () -> { System.out.println("A"); })
-                , new Pair<>(new Pair<>("3.png", "B"), () -> {System.out.println("B");})
-                , new Pair<>(new Pair<>("4.png", "C"), () -> {System.out.println("C");})
-                , new Pair<>(new Pair<>("5.png", "D"), () -> {System.out.println("D");})
-                , new Pair<>(new Pair<>("6.png", "E"), () -> {System.out.println("E");})
-                , new Pair<>(new Pair<>("7.png", "F"), () -> {System.out.println("F");})
+                new Pair<>(new Pair<>("language.png", "Transportation Services"), () -> {
+                    if (ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "LanguageInterpreter") || PermissionSingleton.getInstance().isAdmin()) {
+                        languageInterpreterPane.toFront();
+                    }
+                })
+                , new Pair<>(new Pair<>("book.png", "Gift Shop"), () -> {
+                    if (ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "ReligiousServices") || PermissionSingleton.getInstance().isAdmin()) {
+                        religiousServicesPane.toFront();
+                    }
+                })
+                , new Pair<>(new Pair<>("shield.png", "Maintenance Request"), () -> {
+                    if (ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "SecurityRequest") || PermissionSingleton.getInstance().isAdmin()) {
+                        securityPane.toFront();
+                    }
+                })
+                , new Pair<>(new Pair<>("wrench.png", "Security Request"), () -> {
+                    if (ServiceRequestSingleton.getInstance().isInTable(PermissionSingleton.getInstance().getCurrUser(), "MaintenanceRequest") || PermissionSingleton.getInstance().isAdmin()) {
+                        maintenancePane.toFront();
+                    }
+                })
+                , new Pair<>(new Pair<>("shopping.png", "Religious Services"), () -> {
+                    try {
+                        GiftServiceRequest giftRequest = new GiftServiceRequest();
+                        giftRequest.run(0, 0, 1000, 600, null, null, null);
+                    } catch (Exception e) {
+
+                    }
+                })
+                , new Pair<>(new Pair<>("car.png", "Language Interpreter"), () -> {
+                    if (!ChonchonAPI.isDBInitialized()) {
+                        ChonchonAPI.initDB(new LinkedList<>(Arrays.asList("admin", "staff", "wong", "tyler")));
+                    }
+                    ChonchonAPI.run(0, 0, 1920, 1080, null, null, null);
+                })
         ));
 
-        .getChildren().add(radialMenu);
-
-        /// TODO RADIAL MENU
-        /// TODO RADIAL MENU
-        */
-
-
+        radialMenu.setTranslateX(0);
+        radialMenu.setTranslateY(0);
+        mainPane.getChildren().add(radialMenu);
 
         onSearch();
     }
 
-
     @FXML
-    private void setAssignTo(){
+    private void setAssignTo() {
         String selection = usernameList.getSelectionModel().getSelectedItem().toString();
-        if(!assignedUsernames.getItems().contains(selection)) {
+        if (!assignedUsernames.getItems().contains(selection)) {
             assignedUsernames.getItems().add(selection);
         }
         usernameSearch.setVisible(false);
@@ -276,34 +266,32 @@ public class MainPage implements SwitchableController, Observer {
     }
 
     @FXML
-    private void onDestinationRSList(){
+    private void onDestinationRSList() {
         String selection = destinationRSList.getSelectionModel().getSelectedItem().toString();
         destinationRS.setText(selection);
         destinationRSList.setVisible(false);
     }
 
     @FXML
-    private void onDestinationMaintenance(){
+    private void onDestinationMaintenance() {
         String selection = destinationMaintenanceList.getSelectionModel().getSelectedItem().toString();
         destinationMaintenance.setText(selection);
         destinationMaintenanceList.setVisible(false);
     }
 
     @FXML
-    private void onDestinationLIList(){
+    private void onDestinationLIList() {
         String selection = destinationLIList.getSelectionModel().getSelectedItem().toString();
         destinationLanguage.setText(selection);
         destinationLIList.setVisible(false);
     }
 
     @FXML
-    private void onSecurityLocationList(){
+    private void onSecurityLocationList() {
         String selection = securityLocationList.getSelectionModel().getSelectedItem().toString();
         securityLocationField.setText(selection);
         securityLocationList.setVisible(false);
     }
-
-
 
     @FXML
     void onSearch() {
@@ -399,15 +387,13 @@ public class MainPage implements SwitchableController, Observer {
         ServiceRequestSingleton.getInstance().setSearch(filter, searchType);
     }
 
-
-
     public void onSelect(ServiceRequests s) {
         ServiceRequestSingleton.getInstance().setPopUpRequest(s);
         serviceRequestsPopUp = s;
         typeLabel.setText("Type: " + s.getType());
-        if(s.getType().equals("Language Interpreter") || s.getType().equals("Religious Services")){
+        if (s.getType().equals("Language Interpreter") || s.getType().equals("Religious Services")) {
             fullNameLabel.setText(s.getFirstName() + " " + s.getLastName());
-        }else{
+        } else {
             fullNameLabel.setText("N/A");
         }
         idLabel.setText("Service Request #" + s.getId());
@@ -429,27 +415,25 @@ public class MainPage implements SwitchableController, Observer {
 
         assignedUsernames.setItems(ServiceRequestSingleton.getInstance().getAssignedUsers(s.getId()));
 
-        if(PermissionSingleton.getInstance().isAdmin()){
-            if(!plusAssignTo.isVisible()){
+        if (PermissionSingleton.getInstance().isAdmin()) {
+            if (!plusAssignTo.isVisible()) {
                 plusAssignTo.setVisible(true);
             }
-        }else{
-            if(plusAssignTo.isVisible()){
+        } else {
+            if (plusAssignTo.isVisible()) {
                 plusAssignTo.setVisible(false);
             }
         }
 
-        if(usernameList.isVisible()) {
+        if (usernameList.isVisible()) {
             usernameList.setVisible(false);
         }
-        if(usernameSearch.isVisible()) {
+        if (usernameSearch.isVisible()) {
             usernameSearch.setVisible(false);
         }
 
         editRequestPane.toFront();
     }
-
-
 
     @FXML
     void onFilterType() {
@@ -501,10 +485,10 @@ public class MainPage implements SwitchableController, Observer {
 
     @FXML
     public void onSubmitEdit() {
-        if(assignedUsernames.getItems().size()>0){
+        if (assignedUsernames.getItems().size() > 0) {
             ObservableList<String> users = assignedUsernames.getItems();
-            for(String username: users){
-                if(!ServiceRequestSingleton.getInstance().alreadyAssignedTo(username, serviceRequestsPopUp.getId())){
+            for (String username : users) {
+                if (!ServiceRequestSingleton.getInstance().alreadyAssignedTo(username, serviceRequestsPopUp.getId())) {
                     ServiceRequestSingleton.getInstance().assignTo(username, serviceRequestsPopUp);
                 }
             }
@@ -516,17 +500,12 @@ public class MainPage implements SwitchableController, Observer {
             ServiceRequestSingleton.getInstance().updateCompletedBy(serviceRequestsPopUp);
             ServiceRequestSingleton.getInstance().updateStatus(serviceRequestsPopUp);
         }
-        if(serviceRequestsPopUp.getStatus().equals("Complete") && serviceRequestsPopUp.getType().equals("Maintenance Request")){
+        if (serviceRequestsPopUp.getStatus().equals("Complete") && serviceRequestsPopUp.getType().equals("Maintenance Request")) {
             MapSingleton.getInstance().getMap().enableNode(serviceRequestsPopUp.getLocation());
         }
         usernameSearch.setText("");
         editRequestPane.toBack();
         onSearch();
-    }
-
-    @FXML
-    private void onCancelEdit(){
-        editRequestPane.toBack();
     }
 
     ////////////////////////
@@ -536,6 +515,11 @@ public class MainPage implements SwitchableController, Observer {
     ////////////////////////
 
     @FXML
+    private void onCancelEdit() {
+        editRequestPane.toBack();
+    }
+
+    @FXML
     void onSubmitLI() {
         int requiredFieldsEmpty = 0;
         String language;
@@ -543,7 +527,7 @@ public class MainPage implements SwitchableController, Observer {
         String last_name;
         String location;
         String description;
-        if(availableLanguagesBox.getSelectionModel().isEmpty()) {
+        if (availableLanguagesBox.getSelectionModel().isEmpty()) {
             languageRequiredLI.setVisible(true);
             requiredFieldsEmpty++;
         }
@@ -563,7 +547,7 @@ public class MainPage implements SwitchableController, Observer {
             return;
         }
         location = destinationLanguage.getText();
-        if(!MapSingleton.getInstance().getMap().isValidLocation(location)){
+        if (!MapSingleton.getInstance().getMap().isValidLocation(location)) {
             invalidLocationLI.setVisible(true);
             return;
         }
@@ -610,15 +594,14 @@ public class MainPage implements SwitchableController, Observer {
         if (locationRequiredLI.isVisible()) {
             locationRequiredLI.setVisible(false);
         }
-        if(invalidLocationLI.isVisible()){
+        if (invalidLocationLI.isVisible()) {
             invalidLocationLI.setVisible(false);
         }
-        if(destinationLIList.isVisible()){
+        if (destinationLIList.isVisible()) {
             destinationLIList.setVisible(false);
         }
         instructionsLanguage.clear();
     }
-
 
     ////////////////////////
     //                    //
@@ -653,7 +636,7 @@ public class MainPage implements SwitchableController, Observer {
             return;
         }
         location = destinationRS.getText();
-        if(!MapSingleton.getInstance().getMap().isValidLocation(location)){
+        if (!MapSingleton.getInstance().getMap().isValidLocation(location)) {
             invalidLocationRS.setVisible(true);
             return;
         }
@@ -684,12 +667,18 @@ public class MainPage implements SwitchableController, Observer {
         clearReligious();
     }
 
+    ////////////////////////
+    //                    //
+    //       SR           //
+    //                    //
+    ////////////////////////
+
     private void clearReligious() {
         religionSelect.getSelectionModel().clearSelection();
         if (religionRequiredRS.isVisible()) {
             religionRequiredRS.setVisible(false);
         }
-        if(occasionRequiredRS.isVisible()){
+        if (occasionRequiredRS.isVisible()) {
             occasionRequiredRS.setVisible(false);
         }
         firstNameRS.clear();
@@ -704,20 +693,14 @@ public class MainPage implements SwitchableController, Observer {
         if (locationRequiredRS.isVisible()) {
             locationRequiredRS.setVisible(false);
         }
-        if(invalidLocationRS.isVisible()){
+        if (invalidLocationRS.isVisible()) {
             invalidLocationRS.setVisible(false);
         }
-        if (destinationRSList.isVisible()){
+        if (destinationRSList.isVisible()) {
             destinationRSList.setVisible(false);
         }
         instructionsRS.clear();
     }
-
-    ////////////////////////
-    //                    //
-    //       SR           //
-    //                    //
-    ////////////////////////
 
     @FXML
     private void onSubmitSecurity() {
@@ -726,15 +709,15 @@ public class MainPage implements SwitchableController, Observer {
             securityLocationRequired.setVisible(true);
             requiredFields++;
         }
-        if(requestTitleField.getText() == null || requestTitleField.getText().trim().isEmpty()){
+        if (requestTitleField.getText() == null || requestTitleField.getText().trim().isEmpty()) {
             requestTitleRequired.setVisible(true);
             requiredFields++;
         }
-        if(requiredFields > 0){
+        if (requiredFields > 0) {
             return;
         }
         String location = securityLocationField.getText();
-        if(!MapSingleton.getInstance().getMap().isValidLocation(location)){
+        if (!MapSingleton.getInstance().getMap().isValidLocation(location)) {
             invalidLocationSR.setVisible(true);
             return;
         }
@@ -761,6 +744,12 @@ public class MainPage implements SwitchableController, Observer {
         clearSecurity();
     }
 
+    ////////////////////////
+    //                    //
+    //    Maintenance     //
+    //                    //
+    ////////////////////////
+
     private void clearSecurity() {
         securityLocationField.clear();
         securityTextArea.clear();
@@ -768,39 +757,30 @@ public class MainPage implements SwitchableController, Observer {
         if (securityLocationRequired.isVisible()) {
             securityLocationRequired.setVisible(false);
         }
-        if(invalidLocationSR.isVisible()){
+        if (invalidLocationSR.isVisible()) {
             invalidLocationSR.setVisible(false);
         }
-        if (securityLocationList.isVisible()){
+        if (securityLocationList.isVisible()) {
             securityLocationList.setVisible(false);
         }
     }
 
-    ////////////////////////
-    //                    //
-    //    Maintenance     //
-    //                    //
-    ////////////////////////
-
     @FXML
-    Label invalidMaintenanceLocation, invalidLocationRS, invalidLocationLI, invalidLocationSR;
-
-    @FXML
-    private void onSubmitMaintenance(){
+    private void onSubmitMaintenance() {
         int requiredFields = 0;
         if (situationSelection.getSelectionModel().isEmpty()) {
             maintenanceSituationRequired.setVisible(true);
             requiredFields++;
         }
-        if(destinationMaintenance.getText() == null || destinationMaintenance.getText().trim().isEmpty()){
+        if (destinationMaintenance.getText() == null || destinationMaintenance.getText().trim().isEmpty()) {
             maintenanceLocationRequired.setVisible(true);
             requiredFields++;
         }
-        if(requiredFields > 0){
+        if (requiredFields > 0) {
             return;
         }
         String location = destinationMaintenance.getText();
-        if(!MapSingleton.getInstance().getMap().isValidLocation(location)){
+        if (!MapSingleton.getInstance().getMap().isValidLocation(location)) {
             invalidMaintenanceLocation.setVisible(true);
             return;
         }
@@ -824,29 +804,28 @@ public class MainPage implements SwitchableController, Observer {
     }
 
     @FXML
-    private void onCancelMaintenance(){
+    private void onCancelMaintenance() {
         maintenancePane.toBack();
         clearMaintenancePane();
     }
 
-    private void clearMaintenancePane(){
+    private void clearMaintenancePane() {
         situationSelection.getSelectionModel().clearSelection();
         instructionsMaintenance.clear();
         destinationMaintenance.clear();
-        if(maintenanceLocationRequired.isVisible()) {
+        if (maintenanceLocationRequired.isVisible()) {
             maintenanceLocationRequired.setVisible(false);
         }
-        if(maintenanceSituationRequired.isVisible()) {
+        if (maintenanceSituationRequired.isVisible()) {
             maintenanceSituationRequired.setVisible(false);
         }
-        if(invalidMaintenanceLocation.isVisible()){
+        if (invalidMaintenanceLocation.isVisible()) {
             invalidMaintenanceLocation.setVisible(false);
         }
-        if (destinationMaintenanceList.isVisible()){
+        if (destinationMaintenanceList.isVisible()) {
             destinationMaintenanceList.setVisible(false);
         }
     }
-
 
 
     @FXML
@@ -875,19 +854,18 @@ public class MainPage implements SwitchableController, Observer {
         System.out.println("arg = " + arg);
 
         if (arg instanceof String) {
-            if(arg.toString().equalsIgnoreCase("ACTIVATE")) {
+            if (arg.toString().equalsIgnoreCase("ACTIVATE")) {
                 paneVoiceController.setVisibility(true);
-            }
-            else if(arg.toString().equalsIgnoreCase("Language")){
+            } else if (arg.toString().equalsIgnoreCase("Language")) {
                 languageInterpreterPane.toFront();
-            }else if(arg.toString().equalsIgnoreCase("Religious")){
+            } else if (arg.toString().equalsIgnoreCase("Religious")) {
                 religiousServicesPane.toFront();
-            }else if(arg.toString().equalsIgnoreCase("Security")){
+            } else if (arg.toString().equalsIgnoreCase("Security")) {
                 securityPane.toFront();
-            }else if(arg.toString().equalsIgnoreCase("Create")){
+            } else if (arg.toString().equalsIgnoreCase("Create")) {
                 SingleSelectionModel<Tab> selectionModel = serviceRequestTabPane.getSelectionModel();
                 selectionModel.select(0);
-            }else if(arg.toString().equalsIgnoreCase("Search")){
+            } else if (arg.toString().equalsIgnoreCase("Search")) {
                 SingleSelectionModel<Tab> selectionModel = serviceRequestTabPane.getSelectionModel();
                 selectionModel.select(1);
             }

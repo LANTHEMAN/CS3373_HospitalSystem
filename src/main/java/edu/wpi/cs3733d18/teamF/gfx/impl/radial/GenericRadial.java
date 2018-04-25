@@ -38,8 +38,8 @@ public class GenericRadial extends Group {
     private final Color valueColor = Color.web("30c0ff");
     private final Color valueHoverColor = Color.web("30c0ff");
     private final Group textsGroup = new Group();
-    private final double innerRadius = 150;
-    private final double radius = 300;
+    private final double innerRadius = 100;
+    private final double radius = 250;
     private final List<RadialMenuItem> items = new ArrayList<RadialMenuItem>();
     private final DoubleProperty initialAngle = new SimpleDoubleProperty(0);
     private final GenericRadialCenter centerNode = new GenericRadialCenter();
@@ -96,8 +96,6 @@ public class GenericRadial extends Group {
             openTransition.getChildren().add(textTransition);
         }
 
-
-
         openTransition.play();
 
         final RadialMenuItem notSelected1 = createNotSelectedItemEffect();
@@ -109,11 +107,6 @@ public class GenericRadial extends Group {
         notSelectedItemEffect.setOpacity(0);
 
         itemsContainer.getChildren().add(notSelectedItemEffect);
-
-
-
-        setTranslateX(210);
-        setTranslateY(210);
     }
 
     public Animation getTextOpenTransition(final RadialMenuItem item) {
@@ -137,7 +130,7 @@ public class GenericRadial extends Group {
                     Font.font(java.awt.Font.SANS_SERIF, FontWeight.NORMAL, 7),
                     Font.font(java.awt.Font.SANS_SERIF, FontWeight.NORMAL, 8),
                     Font.font(java.awt.Font.SANS_SERIF, FontWeight.NORMAL, 10),
-                    Font.font(java.awt.Font.SANS_SERIF, FontWeight.NORMAL, 50)};
+                    Font.font(java.awt.Font.SANS_SERIF, FontWeight.NORMAL, 20)};
 
             @Override
             public void changed(
