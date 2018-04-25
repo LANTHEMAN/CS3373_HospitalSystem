@@ -182,7 +182,7 @@ public class MainPage implements SwitchableController, Observer {
         voice.addObserver(this);
         VoiceLauncher.getInstance().addObserver(voice);
 
-        requestTypeE.add("Hospital Average");
+
         paneVoiceController = new PaneVoiceController(voicePane);
 
 
@@ -277,18 +277,18 @@ public class MainPage implements SwitchableController, Observer {
 
         selectStats.getItems().add("Employee Name");
         selectStats.getItems().add("Service Type");
-        selectStats.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
 
-        });
 
         this.ST = new ArrayList<>();
         ST.add("LanguageInterpreter");
         ST.add("ReligiousServices");
         ST.add("SecurityRequest");
+        ST.add("MaintenanceRequest");
 
         requestTypeT.add("LanguageInterpreter");
         requestTypeT.add("ReligiousServices");
         requestTypeT.add("SecurityRequest");
+        requestTypeT.add("MaintenanceRequest");
 
         xAxisType.setCategories(requestTypeT);
 
@@ -776,9 +776,14 @@ public class MainPage implements SwitchableController, Observer {
 
         if (PermissionSingleton.getInstance().userExist(SearchByEmployee.getText())) {
             AvgTimeEmployee.getData().clear();
-            NumRequestEmployee.getData().clear();
+
+            requestTypeE.clear();
+
+            requestTypeE.add("Hospital Average");
+
 
             requestTypeE.add(SearchByEmployee.getText());
+
 
             xAxisEmployee.setCategories(requestTypeE);
 
@@ -909,11 +914,13 @@ public class MainPage implements SwitchableController, Observer {
 
     @FXML
     private void onSearchStats() {
-        String selection = selectStats.getSelectionModel().getSelectedItem().toString();
-        if (selection.equals("Employee Name")) {
-            employeePane.toFront();
-        } else if (selection.equals("Service Type")) {
-            serviceTypePane.toFront();
+        if(!selectStats.getSelectionModel().isEmpty()) {
+            String selection = selectStats.getSelectionModel().getSelectedItem().toString();
+            if (selection.equals("Employee Name")) {
+                employeePane.toFront();
+            } else if (selection.equals("Service Type")) {
+                serviceTypePane.toFront();
+            }
         }
     }
 
