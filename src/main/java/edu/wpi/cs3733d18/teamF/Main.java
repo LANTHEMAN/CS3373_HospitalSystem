@@ -20,7 +20,7 @@ import java.nio.file.Paths;
 import java.util.Comparator;
 public class Main extends Application {
     public static void main(String[] args) throws IOException, InterruptedException, JAXBException {
-
+        System.out.println("MATT SUCK! HAHAHAHAHAHA! xD");
         long fileSize = 0;
         // get rid of the database folder if its empty
         try {
